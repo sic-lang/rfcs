@@ -12,6 +12,32 @@
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       json = pkgs.formats.json { };
+      # Checks the commits after a base, origin/main by default: each one is signed off by its
+      # author (CONTRIBUTING.md), and none is a merge commit, as pull requests are rebased.
+      checkCommits = pkgs.writeShellApplication {
+        name = "check-commits";
+        runtimeInputs = [
+          pkgs.git
+          pkgs.gnugrep
+        ];
+        text = ''
+          base=''${1:-origin/main}
+          status=0
+          for commit in $(git rev-list --merges "$base..HEAD"); do
+            echo "$(git log -1 --format='%h %s' "$commit"): merge commit, rebase instead" >&2
+            status=1
+          done
+          for commit in $(git rev-list --no-merges "$base..HEAD"); do
+            author=$(git log -1 --format='%an <%ae>' "$commit")
+            if ! git log -1 --format='%(trailers:key=Signed-off-by,valueonly)' "$commit" |
+              grep -qxF "$author"; then
+              echo "$(git log -1 --format='%h %s' "$commit"): no Signed-off-by: $author" >&2
+              status=1
+            fi
+          done
+          exit "$status"
+        '';
+      };
       # The recommended VS Code configuration: one extension per tool of the checks.
       vscodeExtensions = json.generate "extensions.json" {
         recommendations = [
@@ -76,14 +102,23 @@
       };
     in
     {
+      apps.x86_64-linux.check-commits = {
+        type = "app";
+        program = pkgs.lib.getExe checkCommits;
+        meta.description = "Check the commits after a base, origin/main by default";
+      };
+
       apps.x86_64-linux.setup-vscode = {
         type = "app";
         program = pkgs.lib.getExe setupVscode;
         meta.description = "Write the recommended VS Code configuration to .vscode/";
       };
 
-      # Built by nix flake check, which runs ShellCheck on the script.
-      checks.x86_64-linux.setup-vscode = setupVscode;
+      # Built by nix flake check, which runs ShellCheck on their scripts.
+      checks.x86_64-linux = {
+        check-commits = checkCommits;
+        setup-vscode = setupVscode;
+      };
 
       devShells.x86_64-linux.default = pkgs.mkShellNoCC {
         packages = [

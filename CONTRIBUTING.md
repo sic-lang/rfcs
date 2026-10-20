@@ -21,7 +21,7 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 
 - Pull requests are merged with a merge commit, and the commits they bring are exactly the ones that were reviewed.
   Make every commit meaningful on its own: fold the changes made during review into the relevant commits (`git commit --fixup=<commit>`, then `git rebase --autosquash`) and force-push.
-- Keep the history of a pull request linear: rebase it on `main` to update it, with `git rebase` or "Update with rebase" on GitHub, never by merging `main` into it.
+- Update a pull request by rebasing it on `main`, with `git rebase` or "Update with rebase" on GitHub.
 
 ## Local Checks
 
@@ -32,6 +32,7 @@ Run a check locally with the command of its job in [`.github/workflows/checks.ym
 
 ```sh
 nix develop --command reuse lint
+nix run .#check-commits
 ```
 
 ## Editors
@@ -42,5 +43,4 @@ For VS Code, `nix run .#setup-vscode` writes the recommended extensions and sett
 
 By signing off a commit, you certify that you have the right to submit it under the license of the repository, as described by the [Developer Certificate of Origin 1.1](https://developercertificate.org/).
 
-Sign off every commit with a `Signed-off-by` trailer matching its author.
 Trailers end the commit message, sorted alphabetically (e.g. `Co-Authored-By`, then `Signed-off-by`): write the other trailers at the end of the message, and let `git commit -s` add the sign-off after them.
