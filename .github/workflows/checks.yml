@@ -10,109 +10,43 @@ permissions:
   contents: read
 
 jobs:
-  actionlint:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        # The commands check-<name> of the flake.
+        check:
+          - actionlint
+          - commits
+          - editorconfig
+          - flake
+          - markdownlint
+          - nixfmt
+          - reuse
+          - shellcheck
+          - shfmt
+          - taplo
+          - typos
+          - yamllint
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Lint workflows
-        run: nix run --quiet --inputs-from . nixpkgs#actionlint
-
-  commits:
-    # The commits of the pull request, which reach main through a merge commit.
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-24.04
-    steps:
+      # The head of the pull request, without its history.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Check the commits
-        run: nix run --quiet .#check-commits -- "origin/$GITHUB_BASE_REF"
-
-  editorconfig:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Check EditorConfig compliance
-        run: nix run --quiet --inputs-from . nixpkgs#editorconfig-checker
-
-  flake:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Check the flake
-        run: nix flake check --quiet
-
-  markdownlint:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Lint Markdown files
-        run: nix run --quiet --inputs-from . nixpkgs#markdownlint-cli2 -- '**/*.md'
-
-  nixfmt:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Check Nix formatting
-        run: >-
-          git ls-files -z '*.nix'
-          | xargs -0 nix run --quiet --inputs-from . nixpkgs#nixfmt -- --check
-
-  reuse:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Check REUSE compliance
-        run: nix run --quiet --inputs-from . nixpkgs#reuse -- lint
-
-  shellcheck:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Lint shell scripts
-        run: >-
-          git ls-files -z .envrc '*.sh'
-          | xargs -0 nix run --quiet --inputs-from . nixpkgs#shellcheck --
-
-  shfmt:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Check shell formatting
-        run: >-
-          git ls-files -z .envrc '*.sh'
-          | xargs -0 nix run --quiet --inputs-from . nixpkgs#shfmt -- --diff
-
-  taplo:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Check TOML formatting
-        run: nix run --quiet --inputs-from . nixpkgs#taplo -- fmt --check
-
-  typos:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Check spelling
-        run: nix run --quiet --inputs-from . nixpkgs#typos
-
-  yamllint:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-      - uses: cachix/install-nix-action@448cde739abec1eaf0646249e3d25bb8d9bc7702  # v31.11.2
-      - name: Lint YAML files
-        run: nix run --quiet --inputs-from . nixpkgs#yamllint -- --strict .
+      - if: matrix.check != 'commits'
+        name: Run the check
+        run: nix run --quiet ".#check-$CHECK"
+        env:
+          CHECK: ${{ matrix.check }}
+      # The commits of a pull request only, and their parent, the base of the check; main gets them
+      # through a merge commit.
+      - if: matrix.check == 'commits' && github.event_name == 'pull_request'
+        name: Run the check
+        run: |
+          git fetch --quiet --depth="$((COMMITS + 1))" origin "$HEAD"
+          nix run --quiet .#check-commits -- "HEAD~$COMMITS"
+        env:
+          COMMITS: ${{ github.event.pull_request.commits }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
