@@ -29,11 +29,11 @@ Install [Nix](https://nixos.org/), with flakes enabled.
 `nix develop` provides every tool the checks use, at the versions of the nixpkgs commit pinned by `flake.lock`.
 With [direnv](https://direnv.net/), `.envrc` loads it when entering the repository, once allowed with `direnv allow` after reading it.
 
-For VS Code, `nix run .#setup-vscode` writes the recommended extensions and settings to `.vscode/`, which git ignores: the files are then yours to customize.
+For VS Code, `nix run '.#setup-vscode'` writes the recommended extensions and settings to `.vscode/`, which git ignores: the files are then yours to customize.
 
 ## Checks
 
-`nix run .#check` runs every check of the pull requests, and `nix run .#check-<name>` one of them, such as `nix run .#check-reuse`.
+`nix run '.#check'` runs every check of the pull requests, and `nix run '.#check-<name>'` one of them, such as `nix run '.#check-reuse'`.
 
 ## Developer Certificate of Origin
 
