@@ -168,6 +168,10 @@
         # The binaries of the development shell, loaded by direnv, instead of the bundled ones.
         "evenBetterToml.taplo.bundled" = false;
         "shellcheck.executablePath" = "shellcheck";
+        # The nixd language server, which then formats with nixfmt instead of nix.formatterPath.
+        "nix.enableLanguageServer" = true;
+        "nix.serverPath" = "nixd";
+        "nix.serverSettings".nixd.formatting.command = [ "nixfmt" ];
       };
       # Writes the recommended configuration to .vscode/, which git ignores, without overwriting a
       # file that differs from it, unless --force is given.
@@ -228,8 +232,11 @@
           setup-vscode = setupVscode.checked;
         };
 
+      # The tools of the checks, and the language servers of the editors.
       devShells.x86_64-linux.default = pkgs.mkShellNoCC {
-        packages = lib.unique (lib.concatMap (check: check.tools) (lib.attrValues fileChecks));
+        packages = lib.unique (lib.concatMap (check: check.tools) (lib.attrValues fileChecks)) ++ [
+          pkgs.nixd
+        ];
       };
     };
 }
