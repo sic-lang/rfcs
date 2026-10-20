@@ -34,6 +34,10 @@ Run a check locally with the command of its job in [`.github/workflows/checks.ym
 nix develop --command reuse lint
 ```
 
+## Editors
+
+For VS Code, `nix run .#setup-vscode` writes the recommended extensions and settings to `.vscode/`, which git ignores: the files are then yours to customize.
+
 ## Developer Certificate of Origin
 
 By signing off a commit, you certify that you have the right to submit it under the license of the repository, as described by the [Developer Certificate of Origin 1.1](https://developercertificate.org/).
