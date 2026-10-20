@@ -21,7 +21,7 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 
 - Pull requests are merged with a merge commit, and the commits they bring are exactly the ones that were reviewed.
   Make every commit meaningful on its own: fold the changes made during review into the relevant commits (`git commit --fixup=<commit>`, then `git rebase --autosquash`) and force-push.
-- Update a pull request by rebasing it on `main`, with `git rebase` or "Update with rebase" on GitHub.
+- Update a pull request by rebasing it on `main`.
 
 ## Development Environment
 
