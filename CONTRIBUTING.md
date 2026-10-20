@@ -33,12 +33,7 @@ For VS Code, `nix run .#setup-vscode` writes the recommended extensions and sett
 
 ## Checks
 
-Run a check locally with the command of its job in [`.github/workflows/checks.yml`](.github/workflows/checks.yml), for instance:
-
-```sh
-nix develop --command reuse lint
-nix run .#check-commits
-```
+`nix run .#check` runs every check of the pull requests, and `nix run .#check-<name>` one of them, such as `nix run .#check-reuse`.
 
 ## Developer Certificate of Origin
 
