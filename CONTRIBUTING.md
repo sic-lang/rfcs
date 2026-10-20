@@ -25,7 +25,7 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 
 ## Development Environment
 
-Install [Nix](https://nixos.org/), with flakes enabled.
+Install [Nix](https://nixos.org/), with flakes enabled, on Linux (x86_64 or aarch64) or macOS (Apple silicon).
 `nix develop` provides every tool the checks use, at the versions of the nixpkgs commit pinned by `flake.lock`.
 With [direnv](https://direnv.net/), `.envrc` loads it when entering the repository, once allowed with `direnv allow` after reading it.
 
