@@ -5,12 +5,15 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 
 ## Principles
 
-- Write in US English: documentation, comments, commit messages, issues and pull requests.
-- In Markdown files, write one sentence per line, without wrapping lines at a fixed length, so that editing a sentence only changes its own line.
-  A sentence too long to read on one line is probably too long.
 - Keep every decision auditable: record its rationale once, where it belongs (the RFC for a design decision, the commit message for a change), and link to it elsewhere.
 - Before adopting a new approach, check how established projects solve the same problem.
 - Favor the default configuration of tools and widely established conventions; only deviate from them with a clear reason, documented where the deviation is made.
+
+## Style
+
+- Write in US English: documentation, comments, commit messages, issues and pull requests.
+- In Markdown files, write one sentence per line, without wrapping lines at a fixed length, so that editing a sentence only changes its own line.
+  A sentence too long to read on one line is probably too long.
 - Sort alphabetically the lists whose order has no meaning.
 - Start the README with one short sentence saying what the repository is, and copy it verbatim as the description of the repository on GitHub.
 
