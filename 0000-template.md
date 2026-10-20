@@ -8,12 +8,12 @@ One paragraph explaining the proposal.
 
 ## Motivation
 
-Why is this change needed? Which problems does it solve, and for whom?
+Why is this change needed?
+Which problems does it solve, and for whom?
 
 ## Proposal
 
-The proposal itself, in enough detail to be reviewed and implemented, with
-examples.
+The proposal itself, in enough detail to be reviewed and implemented, with examples.
 
 ## Drawbacks
 
@@ -21,15 +21,15 @@ Why should this proposal not be accepted?
 
 ## Rationale and Alternatives
 
-Why is this design the best one? Which other designs were considered, and why
-were they not chosen? What happens if nothing is done?
+Why is this design the best one?
+Which other designs were considered, and why were they not chosen?
+What happens if nothing is done?
 
 ## Prior Art
 
-How do other languages and projects solve this problem? What can be learned
-from them?
+How do other languages and projects solve this problem?
+What can be learned from them?
 
 ## Unresolved Questions
 
-Which questions must be answered before accepting the proposal, or during its
-implementation?
+Which questions must be answered before accepting the proposal, or during its implementation?
