@@ -21,11 +21,11 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 
 - Pull requests are merged with a merge commit, and the commits they bring are exactly the ones that were reviewed.
   Make every commit meaningful on its own: fold the changes made during review into the relevant commits (`git commit --fixup=<commit>`, then `git rebase --autosquash`) and force-push.
-- Update a pull request by rebasing it on `main`, with `git rebase` or "Update with rebase" on GitHub.
+- Update a pull request by rebasing it on `main`.
 
 ## Development Environment
 
-Install [Nix](https://nixos.org/), with flakes enabled.
+Install [Nix](https://nixos.org/), with flakes enabled, on Linux (x86_64 or aarch64) or macOS (Apple silicon).
 `nix develop` provides every tool the checks use, at the versions of the nixpkgs commit pinned by `flake.lock`.
 With [direnv](https://direnv.net/), `.envrc` loads it when entering the repository, once allowed with `direnv allow` after reading it.
 
