@@ -27,6 +27,7 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 
 Install [Nix](https://nixos.org/), with flakes enabled.
 `nix develop` provides every tool the checks use, at the versions of the nixpkgs commit pinned by `flake.lock`.
+With [direnv](https://direnv.net/), `.envrc` loads it when entering the repository, once allowed with `direnv allow` after reading it.
 Run a check locally with the command of its job in [`.github/workflows/checks.yml`](.github/workflows/checks.yml), for instance:
 
 ```sh
