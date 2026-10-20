@@ -15,8 +15,14 @@
     {
       devShells.x86_64-linux.default = pkgs.mkShellNoCC {
         packages = [
+          pkgs.actionlint
+          pkgs.editorconfig-checker
           pkgs.markdownlint-cli2
+          pkgs.nixfmt
           pkgs.reuse
+          pkgs.taplo
+          pkgs.typos
+          pkgs.yamllint
         ];
       };
     };
