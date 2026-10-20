@@ -20,6 +20,8 @@
           pkgs.markdownlint-cli2
           pkgs.nixfmt
           pkgs.reuse
+          pkgs.shellcheck
+          pkgs.shfmt
           pkgs.taplo
           pkgs.typos
           pkgs.yamllint
