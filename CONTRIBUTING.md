@@ -23,21 +23,22 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
   Make every commit meaningful on its own: fold the changes made during review into the relevant commits (`git commit --fixup=<commit>`, then `git rebase --autosquash`) and force-push.
 - Update a pull request by rebasing it on `main`, with `git rebase` or "Update with rebase" on GitHub.
 
-## Local Checks
+## Development Environment
 
 Install [Nix](https://nixos.org/), with flakes enabled.
 `nix develop` provides every tool the checks use, at the versions of the nixpkgs commit pinned by `flake.lock`.
 With [direnv](https://direnv.net/), `.envrc` loads it when entering the repository, once allowed with `direnv allow` after reading it.
+
+For VS Code, `nix run .#setup-vscode` writes the recommended extensions and settings to `.vscode/`, which git ignores: the files are then yours to customize.
+
+## Checks
+
 Run a check locally with the command of its job in [`.github/workflows/checks.yml`](.github/workflows/checks.yml), for instance:
 
 ```sh
 nix develop --command reuse lint
 nix run .#check-commits
 ```
-
-## Editors
-
-For VS Code, `nix run .#setup-vscode` writes the recommended extensions and settings to `.vscode/`, which git ignores: the files are then yours to customize.
 
 ## Developer Certificate of Origin
 
