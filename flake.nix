@@ -14,7 +14,10 @@
     in
     {
       devShells.x86_64-linux.default = pkgs.mkShellNoCC {
-        packages = [ pkgs.reuse ];
+        packages = [
+          pkgs.markdownlint-cli2
+          pkgs.reuse
+        ];
       };
     };
 }
