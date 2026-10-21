@@ -1,0 +1,9 @@
+name = "modes"
+defaultTargets = ["modes"]
+
+[[lean_exe]]
+name = "modes"
+root = "Main"
+
+[[lean_lib]]
+name = "Modes"
