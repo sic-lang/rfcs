@@ -7,6 +7,7 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 
 - Keep every decision auditable: record its rationale once, where it belongs (the RFC for a design decision, the commit message for a change), and link to it elsewhere.
 - Before adopting a new approach, check how established projects solve the same problem.
+- Cite the source of every claim about other work (papers, documentation, languages, projects) with a link on its name in the text, so that it can be checked.
 - Favor the default configuration of tools and widely established conventions; only deviate from them with a clear reason, documented where the deviation is made.
 
 ## Style
