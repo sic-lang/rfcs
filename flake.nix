@@ -215,7 +215,7 @@
                   install -m 644 "$source" "$target"
                   echo "overwritten $target"
                 else
-                  diff -u "$target" "$source" || true
+                  diff -u --color=auto "$target" "$source" || true
                   echo "kept $target, which differs from the recommended one above: merge it by hand, or overwrite it with --force" >&2
                   status=1
                 fi
