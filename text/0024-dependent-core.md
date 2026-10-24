@@ -203,7 +203,30 @@ Equality is an equivalence relation, reflexive, symmetric and transitive, and ea
 
 ### Universes
 
-To be written.
+A universe is a type whose elements are types.
+A universe that contains itself makes the theory inconsistent ([Girard's paradox](https://doi.org/10.1007/BFb0014058)), so the universes form a predicative hierarchy, as in GrTT and Agda:
+
+```math
+U_0 : U_1 : U_2 : \cdots
+```
+
+A level $`l`$ is $`0`$, a successor $`l + 1`$, the larger $`l_1 \sqcup l_2`$ of two levels, or a level variable.
+Two levels are equal when they denote the same natural number for every value of their variables, which is decidable, since these are formulas of [Presburger arithmetic](https://en.wikipedia.org/wiki/Presburger_arithmetic).
+Levels are not terms: they appear only as the subscripts of universes, and use no variable of the context.
+
+A universe is a type in the universe just above it, in any well-formed context, and uses no variable:
+
+```math
+\frac{[G]\ \Gamma \vdash}{[G \mid 0 \mid 0]\ \Gamma \vdash U_l : U_{l + 1}}\;(\mathsf{univ})
+\qquad
+\frac{[G]\ \Gamma \vdash \quad l_1 = l_2}{[G \mid 0 \mid 0]\ \Gamma \vdash U_{l_1} \equiv U_{l_2} : U_{l_1 + 1}}\;(\mathsf{univ}_\equiv)
+```
+
+The hierarchy is not cumulative: a type of $`U_l`$ is not a type of $`U_{l + 1}`$, as in Agda and Lean, and unlike Rocq.
+The type of a function lives in the larger universe of its domain and codomain, as the [functions](#functions) define.
+
+Universe polymorphism is prenex, as in [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/): level variables are parameters of a top-level definition only, instantiated with levels at each use, and the definition is checked once, with its level variables.
+Within the rules, a level variable is a constant; no type quantifies over levels, so no universe beyond the hierarchy is needed, unlike the $`\mathsf{Set}\omega`$ of [Agda](https://agda.readthedocs.io/en/latest/language/universe-levels.html).
 
 ### Strict Propositions
 
@@ -243,6 +266,7 @@ To be written.
 
 ## Unresolved Questions
 
+- Which RFC defines the top-level definitions, whose level variables the [universes](#universes) assume?
 - Does the order of the grades keep the metatheory of GrTT, whose typing judgment carries the grades, while Abel, Danielsson and Eriksson formalize it with grades checked by a separate relation?
 - Is a term whose grade has no use at run time, $`\langle 0, 1 \rangle`$ or $`\langle 0, \omega \rangle`$, erased safely?
   Abel, Danielsson and Eriksson prove it for the zero grade only; the projection of a grade on its first usage preserves the operations and the order, and would carry their result to every grade without use at run time if typing is preserved along it.
