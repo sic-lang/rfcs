@@ -28,7 +28,7 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar, 
 | Letters | Denote |
 | --- | --- |
 | $`x, y`$ | Variables |
-| $`t, a`$ | Terms, $`a`$ being a term substituted for a variable |
+| $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$ and $`a`$ a term substituted for a variable |
 | $`A, B`$ | Types |
 | $`\Gamma`$ | Contexts, sequences of declarations $`x : A`$ |
 | $`p, q`$ | Usages, the two counts that make up a [grade](#grades) |
@@ -36,7 +36,7 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar, 
 | $`g, g'`$ | Vectors of grades, one grade per variable of the context |
 | $`G`$ | Matrix of the grades with which the types of the context use the variables before them |
 
-A subscript numbers objects of the same kind that come from different premises, as $`g_1`$ and $`g_2`$; it never selects a component.
+A subscript numbers objects of the same kind that come from different premises or different parts of a context, as $`g_1`$ and $`g_2`$, or $`\Gamma_1`$ and $`\Gamma_2`$: an object alone of its kind has none, and several are all numbered; a subscript never selects a component.
 Components are selected by application, as in Lean: $`G\ i`$ is the row of $`G`$ for the type of the $`i`$-th variable, and $`G\ i\ j`$, defined for $`j < i`$, is the grade with which this type uses the $`j`$-th variable.
 A prime only marks a usage in the type of the judgment, as $`g'`$: a second grade of the same kind is written $`r_2`$, not $`r'`$.
 
@@ -145,7 +145,61 @@ The zero divisor $`\langle 1, 0 \rangle`$ of the product of semirings, which the
 
 ### Judgments and Contexts
 
-To be written.
+The core has three judgments, those of GrTT:
+
+```math
+[G]\ \Gamma \vdash \qquad [G \mid g \mid g']\ \Gamma \vdash t : A \qquad [G \mid g \mid g']\ \Gamma \vdash t \equiv u : A
+```
+
+The first says that $`\Gamma`$ is a well-formed context, whose types use the variables before them with the grades of $`G`$.
+The second says that $`t`$ has the type $`A`$, and the third that $`t`$ and $`u`$ are equal terms of type $`A`$, both using the variables with the grades of $`g`$.
+Equality is written $`\equiv`$, so that $`=`$ remains free for the equality type of a later RFC.
+
+A context is either empty, written $`\varepsilon`$ as in [Abel, Danielsson and Eriksson](https://arxiv.org/abs/2603.29716), or a context extended by a declaration whose type is well formed in it:
+
+```math
+\frac{}{\varepsilon \vdash}\;(\mathsf{ctx}_\varepsilon)
+\qquad
+\frac{[G \mid g \mid 0]\ \Gamma \vdash A : U_l \quad x \notin \Gamma}{[G]\ \Gamma,\ [g]\ x : A \vdash}\;(\mathsf{ctx}_{,})
+```
+
+The grades of the empty context are empty, and not written.
+The variable $`x`$ is fresh, absent from $`\Gamma`$, so that a name designates one declaration; a formalization with de Bruijn indices, as that of Abel, Danielsson and Eriksson, has no names and needs no such condition.
+The type $`A`$ is checked in a universe $`U_l`$, defined with the [universes](#universes); its uses of the variables before $`x`$ become the row of $`G`$ for $`x`$, and its own type uses none of them.
+
+A variable uses itself once, and nothing else, while its type uses the variables before it as the row of $`G`$ for this variable says:
+
+```math
+\frac{[G_1]\ \Gamma_1,\ [g]\ x : A,\ [G_2]\ \Gamma_2 \vdash}{[G_1 \mid 0 \mid g]\ \Gamma_1,\ [g \mid 1 \mid 0]\ x : A,\ [G_2 \mid 0 \mid 0]\ \Gamma_2 \vdash x : A}\;(\mathsf{var})
+```
+
+Conversion gives a term any type equal to its own, in the universe where both live:
+
+```math
+\frac{[G \mid g \mid g']\ \Gamma \vdash t : A \quad [G \mid g' \mid 0]\ \Gamma \vdash A \equiv B : U_l}{[G \mid g \mid g']\ \Gamma \vdash t : B}\;(\mathsf{conv})
+```
+
+GrTT checks this premise with a subtyping judgment that also orders the universes; the core has no cumulativity, so equality suffices.
+
+A term may use its variables fewer times than the context allows, in the order of the [grades](#grades), taken on each component of the vectors:
+
+```math
+\frac{[G \mid g_1 \mid g']\ \Gamma \vdash t : A \quad g_2 \le g_1}{[G \mid g_2 \mid g']\ \Gamma \vdash t : A}\;(\mathsf{sub})
+```
+
+This rule is not in GrTT, which compares grades by equality only; it follows the subsumption of Abel, Danielsson and Eriksson, and lets an unrestricted variable be used once or not at all.
+
+Equality is an equivalence relation, reflexive, symmetric and transitive, and each construct adds its own rules of congruence and computation:
+
+```math
+\frac{[G \mid g \mid g']\ \Gamma \vdash t : A}{[G \mid g \mid g']\ \Gamma \vdash t \equiv t : A}\;(\mathsf{refl})
+\qquad
+\frac{[G \mid g \mid g']\ \Gamma \vdash t \equiv u : A}{[G \mid g \mid g']\ \Gamma \vdash u \equiv t : A}\;(\mathsf{sym})
+```
+
+```math
+\frac{[G \mid g \mid g']\ \Gamma \vdash t_1 \equiv t_2 : A \quad [G \mid g \mid g']\ \Gamma \vdash t_2 \equiv t_3 : A}{[G \mid g \mid g']\ \Gamma \vdash t_1 \equiv t_3 : A}\;(\mathsf{trans})
+```
 
 ### Universes
 
