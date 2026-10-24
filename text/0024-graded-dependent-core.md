@@ -34,7 +34,7 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar o
 | $`t, a`$ | Terms, $`a`$ being a term substituted for a variable |
 | $`A, B`$ | Types |
 | $`\Gamma`$ | Contexts, sequences of declarations $`x : A`$ |
-| $`p, q, r`$ | Grades, elements of the semiring of the [grades](#grading) |
+| $`p, q, r`$ | Grades, elements of the semiring of the [grades](#grades) |
 | $`\gamma, \delta`$ | Vectors of grades, one grade per variable of the context |
 | $`m`$ | Modes, in which a term is checked for its uses |
 
@@ -71,10 +71,89 @@ The rules use the notation of the formalization of ADE, which differs slightly f
 | `Γ ⊢ t ∷ A`, `Γ ⊢ t ≡ u ∷ A` | $`\Gamma \vdash t : A`$, $`\Gamma \vdash t \equiv u : A`$ |
 | `Π p , q ▷ A ▹ B` | $`\Pi^{q}_{p}\, (x : A).\, B`$ |
 | `γ ▸[ m ] t` | $`\gamma \mathrel{▶_m} t`$ |
+| `m ᵐ· p` | $`m \odot p`$ |
+| `𝟘ᵐ`, `𝟙ᵐ` | $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$, with the [mode](#modes) $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ between them |
 
 ### Grading
 
-To be written.
+The grading of the core counts the uses of the variables, with which the [usage](#judgments) of a term is checked: a multiplicity counts uses, a grade pairs the multiplicity of the uses at run time with that of all the uses, and a mode is the setting of the check, which follows from the grades.
+
+#### Multiplicities
+
+A multiplicity counts the uses of a variable, as the multiplicities of [Idris 2](https://arxiv.org/abs/2104.00480) and of [Linear Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html) do: it is $`0`$, $`1`$ or $`\omega`$, where $`\omega`$ stands for any number of uses, none included, as in the linear modality of ADE.
+The multiplicities are added, multiplied and met as follows:
+
+| $`+`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| --- | --- | --- | --- |
+| $`0`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| $`1`$ | $`1`$ | $`\omega`$ | $`\omega`$ |
+| $`\omega`$ | $`\omega`$ | $`\omega`$ | $`\omega`$ |
+
+| $`\cdot`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| --- | --- | --- | --- |
+| $`0`$ | $`0`$ | $`0`$ | $`0`$ |
+| $`1`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| $`\omega`$ | $`0`$ | $`\omega`$ | $`\omega`$ |
+
+| $`\wedge`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| --- | --- | --- | --- |
+| $`0`$ | $`0`$ | $`\omega`$ | $`\omega`$ |
+| $`1`$ | $`\omega`$ | $`1`$ | $`\omega`$ |
+| $`\omega`$ | $`\omega`$ | $`\omega`$ | $`\omega`$ |
+
+The multiplicities are ordered by their meet, as in ADE: $`\omega`$ is below $`0`$ and below $`1`$, while $`0`$ and $`1`$ are not comparable, so that a variable of multiplicity $`\omega`$ may be used any number of times, none included, one of multiplicity $`1`$ exactly once and one of multiplicity $`0`$ never.
+
+#### Grades
+
+A grade counts the uses of a variable along the two axes of the [grades](https://github.com/sic-lang/rfcs/pull/16) of Sic: its uses at run time, and all its uses, erased or not.
+It is a pair of [multiplicities](#multiplicities), written in angle brackets, whose first multiplicity counts the uses at run time and the second all the uses.
+The run-time uses are among all the uses, so a pair whose second multiplicity is $`0`$ has $`0`$ as its first multiplicity too: of the nine pairs, the seven others are the grades.
+The grade $`\langle 0, 0 \rangle`$ is written $`\mathbb{0}`$ and $`\langle 1, 1 \rangle`$ is written $`\mathbb{1}`$.
+
+The operations act on each multiplicity, and the seven grades are closed under them.
+
+The order of the grades is that of ADE: $`p \le q`$ when $`p = p \wedge q`$, which means that a variable of grade $`p`$ may be used where the grade $`q`$ is expected; it is the order of the multiplicities on each component.
+
+The grade $`\langle \omega, 1 \rangle`$ is the meet of $`\langle 0, 1 \rangle`$ and $`\mathbb{1}`$: a variable used once in total, erased in one branch and at run time in another, is used once in total and at most once at run time.
+Without it, this meet would be $`\langle \omega, \omega \rangle`$, and the multiplication would not distribute over the meet, as ADE requires of a modality: $`\langle 0, 1 \rangle \cdot (\langle 0, 1 \rangle \wedge \mathbb{1})`$ would be $`\langle 0, \omega \rangle`$, and $`\langle 0, 1 \rangle \cdot \langle 0, 1 \rangle \wedge \langle 0, 1 \rangle \cdot \mathbb{1}`$ would be $`\langle 0, 1 \rangle`$.
+
+The seven grades form a modality of ADE whose zero is well behaved, as its modes require: $`\mathbb{0} \ne \mathbb{1}`$, a sum or a meet is $`\mathbb{0}`$ only if both operands are, and a product is $`\mathbb{0}`$ only if one of its factors is.
+The two excluded pairs would break the last condition: $`\langle 1, 0 \rangle \cdot \langle 0, 1 \rangle`$ and $`\langle \omega, 0 \rangle \cdot \langle 0, 1 \rangle`$ are both $`\mathbb{0}`$.
+These properties were checked in Agda by instantiating the modality structure of the formalization of ADE with the seven grades.
+
+Each grade has a name in Sic, made of the names of its two multiplicities: `none`, `linear` and `unrestricted` for $`0`$, $`1`$ and $`\omega`$, except a run-time multiplicity $`\omega`$ under a total multiplicity $`1`$, named `affine` since it counts at most one use:
+
+| Name | Grade |
+| --- | --- |
+| `none / none` | $`\mathbb{0}`$ |
+| `none / linear` | $`\langle 0, 1 \rangle`$ |
+| `none / unrestricted` | $`\langle 0, \omega \rangle`$ |
+| `linear / linear` | $`\mathbb{1}`$ |
+| `linear / unrestricted` | $`\langle 1, \omega \rangle`$ |
+| `affine / linear` | $`\langle \omega, 1 \rangle`$ |
+| `unrestricted / unrestricted` | $`\langle \omega, \omega \rangle`$ |
+
+For instance, passing a permission of grade `none / linear` to a parameter of the same grade uses it with the grade $`\langle 0, 1 \rangle \cdot \mathbb{1} = \langle 0, 1 \rangle`$: once, and never at run time.
+
+#### Modes
+
+A mode is the setting in which the [usage](#judgments) of a term is checked.
+The core has three modes, named after their grade $`\ulcorner m \urcorner`$, with which a variable checked in the mode $`m`$ uses itself:
+
+| Mode | Grade | Counts |
+| --- | --- | --- |
+| $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ | $`\mathbb{0}`$ | no use |
+| $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ | $`\langle 0, 1 \rangle`$ | all the uses, none at run time |
+| $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$ | $`\mathbb{1}`$ | all the uses and the uses at run time |
+
+A term used with the grade $`p`$ is checked in the mode $`\llcorner p \lrcorner`$ of this grade: $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ for $`\mathbb{0}`$, $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ for the other grades whose run-time multiplicity is $`0`$, those of proofs, specifications and permissions, and $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$ for the grades used at run time; the program itself is checked in $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$.
+Modes are never written: they follow from the grades, and the two erased modes appear only inside the program, where a rule checks a subterm used with an erased grade, such as an erased argument, a proof, or the domain of the type of a function.
+The product of two modes is the mode of the product of their grades, $`m_1 \cdot^{\mathsf{m}} m_2 = \llcorner \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \lrcorner`$, whose grade is the product $`\ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner`$ itself since the grades of the three modes are closed under multiplication; it is the more erased of the two modes.
+Inside a term checked in the mode $`m`$, a subterm used with the grade $`p`$ is checked in the mode $`m \odot p = m \cdot^{\mathsf{m}} \llcorner p \lrcorner`$, written as in the paper of ADE, so that a subterm, once erased, stays erased.
+
+ADE has the two modes $`\mathbb{0}^{\mathsf{m}}`$ and $`\mathbb{1}^{\mathsf{m}}`$ only, which are $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ and $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$ here.
+The mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ is added so that an erased term still counts all its uses: in $`\mathbb{0}^{\mathsf{m}}`$, a proof could drop or duplicate a permission of grade `none / linear`.
+The three modes form a mode structure of the formalization of ADE, which defines modes abstractly; this was checked in Agda with the seven grades.
 
 ### Judgments
 
@@ -125,4 +204,5 @@ To be written.
 
 ## Unresolved Questions
 
-To be written.
+- Is a term checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ erased safely?
+  ADE prove the soundness of erasure for their two modes only; the projection of a grade on its run-time multiplicity preserves the operations and the order, and could carry their result to the three modes.
