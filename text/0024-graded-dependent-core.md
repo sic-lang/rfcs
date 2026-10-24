@@ -33,6 +33,7 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar o
 | $`x, y`$ | Variables |
 | $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$ and $`a`$ a term substituted for a variable |
 | $`A, B`$ | Types |
+| $`\kappa`$ | Sorts, the universes $`U_l`$ and the universes of [strict propositions](#strict-propositions) $`\Omega_l`$ |
 | $`\Gamma`$ | Contexts, sequences of declarations $`x : A`$ |
 | $`p, q, r`$ | Grades, elements of the semiring of the [grades](#grades) |
 | $`\gamma, \delta`$ | Vectors of grades, one grade per variable of the context |
@@ -311,7 +312,48 @@ Within the rules, a level variable is a constant; no type quantifies over levels
 
 ### Strict Propositions
 
-To be written.
+A proposition is a type whose proofs carry no information but their existence.
+
+#### Formation
+
+The propositions live in universes of their own, written $`\Omega_l`$ as the propositions of categorical semantics, which form a second predicative hierarchy, strict as the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html), from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316):
+
+```math
+\frac{\vdash \Gamma}{\Gamma \vdash \Omega_l : U_{l + 1}}\;(\Omega)
+\qquad
+\frac{\vdash \Gamma \quad l_1 = l_2}{\Gamma \vdash \Omega_{l_1} \equiv \Omega_{l_2} : U_{l_1 + 1}}\;(\Omega_\equiv)
+\qquad
+\frac{}{\mathbb{0}^{\mathsf{c}} \mathrel{▶_m} \Omega_l}\;(\Omega_{\mathsf{m}})
+```
+
+The `Prop` of Lean and the `SProp` of Rocq are impredicative instead: a proposition that quantifies over all propositions is itself one of them; together with proof irrelevance and the elimination of subsingletons, this makes the conversion of Lean undecidable ([Carneiro](https://github.com/digama0/lean-type-theory)).
+
+#### Elements as Types
+
+A sort is a universe $`U_l`$ or a universe of propositions $`\Omega_l`$; a proposition is a type, as a term of a universe is, and two equal propositions are equal types:
+
+```math
+\frac{\Gamma \vdash A : \Omega_l}{\Gamma \vdash A}\;(\Omega_{\mathsf{type}})
+\qquad
+\frac{\Gamma \vdash A \equiv B : \Omega_l}{\Gamma \vdash A \equiv B}\;(\Omega_{\mathsf{type}\equiv})
+```
+
+#### Proof Irrelevance
+
+Proof irrelevance is definitional: two proofs of the same proposition are equal.
+
+```math
+\frac{\Gamma \vdash t : A \quad \Gamma \vdash u : A \quad \Gamma \vdash A : \Omega_l}{\Gamma \vdash t \equiv u : A}\;(\mathsf{irr})
+```
+
+Since equality carries no grade, two proofs are equal even when they use their hypotheses differently; the usage of each is checked on its own.
+
+A proof cannot be analyzed to build data, since irrelevance would identify the data built from two proofs; this restriction of elimination concerns the inductive types of a later RFC, as in Agda, and not the [records](#records) of propositions, whose single construction leaves nothing to analyze.
+
+#### Erased Proofs
+
+A proof exists only in erased positions: every binder whose type is a proposition has a [grade](#grades) without use at run time, so that a proof is checked in the [mode](#modes) $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ or $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$, which the rules of the [functions](#functions) and the [records](#records) check.
+The erasure of proofs is then the erasure of the grades without use at run time, with no mechanism of its own.
 
 ### Functions
 
@@ -355,6 +397,9 @@ To be written.
 
 ## Unresolved Questions
 
+- Which word names the strict propositions in the language, given that `Prop` is impredicative in Lean and Rocq?
+- Does definitional proof irrelevance keep the metatheory of a graded type theory?
+  Abel, Danielsson and Eriksson note that their framework cannot model it.
 - Which RFC defines the top-level definitions, whose level variables the [universes](#universes) assume?
 - Is a term checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ erased safely?
   ADE prove the soundness of erasure for their two modes only; the projection of a grade on its run-time multiplicity preserves the operations and the order, and could carry their result to the three modes.
