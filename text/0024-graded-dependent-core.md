@@ -31,14 +31,14 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar o
 | Letters | Denote |
 | --- | --- |
 | $`x, y`$ | Variables |
-| $`t, a`$ | Terms, $`a`$ being a term substituted for a variable |
+| $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$ and $`a`$ a term substituted for a variable |
 | $`A, B`$ | Types |
 | $`\Gamma`$ | Contexts, sequences of declarations $`x : A`$ |
 | $`p, q, r`$ | Grades, elements of the semiring of the [grades](#grades) |
 | $`\gamma, \delta`$ | Vectors of grades, one grade per variable of the context |
 | $`m`$ | Modes, in which a term is checked for its uses |
 
-A subscript numbers objects of the same kind that come from different premises, as $`\gamma_1`$ and $`\gamma_2`$; it never selects a component.
+A subscript numbers objects of the same kind that come from different premises or different parts of a context, as $`\gamma_1`$ and $`\gamma_2`$, or $`\Gamma_1`$ and $`\Gamma_2`$: an object alone of its kind has none, and several are all numbered; a subscript never selects a component.
 
 The operations on grades are those of ADE:
 
@@ -157,7 +157,109 @@ The three modes form a mode structure of the formalization of ADE, which defines
 
 ### Judgments
 
-To be written.
+The core has the four judgments of Martin-Löf type theory, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, with a judgment for contexts and a judgment for usage:
+
+```math
+\vdash \Gamma \qquad \Gamma \vdash A \qquad \Gamma \vdash A \equiv B \qquad \Gamma \vdash t : A \qquad \Gamma \vdash t \equiv u : A \qquad \gamma \mathrel{▶_m} t
+```
+
+| Judgment | Meaning |
+| --- | --- |
+| $`\vdash \Gamma`$ | $`\Gamma`$ is a well-formed context |
+| $`\Gamma \vdash A`$ | $`A`$ is a type in the context $`\Gamma`$ |
+| $`\Gamma \vdash A \equiv B`$ | $`A`$ and $`B`$ are equal types |
+| $`\Gamma \vdash t : A`$ | $`t`$ is a term of type $`A`$ |
+| $`\Gamma \vdash t \equiv u : A`$ | $`t`$ and $`u`$ are equal terms of type $`A`$ |
+| $`\gamma \mathrel{▶_m} t`$ | Checked in the [mode](#modes) $`m`$, $`t`$ uses each variable of its context as the grade that $`\gamma`$ gives it allows |
+
+As Nordström, Petersson and Smith explain them, a type is known by its terms and by the equality of its terms, which is an equivalence relation, and two types are equal when they have the same terms and the same equal terms; the formalization has to check the rules of this RFC against this meaning, which its logical relation states.
+The judgment for contexts makes explicit the condition that Nordström, Petersson and Smith put on the context of a judgment: each declared type is a type in the context of the declarations before it.
+
+Typing and the equalities are those of Martin-Löf type theory: they carry no grade.
+Usage is defined on the term alone, whose binders carry their grades, and its vector has a grade for each variable of the context of the term.
+A program is a term that is both well typed and well used: typing tells what it computes, and usage how it uses its resources.
+The rules of usage are named after the rules of typing, with the subscript $`\mathsf{m}`$.
+
+Equality is written $`\equiv`$, so that $`=`$ remains free in terms for the equality type of a later RFC; in the conditions of the rules, $`=`$ is an equality of the metalanguage, which for levels is the one the [levels](#levels) define, not the equality of their syntax.
+
+#### Contexts
+
+A context is either empty, written $`\varepsilon`$, or a context extended by a declaration whose type is a type in it:
+
+```math
+\frac{}{\vdash \varepsilon}\;(\mathsf{ctx}_\varepsilon)
+\qquad
+\frac{\Gamma \vdash A \quad x \notin \Gamma}{\vdash \Gamma,\ x : A}\;(\mathsf{ctx}_{,})
+```
+
+The variable $`x`$ is fresh, absent from $`\Gamma`$, so that a name designates one declaration; ADE, whose variables are de Bruijn indices, needs no such condition.
+
+#### Variables
+
+A variable has the type of its declaration, and, checked in the mode $`m`$, uses itself with the grade $`\ulcorner m \urcorner`$ of the [mode](#modes) and nothing else:
+
+```math
+\frac{\vdash \Gamma_1,\ x : A,\ \Gamma_2}{\Gamma_1,\ x : A,\ \Gamma_2 \vdash x : A}\;(\mathsf{var})
+\qquad
+\frac{}{(\mathbb{0}^{\mathsf{c}}, x \mathrel{≔} \ulcorner m \urcorner) \mathrel{▶_m} x}\;(\mathsf{var}_{\mathsf{m}})
+```
+
+#### Equality
+
+The equality of types and the equality of terms are equivalence relations, reflexive, symmetric and transitive:
+
+```math
+\frac{\Gamma \vdash A}{\Gamma \vdash A \equiv A}\;(\mathsf{refl}_{\mathsf{type}})
+\qquad
+\frac{\Gamma \vdash A \equiv B}{\Gamma \vdash B \equiv A}\;(\mathsf{sym}_{\mathsf{type}})
+\qquad
+\frac{\Gamma \vdash A_1 \equiv A_2 \quad \Gamma \vdash A_2 \equiv A_3}{\Gamma \vdash A_1 \equiv A_3}\;(\mathsf{trans}_{\mathsf{type}})
+```
+
+```math
+\frac{\Gamma \vdash t : A}{\Gamma \vdash t \equiv t : A}\;(\mathsf{refl})
+\qquad
+\frac{\Gamma \vdash t \equiv u : A}{\Gamma \vdash u \equiv t : A}\;(\mathsf{sym})
+\qquad
+\frac{\Gamma \vdash t_1 \equiv t_2 : A \quad \Gamma \vdash t_2 \equiv t_3 : A}{\Gamma \vdash t_1 \equiv t_3 : A}\;(\mathsf{trans})
+```
+
+Each construct adds its own rules of congruence and computation, and two types are also equal when they are equal terms of a [universe](#universes) or of a universe of [strict propositions](#strict-propositions).
+
+#### Type Conversion
+
+Conversion gives a term any type equal to its own, and an equality of two terms as well, which the other rules do not derive, since a rule of computation gives its equality at one type only:
+
+```math
+\frac{\Gamma \vdash t : A \quad \Gamma \vdash A \equiv B}{\Gamma \vdash t : B}\;(\mathsf{conv})
+\qquad
+\frac{\Gamma \vdash t \equiv u : A \quad \Gamma \vdash A \equiv B}{\Gamma \vdash t \equiv u : B}\;(\mathsf{conv}_\equiv)
+```
+
+The core has no cumulativity, so conversion checks an equality of types, not a subtyping.
+
+#### Usage
+
+A term may be given grades lower than its uses, in the order of the [grades](#grades) taken on each component, written $`\le^{\mathsf{c}}`$:
+
+```math
+\frac{\gamma \mathrel{▶_m} t \quad \delta \le^{\mathsf{c}} \gamma}{\delta \mathrel{▶_m} t}\;(\mathsf{sub})
+```
+
+This rule lets an unrestricted variable be used once or not at all, and a variable of grade $`\langle \omega, 1 \rangle`$ be used once, at run time or not.
+
+#### Admissible Properties
+
+The following properties are not rules: they follow from the rules, and the formalization has to prove them.
+
+- Context conversion: a judgment still holds when the type of a declaration of its context is replaced by an equal type.
+- Level instantiation: a judgment still holds when its level variables are replaced by levels, so that a definition checked once with its level variables is used at any levels, as the [universes](#universes) require.
+- Presuppositions: every judgment implies that its context is well formed, a typing $`\Gamma \vdash t : A`$ implies $`\Gamma \vdash A`$, and an equality implies that both its sides are types, or terms of its type.
+- Subject reduction: a term keeps its types when it reduces, as the [conversion](#conversion) reduces terms.
+- Substitution: a judgment still holds when terms of the types of its variables are substituted for them, and equal terms substituted give equal results; a usage still holds with the usages of the substituted terms, each scaled by the grade of its variable, added together.
+- Types in sorts: every type is a term of a [sort](#letters), since the rules that make the terms of a sort types are the only rules that conclude $`\Gamma \vdash A`$.
+- Usage preservation: a term keeps its usages when it reduces by a $`\beta`$ rule, though not conversely, since a reduction may drop an argument with its uses; the reduction of a neutral match keeps them only when the record is not used at all, as the [unresolved questions](#unresolved-questions) say.
+- Weakening: a judgment still holds in a well-formed context that extends its own.
 
 ### Universes
 
@@ -197,6 +299,11 @@ To be written.
   GrTT checks every subterm as if it ran, even in an erased position: a specification cannot return an erased field, and a field that does not exist at run time has no projection.
   The usage judgment of ADE, indexed by a mode, checks an erased subterm in a mode of its own, and its metatheory is formalized.
   Equality then compares values, not uses, which removes no guarantee: it only compares types, and the usage of every term is checked.
+- The judgments are the four of Martin-Löf type theory, as in ADE and in [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), rather than those of a [pure type system](https://en.wikipedia.org/wiki/Pure_type_system), where a type is a term of a sort and two types are equal as terms of a sort only.
+  Two equalities of types in different sorts would then compose only if the two sorts were shown equal, which needs the uniqueness of the type of a term, and thus the injectivity of the type of functions for equality: this injectivity follows from the normalization that the formalization has to prove, which itself needs a transitive equality of types.
+  The formalization has to show, from normalization, that two equal types are also equal terms of a sort, so that the equality of types adds no equality to those of the sorts.
+  The equality of types has its own rules of reflexivity and symmetry, which follow from the other rules, so that the equalities of types and of terms have the same rules, as in the presentation of Nordström, Petersson and Smith.
+  A type is still always a term of a sort, unlike in ADE, whose type of levels may lie in no universe, so that the rules that need the level of a type check its sort, and the others check that it is a type.
 
 ## Prior Art
 
