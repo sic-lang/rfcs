@@ -31,6 +31,7 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar, 
 | $`t, a`$ | Terms, $`a`$ being a term substituted for a variable |
 | $`A, B`$ | Types |
 | $`\Gamma`$ | Contexts, sequences of declarations $`x : A`$ |
+| $`p, q`$ | Usages, the two counts that make up a [grade](#grades) |
 | $`r, s`$ | Grades, elements of the semiring of the [grades](#grades) |
 | $`g, g'`$ | Vectors of grades, one grade per variable of the context |
 | $`G`$ | Matrix of the grades with which the types of the context use the variables before them |
@@ -102,7 +103,45 @@ The comma distinguishes the annotation of a binder from the slice of a declarati
 
 ### Grades
 
-To be written.
+A grade counts the uses of a variable along the two axes of the [modes](https://github.com/sic-lang/rfcs/pull/16): its uses at run time, and all its uses, erased or not.
+Each count is a usage of the linear structure of [Abel, Danielsson and Eriksson](https://arxiv.org/abs/2603.29716), a semiring on $`0`$, $`1`$ and $`\omega`$, where $`\omega`$ stands for any number of uses:
+
+```math
+1 + 1 = \omega \qquad p + \omega = \omega \qquad \omega \cdot \omega = \omega
+```
+
+with $`0`$ and $`1`$ the units of addition and multiplication.
+
+A grade is a pair of usages $`\langle p, q \rangle`$, written in angle brackets since parentheses write literal vectors.
+Its first usage counts the uses at run time and its second all the uses, so that the first never counts more uses than the second; six grades satisfy this condition:
+
+```math
+\langle 0, 0 \rangle \qquad \langle 0, 1 \rangle \qquad \langle 0, \omega \rangle \qquad \langle 1, 1 \rangle \qquad \langle 1, \omega \rangle \qquad \langle \omega, \omega \rangle
+```
+
+Addition and multiplication act on each usage, and the six grades are closed under them.
+The zero grade is $`\langle 0, 0 \rangle`$, written $`0`$, and the unit grade is $`\langle 1, 1 \rangle`$, written $`1`$: a variable alone uses itself once at run time and once in all.
+
+Each grade is one of the six modes, whose usages `none`, `linear` and `unrestricted` are $`0`$, $`1`$ and $`\omega`$:
+
+| Mode | Grade |
+| --- | --- |
+| `none / none` | $`\langle 0, 0 \rangle`$ |
+| `none / linear` | $`\langle 0, 1 \rangle`$ |
+| `none / unrestricted` | $`\langle 0, \omega \rangle`$ |
+| `linear / linear` | $`\langle 1, 1 \rangle`$ |
+| `linear / unrestricted` | $`\langle 1, \omega \rangle`$ |
+| `unrestricted / unrestricted` | $`\langle \omega, \omega \rangle`$ |
+
+For instance, passing a permission of mode `none / linear` to a parameter of the same mode uses it with the grade $`\langle 0, 1 \rangle \cdot 1 = \langle 0, 1 \rangle`$: once, and never at run time.
+
+The usages are ordered by $`\omega \le 0`$ and $`\omega \le 1`$, where $`p \le q`$ means that a variable of usage $`p`$ may be used where the usage $`q`$ is expected, and the grades are ordered on each usage.
+A variable of usage $`\omega`$ may thus be used any number of times, none included, while a variable of usage $`1`$ is used exactly once and one of usage $`0`$ never: $`0`$ and $`1`$ are not comparable, so the core has no affine grade.
+GrTT compares grades by equality only and leaves their order to future work; the order follows Abel, Danielsson and Eriksson, who check grades by a relation separate from typing.
+
+The grades satisfy the conditions that GrTT calls quantitative, those that [Atkey](https://doi.org/10.1145/3209108.3209189) requires of quantitative type theory: $`0 \ne 1`$, a sum is $`0`$ only if both terms are, and a product is $`0`$ only if one of its factors is.
+The first two hold on each usage; for the third, a factor whose second usage is $`0`$ counts no use at all, so it is the grade $`0`$.
+The zero divisor $`\langle 1, 0 \rangle`$ of the product of semirings, which the modes point out, is not a grade.
 
 ### Judgments and Contexts
 
@@ -150,4 +189,6 @@ To be written.
 
 ## Unresolved Questions
 
-To be written.
+- Does the order of the grades keep the metatheory of GrTT, whose typing judgment carries the grades, while Abel, Danielsson and Eriksson formalize it with grades checked by a separate relation?
+- Is a term whose grade has no use at run time, $`\langle 0, 1 \rangle`$ or $`\langle 0, \omega \rangle`$, erased safely?
+  Abel, Danielsson and Eriksson prove it for the zero grade only; the projection of a grade on its first usage preserves the operations and the order, and would carry their result to every grade without use at run time if typing is preserved along it.
