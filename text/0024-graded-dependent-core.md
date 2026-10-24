@@ -70,6 +70,8 @@ The rules use the notation of the formalization of ADE, which differs slightly f
 | `var x0`, `var x1`, de Bruijn indices | $`x`$, $`y`$, named variables |
 | `Γ ⊢ t ∷ A`, `Γ ⊢ t ≡ u ∷ A` | $`\Gamma \vdash t : A`$, $`\Gamma \vdash t \equiv u : A`$ |
 | `Π p , q ▷ A ▹ B` | $`\Pi^{q}_{p}\, (x : A).\, B`$ |
+| `Uⱼ`, `U-cong` | $`(U)`$, $`(U_\equiv)`$ |
+| `univ` | $`(U_{\mathsf{type}})`$, $`(U_{\mathsf{type}\equiv})`$ |
 | `γ ▸[ m ] t` | $`\gamma \mathrel{▶_m} t`$ |
 | `m ᵐ· p` | $`m \odot p`$ |
 | `𝟘ᵐ`, `𝟙ᵐ` | $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$, with the [mode](#modes) $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ between them |
@@ -261,7 +263,49 @@ The following properties are not rules: they follow from the rules, and the form
 
 ### Universes
 
-To be written.
+A universe is a type whose elements are types.
+A universe that contains itself makes the theory inconsistent ([Girard's paradox](https://doi.org/10.1007/BFb0014058)), so the universes form a predicative hierarchy, as in Agda and in the formalization of ADE:
+
+```math
+U_0 : U_1 : U_2 : \cdots
+```
+
+#### Levels
+
+A level $`l`$ is $`0`$, a successor $`l + 1`$, the larger $`l_1 \sqcup l_2`$ of two levels, or a level variable.
+Since a definition is checked once with its level variables and then used at any levels, two levels are equal when they are equal whatever levels their variables take: for level variables $`l_1`$ and $`l_2`$, $`l_1 \sqcup l_1`$ equals $`l_1`$, but $`l_1 \sqcup l_2`$ does not equal $`l_1`$, since they agree only when $`l_2`$ is at most $`l_1`$.
+This equality is decidable, since it is a formula of [Presburger arithmetic](https://en.wikipedia.org/wiki/Presburger_arithmetic).
+Levels are not terms: they appear only as the subscripts of universes, and use no variable of the context, unlike the levels of the formalization of ADE, which are terms of a type of levels since [Danielsson, Favier and Kubánek](https://doi.org/10.1145/3776645).
+
+#### Formation
+
+A universe is a type in the universe just above it, in any well-formed context, and uses no variable:
+
+```math
+\frac{\vdash \Gamma}{\Gamma \vdash U_l : U_{l + 1}}\;(U)
+\qquad
+\frac{\vdash \Gamma \quad l_1 = l_2}{\Gamma \vdash U_{l_1} \equiv U_{l_2} : U_{l_1 + 1}}\;(U_\equiv)
+\qquad
+\frac{}{\mathbb{0}^{\mathsf{c}} \mathrel{▶_m} U_l}\;(U_{\mathsf{m}})
+```
+
+The hierarchy is not cumulative: a type of $`U_l`$ is not a type of $`U_{l + 1}`$, as in Agda and Lean, and unlike Rocq.
+The type of a function lives in the larger universe of its domain and codomain, as the [functions](#functions) define.
+
+#### Elements as Types
+
+A term of a universe is a type, and two equal terms of a universe are equal types, as the rule `univ` of the [formalization of ADE](https://github.com/graded-type-theory/graded-type-theory/blob/master/Definition/Typed.agda), which does not write the decoding $`\mathsf{El}`$ of Nordström, Petersson and Smith either:
+
+```math
+\frac{\Gamma \vdash A : U_l}{\Gamma \vdash A}\;(U_{\mathsf{type}})
+\qquad
+\frac{\Gamma \vdash A \equiv B : U_l}{\Gamma \vdash A \equiv B}\;(U_{\mathsf{type}\equiv})
+```
+
+#### Universe Polymorphism
+
+Universe polymorphism is prenex, as in [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/): level variables are parameters of a top-level definition only, instantiated with levels at each use, and the definition is checked once, with its level variables.
+Within the rules, a level variable is a constant; no type quantifies over levels, so no universe beyond the hierarchy is needed, unlike the $`\mathsf{Set}\omega`$ of [Agda](https://agda.readthedocs.io/en/latest/language/universe-levels.html).
 
 ### Strict Propositions
 
@@ -309,5 +353,6 @@ To be written.
 
 ## Unresolved Questions
 
+- Which RFC defines the top-level definitions, whose level variables the [universes](#universes) assume?
 - Is a term checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ erased safely?
   ADE prove the soundness of erasure for their two modes only; the projection of a grade on its run-time multiplicity preserves the operations and the order, and could carry their result to the three modes.
