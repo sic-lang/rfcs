@@ -258,7 +258,62 @@ A proof cannot be analyzed to build data, since irrelevance would identify the d
 
 ### Functions
 
-To be written.
+The rules of the functions are those of GrTT, with sorts in place of its universes.
+They write $`\kappa_l`$ for a sort of level $`l`$, $`U_l`$ or $`\Omega_l`$, the same in the premises and the conclusion of a rule.
+
+The type of a function binds its argument with two grades: $`s`$ for its uses in the body of the function, and $`r`$ for its uses in the type $`B`$ of the result.
+It lives in a sort of the kind of $`B`$, at the larger level of its domain and its codomain, so that a function into a proposition is a proposition:
+
+```math
+\frac{[G \mid g_1 \mid 0]\ \Gamma \vdash A : U_{l_1} \quad [G \mid g_2 \mid 0]\ \Gamma,\ [g_1 \mid r \mid 0]\ x : A \vdash B : \kappa_{l_2}}{[G \mid g_1 + g_2 \mid 0]\ \Gamma \vdash ([s, r]\ x : A) \to B : \kappa_{l_1 \sqcup l_2}}\;(\to)
+```
+
+When the domain is a proposition, the argument is a proof, which has no use at run time, as the [strict propositions](#strict-propositions) require:
+
+```math
+\frac{[G \mid g_1 \mid 0]\ \Gamma \vdash A : \Omega_{l_1} \quad [G \mid g_2 \mid 0]\ \Gamma,\ [g_1 \mid r \mid 0]\ x : A \vdash B : \kappa_{l_2} \quad s = \langle 0, q \rangle}{[G \mid g_1 + g_2 \mid 0]\ \Gamma \vdash ([s, r]\ x : A) \to B : \kappa_{l_1 \sqcup l_2}}\;(\to_\Omega)
+```
+
+A function is introduced by abstraction, whose body uses its argument as the two grades of the type say:
+
+```math
+\frac{[G \mid g_3 \mid 0]\ \Gamma,\ [g_1 \mid r \mid 0]\ x : A \vdash B : \kappa_l \quad [G \mid g_2 \mid g_3]\ \Gamma,\ [g_1 \mid s \mid r]\ x : A \vdash t : B}{[G \mid g_2 \mid g_1 + g_3]\ \Gamma \vdash \lambda x.\, t : ([s, r]\ x : A) \to B}\;(\lambda)
+```
+
+It is eliminated by application, which uses the argument as many times as the function does: its uses are scaled by $`s`$ in the term, and by $`r`$ in the type, where the argument replaces the variable.
+
+```math
+\frac{[G \mid g_3 \mid 0]\ \Gamma,\ [g_1 \mid r \mid 0]\ x : A \vdash B : \kappa_l \quad [G \mid g_2 \mid g_1 + g_3]\ \Gamma \vdash t : ([s, r]\ x : A) \to B \quad [G \mid g_4 \mid g_1]\ \Gamma \vdash a : A}{[G \mid g_2 + s * g_4 \mid g_3 + r * g_4]\ \Gamma \vdash t\ a : B[a/x]}\;(\mathsf{app})
+```
+
+The substitution $`B[a/x]`$ replaces the free occurrences of $`x`$ in $`B`$ by $`a`$, renaming the bound variables of $`B`$ that $`a`$ would capture.
+
+Applying an abstraction computes by substitution, and a function is equal to the abstraction of its application:
+
+```math
+\frac{[G \mid g_2 \mid g_3]\ \Gamma,\ [g_1 \mid s \mid r]\ x : A \vdash t : B \quad [G \mid g_4 \mid g_1]\ \Gamma \vdash a : A}{[G \mid g_2 + s * g_4 \mid g_3 + r * g_4]\ \Gamma \vdash (\lambda x.\, t)\ a \equiv t[a/x] : B[a/x]}\;(\beta)
+```
+
+```math
+\frac{[G \mid g \mid g']\ \Gamma \vdash t : ([s, r]\ x : A) \to B \quad x \notin \Gamma}{[G \mid g \mid g']\ \Gamma \vdash t \equiv \lambda x.\, t\ x : ([s, r]\ x : A) \to B}\;(\eta)
+```
+
+Equality is also a congruence for the type of functions, abstraction and application, with the premises of their rules.
+
+For instance, the constant function uses its first argument once in its body and its second never, and its type mentions neither:
+
+```math
+\lambda x.\, \lambda y.\, x : ([1, 0]\ x : A) \to ([0, 0]\ y : B) \to A
+```
+
+Polymorphism over types needs no rule of its own: the identity takes its type as an argument, which its body never uses and its type uses twice, for the argument and for the result.
+[GrTT](https://arxiv.org/abs/2010.13163) counts these two uses as $`2`$, and the grades of Sic as $`1 + 1 = \langle \omega, \omega \rangle`$:
+
+```math
+\lambda A.\, \lambda x.\, x : ([0, \langle \omega, \omega \rangle]\ A : U_l) \to ([1, 0]\ x : A) \to A
+```
+
+Its type argument thus has the mode `none / none`: it does not exist at run time.
 
 ### Records
 
