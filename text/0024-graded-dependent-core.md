@@ -71,6 +71,8 @@ The rules use the notation of the formalization of ADE, which differs slightly f
 | `var x0`, `var x1`, de Bruijn indices | $`x`$, $`y`$, named variables |
 | `Γ ⊢ t ∷ A`, `Γ ⊢ t ≡ u ∷ A` | $`\Gamma \vdash t : A`$, $`\Gamma \vdash t \equiv u : A`$ |
 | `Π p , q ▷ A ▹ B` | $`\Pi^{q}_{p}\, (x : A).\, B`$ |
+| `lam p t` | $`\lambda_{p}\, (x : A).\, t`$, which also carries the type of its argument |
+| `t ∘⟨ p ⟩ u` | $`t \circ_{p} u`$ |
 | `Uⱼ`, `U-cong` | $`(U)`$, $`(U_\equiv)`$ |
 | `univ` | $`(U_{\mathsf{type}})`$, $`(U_{\mathsf{type}\equiv})`$ |
 | `γ ▸[ m ] t` | $`\gamma \mathrel{▶_m} t`$ |
@@ -357,7 +359,71 @@ The erasure of proofs is then the erasure of the grades without use at run time,
 
 ### Functions
 
-To be written.
+The rules of the functions are those of ADE, with sorts in place of its universes.
+
+#### Formation
+
+The type of a function binds its argument with two grades: $`p`$ for its uses in the body of the function, and $`q`$ for its uses in the type $`B`$ of the result.
+It lives in a sort of the kind of $`B`$, at the larger level of its domain and its codomain, so that a function into a proposition is a proposition; when the domain is a proposition, the argument is a proof, whose grade has no use at run time, as the [strict propositions](#strict-propositions) require:
+
+```math
+\frac{\begin{gathered}{}\Gamma \vdash A : \kappa_1 \quad \Gamma,\ x : A \vdash B : \kappa_2 \quad \kappa_1 \in \{U_{l_1}, \Omega_{l_1}\} \quad \kappa_2 \in \{U_{l_2}, \Omega_{l_2}\} \\ \llcorner p \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \kappa_1 = \Omega_{l_1} \quad \kappa = U_{l_1 \sqcup l_2} \text{ if } \kappa_2 = U_{l_2} \quad \kappa = \Omega_{l_1 \sqcup l_2} \text{ if } \kappa_2 = \Omega_{l_2}\end{gathered}}{\Gamma \vdash \Pi^{q}_{p}\, (x : A).\, B : \kappa}\;(\Pi)
+```
+
+The type of a function uses the variables of its domain as many times as the argument is used, and the domain is checked in the mode of this grade; its codomain uses the argument with the grade $`q`$:
+
+```math
+\frac{\gamma \mathrel{▶_{m \odot p}} A \quad \delta \bullet \ulcorner m \urcorner \cdot q \mathrel{▶_m} B}{p \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \Pi^{q}_{p}\, (x : A).\, B}\;(\Pi_{\mathsf{m}})
+```
+
+#### Construction
+
+A function is introduced by abstraction, which carries the type of its argument, so that the type of every term is determined by the term; its body uses its argument with the grade $`p`$ of its type, and the type of the argument, as every type a term carries, uses no variable:
+
+```math
+\frac{\Gamma \vdash \Pi^{q}_{p}\, (x : A).\, B \quad \Gamma,\ x : A \vdash t : B}{\Gamma \vdash \lambda_{p}\, (x : A).\, t : \Pi^{q}_{p}\, (x : A).\, B}\;(\lambda)
+\qquad
+\frac{\gamma \bullet \ulcorner m \urcorner \cdot p \mathrel{▶_m} t}{\gamma \mathrel{▶_m} \lambda_{p}\, (x : A).\, t}\;(\lambda_{\mathsf{m}})
+```
+
+#### Application
+
+A function is eliminated by application, which uses the argument as many times as the function does, checking it in the mode of this grade:
+
+```math
+\frac{\Gamma \vdash t : \Pi^{q}_{p}\, (x : A).\, B \quad \Gamma \vdash a : A}{\Gamma \vdash t \circ_{p} a : B[a/x]}\;(\circ)
+\qquad
+\frac{\gamma \mathrel{▶_m} t \quad \delta \mathrel{▶_{m \odot p}} a}{\gamma +^{\mathsf{c}} p \cdot^{\mathsf{c}} \delta \mathrel{▶_m} t \circ_{p} a}\;(\circ_{\mathsf{m}})
+```
+
+The substitution $`B[a/x]`$ replaces the free occurrences of $`x`$ in $`B`$ by $`a`$, renaming the bound variables of $`B`$ that $`a`$ would capture.
+An argument that is a proof is thus checked in a mode without use at run time, $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ or $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$.
+
+Applying an abstraction computes by substitution, and a function is equal to the abstraction of its application:
+
+```math
+\frac{\Gamma \vdash \Pi^{q}_{p}\, (x : A).\, B \quad \Gamma,\ x : A \vdash t : B \quad \Gamma \vdash a : A}{\Gamma \vdash (\lambda_{p}\, (x : A).\, t) \circ_{p} a \equiv t[a/x] : B[a/x]}\;(\beta)
+\qquad
+\frac{\Gamma \vdash t : \Pi^{q}_{p}\, (x : A).\, B \quad x \notin \Gamma}{\Gamma \vdash t \equiv \lambda_{p}\, (x : A).\, t \circ_{p} x : \Pi^{q}_{p}\, (x : A).\, B}\;(\eta)
+```
+
+Equality is also a congruence for the type of functions, abstraction and application, with the premises of their rules.
+
+#### Examples
+
+For instance, the constant function uses its first argument once in its body and its second never, and its type mentions neither:
+
+```math
+\lambda_{\mathbb{1}}\, (x : A).\, \lambda_{\mathbb{0}}\, (y : B).\, x : \Pi^{\mathbb{0}}_{\mathbb{1}}\, (x : A).\, \Pi^{\mathbb{0}}_{\mathbb{0}}\, (y : B).\, A
+```
+
+Polymorphism over types needs no rule of its own: the identity takes its type as an argument, which its body never uses and its type uses twice, for the argument and for the result, that is $`\mathbb{1} + \mathbb{1} = \langle \omega, \omega \rangle`$:
+
+```math
+\lambda_{\mathbb{0}}\, (A : U_l).\, \lambda_{\mathbb{1}}\, (x : A).\, x : \Pi^{\langle \omega, \omega \rangle}_{\mathbb{0}}\, (A : U_l).\, \Pi^{\mathbb{0}}_{\mathbb{1}}\, (x : A).\, A
+```
+
+Its type argument thus has the grade `none / none`: it does not exist at run time.
 
 ### Records
 
@@ -390,6 +456,8 @@ To be written.
   The formalization has to show, from normalization, that two equal types are also equal terms of a sort, so that the equality of types adds no equality to those of the sorts.
   The equality of types has its own rules of reflexivity and symmetry, which follow from the other rules, so that the equalities of types and of terms have the same rules, as in the presentation of Nordström, Petersson and Smith.
   A type is still always a term of a sort, unlike in ADE, whose type of levels may lie in no universe, so that the rules that need the level of a type check its sort, and the others check that it is a type.
+- Every term determines its type: an abstraction carries the type of its argument, unlike the abstractions of ADE, and the terms of the later constructs carry the types they need.
+  The type of a term is then computed from the term alone, without the bidirectional checking that ADE need for their abstractions; the terms of the core are checked, not written by hand, and the language infers what they carry.
 
 ## Prior Art
 
