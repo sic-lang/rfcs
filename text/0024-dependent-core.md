@@ -30,6 +30,7 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar, 
 | $`x, y`$ | Variables |
 | $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$ and $`a`$ a term substituted for a variable |
 | $`A, B`$ | Types |
+| $`\kappa`$ | Sorts, the universes $`U_l`$ and the universes of [strict propositions](#strict-propositions) $`\Omega_l`$ |
 | $`\Gamma`$ | Contexts, sequences of declarations $`x : A`$ |
 | $`p, q`$ | Usages, the two counts that make up a [grade](#grades) |
 | $`r, s`$ | Grades, elements of the semiring of the [grades](#grades) |
@@ -160,12 +161,12 @@ A context is either empty, written $`\varepsilon`$ as in [Abel, Danielsson and E
 ```math
 \frac{}{\varepsilon \vdash}\;(\mathsf{ctx}_\varepsilon)
 \qquad
-\frac{[G \mid g \mid 0]\ \Gamma \vdash A : U_l \quad x \notin \Gamma}{[G]\ \Gamma,\ [g]\ x : A \vdash}\;(\mathsf{ctx}_{,})
+\frac{[G \mid g \mid 0]\ \Gamma \vdash A : \kappa \quad x \notin \Gamma}{[G]\ \Gamma,\ [g]\ x : A \vdash}\;(\mathsf{ctx}_{,})
 ```
 
 The grades of the empty context are empty, and not written.
 The variable $`x`$ is fresh, absent from $`\Gamma`$, so that a name designates one declaration; a formalization with de Bruijn indices, as that of Abel, Danielsson and Eriksson, has no names and needs no such condition.
-The type $`A`$ is checked in a universe $`U_l`$, defined with the [universes](#universes); its uses of the variables before $`x`$ become the row of $`G`$ for $`x`$, and its own type uses none of them.
+The type $`A`$ is checked in a sort $`\kappa`$, a [universe](#universes) $`U_l`$ or a universe of [strict propositions](#strict-propositions) $`\Omega_l`$; its uses of the variables before $`x`$ become the row of $`G`$ for $`x`$, and its own type uses none of them.
 
 A variable uses itself once, and nothing else, while its type uses the variables before it as the row of $`G`$ for this variable says:
 
@@ -173,10 +174,10 @@ A variable uses itself once, and nothing else, while its type uses the variables
 \frac{[G_1]\ \Gamma_1,\ [g]\ x : A,\ [G_2]\ \Gamma_2 \vdash}{[G_1 \mid 0 \mid g]\ \Gamma_1,\ [g \mid 1 \mid 0]\ x : A,\ [G_2 \mid 0 \mid 0]\ \Gamma_2 \vdash x : A}\;(\mathsf{var})
 ```
 
-Conversion gives a term any type equal to its own, in the universe where both live:
+Conversion gives a term any type equal to its own, in the sort where both live:
 
 ```math
-\frac{[G \mid g \mid g']\ \Gamma \vdash t : A \quad [G \mid g' \mid 0]\ \Gamma \vdash A \equiv B : U_l}{[G \mid g \mid g']\ \Gamma \vdash t : B}\;(\mathsf{conv})
+\frac{[G \mid g \mid g']\ \Gamma \vdash t : A \quad [G \mid g' \mid 0]\ \Gamma \vdash A \equiv B : \kappa}{[G \mid g \mid g']\ \Gamma \vdash t : B}\;(\mathsf{conv})
 ```
 
 GrTT checks this premise with a subtyping judgment that also orders the universes; the core has no cumulativity, so equality suffices.
@@ -230,7 +231,30 @@ Within the rules, a level variable is a constant; no type quantifies over levels
 
 ### Strict Propositions
 
-To be written.
+A proposition is a type whose proofs carry no information but their existence.
+The propositions live in universes of their own, written $`\Omega_l`$ as the propositions of categorical semantics, which form a second predicative hierarchy, strict as the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html), from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316):
+
+```math
+\frac{[G]\ \Gamma \vdash}{[G \mid 0 \mid 0]\ \Gamma \vdash \Omega_l : U_{l + 1}}\;(\Omega)
+\qquad
+\frac{[G]\ \Gamma \vdash \quad l_1 = l_2}{[G \mid 0 \mid 0]\ \Gamma \vdash \Omega_{l_1} \equiv \Omega_{l_2} : U_{l_1 + 1}}\;(\Omega_\equiv)
+```
+
+The `Prop` of Lean and the `SProp` of Rocq are impredicative instead: a proposition that quantifies over all propositions is itself one of them; together with proof irrelevance and the elimination of subsingletons, this makes the conversion of Lean undecidable ([Carneiro](https://github.com/digama0/lean-type-theory)).
+A sort is a universe $`U_l`$ or a universe of propositions $`\Omega_l`$; a type is an element of a sort, which a [declaration](#judgments-and-contexts) and [conversion](#judgments-and-contexts) accept alike.
+
+Proof irrelevance is definitional: two proofs of the same proposition, with the same grades, are equal.
+
+```math
+\frac{[G \mid g \mid g']\ \Gamma \vdash t : A \quad [G \mid g \mid g']\ \Gamma \vdash u : A \quad [G \mid g' \mid 0]\ \Gamma \vdash A : \Omega_l}{[G \mid g \mid g']\ \Gamma \vdash t \equiv u : A}\;(\mathsf{irr})
+```
+
+The premise on the grades keeps equal terms equal in their uses, as GrTT requires of its equality; two proofs that use their hypotheses differently are brought to the same grades by [subsumption](#judgments-and-contexts), which an unrestricted hypothesis always allows.
+
+A proof exists only in erased positions: every binder whose type is a proposition has a mode whose run-time usage is `none`, which the rules of the [functions](#functions) and the [records](#records) check.
+The erasure of proofs is then the erasure of the [erased modes](https://github.com/sic-lang/rfcs/pull/16), with no mechanism of its own.
+
+A proof cannot be analyzed to build data, since irrelevance would identify the data built from two proofs; this restriction of elimination concerns the inductive types of a later RFC, as in Agda.
 
 ### Functions
 
@@ -266,6 +290,8 @@ To be written.
 
 ## Unresolved Questions
 
+- Which word names the strict propositions in the language, given that `Prop` is impredicative in Lean and Rocq?
+- Does definitional proof irrelevance keep the metatheory of a graded type theory? Abel, Danielsson and Eriksson note that their framework cannot model it, and GrTT does not have it.
 - Which RFC defines the top-level definitions, whose level variables the [universes](#universes) assume?
 - Does the order of the grades keep the metatheory of GrTT, whose typing judgment carries the grades, while Abel, Danielsson and Eriksson formalize it with grades checked by a separate relation?
 - Is a term whose grade has no use at run time, $`\langle 0, 1 \rangle`$ or $`\langle 0, \omega \rangle`$, erased safely?
