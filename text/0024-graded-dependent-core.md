@@ -31,6 +31,7 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar o
 | Letters | Denote |
 | --- | --- |
 | $`x, y`$ | Variables |
+| $`f`$ | Fields of [records](#records) |
 | $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$ and $`a`$ a term substituted for a variable |
 | $`A, B`$ | Types |
 | $`\kappa`$ | Sorts, the universes $`U_l`$ and the universes of [strict propositions](#strict-propositions) $`\Omega_l`$ |
@@ -73,11 +74,15 @@ The rules use the notation of the formalization of ADE, which differs slightly f
 | `Π p , q ▷ A ▹ B` | $`\Pi^{q}_{p}\, (x : A).\, B`$ |
 | `lam p t` | $`\lambda_{p}\, (x : A).\, t`$, which also carries the type of its argument |
 | `t ∘⟨ p ⟩ u` | $`t \circ_{p} u`$ |
+| `Σʷ p , q ▷ A ▹ B`, `Σˢ p , q ▷ A ▹ B` | $`\Sigma^{\text{⊗}}_{U_l}\{x :^{q}_{p} A,\ y :^{\mathbb{0}}_{\mathbb{1}} B\}`$, $`\Sigma^{\text{\&}}_{U_l}\{x :^{q}_{p} A,\ y :^{\mathbb{0}}_{\mathbb{1}} B\}`$ |
 | `Uⱼ`, `U-cong` | $`(U)`$, $`(U_\equiv)`$ |
 | `univ` | $`(U_{\mathsf{type}})`$, $`(U_{\mathsf{type}\equiv})`$ |
 | `γ ▸[ m ] t` | $`\gamma \mathrel{▶_m} t`$ |
 | `m ᵐ· p` | $`m \odot p`$ |
 | `𝟘ᵐ`, `𝟙ᵐ` | $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$, with the [mode](#modes) $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ between them |
+
+A pair of ADE corresponds to a record whose level $`l`$ is the larger level of $`A`$ and $`B`$, where the pair lives; a record may also live higher.
+The records are typed as the strong pairs and the strong unit of ADE, whatever their connective, and used as their weak pairs and weak unit when they are multiplicative, as their strong pairs and strong unit when they are additive.
 
 ### Grading
 
@@ -425,6 +430,77 @@ Its type argument thus has the grade `none / none`: it does not exist at run tim
 
 ### Records
 
+A record groups fields, whose types may depend on the fields before them, as the declarations of a context do.
+This order makes the fields positional: a field is known by its position, and its name only binds it in the types of the fields after it, so that two records that differ only by the names of their fields are equal, up to the renaming of bound variables.
+Records are anonymous and compared by their structure, as the [tuples of Rust](https://doc.rust-lang.org/reference/types/tuple.html); a type distinct from every other type with the same fields, as a [struct of Rust](https://doc.rust-lang.org/reference/types/struct.html), comes from a declaration, which this RFC does not define, and the language may name its fields and reorder them, each name being translated to a position.
+Each field carries two grades, as the argument of a [function](#functions) does: $`p`$ counts how many times one use of the record gives access to the field, as the grade of the first component of the pairs of ADE, so that the grade of a field used through a variable is the grade of the variable times the grade of the field; $`q`$ counts how many times the types of the fields after it use the field.
+
+#### Formation
+
+A field $`f`$ of type $`A`$ is declared with its grades on its colon, $`f :^{q}_{p} A`$, placed as on the type of functions.
+The last field has both grades too, so that all the fields have the same form; since no field comes after it, its grade $`q`$ only has to allow no use, as the grade $`q`$ of a function whose codomain does not use its argument.
+A record is multiplicative or additive, after the connectives $`\otimes`$ and $`\&`$ of linear logic that it generalizes, and its type carries this connective $`\diamond`$ and the sort $`\kappa`$ in which it lives:
+
+```math
+\Sigma^{\diamond}_\kappa\{f_1 :^{q_1}_{p_1} A_1,\ \dots,\ f_n :^{q_n}_{p_n} A_n\}
+\qquad
+\diamond \in \{\text{⊗}, \text{\&}\}
+```
+
+The user of a multiplicative record gets all its fields at once, and the user of an additive record one field of its choice.
+The connective changes only the usage of the terms of a record, never their typing: both kinds of records have the same rules of typing and equality, and differ by the usage of their terms only.
+Two record types that differ only by their connective are still different types, as two types that differ only by a grade: an additive record taken for a multiplicative one would give all its fields, while its uses provide for one only.
+The empty records are, at any level $`l`$, the unit types $`\Sigma^{\text{⊗}}_{U_l}\{\}`$ and $`\Sigma^{\text{\&}}_{U_l}\{\}`$, the $`1`$ and $`\top`$ of linear logic, and the true propositions $`\Sigma^{\text{⊗}}_{\Omega_l}\{\}`$ and $`\Sigma^{\text{\&}}_{\Omega_l}\{\}`$, the units $`I`$ and $`\top`$ of the [logic of bunched implications](https://doi.org/10.2307/421090) of O'Hearn and Pym.
+The additive ones can be built from any resources, as the construction of the [records](#records) shows; a proof is checked in an erased mode, so that $`\Sigma^{\text{\&}}_{\Omega_l}\{\}`$ absorbs only erased resources, such as a permission of grade $`\langle 0, 1 \rangle`$.
+
+A record of two fields whose second has the grades $`\mathbb{1}`$ and $`\mathbb{0}`$ is a pair of ADE, and a record of more fields is a sequence of nested pairs, in which the grade $`q_i`$ counts the uses of $`f_i`$ in the types of all the fields after it.
+
+Each field type is checked in the context $`\Gamma_i`$, which extends $`\Gamma`$ by the fields before $`f_i`$:
+
+```math
+\Gamma_i \;=\; \Gamma,\ f_1 : A_1,\ \dots,\ f_{i - 1} : A_{i - 1}
+```
+
+The sort of a record is chosen by whoever writes it, and the rule only checks it, as [Agda](https://agda.readthedocs.io/en/latest/language/prop.html) and [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) check the sort declared for a record.
+A record in a universe of propositions $`\Omega_l`$ has only propositions as fields, which gives the conjunction of propositions, since irrelevance would otherwise equate records that hold different data; a record in a universe $`U_l`$ may have fields of any sort, even propositions only, and is then an ordinary type, whose elements are all equal by the $`\eta`$ rule of the [projections](#projections) without being irrelevant.
+The level $`l`$ of the record bounds the levels of its fields, where $`l_1 \le l_2`$ when $`l_1 \sqcup l_2 = l_2`$, which is decidable as their equality: a record may thus live in a universe above its fields, which lifts a type to a higher universe without cumulativity, as the [`ULift` of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/#--tech-term-universe-lifting) does.
+A field that is a proof has a grade without use at run time, as the [strict propositions](#strict-propositions) require:
+
+```math
+\frac{\begin{gathered}{}\vdash \Gamma \text{ if } n = 0 \quad \kappa \in \{U_l, \Omega_l\} \\ \Gamma_i \vdash A_i : \kappa_i \quad \kappa_i \in \{U_{l_i}, \Omega_{l_i}\} \quad l_i \le l \quad \kappa_i = \Omega_{l_i} \text{ if } \kappa = \Omega_l \quad f_i \notin \Gamma_i \quad \llcorner p_i \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \kappa_i = \Omega_{l_i} \quad \text{for each } i\end{gathered}}{\Gamma \vdash \Sigma^{\diamond}_\kappa\{f_1 :^{q_1}_{p_1} A_1,\ \dots,\ f_n :^{q_n}_{p_n} A_n\} : \kappa}\;(\Sigma\{\})
+```
+
+The premise $`\vdash \Gamma`$ keeps the context well formed when there is no field; otherwise, the typing of the first field type implies it, since every typing judgment implies that its context is well formed, as the [admissible properties](#admissible-properties) state.
+
+The type of a record uses the variables of each field type as many times as the field is used, checked in the mode of its grade, as the domain of a function; the grade $`q_i`$ of each field $`f_i`$ allows its uses in the types of the fields after it, added up, in the order of the [grades](#grades), as (sub) does for a term:
+
+```math
+\frac{\gamma_i \mathrel{▶_{m \odot p_i}} A_i \quad \text{for each } i \quad \delta \bullet \ulcorner m \urcorner \cdot q_1 \bullet \dots \bullet \ulcorner m \urcorner \cdot q_n \le^{\mathsf{c}} p_1 \cdot^{\mathsf{c}} \gamma_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \gamma_n}{\delta \mathrel{▶_m} \Sigma^{\diamond}_\kappa\{f_1 :^{q_1}_{p_1} A_1,\ \dots,\ f_n :^{q_n}_{p_n} A_n\}}\;(\Sigma\{\}_{\mathsf{m}})
+```
+
+The vector $`\gamma_i`$, which has a grade for each variable of $`\Gamma_i`$, is extended by $`\mathbb{0}`$ for the fields from $`f_i`$ on, and a sum of no vector is $`\mathbb{0}^{\mathsf{c}}`$.
+For two fields, this is the rule of ADE for the type of its pairs: the type of the second field uses the first with the grade $`\ulcorner m \urcorner \cdot q_1`$, as the codomain of a function uses its argument.
+The last field, which no type uses, has a grade $`q_n`$ such that $`\ulcorner m \urcorner \cdot q_n \le \mathbb{0}`$.
+The sort $`\kappa`$ uses no variable, as a universe.
+
+For instance, a type packed with one of its elements never exists at run time, and the type of the element uses it once:
+
+```math
+\Sigma^{\text{⊗}}_{U_1}\{f_1 :^{\mathbb{1}}_{\mathbb{0}} U_0,\ f_2 :^{\mathbb{0}}_{\mathbb{1}} f_1\} : U_1
+```
+
+Its first field thus has the grade `none / none`, and the record lives in $`U_1`$, the lowest universe that bounds its two field types.
+
+#### Construction
+
+To be written.
+
+#### Matching
+
+To be written.
+
+#### Projections
+
 To be written.
 
 ### Conversion
@@ -456,6 +532,20 @@ To be written.
   A type is still always a term of a sort, unlike in ADE, whose type of levels may lie in no universe, so that the rules that need the level of a type check its sort, and the others check that it is a type.
 - Every term determines its type: an abstraction carries the type of its argument, unlike the abstractions of ADE, and the terms of the later constructs carry the types they need.
   The type of a term is then computed from the term alone, without the bidirectional checking that ADE need for their abstractions; the terms of the core are checked, not written by hand, and the language infers what they carry.
+- The [records](#records) are positional, and a type with named fields comes from a declaration that makes it distinct from every other type, so that two types with the same fields are never confused, since nothing says that their fields mean the same.
+  Records compared by the names of their fields, in the written order or in a canonical one, would make two unrelated types with the same names interchangeable, and would need the names of fields to be told apart from the variables they bind.
+- Each field carries one grade $`q`$ for its uses in the types of all the fields after it, as the nested pairs of ADE, rather than one grade for each later field, as the rows of grades of GrTT.
+  The usage of a record type adds these uses anyway, so finer rows would only add grades to write and to check.
+  Without the grade $`q`$, the uses of a field in the types after it would not be counted at all, and a field of grade `none / linear` could not appear in them.
+- The sort of a [record](#records) is written in its type and checked, rather than computed from its fields, which would make every record of propositions a proposition and leave no empty record for the true proposition.
+  Writing it gives both the unit type and the true proposition as empty records, lets a record of proofs be an ordinary type, and lifts a type to a higher universe; a distinct construct for the records of propositions would instead double the records and their rules.
+  The type of a [function](#functions) keeps a computed sort, since computing it loses nothing: two functions into a proposition are equal by irrelevance and $`\eta`$, so placing one in a universe $`U_l`$ would give it no identity of its own.
+  A function type is lifted to a higher universe as any type, by a record of one field, so that records remain the only mechanism of lifting.
+- The record types are written $`\Sigma^{\diamond}_\kappa`$, after the dependent sum of Martin-Löf type theory, which linearity splits by the connective $`\diamond`$, as ADE write their pairs $`\Sigma_{\otimes}`$ and $`\Sigma_{\&}`$, and the record terms $`R\{t_1,\ \dots,\ t_n\}`$, as the [struct expressions of Rust](https://doc.rust-lang.org/reference/expressions/struct-expr.html), since $`R`$ already carries the connective and the grades.
+  The connective is a superscript, so that the sort keeps its place as a subscript, and the types of both kinds of records have one form, as they have one typing.
+- The empty additive record absorbs any resources, as the $`\top`$ of linear logic, since the uses of an additive record are bounded by the uses of each of its fields, which no field bounds when there is none.
+  Its uses cannot be the meet of the uses of no field, a greatest multiplicity $`\varnothing`$ that allows no number of uses, since no multiplicity can be added above $`0`$, $`1`$ and $`\omega`$: the distributivity $`(0 \wedge 1) \cdot \varnothing = 0 \cdot \varnothing \wedge 1 \cdot \varnothing`$ gives $`\omega \cdot \varnothing = 0`$, hence $`\varnothing + \varnothing = 0`$ since $`\omega = 1 + 1`$, and $`\varnothing = 0`$ by the monotonicity of the addition.
+  Restricting it to no resources would make it a second unit type, and forbidding it would make the additive records the only ones that need a field; it is also the dual of the empty type, as the negation of linear logic exchanges them, which protocols with a dual need.
 
 ## Prior Art
 
@@ -467,5 +557,9 @@ To be written.
 - Does definitional proof irrelevance keep the metatheory of a graded type theory?
   Abel, Danielsson and Eriksson note that their framework cannot model it.
 - Which RFC defines the top-level definitions, whose level variables the [universes](#universes) assume?
+- Should the usage rule of the type of functions be written with a bound, as the usage rules of the types and of the additive terms of the [records](#records), so that the rules of usage share one style?
+  It keeps the exact form of ADE for now, and this point is to be analyzed again.
+- Which mechanism declares the types with named fields, distinct from every other type, and how does it relate to the inductive types, of which the [structures of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) are the case with a single constructor?
+  The arguments of each constructor should form a [record](#records), so that a record is never defined in two ways.
 - Is a term checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ erased safely?
   ADE prove the soundness of erasure for their two modes only; the projection of a grade on its run-time multiplicity preserves the operations and the order, and could carry their result to the three modes.
