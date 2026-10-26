@@ -624,7 +624,26 @@ Each field uses $`x`$ with the grade $`\mathbb{1}`$, and the record with $`\math
 
 ### Conversion
 
-To be written.
+The rule $`(\mathsf{conv})`$ compares types with the [equality of types](#equality), which the constructs of this RFC define together, through the equalities of their terms in a sort:
+
+| Equality | Constructs |
+| --- | --- |
+| Computation, $`\beta`$ | Application of an abstraction, projection and match of a record |
+| Extensionality, $`\eta`$ | Functions and records |
+| Irrelevance | Two proofs of the same proposition, $`(\mathsf{irr})`$ |
+| Levels | Universes whose levels are equal in Presburger arithmetic, $`(U_\equiv)`$ and $`(\Omega_\equiv)`$ |
+| Congruence | Every construct, with the premises of its rules |
+
+Grades and the connectives of records are part of terms and types, but no rule equates two different grades or connectives: two types that differ only by a grade, as $`\Pi^{\mathbb{0}}_{\mathbb{1}}\, (x : A).\, B`$ and $`\Pi^{\mathbb{0}}_{\langle \omega, \omega \rangle}\, (x : A).\, B`$, are different types, as in ADE.
+Since typing carries no grade otherwise, the modes and the seven grades play no part in equality: what ADE prove about typing holds whatever their modality.
+
+Checking a type needs a decision procedure for equality.
+The one of this RFC is the algorithm of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), whose formalization ADE extend: both terms are reduced to their weak head normal forms, whose heads are compared, and terms are compared by their type, through $`\eta`$, at the types of functions and of records.
+A match whose record is neutral reduces to its body with the projections of the record substituted, which the [projections](#projections) show equal, so that no match is neutral: as [Agda](https://agda.readthedocs.io/en/latest/language/runtime-irrelevance.html) puts it, a match on a record type with $`\eta`$-equality is not really a match.
+A type that is a proposition is checked first, and two of its terms are then equal without being compared, which keeps irrelevance decidable, as [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316) show; two levels are compared by deciding their formula of Presburger arithmetic.
+
+ADE prove normalization and the decidability of equality for functions, both kinds of pairs and both kinds of units, with the $`\eta`$ rules of functions, strong pairs and the strong unit, which are those of all the records here, and [Pujet and Tabareau](https://doi.org/10.1145/3498693) prove normalization, with the same framework, for a theory with a universe of strict propositions.
+No proof yet covers their combination, the records of any number of fields, the reduction of the neutral matches, and the level variables; the formalization of this RFC has to provide it.
 
 ### Erasure
 
