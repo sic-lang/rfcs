@@ -43,6 +43,7 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar o
 | $`m`$ | Modes, in which a term is checked for its uses |
 
 A subscript numbers objects of the same kind that come from different premises or different parts of a context, as $`\gamma_1`$ and $`\gamma_2`$, or $`\Gamma_1`$ and $`\Gamma_2`$: an object alone of its kind has none, and several are all numbered; a subscript never selects a component.
+The [examples](#examples-1) also use constants of their own, written in a sans-serif font, such as $`\mathsf{Perm}`$.
 
 The operations on grades are those of ADE:
 
@@ -684,7 +685,42 @@ Their proof covers neither the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ nor th
 
 ### Examples
 
-To be written.
+The sections above give a constant function, the polymorphic identity, a type packed with one of its elements, and a choice between two functions; the examples below combine the constructs, in a context that declares what they need.
+Values that a program observes, such as numbers, come with the inductive types of a later RFC.
+
+#### A Permission Used Once
+
+A permission is a value that exists only to be consumed by an operation, at no cost at run time, so it has the grade `none / linear`.
+In a context with a type $`\mathsf{Perm} : U_0`$ and an operation $`\mathsf{close} : \Pi^{\mathbb{0}}_{\langle 0, 1 \rangle}\, (x : \mathsf{Perm}).\, \Sigma^{\text{⊗}}_{U_0}\{\}`$, a function that receives a permission must pass it on exactly once:
+
+```math
+\lambda_{\langle 0, 1 \rangle}\, (x : \mathsf{Perm}).\, \mathsf{close} \circ_{\langle 0, 1 \rangle} x \;:\; \Pi^{\mathbb{0}}_{\langle 0, 1 \rangle}\, (x : \mathsf{Perm}).\, \Sigma^{\text{⊗}}_{U_0}\{\}
+```
+
+The argument of $`\mathsf{close}`$ is checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$, where $`x`$ uses itself with $`\langle 0, 1 \rangle`$, so the body uses $`x`$ with $`\langle 0, 1 \rangle \cdot \langle 0, 1 \rangle = \langle 0, 1 \rangle`$, the grade of the abstraction.
+A body that drops the permission, such as the unit $`R\{\}`$ with $`R = \Sigma^{\text{⊗}}_{U_0}\{\}`$, uses $`x`$ with $`\mathbb{0}`$, and one that passes it twice uses it with $`\langle 0, 1 \rangle + \langle 0, 1 \rangle = \langle 0, \omega \rangle`$: $`\langle 0, 1 \rangle`$ is below neither of them, so both are rejected.
+At run time, the permission disappears, and the function is $`\lambda x.\, \mathsf{close}\ \text{↯}`$.
+
+#### A Value With a Proof
+
+A value together with a proof that it satisfies a predicate is a record whose second field is erased.
+In a context with a type $`A : U_0`$ and a predicate $`\mathsf{P} : \Pi^{\mathbb{0}}_{\langle 0, \omega \rangle}\, (x : A).\, \Omega_0`$, which uses its argument only in erased positions, the values of $`A`$ that satisfy $`\mathsf{P}`$ form the record type
+
+```math
+R \;=\; \Sigma^{\text{⊗}}_{U_0}\{f_1 :^{\langle 0, \omega \rangle}_{\mathbb{1}} A,\ f_2 :^{\mathbb{0}}_{\langle 0, \omega \rangle} \mathsf{P} \circ_{\langle 0, \omega \rangle} f_1\} \;:\; U_0
+```
+
+The proof $`f_2`$ has the grade `none / unrestricted`, as a proof that may be used any number of times or dropped.
+Its type is checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$, where $`f_1`$, an argument of grade $`\langle 0, \omega \rangle`$, is used $`\langle 0, \omega \rangle \cdot \langle 0, 1 \rangle = \langle 0, \omega \rangle`$ times; counted with the grade $`\langle 0, \omega \rangle`$ of $`f_2`$, this gives $`\langle 0, \omega \rangle`$, which the grade $`q`$ of $`f_1`$ allows.
+A value $`t : A`$ with a proof $`u : \mathsf{P} \circ_{\langle 0, \omega \rangle} t`$ gives the record $`R\{t,\ u\}`$, and a function reads the value of a record and drops its proof:
+
+```math
+\lambda_{\mathbb{1}}\, (y : R).\, \mathsf{match}_{\mathbb{1}}\ y\ \mathsf{as}\ z\ \mathsf{return}\ A\ \mathsf{with}\ R\{x_1,\ x_2\} \Rightarrow x_1 \;:\; \Pi^{\mathbb{0}}_{\mathbb{1}}\, (y : R).\, A
+```
+
+The body uses $`x_1`$ once, with the grade $`\mathbb{1}`$ of its field, and $`x_2`$ never, which its grade $`\langle 0, \omega \rangle`$ allows.
+Two such records with the same value are equal whatever their proofs, by $`(\mathsf{irr})`$ and congruence, so $`R`$ behaves as a subset of $`A`$.
+At run time, the proof takes no room: $`R\{t,\ u\}^\bullet = \{t^\bullet\}`$, and the function is $`\lambda y.\, \mathsf{let}\ \{x_1\} = y\ \mathsf{in}\ x_1`$.
 
 ## Drawbacks
 
