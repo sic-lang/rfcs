@@ -726,7 +726,21 @@ At run time, the proof takes no room: $`R\{t,\ u\}^\bullet = \{t^\bullet\}`$, an
 
 ## Drawbacks
 
-To be written.
+- Every binder and every field carries two grades, among seven, checked in three modes: the core is precise but heavy, and the surface language has to infer most grades, which no RFC designs yet.
+- The terms of the core also carry the types of the arguments of abstractions, the types of records and the types of results of matches, so that their types are determined; they are meant to be checked, not written by hand.
+- The grade $`\langle \omega, 1 \rangle`$, `affine / linear`, exists to keep the multiplication distributive over the meet, rather than for a need of programs.
+- A term that runs cannot match a record without use at run time, so that some sound programs are rejected.
+- The empty additive record absorbs any resources, so that a program may abandon a linear resource in it; that the type of the program then shows it is a conjecture of the [unresolved questions](#unresolved-questions).
+- Records have no named fields until a declaration mechanism gives them.
+- Without cumulativity, code polymorphic in its universes writes its levels and their joins explicitly, as in Agda and Lean.
+- Without impredicative propositions, the encodings that quantify a proposition over all propositions, which Lean and Rocq accept, are not available.
+- Without natural numbers, a program computes on encodings such as the Church numerals, and a numeral of a predicative hierarchy cannot iterate over its own type.
+  [Leivant](https://doi.org/10.1016/0890-5401(91)90053-5) proves that System F stratified into finitely many levels defines exactly the super-elementary functions, so the [Ackermann function](https://en.wikipedia.org/wiki/Ackermann_function), which is not primitive recursive, is out of its reach.
+  Whether the dependent types of the core go further is open; inductive types will define the Ackermann function by the iteration into function types of Gödel's System T (chapter 7 of [Girard, Lafont and Taylor](https://www.paultaylor.eu/stable/prot.pdf)).
+- The core departs from ADE by its three modes, its strict propositions, its records of any number of fields and its level variables, so their proofs do not carry over as they are.
+  Redoing them is a large effort, which [the formalization of Sic](https://github.com/sic-lang/sic/tree/main/theory), in Lean as [the host language](https://github.com/sic-lang/rfcs/pull/18) proposes, has started: it [proves normalization](https://github.com/sic-lang/sic/blob/main/theory/Sic/Core/Normalization.lean) for the functions and the hierarchy of universes with its level variables, and has yet to cover the usage, the strict propositions and the records.
+  No such proof existed in Lean before: [Lean4Lean](https://arxiv.org/abs/2403.14064) verifies a type checker, not the normalization of the theory it checks.
+- Records of propositions give two conjunctions, $`\Sigma^{\text{⊗}}_{\Omega_l}`$ and $`\Sigma^{\text{\&}}_{\Omega_l}`$, which differ only by the usage of their proofs: they coincide when every field has the grade $`\mathbb{0}`$ or $`\langle 0, \omega \rangle`$, and differ for the proofs counted once in total, of grade $`\langle 0, 1 \rangle`$, which remains to be analyzed.
 
 ## Rationale and Alternatives
 
