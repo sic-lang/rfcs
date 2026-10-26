@@ -781,7 +781,17 @@ At run time, the proof takes no room: $`R\{t,\ u\}^\bullet = \{t^\bullet\}`$, an
 
 ## Prior Art
 
-To be written.
+- The graded type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), extended in their [journal version](https://arxiv.org/abs/2603.29716) and [formalized in Agda](https://github.com/graded-type-theory/graded-type-theory), is the base of this RFC: typing without grades, usage indexed by modes, weak and strong pairs, and the soundness of erasure.
+  Its formalization extends the proof of decidability of conversion of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), and [Danielsson, Favier and Kubánek](https://doi.org/10.1145/3776645) add universe levels to it.
+  It writes its pairs and units with [a strength](https://github.com/graded-type-theory/graded-type-theory/blob/master/Definition/Untyped/NotParametrised.agda), strong or weak, as the records here carry their connective, and lets its strong unit [absorb any resources](https://github.com/graded-type-theory/graded-type-theory/blob/master/Graded/Usage/Restrictions.agda) as an option, as the empty additive record here does.
+- Grades on binders come from [McBride](https://doi.org/10.1007/978-3-319-30936-1_12) and the quantitative type theory of [Atkey](https://doi.org/10.1145/3209108.3209189), which [Idris 2](https://arxiv.org/abs/2104.00480) implements with the multiplicities $`0`$, $`1`$ and $`\omega`$; [Šefl and Svoboda](https://ksvi.mff.cuni.cz/~sefl/papers/pairs_in_qtt.pdf) add the additive types to it.
+- The [graded modal dependent type theory](https://arxiv.org/abs/2010.13163) of Moon, Eades and Orchard carries grades in typing, and [Granule](https://doi.org/10.1145/3341714) is a language built on graded modal types.
+- The strict propositions follow the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html) and the `SProp` of Rocq, both from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316); [Pujet and Tabareau](https://doi.org/10.1145/3498693) build their observational equality on them.
+- The universes follow [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/) for prenex polymorphism and Agda for a predicative hierarchy without cumulativity.
+- [Agda](https://agda.readthedocs.io/en/latest/language/runtime-irrelevance.html) marks arguments and fields as erased, and its projections of erased fields are erased, as the projections of the additive records here.
+  Its [records](https://agda.readthedocs.io/en/latest/language/record-types.html) have $`\eta`$ by default and can also be matched, and it allows the pattern matching of an erased record with $`\eta`$, which is not really a match; this RFC leaves erased matches to an unresolved question.
+- [Verus](https://doi.org/10.1145/3586037) separates the code that runs from the specifications and proofs by [modes of variables](https://verus-lang.github.io/verus/guide/reference-var-modes.html), and tracks ghost resources linearly, which the grades `none / linear` and `linear / unrestricted` express here.
+- The multiplicative and additive records are named after the connectives of [linear logic](https://doi.org/10.1016/0304-3975(87)90045-4).
 
 ## Unresolved Questions
 
