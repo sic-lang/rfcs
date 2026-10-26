@@ -79,6 +79,9 @@ The rules use the notation of the formalization of ADE, which differs slightly f
 | `Σʷ p , q ▷ A ▹ B`, `Σˢ p , q ▷ A ▹ B` | $`\Sigma^{\text{⊗}}_{U_l}\{x :^{q}_{p} A,\ y :^{\mathbb{0}}_{\mathbb{1}} B\}`$, $`\Sigma^{\text{\&}}_{U_l}\{x :^{q}_{p} A,\ y :^{\mathbb{0}}_{\mathbb{1}} B\}`$ |
 | `prodʷ p t u`, `prodˢ p t u` | $`R\{t,\ u\}`$, where $`R`$ is the record type of the pair |
 | `prodrec r p q C t u` | $`\mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x,\ y\} \Rightarrow u`$ |
+| `fst p t`, `snd p t` | $`\pi_{R, 1}\ t`$, $`\pi_{R, 2}\ t`$ |
+| `Unitʷ`, `Unitˢ` | $`\Sigma^{\text{⊗}}_{U_l}\{\}`$, $`\Sigma^{\text{\&}}_{U_l}\{\}`$ |
+| `starʷ`, `starˢ` | $`R\{\}`$, where $`R`$ is the record type of the unit |
 | `Uⱼ`, `U-cong` | $`(U)`$, $`(U_\equiv)`$ |
 | `univ` | $`(U_{\mathsf{type}})`$, $`(U_{\mathsf{type}\equiv})`$ |
 | `γ ▸[ m ] t` | $`\gamma \mathrel{▶_m} t`$ |
@@ -571,7 +574,51 @@ Equality is also a congruence for the record types, their terms and their match,
 
 #### Projections
 
-To be written.
+A record is also used by projecting one of its fields, whose type takes the projections of the fields before it, as the strong pairs of ADE are; the projection carries the type $`R`$, in which the usage reads the connective and the grades:
+
+```math
+\frac{\Gamma \vdash t : R \quad 1 \le i \le n}{\Gamma \vdash \pi_{R, i}\ t : A_i[\pi_{R, 1}\ t/f_1, \dots, \pi_{R, i - 1}\ t/f_{i - 1}]}\;(\pi)
+```
+
+A projection uses the record once, and gets the field once; this is allowed only when the grade of the field allows one use in the mode of the projection.
+It also drops the other fields, which an additive record allows, since its user takes one field, and a multiplicative record allows only when they are discarded freely:
+
+```math
+\frac{\gamma \mathrel{▶_m} t \quad \ulcorner m \urcorner \cdot p_i \le \ulcorner m \urcorner \quad \ulcorner m \urcorner \cdot p_j \le \mathbb{0} \text{ for each } j \ne i \text{ if } \diamond = \text{⊗}}{\gamma \mathrel{▶_m} \pi_{R, i}\ t}\;(\pi_{\mathsf{m}})
+```
+
+A field without use at run time, such as a proof, is thus projected only in an erased term: in the mode $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$, the condition is $`p_i \le \mathbb{1}`$, which fails when the run-time multiplicity of $`p_i`$ is $`0`$, since $`0`$ and $`1`$ are not comparable.
+In the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$, a field of grade $`\langle 0, 1 \rangle`$ or $`\langle 0, \omega \rangle`$ is projected, so that a specification reads the erased fields of a record.
+In the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, every field of every record is projected, so that a type reads any field of a multiplicative record.
+
+Projecting a record that has just been built gives the term of its field, and two records are equal when all their projections are, which gives the $`\eta`$ rule:
+
+```math
+\frac{\Gamma \vdash R \quad \Gamma \vdash t_j : A_j[t_1/f_1, \dots, t_{j - 1}/f_{j - 1}] \quad \text{for each } j \quad 1 \le i \le n}{\Gamma \vdash \pi_{R, i}\ R\{t_1,\ \dots,\ t_n\} \equiv t_i : A_i[t_1/f_1, \dots, t_{i - 1}/f_{i - 1}]}\;(\pi_\beta)
+```
+
+```math
+\frac{\Gamma \vdash t : R \quad \Gamma \vdash u : R \quad \Gamma \vdash \pi_{R, i}\ t \equiv \pi_{R, i}\ u : A_i[\pi_{R, 1}\ t/f_1, \dots, \pi_{R, i - 1}\ t/f_{i - 1}] \quad \text{for each } i}{\Gamma \vdash t \equiv u : R}\;(\Sigma\{\}_\eta)
+```
+
+With $`(\pi_\beta)`$, it makes every record equal to the record of its projections, $`t \equiv R\{\pi_{R, 1}\ t,\ \dots,\ \pi_{R, n}\ t\}`$, and with $`(\mathsf{match}_\beta)`$ and congruence, every match equal to its body with the projections substituted:
+
+```math
+\mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u \;\equiv\; u[\pi_{R, 1}\ t/x_1, \dots, \pi_{R, n}\ t/x_n]
+```
+
+Since equality carries no grade, the two sides may use their variables differently; the usage of each is checked on its own.
+In particular, the right side uses $`t`$ once for each field, so that a match is not replaced by its projections in a program; the [conversion](#conversion) only uses this equality to compare terms.
+For the same reason, a term equal to another by $`\eta`$ is not always as well used: a multiplicative record keeps its usage when it is rebuilt by a match, and an additive record when it is rebuilt from its projections.
+Equality is also a congruence for the projections, with the premises of their rule.
+
+For instance, a choice between two functions applied to the same linear resource $`x`$ uses it once, since its user applies only one of them:
+
+```math
+R\{y \circ_{\mathbb{1}} x,\ z \circ_{\mathbb{1}} x\} \qquad R = \Sigma^{\text{\&}}_{U_0}\{f_1 :^{\mathbb{0}}_{\mathbb{1}} B,\ f_2 :^{\mathbb{0}}_{\mathbb{1}} C\}
+```
+
+Each field uses $`x`$ with the grade $`\mathbb{1}`$, and the record with $`\mathbb{1} \wedge \mathbb{1} = \mathbb{1}`$; a multiplicative record would use it with $`\mathbb{1} + \mathbb{1} = \langle \omega, \omega \rangle`$.
 
 ### Conversion
 
