@@ -647,7 +647,42 @@ No proof yet covers their combination, the records of any number of fields, the 
 
 ### Erasure
 
-To be written.
+Erasure compiles a program to an untyped target language, removing every part that has no use at run time.
+It is the extraction of ADE, written $`t^\bullet`$ as in their paper, extended to the constructs of this RFC.
+A program is a closed term that is well typed and well used in the mode of run time:
+
+```math
+\varepsilon \vdash t : A \qquad \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}}}} t
+```
+
+Only the run-time multiplicity of a grade matters: a grade $`p`$ is erased when $`\llcorner p \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}}`$, that is, when its run-time multiplicity is $`0`$, whatever its total multiplicity.
+The target language has variables, abstractions $`\lambda x.\, v`$, applications $`v\ w`$, tuples $`\{v_1, \dots, v_k\}`$ with their projections $`v.k`$ and the binding of their components $`\mathsf{let}\ \{x_1, \dots, x_k\} = v\ \mathsf{in}\ w`$, and a value $`\text{↯}`$ that stands for what was erased.
+The extraction follows the strict target of ADE, evaluated by value:
+
+| Term | Extraction |
+| --- | --- |
+| $`U_l`$, $`\Omega_l`$, $`\Pi^{q}_{p}\, (x : A).\, B`$, $`\Sigma^{\diamond}_\kappa\{\dots\}`$ | $`\text{↯}`$ |
+| $`x`$ | $`x`$ |
+| $`\lambda_{p}\, (x : A).\, t`$ | $`\lambda x.\, t^\bullet`$ |
+| $`t \circ_{p} a`$ | $`t^\bullet\ a^\bullet`$, or $`t^\bullet\ \text{↯}`$ if $`p`$ is erased: only the argument is erased, and the function still runs |
+| $`R\{t_1,\ \dots,\ t_n\}`$, multiplicative | $`\{t_{i_1}^\bullet, \dots, t_{i_k}^\bullet\}`$ |
+| $`\mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u`$, multiplicative | $`\mathsf{let}\ \{x_{i_1}, \dots, x_{i_k}\} = t^\bullet\ \mathsf{in}\ u^\bullet[\text{↯}/x_j]`$ for the erased fields $`f_j`$ |
+| $`\pi_{R, i}\ t`$, multiplicative | $`t^\bullet.j`$, where $`i = i_j`$ |
+| $`R\{t_1,\ \dots,\ t_n\}`$, additive | $`\{\lambda y.\, t_{i_1}^\bullet, \dots, \lambda y.\, t_{i_k}^\bullet\}`$, with $`y`$ fresh |
+| $`\mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u`$, additive | $`\mathsf{let}\ \{y_1, \dots, y_k\} = t^\bullet\ \mathsf{in}\ u^\bullet[y_1\ \text{↯}/x_{i_1}, \dots, y_k\ \text{↯}/x_{i_k}, \text{↯}/x_j]`$ for the erased fields $`f_j`$, with $`y_1, \dots, y_k`$ fresh |
+| $`\pi_{R, i}\ t`$, additive | $`t^\bullet.j\ \text{↯}`$, where $`i = i_j`$ |
+
+In this table, $`i_1 < \dots < i_k`$ are the positions of the fields of $`R`$ whose grade is not erased, so that the fields that do not exist at run time take no room in a record.
+For instance, if the three fields of $`R`$ have the grades $`\mathbb{1}`$, $`\langle 0, \omega \rangle`$ and $`\mathbb{1}`$, the fields kept at run time are at the positions $`i_1 = 1`$ and $`i_2 = 3`$, and $`\pi_{R, 3}\ t`$ becomes $`t^\bullet.2\ \text{↯}`$: the second component of the tuple, a delayed field, applied to $`\text{↯}`$ to compute it.
+A term that is checked in an erased mode is never extracted: the argument of an erased application, a proof, an erased field, and the type of the result of a match disappear, and the rules forbid the match, in a term that runs, of a record without use at run time.
+An erased argument still leaves its abstraction, which receives $`\text{↯}`$, as in the strict target of ADE; removing it from the calling convention is an optimization of the compiler.
+
+The fields of an additive record are delayed, unlike the strong pairs of ADE, which their strict target computes at once: since the user of the record takes one field, computing all of them would run the uses of each field, such as two functions that both consume the same linear resource.
+A projection then computes the field it takes, and only this one.
+A match of an additive record computes a field at each use of its variable, as a projection would.
+
+The soundness of erasure states that a program and its extraction compute the same value; ADE prove it for the natural numbers, and the values that a program may observe come with the inductive types of a later RFC.
+Their proof covers neither the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ nor the delayed fields of the additive records, both of which are [unresolved questions](#unresolved-questions), and the evaluation order of Sic, which a later RFC fixes, may choose their non-strict target instead.
 
 ### Examples
 
@@ -700,6 +735,13 @@ To be written.
 
 ## Unresolved Questions
 
+Four choices of this RFC are provisional, each tied to a question below:
+
+- The empty additive record absorbs any resources, until the conjecture that a program shows in its type the resources it abandons is settled.
+- A term that runs does not match a [record](#matching) without use at run time, until erased matches are studied.
+- The fields of an additive record are delayed at run time by the [erasure](#erasure), until the soundness of this choice is proved.
+- The [erasure](#erasure) targets evaluation by value, until the evaluation order of Sic is fixed.
+
 - Which word names the strict propositions in the language, given that `Prop` is impredicative in Lean and Rocq?
 - Does definitional proof irrelevance keep the metatheory of a graded type theory?
   Abel, Danielsson and Eriksson note that their framework cannot model it.
@@ -715,5 +757,7 @@ To be written.
 - Does a program show in its type the resources it abandons in the empty additive record?
   An empty additive record that absorbed a linear resource has no elimination, and using it with a grade that discards it multiplies the grade of the resource, which then loses its single use: the conjecture is that a closed program whose type, normalized, contains no empty additive record abandons no resource, as the subformula property of linear logic implies without dependent types.
   If it fails, the additive records need at least one field, and the empty one becomes a second unit type or disappears.
+- Which evaluation order does Sic follow: by value, as the strict target of ADE that the [erasure](#erasure) of this RFC uses, or by name, as their non-strict target, for which they also prove the soundness of erasure?
+- Does erasure stay sound when the fields of the additive records are delayed, which the strict target of ADE does not do for its strong pairs?
 - Is a term checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ erased safely?
   ADE prove the soundness of erasure for their two modes only; the projection of a grade on its run-time multiplicity preserves the operations and the order, and could carry their result to the three modes.
