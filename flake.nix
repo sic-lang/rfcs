@@ -3,9 +3,8 @@
 {
   description = "Development environment of the Sic RFCs";
 
-  # The stable branch: its tools are in the binary cache (reuse cannot be built on
-  # nixpkgs-unstable at the moment); flake.lock pins its commit.
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+  # The unstable branch, for the latest releases of the tools; flake.lock pins its commit.
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   outputs =
     { nixpkgs, ... }:
