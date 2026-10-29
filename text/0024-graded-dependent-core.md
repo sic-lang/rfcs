@@ -34,6 +34,8 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar o
 | $`f`$ | Fields of [records](#records) |
 | $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$ and $`a`$ a term substituted for a variable |
 | $`A, B`$ | Types |
+| $`R`$ | The type of a record in the rules of the [records](#records) |
+| $`\diamond`$ | The connective of a [record](#records), $`\otimes`$ or $`\&`$ |
 | $`\kappa`$ | Sorts, the universes $`U_l`$ and the universes of [strict propositions](#strict-propositions) $`\Omega_l`$ |
 | $`\Gamma`$ | Contexts, sequences of declarations $`x : A`$ |
 | $`p, q, r`$ | Grades, elements of the semiring of the [grades](#grades) |
@@ -75,6 +77,7 @@ The rules use the notation of the formalization of ADE, which differs slightly f
 | `lam p t` | $`\lambda_{p}\, (x : A).\, t`$, which also carries the type of its argument |
 | `t ∘⟨ p ⟩ u` | $`t \circ_{p} u`$ |
 | `Σʷ p , q ▷ A ▹ B`, `Σˢ p , q ▷ A ▹ B` | $`\Sigma^{\text{⊗}}_{U_l}\{x :^{q}_{p} A,\ y :^{\mathbb{0}}_{\mathbb{1}} B\}`$, $`\Sigma^{\text{\&}}_{U_l}\{x :^{q}_{p} A,\ y :^{\mathbb{0}}_{\mathbb{1}} B\}`$ |
+| `prodʷ p t u`, `prodˢ p t u` | $`R\{t,\ u\}`$, where $`R`$ is the record type of the pair |
 | `Uⱼ`, `U-cong` | $`(U)`$, $`(U_\equiv)`$ |
 | `univ` | $`(U_{\mathsf{type}})`$, $`(U_{\mathsf{type}\equiv})`$ |
 | `γ ▸[ m ] t` | $`\gamma \mathrel{▶_m} t`$ |
@@ -493,11 +496,36 @@ Its first field thus has the grade `none / none`, and the record lives in $`U_1`
 
 #### Construction
 
-To be written.
+The records are typed as the strong pairs of ADE, which they write $`\Sigma_{\&}`$ after the additive conjunction of linear logic, generalized from two fields to any number; the multiplicative records are used as their weak pairs, written $`\Sigma_{\otimes}`$, and the additive records as their strong pairs.
+In the rules below, $`R`$ stands for the record type $`\Sigma^{\diamond}_{\kappa}\{f_1 :^{q_1}_{p_1} A_1,\ \dots,\ f_n :^{q_n}_{p_n} A_n\}`$.
+
+A record is built from a term for each field, whose type takes the terms of the fields before it.
+The term carries its type $`R`$, as the type carries its sort, and the usage reads the connective and the grades of the fields in $`R`$, so that they are written once, in the type, as a constructor of a [structure of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) carries the parameters of its type:
+
+```math
+\frac{\Gamma \vdash R \quad \Gamma \vdash t_i : A_i[t_1/f_1, \dots, t_{i - 1}/f_{i - 1}] \quad \text{for each } i}{\Gamma \vdash R\{t_1,\ \dots,\ t_n\} : R}\;(\Sigma\{\}_{\mathsf{i}})
+```
+
+A multiplicative record uses the variables of each term as many times as the grade of its field, checking the term in the mode of this grade, and its type $`R`$ uses none, as the type of a pair in ADE:
+
+```math
+\frac{\diamond = \text{⊗} \quad \gamma_i \mathrel{▶_{m \odot p_i}} t_i \quad \text{for each } i}{p_1 \cdot^{\mathsf{c}} \gamma_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \gamma_n \mathrel{▶_m} R\{t_1,\ \dots,\ t_n\}}\;(\Sigma\{\}^{\text{⊗}}_{\mathsf{i}\mathsf{m}})
+```
+
+Since the user of an additive record gets one field only, the record needs the resources of each field, but not of all of them together: its uses are bounded by the uses of each field, counted with the grade of its field:
+
+```math
+\frac{\diamond = \text{\&} \quad \gamma_i \mathrel{▶_{m \odot p_i}} t_i \quad \delta \le^{\mathsf{c}} p_i \cdot^{\mathsf{c}} \gamma_i \quad \text{for each } i \quad \delta \le^{\mathsf{c}} \ulcorner m \urcorner \cdot^{\mathsf{c}} \delta}{\delta \mathrel{▶_m} R\{t_1,\ \dots,\ t_n\}}\;(\Sigma\{\}^{\text{\&}}_{\mathsf{i}\mathsf{m}})
+```
+
+For a record with fields, the greatest such vector is the meet $`p_1 \cdot^{\mathsf{c}} \gamma_1 \wedge^{\mathsf{c}} \dots \wedge^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \gamma_n`$, which is at most each of its operands, so a variable used once by every field is used once by the record, which may then give any one of them.
+For the record without fields, the bounds are vacuous, and the empty additive record may use any resources, which it never gives back, as the $`\top`$ of linear logic: ADE give the same choice to their strong unit, as the option `Starˢ-sink` of their formalization.
+The last premise keeps the erased uses of a term checked in an erased mode erased, as ADE multiply the uses of their strong unit by $`\ulcorner m \urcorner`$; it only restricts the record without fields.
 
 #### Matching
 
 To be written.
+
 
 #### Projections
 
@@ -534,6 +562,10 @@ To be written.
   The type of a term is then computed from the term alone, without the bidirectional checking that ADE need for their abstractions; the terms of the core are checked, not written by hand, and the language infers what they carry.
 - The [records](#records) are positional, and a type with named fields comes from a declaration that makes it distinct from every other type, so that two types with the same fields are never confused, since nothing says that their fields mean the same.
   Records compared by the names of their fields, in the written order or in a canonical one, would make two unrelated types with the same names interchangeable, and would need the names of fields to be told apart from the variables they bind.
+- [Records](#records) have any number of fields, while functions have one argument, since a function of several arguments is a function that returns a function, without loss: each argument keeps its grades, and $`\eta`$ makes every other way of writing it equal.
+  Records nested two fields at a time would lose the grade of the last field, which the weak pairs of ADE fix to $`\mathbb{1}`$, would need a unit for the innermost one, and would make $`\Sigma^{\text{⊗}}\{A, \Sigma^{\text{⊗}}\{B, C\}\}`$ and $`\Sigma^{\text{⊗}}\{\Sigma^{\text{⊗}}\{A, B\}, C\}`$ two different types, only isomorphic.
+  The arguments of a constructor, which should form a record, and the fields of a declared type have any number of fields anyway.
+  The metatheory of ADE about pairs is then redone by induction on the fields.
 - Each field carries one grade $`q`$ for its uses in the types of all the fields after it, as the nested pairs of ADE, rather than one grade for each later field, as the rows of grades of GrTT.
   The usage of a record type adds these uses anyway, so finer rows would only add grades to write and to check.
   Without the grade $`q`$, the uses of a field in the types after it would not be counted at all, and a field of grade `none / linear` could not appear in them.
@@ -561,5 +593,8 @@ To be written.
   It keeps the exact form of ADE for now, and this point is to be analyzed again.
 - Which mechanism declares the types with named fields, distinct from every other type, and how does it relate to the inductive types, of which the [structures of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) are the case with a single constructor?
   The arguments of each constructor should form a [record](#records), so that a record is never defined in two ways.
+- Does a program show in its type the resources it abandons in the empty additive record?
+  An empty additive record that absorbed a linear resource has no elimination, and using it with a grade that discards it multiplies the grade of the resource, which then loses its single use: the conjecture is that a closed program whose type, normalized, contains no empty additive record abandons no resource, as the subformula property of linear logic implies without dependent types.
+  If it fails, the additive records need at least one field, and the empty one becomes a second unit type or disappears.
 - Is a term checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ erased safely?
   ADE prove the soundness of erasure for their two modes only; the projection of a grade on its run-time multiplicity preserves the operations and the order, and could carry their result to the three modes.
