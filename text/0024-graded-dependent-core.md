@@ -30,14 +30,14 @@ Each letter keeps one kind and one rank, so that the rank of an object (scalar o
 
 | Letters | Denote |
 | --- | --- |
-| $`x, y`$ | Variables |
+| $`x, y, z`$ | Variables |
 | $`f`$ | Fields of [records](#records) |
 | $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$ and $`a`$ a term substituted for a variable |
-| $`A, B`$ | Types |
+| $`A, B, C`$ | Types |
 | $`R`$ | The type of a record in the rules of the [records](#records) |
 | $`\diamond`$ | The connective of a [record](#records), $`\otimes`$ or $`\&`$ |
 | $`\kappa`$ | Sorts, the universes $`U_l`$ and the universes of [strict propositions](#strict-propositions) $`\Omega_l`$ |
-| $`\Gamma`$ | Contexts, sequences of declarations $`x : A`$ |
+| $`\Gamma, \Theta`$ | Contexts, sequences of declarations $`x : A`$, $`\Theta`$ being the fields of a [record](#records) bound as variables by a match |
 | $`p, q, r`$ | Grades, elements of the semiring of the [grades](#grades) |
 | $`\gamma, \delta`$ | Vectors of grades, one grade per variable of the context |
 | $`m`$ | Modes, in which a term is checked for its uses |
@@ -78,6 +78,7 @@ The rules use the notation of the formalization of ADE, which differs slightly f
 | `t ∘⟨ p ⟩ u` | $`t \circ_{p} u`$ |
 | `Σʷ p , q ▷ A ▹ B`, `Σˢ p , q ▷ A ▹ B` | $`\Sigma^{\text{⊗}}_{U_l}\{x :^{q}_{p} A,\ y :^{\mathbb{0}}_{\mathbb{1}} B\}`$, $`\Sigma^{\text{\&}}_{U_l}\{x :^{q}_{p} A,\ y :^{\mathbb{0}}_{\mathbb{1}} B\}`$ |
 | `prodʷ p t u`, `prodˢ p t u` | $`R\{t,\ u\}`$, where $`R`$ is the record type of the pair |
+| `prodrec r p q C t u` | $`\mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x,\ y\} \Rightarrow u`$ |
 | `Uⱼ`, `U-cong` | $`(U)`$, $`(U_\equiv)`$ |
 | `univ` | $`(U_{\mathsf{type}})`$, $`(U_{\mathsf{type}\equiv})`$ |
 | `γ ▸[ m ] t` | $`\gamma \mathrel{▶_m} t`$ |
@@ -524,8 +525,49 @@ The last premise keeps the erased uses of a term checked in an erased mode erase
 
 #### Matching
 
-To be written.
+A record is matched by a body $`u`$ that receives all its fields at once as variables, which form the context $`\Theta`$, and the type $`C`$ of the result may depend on the record, bound to $`z`$:
 
+```math
+\Theta \;=\; x_1 : A_1,\ x_2 : A_2[x_1/f_1],\ \dots,\ x_n : A_n[x_1/f_1, \dots, x_{n - 1}/f_{n - 1}]
+```
+
+The match carries $`R`$ and $`C`$, as the matches of ADE carry their type of result, so that its type is determined by the term:
+
+```math
+\frac{\Gamma,\ z : R \vdash C \quad \Gamma \vdash t : R \quad \Gamma,\ \Theta \vdash u : C[R\{x_1,\ \dots,\ x_n\}/z]}{\Gamma \vdash \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u : C[t/z]}\;(\mathsf{match})
+```
+
+A record of propositions is a proof, and is matched for any result: its fields are proofs, which the body uses only in erased positions, and by the $`\eta`$ rule of the [projections](#projections), the match of a proof equals its body with the projections of the proof substituted, so that the matches of two proofs of the same proposition are equal.
+
+On the seven grades, the grades $`p`$ that allow discarding, $`p \le \mathbb{0}`$, are exactly those that allow duplicating, $`p \le p + p`$: $`\mathbb{0}`$, $`\langle 0, \omega \rangle`$ and $`\langle \omega, \omega \rangle`$.
+A multiplicative record provides all its fields, so that taking fewer than all of them discards the others, as a [projection](#projections) does; an additive record provides one field, so that taking more than one duplicates the resources they share, as a match does.
+In the mode $`m`$, the field $`f_i`$ is discarded or duplicated freely when $`\ulcorner m \urcorner \cdot p_i \le \mathbb{0}`$, which always holds in the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, and in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ fails only for the grades whose total multiplicity is $`1`$.
+
+The record is used $`r`$ times, and the type $`C`$ is checked in the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, as in ADE, so that it uses no variable.
+The body of the match of a multiplicative record uses each variable $`x_i`$ with the grade of its field times $`r`$:
+
+```math
+\frac{\begin{gathered}{}\diamond = \text{⊗} \quad \gamma \mathrel{▶_{m \odot r}} t \quad \delta \bullet \ulcorner m \urcorner \cdot r \cdot p_1 \bullet \dots \bullet \ulcorner m \urcorner \cdot r \cdot p_n \mathrel{▶_m} u \quad \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \\ \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}}\end{gathered}}{r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u}\;(\mathsf{match}^{\text{⊗}}_{\mathsf{m}})
+```
+
+The body of the match of an additive record uses one field $`f_i`$ of its choice, and the other fields only when they are discarded or duplicated freely; it uses the others with $`\mathbb{0}`$, that is, in erased positions only:
+
+```math
+\frac{\begin{gathered}{}\diamond = \text{\&} \quad \gamma \mathrel{▶_{m \odot r}} t \quad \delta \bullet g_1 \bullet \dots \bullet g_n \mathrel{▶_m} u \quad \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \quad \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}} \\ g_j = \ulcorner m \urcorner \cdot r \cdot p_j \text{ if } j = i \text{ or } \ulcorner m \urcorner \cdot p_j \le \mathbb{0} \quad g_j = \mathbb{0} \text{ otherwise} \quad \text{for each } j\end{gathered}}{r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u}\;(\mathsf{match}^{\text{\&}}_{\mathsf{m}})
+```
+
+The condition on $`r`$ forbids, in a term that runs, the match of a record that does not exist at run time: the body would run while the record is erased.
+ADE call this an erased match: they prove the soundness of erasure with it for closed programs only, and without it also for programs that run under consistent hypotheses, which this RFC follows for now; a record without use at run time can still be matched inside an erased term, and the case left out is an [unresolved question](#unresolved-questions).
+A field that is a proof stays erased, since the grade $`r \cdot p_i`$ of its variable has no use at run time when $`p_i`$ has none.
+ADE also give the type of the result a grade $`q`$ for its uses of $`z`$, which counts nothing when the type is checked in $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, whose grade is $`\mathbb{0}`$, so the match has none.
+
+Matching a record that has just been built substitutes its terms for the variables:
+
+```math
+\frac{\Gamma,\ z : R \vdash C \quad \Gamma \vdash t_i : A_i[t_1/f_1, \dots, t_{i - 1}/f_{i - 1}] \quad \text{for each } i \quad \Gamma,\ \Theta \vdash u : C[R\{x_1,\ \dots,\ x_n\}/z]}{\Gamma \vdash \mathsf{match}_r\ R\{t_1,\ \dots,\ t_n\}\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u \equiv u[t_1/x_1, \dots, t_n/x_n] : C[R\{t_1,\ \dots,\ t_n\}/z]}\;(\mathsf{match}_\beta)
+```
+
+Equality is also a congruence for the record types, their terms and their match, with the premises of their rules, so that a record whose type is written differently but equal is matched as well.
 
 #### Projections
 
@@ -566,6 +608,11 @@ To be written.
   Records nested two fields at a time would lose the grade of the last field, which the weak pairs of ADE fix to $`\mathbb{1}`$, would need a unit for the innermost one, and would make $`\Sigma^{\text{⊗}}\{A, \Sigma^{\text{⊗}}\{B, C\}\}`$ and $`\Sigma^{\text{⊗}}\{\Sigma^{\text{⊗}}\{A, B\}, C\}`$ two different types, only isomorphic.
   The arguments of a constructor, which should form a record, and the fields of a declared type have any number of fields anyway.
   The metatheory of ADE about pairs is then redone by induction on the fields.
+- A [record](#records) has a single construction, so that its projections and its match define each other through $`\eta`$: the multiplicative and additive records share the typing of the strong pairs of ADE, and their connective acts on usage only, where taking fewer fields than a multiplicative record provides needs discarding, and taking more than the one field an additive record provides needs duplicating.
+  Keeping the multiplicative records without $`\eta`$, as the weak pairs of ADE, would leave a record unequal to the record rebuilt from its fields, and a record of propositions matched only for a proposition.
+  The $`\eta`$ rule of a type defined by its pattern matching, $`C[t] \equiv \mathsf{match}\ t\ \mathsf{with}\ R\{x_1, \dots, x_n\} \Rightarrow C[R\{x_1, \dots, x_n\}]`$, has no known decision procedure with dependent types, and is delicate to decide even without them, as [Scherer](https://doi.org/10.1145/3009837.3009901) shows for sums.
+  An $`\eta`$ rule for the records whose fields are all discarded freely, and for them only, would make equality depend on grades.
+  The inductive types of a later RFC have several constructions, and keep pattern matching as their elimination.
 - Each field carries one grade $`q`$ for its uses in the types of all the fields after it, as the nested pairs of ADE, rather than one grade for each later field, as the rows of grades of GrTT.
   The usage of a record type adds these uses anyway, so finer rows would only add grades to write and to check.
   Without the grade $`q`$, the uses of a field in the types after it would not be counted at all, and a field of grade `none / linear` could not appear in them.
@@ -593,6 +640,10 @@ To be written.
   It keeps the exact form of ADE for now, and this point is to be analyzed again.
 - Which mechanism declares the types with named fields, distinct from every other type, and how does it relate to the inductive types, of which the [structures of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) are the case with a single constructor?
   The arguments of each constructor should form a [record](#records), so that a record is never defined in two ways.
+- Can a term that runs match a record without use at run time, which ADE call an erased match?
+  Erasing it seems sound, since the body uses the fields only in erased positions: [ADE](https://arxiv.org/abs/2603.29716) prove the soundness of erasure with it for closed programs, but their proof fails for a program that runs under hypotheses, in a context that is not empty, for which they only conjecture it; allowing it later would only accept more programs.
+  This case is left out for now and must be studied later: the restriction could be lifted for closed programs, which the proof of ADE already covers, the open points being the programs that run under hypotheses and the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$.
+  With the $`\eta`$ rule of the records, a match whose record is neutral reduces to its projections, which removes the [counterexample of ADE](https://github.com/graded-type-theory/graded-type-theory/blob/master/Graded/Erasure/LogicalRelation/Fundamental/Counterexample.agda) for the programs that run under hypotheses, an erased match blocked on a variable while its extraction computes; this reduction preserves the usage when the record is not used at all, $`r = \mathbb{0}`$, but not for the other erased grades, of the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$.
 - Does a program show in its type the resources it abandons in the empty additive record?
   An empty additive record that absorbed a linear resource has no elimination, and using it with a grade that discards it multiplies the grade of the resource, which then loses its single use: the conjecture is that a closed program whose type, normalized, contains no empty additive record abandons no resource, as the subformula property of linear logic implies without dependent types.
   If it fails, the additive records need at least one field, and the empty one becomes a second unit type or disappears.
