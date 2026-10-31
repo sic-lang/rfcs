@@ -1,6 +1,9 @@
 {
   "config": {
     // Lines are not wrapped at a fixed length.
-    "MD013": false
+    "MD013": false,
+    // A concept that applies to several sections has the same heading in each, such as the formation
+    // of each type, so headings only have to differ from the other subsections of their section.
+    "MD024": { "siblings_only": true }
   }
 }
