@@ -1,4 +1,4 @@
-# Sic RFCs
+# RFCs
 
 RFCs for the Sic programming language.
 An RFC (request for comments) proposes a substantial change to the language, its tools or the project, and records the decision with its rationale.
