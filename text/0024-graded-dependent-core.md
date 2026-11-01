@@ -233,7 +233,7 @@ The core has the four judgments of Martin-Löf type theory, as [Nordström, Pete
 \vdash \Sigma \qquad \Sigma \vdash \Gamma \qquad \Sigma;\ \Gamma \vdash A \qquad \Sigma;\ \Gamma \vdash A \equiv B \qquad \Sigma;\ \Gamma \vdash t : A \qquad \Sigma;\ \Gamma \vdash t \equiv u : A \qquad \Sigma;\ \gamma \mathrel{▶_m} t
 ```
 
-| Judgment | Meaning |
+| Judgment | Reading |
 | --- | --- |
 | $`\vdash \Sigma`$ | $`\Sigma`$ is a well-formed [signature](#signatures) |
 | $`\Sigma \vdash \Gamma`$ | $`\Gamma`$ is a well-formed context |
@@ -243,7 +243,6 @@ The core has the four judgments of Martin-Löf type theory, as [Nordström, Pete
 | $`\Sigma;\ \Gamma \vdash t \equiv u : A`$ | $`t`$ and $`u`$ are equal terms of type $`A`$ |
 | $`\Sigma;\ \gamma \mathrel{▶_m} t`$ | Checked in the [mode](#modes) $`m`$, $`t`$ uses each variable of its context as the grade that $`\gamma`$ gives it allows |
 
-As Nordström, Petersson and Smith explain them, a type is known by its terms and by the equality of its terms, which is an equivalence relation, and two types are equal when they have the same terms and the same equal terms; the formalization has to check the rules of this RFC against this meaning, which its logical relation states.
 Every other judgment holds in a [signature](#signatures) $`\Sigma`$, the declarations of the types it may use, written on its left and unchanged from the premises of a rule to its conclusion.
 The judgment for contexts makes explicit the condition that Nordström, Petersson and Smith put on the context of a judgment: each declared type is a type in the context of the declarations before it.
 
@@ -423,6 +422,76 @@ A term may be given grades lower than its uses, in the order of the [grades](#gr
 ```
 
 This rule lets an unrestricted variable be used once or not at all, and a variable of grade $`\langle \omega, 1 \rangle`$ be used once, at run time or not.
+
+#### Meaning
+
+The judgments of typing mean what the [meaning explanations](https://doi.org/10.1016/S0049-237X(09)70189-2) of Martin-Löf say of them, as Nordström, Petersson and Smith present them: a judgment is true when its terms compute as it says, and the rules are sound for this meaning, but not complete.
+
+The meaning of a judgment is written with $`\vDash`$ in place of $`\vdash`$.
+A closed term $`t`$ computes to a canonical term $`v`$, written $`t \Downarrow v`$, when its weak head reduction, the one of the [conversion](#conversion), ends on $`v`$, a term in constructor form: the meaning explanations evaluate lazily, as Nordström, Petersson and Smith note, and this computation is the one of the type theory, not the evaluation of a program.
+A closed canonical type $`A_0`$ is known by its canonical terms and by their equality, a partial equivalence relation $`\mathsf{eq}(A_0)`$, symmetric and transitive, between closed canonical terms, which the section of each type gives, and the declarations of the signature for the types they declare.
+A closed judgment requires its signature to be meaningful, as every judgment of the rules implies that its signature is well formed, so that it is the hypothetical judgment in the empty context:
+
+```math
+\begin{aligned}
+\Sigma \vDash A \equiv B &\iff \vDash \Sigma,\ A \Downarrow A_0,\ B \Downarrow B_0,\ \mathsf{eq}(A_0) \text{ and } \mathsf{eq}(B_0) \text{ are defined, and } \mathsf{eq}(A_0) = \mathsf{eq}(B_0) \\
+\Sigma \vDash A &\iff \Sigma \vDash A \equiv A \\
+\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A,\ A \Downarrow A_0,\ t \Downarrow v,\ u \Downarrow w \text{ and } (v, w) \in \mathsf{eq}(A_0) \\
+\Sigma \vDash t : A &\iff \Sigma \vDash t \equiv t : A
+\end{aligned}
+```
+
+A proof of a [strict proposition](#strict-propositions) need not compute to a canonical term, since irrelevance makes all the proofs of a proposition equal: the strict propositions refine this meaning for their proofs.
+
+A judgment in a context $`\Gamma`$ is hypothetical: its context is meaningful, and it holds under every pair of equal closed substitutions of $`\Gamma`$, which give each variable a closed term of its type, and each second-order variable an abstraction whose instances by equal arguments are equal terms of its type:
+
+```math
+\begin{aligned}
+\mathsf{eq}(\varepsilon) &= \{((),\ ())\} \\
+\mathsf{eq}(\Gamma,\ x : A) &= \{((\sigma_1, v_1),\ (\sigma_2, v_2)) \mid (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma),\ \Sigma \vDash v_1 \equiv v_2 : A[\sigma_1]\} \\
+\mathsf{eq}(\Gamma,\ X : (\Theta \vdash A)) &= \{((\sigma_1, \bar x.\, B_1),\ (\sigma_2, \bar x.\, B_2)) \mid (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma),\ \forall (\tau_1, \tau_2) \in \mathsf{eq}(\Theta[\sigma_1]).\ \Sigma \vDash B_1[\tau_1] \equiv B_2[\tau_2] : A[\sigma_1, \tau_1]\}
+\end{aligned}
+```
+
+```math
+\begin{aligned}
+\Sigma;\ \Gamma \vDash A \equiv B &\iff \Sigma \vDash \Gamma \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash A[\sigma_1] \equiv B[\sigma_2] \\
+\Sigma;\ \Gamma \vDash A &\iff \Sigma;\ \Gamma \vDash A \equiv A \\
+\Sigma;\ \Gamma \vDash t \equiv u : A &\iff \Sigma;\ \Gamma \vDash A \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash t[\sigma_1] \equiv u[\sigma_2] : A[\sigma_1] \\
+\Sigma;\ \Gamma \vDash t : A &\iff \Sigma;\ \Gamma \vDash t \equiv t : A
+\end{aligned}
+```
+
+A telescope has the equal substitutions of the context it forms, whose grades the meaning ignores.
+A context is meaningful when its last type is a type in the context before it, which makes this context meaningful too, as the rule $`(\mathsf{ctx}_{,})`$ needs no other premise.
+A signature is meaningful when each of its declarations gives the equality of the canonical terms of each instance of the type it declares, in the signature before it, as the data and codata types define:
+
+```math
+\begin{aligned}
+\Sigma \vDash \varepsilon &\iff \vDash \Sigma \\
+\Sigma \vDash \Gamma,\ x : A &\iff \Sigma;\ \Gamma \vDash A \\
+\Sigma \vDash \Gamma,\ X : (\Theta \vdash A) &\iff \Sigma;\ \Gamma,\ \Theta \vDash A \\
+\vDash \Sigma &\iff \text{each declaration } \mathcal{D} \text{ of } \Sigma \text{ gives } \mathsf{eq}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \text{ for each instance, in the signature before } \mathcal{D}
+\end{aligned}
+```
+
+The rules are sound for this meaning: every judgment they derive is true, which the formalization has to prove:
+
+```math
+\begin{aligned}
+\vdash \Sigma &\implies \vDash \Sigma \\
+\Sigma \vdash \Gamma &\implies \Sigma \vDash \Gamma \\
+\Sigma;\ \Gamma \vdash A &\implies \Sigma;\ \Gamma \vDash A \\
+\Sigma;\ \Gamma \vdash A \equiv B &\implies \Sigma;\ \Gamma \vDash A \equiv B \\
+\Sigma;\ \Gamma \vdash t : A &\implies \Sigma;\ \Gamma \vDash t : A \\
+\Sigma;\ \Gamma \vdash t \equiv u : A &\implies \Sigma;\ \Gamma \vDash t \equiv u : A
+\end{aligned}
+```
+
+They are not complete, since a true judgment need not be derivable: for a closed term $`t`$ of a type $`B`$ and a term $`g`$ that no rule types, $`(\lambda_{\mathbb{0}}\, (x : A).\, t) \circ_{\mathbb{0}} g`$ computes to $`t`$ without reaching $`g`$, so that it is a term of $`B`$ in this meaning but not by the rules, and two functions with equal results on all their arguments are equal in this meaning but not by the rules.
+The truth of a judgment is not decidable either, since it asks whether a computation ends.
+
+Usage has no meaning of its own in this RFC, since the uses of a variable that a program makes when it runs depend on its evaluation order, which a later RFC fixes; the [erasure](#erasure) gives its meaning to a run-time multiplicity $`0`$: the term that has it is absent from the program that runs.
 
 #### Admissible Properties
 
