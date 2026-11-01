@@ -121,6 +121,32 @@ The multiplicities are added, multiplied and met as follows:
 
 The multiplicities are ordered by their meet, as in ADE: $`\omega`$ is below $`0`$ and below $`1`$, while $`0`$ and $`1`$ are not comparable, so that a variable of multiplicity $`\omega`$ may be used any number of times, none included, one of multiplicity $`1`$ exactly once and one of multiplicity $`0`$ never.
 
+##### Meaning
+
+The multiplicities are an [abstract interpretation](https://doi.org/10.1145/512950.512973) of the numbers of uses, in the sense of Cousot and Cousot: a multiplicity stands for the numbers of uses it allows, and its operations approximate those of the numbers, soundly and as precisely as the multiplicities can, from which its tables and its order follow:
+
+```math
+\mathsf{uses}(0) = \{0\} \qquad \mathsf{uses}(1) = \{1\} \qquad \mathsf{uses}(\omega) = \mathbb{N}
+```
+
+The best multiplicity for a non-empty set $`S`$ of numbers of uses is the one that allows all of them, and allows the fewest numbers among those that do; the empty set has none, since $`0`$ and $`1`$ both allow its elements, vacuously, and neither allows fewer numbers than the other, but no operation below needs it.
+Each operation is the [best abstraction](https://doi.org/10.1145/567752.567778) of the same operation on numbers, and the order is the reverse inclusion, so that a lower multiplicity allows more numbers of uses, the reverse of the usual order of abstract interpretation:
+
+```math
+\mathsf{best}(S) = u \iff S \subseteq \mathsf{uses}(u) \text{ and } \forall w.\ S \subseteq \mathsf{uses}(w) \implies \mathsf{uses}(u) \subseteq \mathsf{uses}(w)
+```
+
+```math
+\begin{aligned}
+u + v &= \mathsf{best}(\{a + b \mid a \in \mathsf{uses}(u),\ b \in \mathsf{uses}(v)\}) \\
+u \cdot v &= \mathsf{best}(\{a \cdot b \mid a \in \mathsf{uses}(u),\ b \in \mathsf{uses}(v)\}) \\
+u \wedge v &= \mathsf{best}(\mathsf{uses}(u) \cup \mathsf{uses}(v)) \\
+u \le v &\iff \mathsf{uses}(v) \subseteq \mathsf{uses}(u)
+\end{aligned}
+```
+
+For instance, $`1 + 1`$ allows $`2`$ uses, which only $`\omega`$ allows, and $`0 \wedge 1`$ allows $`0`$ and $`1`$ uses, which only $`\omega`$ allows too.
+
 #### Grades
 
 A grade counts the uses of a variable along the two axes of the [grades](https://github.com/sic-lang/rfcs/pull/16) of Sic: its uses at run time, and all its uses, erased or not.
@@ -152,6 +178,32 @@ Each grade has a name in Sic, made of the names of its two multiplicities: `none
 | `unrestricted / unrestricted` | $`\langle \omega, \omega \rangle`$ |
 
 For instance, passing a permission of grade `none / linear` to a parameter of the same grade uses it with the grade $`\langle 0, 1 \rangle \cdot \mathbb{1} = \langle 0, 1 \rangle`$: once, and never at run time.
+
+##### Meaning
+
+The grades are an abstract interpretation of the pairs of numbers of uses, as the [multiplicities](#multiplicities) are of the numbers: a grade stands for the pairs it allows, at run time and in total, the uses at run time being among all the uses:
+
+```math
+\mathsf{uses}(\langle r, t \rangle) = \{(a, b) \mid a \in \mathsf{uses}(r),\ b \in \mathsf{uses}(t),\ a \le b\}
+```
+
+Each operation gives the best grade for a non-empty set $`S`$ of pairs of numbers of uses, as for the multiplicities, and the order is again the reverse inclusion:
+
+```math
+\mathsf{best}(S) = p \iff S \subseteq \mathsf{uses}(p) \text{ and } \forall w.\ S \subseteq \mathsf{uses}(w) \implies \mathsf{uses}(p) \subseteq \mathsf{uses}(w)
+```
+
+```math
+\begin{aligned}
+p + q &= \mathsf{best}(\{(a_1 + a_2, b_1 + b_2) \mid (a_1, b_1) \in \mathsf{uses}(p),\ (a_2, b_2) \in \mathsf{uses}(q)\}) \\
+p \cdot q &= \mathsf{best}(\{(a_1 \cdot a_2, b_1 \cdot b_2) \mid (a_1, b_1) \in \mathsf{uses}(p),\ (a_2, b_2) \in \mathsf{uses}(q)\}) \\
+p \wedge q &= \mathsf{best}(\mathsf{uses}(p) \cup \mathsf{uses}(q)) \\
+p \le q &\iff \mathsf{uses}(q) \subseteq \mathsf{uses}(p)
+\end{aligned}
+```
+
+The grade $`\langle \omega, 1 \rangle`$ allows exactly the pairs $`(0, 1)`$ and $`(1, 1)`$, the union of those of $`\langle 0, 1 \rangle`$ and of $`\mathbb{1}`$, which makes it their meet.
+This meaning also chooses the seven grades among the nine pairs: $`\langle 1, 0 \rangle`$ allows no pair, since a use at run time is a use, and $`\langle \omega, 0 \rangle`$ allows only $`(0, 0)`$, as $`\mathbb{0}`$ does, while the seven grades allow non-empty sets of pairs, all different.
 
 #### Modes
 
