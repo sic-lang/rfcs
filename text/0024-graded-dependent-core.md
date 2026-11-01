@@ -73,7 +73,7 @@ The rules use the notation of the formalization of ADE, which differs slightly f
 | Formalization of ADE | This RFC |
 | --- | --- |
 | `var x0`, `var x1`, de Bruijn indices | $`x`$, $`y`$, named variables |
-| `Γ ⊢ t ∷ A`, `Γ ⊢ t ≡ u ∷ A` | $`\Gamma \vdash t : A`$, $`\Gamma \vdash t \equiv u : A`$ |
+| `Γ ⊢ t ∷ A`, `Γ ⊢ t ≡ u ∷ A` | $`\Sigma;\ \Gamma \vdash t : A`$, $`\Sigma;\ \Gamma \vdash t \equiv u : A`$ |
 | `Π p , q ▷ A ▹ B` | $`\Pi^{q}_{p}\, (x : A).\, B`$ |
 | `lam p t` | $`\lambda_{p}\, (x : A).\, t`$, which also carries the type of its argument |
 | `t ∘⟨ p ⟩ u` | $`t \circ_{p} u`$ |
@@ -85,7 +85,7 @@ The rules use the notation of the formalization of ADE, which differs slightly f
 | `starʷ`, `starˢ` | $`R\{\}`$, where $`R`$ is the record type of the unit |
 | `Uⱼ`, `U-cong` | $`(U)`$, $`(U_\equiv)`$ |
 | `univ` | $`(U_{\mathsf{type}})`$, $`(U_{\mathsf{type}\equiv})`$ |
-| `γ ▸[ m ] t` | $`\gamma \mathrel{▶_m} t`$ |
+| `γ ▸[ m ] t` | $`\Sigma;\ \gamma \mathrel{▶_m} t`$ |
 | `m ᵐ· p` | $`m \odot p`$ |
 | `𝟘ᵐ`, `𝟙ᵐ` | $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$, with the [mode](#modes) $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ between them |
 
@@ -227,51 +227,157 @@ The three modes form a mode structure of the formalization of ADE, which defines
 
 ### Judgments
 
-The core has the four judgments of Martin-Löf type theory, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, with a judgment for contexts and a judgment for usage:
+The core has the four judgments of Martin-Löf type theory, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, with a judgment for signatures, a judgment for contexts and a judgment for usage:
 
 ```math
-\vdash \Gamma \qquad \Gamma \vdash A \qquad \Gamma \vdash A \equiv B \qquad \Gamma \vdash t : A \qquad \Gamma \vdash t \equiv u : A \qquad \gamma \mathrel{▶_m} t
+\vdash \Sigma \qquad \Sigma \vdash \Gamma \qquad \Sigma;\ \Gamma \vdash A \qquad \Sigma;\ \Gamma \vdash A \equiv B \qquad \Sigma;\ \Gamma \vdash t : A \qquad \Sigma;\ \Gamma \vdash t \equiv u : A \qquad \Sigma;\ \gamma \mathrel{▶_m} t
 ```
 
 | Judgment | Meaning |
 | --- | --- |
-| $`\vdash \Gamma`$ | $`\Gamma`$ is a well-formed context |
-| $`\Gamma \vdash A`$ | $`A`$ is a type in the context $`\Gamma`$ |
-| $`\Gamma \vdash A \equiv B`$ | $`A`$ and $`B`$ are equal types |
-| $`\Gamma \vdash t : A`$ | $`t`$ is a term of type $`A`$ |
-| $`\Gamma \vdash t \equiv u : A`$ | $`t`$ and $`u`$ are equal terms of type $`A`$ |
-| $`\gamma \mathrel{▶_m} t`$ | Checked in the [mode](#modes) $`m`$, $`t`$ uses each variable of its context as the grade that $`\gamma`$ gives it allows |
+| $`\vdash \Sigma`$ | $`\Sigma`$ is a well-formed [signature](#signatures) |
+| $`\Sigma \vdash \Gamma`$ | $`\Gamma`$ is a well-formed context |
+| $`\Sigma;\ \Gamma \vdash A`$ | $`A`$ is a type in the context $`\Gamma`$ |
+| $`\Sigma;\ \Gamma \vdash A \equiv B`$ | $`A`$ and $`B`$ are equal types |
+| $`\Sigma;\ \Gamma \vdash t : A`$ | $`t`$ is a term of type $`A`$ |
+| $`\Sigma;\ \Gamma \vdash t \equiv u : A`$ | $`t`$ and $`u`$ are equal terms of type $`A`$ |
+| $`\Sigma;\ \gamma \mathrel{▶_m} t`$ | Checked in the [mode](#modes) $`m`$, $`t`$ uses each variable of its context as the grade that $`\gamma`$ gives it allows |
 
 As Nordström, Petersson and Smith explain them, a type is known by its terms and by the equality of its terms, which is an equivalence relation, and two types are equal when they have the same terms and the same equal terms; the formalization has to check the rules of this RFC against this meaning, which its logical relation states.
+Every other judgment holds in a [signature](#signatures) $`\Sigma`$, the declarations of the types it may use, written on its left and unchanged from the premises of a rule to its conclusion.
 The judgment for contexts makes explicit the condition that Nordström, Petersson and Smith put on the context of a judgment: each declared type is a type in the context of the declarations before it.
 
 Typing and the equalities are those of Martin-Löf type theory: they carry no grade.
-Usage is defined on the term alone, whose binders carry their grades, and its vector has a grade for each variable of the context of the term.
+Usage is defined on the term and the signature, whose binders and declarations carry the grades, and its vector has a grade for each variable of the context of the term.
 A program is a term that is both well typed and well used: typing tells what it computes, and usage how it uses its resources.
 The rules of usage are named after the rules of typing, with the subscript $`\mathsf{m}`$.
 
-Equality is written $`\equiv`$, so that $`=`$ remains free in terms for the equality type of a later RFC; in the conditions of the rules, $`=`$ is an equality of the metalanguage, which for levels is the one the [levels](#levels) define, not the equality of their syntax.
+Equality is written $`\equiv`$; in the conditions of the rules, $`=`$ is an equality of the metalanguage, which for levels is the one the [levels](#levels) define, not the equality of their syntax.
 
 #### Contexts
 
-A context is either empty, written $`\varepsilon`$, or a context extended by a declaration whose type is a type in it:
+A context is either empty, written $`\varepsilon`$, in a well-formed signature, or a context extended by a declaration whose type is a type in it:
 
 ```math
-\frac{}{\vdash \varepsilon}\;(\mathsf{ctx}_\varepsilon)
+\frac{\vdash \Sigma}{\Sigma \vdash \varepsilon}\;(\mathsf{ctx}_\varepsilon)
 \qquad
-\frac{\Gamma \vdash A \quad x \notin \Gamma}{\vdash \Gamma,\ x : A}\;(\mathsf{ctx}_{,})
+\frac{\Sigma;\ \Gamma \vdash A \quad x \notin \Gamma}{\Sigma \vdash \Gamma,\ x : A}\;(\mathsf{ctx}_{,})
 ```
 
 The variable $`x`$ is fresh, absent from $`\Gamma`$, so that a name designates one declaration; ADE, whose variables are de Bruijn indices, needs no such condition.
+
+#### Signatures
+
+A signature lists the declarations of the types of the core in order, each checked against the declarations before it, as the global environment of [Rocq](https://rocq-prover.org/doc/master/refman/language/cic.html) is an ordered list of declarations.
+It is either empty, written $`\varnothing`$, or a signature extended by a well-formed declaration $`\mathcal{D}`$ whose name $`D`$ is fresh, whose signature is then well formed, since every judgment implies that its signature is, as the [admissible properties](#admissible-properties) state:
+
+```math
+\frac{}{\vdash \varnothing}\;(\mathsf{sig}_\varnothing)
+\qquad
+\frac{\Sigma \vdash \mathcal{D} \quad D \notin \Sigma}{\vdash \Sigma,\ \mathcal{D}}\;(\mathsf{sig}_{,})
+```
+
+A declaration refers only to the declarations before it, never to itself, so that the declared types are not recursive, until this RFC adds the recursive declarations, as the [unresolved questions](#unresolved-questions) say.
+A declared type is nominal, as a [struct of Rust](https://doc.rust-lang.org/reference/types/struct.html): it is known by its name, so that two declarations with the same parameters and the same constructors or destructors give two different types.
+The constructors and destructors are named within their declaration, the constructor $`c_i`$ of $`D`$ being written $`D.c_i`$ in terms, as in [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/), so that two declarations may name their constructors alike.
+
+##### Declarations
+
+A declaration introduces either a data type, known by its constructors, each with the telescope $`\Theta_i`$ of its fields, or a codata type, known by its destructors, each with the telescope $`\Theta_i`$ of its arguments and its result type $`B_i`$:
+
+```math
+\mathsf{data}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ c_1 : \Theta_1 \mid \dots \mid c_n : \Theta_n
+```
+
+```math
+\mathsf{codata}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ d_1 :^{q_1}_{p_1} \Theta_1 \to B_1 \mid \dots \mid d_n :^{q_n}_{p_n} \Theta_n \to B_n
+```
+
+The sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ are parameters of the declaration, instantiated at each use with sorts, levels and grades, as the level variables of a top-level definition are under [universe polymorphism](#universe-polymorphism): the types of functions, for instance, are one declaration for all the grades of their argument and all the sorts of their domain and codomain.
+A sort variable $`s`$ stands for $`U`$ or $`\Omega`$, and $`s_l`$ for the sort $`U_l`$ or $`\Omega_l`$, as the sort qualities of the [sort polymorphism of Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html) stand for its sorts, whose theory [Bounded Sort Polymorphism with Elimination Constraints](https://doi.org/10.1145/3776732) gives.
+The context $`\Delta`$ declares the parameters, which carry no grades and which the types of the fields, arguments and results use, and $`\kappa`$ is the sort in which the declared type lives, written $`s_l`$ where $`s`$ is $`U`$, $`\Omega`$ or a sort variable, and $`l`$ a level that may use the level variables.
+The types of the parameters do not bound the level of the declared type, as in Lean, since every use instantiates them: only the fields, the arguments and the results live in its sort.
+A telescope is a sequence of declarations whose types may depend on the declarations before it, as a context, and whose entries carry two grades, as the argument of a [function](#functions) does: $`x :^{q}_{p} A`$ declares a field or an argument used with the grade $`p`$, whose variable the types after it use with the grade $`q`$:
+
+```math
+\Theta \;=\; (x_1 :^{q_1}_{p_1} A_1,\ \dots,\ x_k :^{q_k}_{p_k} A_k)
+```
+
+A destructor carries the same two grades: $`p`$ for the uses of its result, and $`q`$ for its uses in the arguments and the results of the destructors after it, so that a destructor without arguments is a field of an additive [record](#records).
+The last field of a constructor and the last destructor carry a grade $`q`$ too, so that all have the same form; since no type comes after them, it only has to allow no use, as the grade $`q`$ of the last field of a [record](#records).
+A data type may have no constructor and a codata type no destructor.
+
+##### Parameters
+
+A parameter is either a variable $`x : A`$ or a second-order variable $`X : (\Theta \vdash A)`$, which stands for a term of type $`A`$ under the variables of $`\Theta`$, as the contextual types of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591) do for their metavariables: the type of the result of a function, for instance, is a parameter that depends on the argument.
+A second-order variable is used applied to terms for the variables of its telescope, $`X[\bar t]`$, and appears only in the contexts in which declarations are checked: a use of a declaration instantiates its parameters, so that the terms of a program never contain one.
+The arguments $`\bar t = (t_1,\ \dots,\ t_k)`$ are typed by the telescope, whose grades typing ignores, each argument instantiating the types after it:
+
+```math
+\frac{\Sigma;\ \Gamma,\ \Theta \vdash A \quad X \notin \Gamma}{\Sigma \vdash \Gamma,\ X : (\Theta \vdash A)}\;(\mathsf{ctx}_{\vdash})
+\qquad
+\frac{X : (\Theta \vdash A) \in \Gamma \quad \Sigma;\ \Gamma \vdash \bar t : \Theta}{\Sigma;\ \Gamma \vdash X[\bar t] : A[\bar t / \Theta]}\;(\mathsf{var}_{\vdash})
+```
+
+```math
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () : \varepsilon}\;(\mathsf{tel}_\varepsilon)
+\qquad
+\frac{\Sigma;\ \Gamma \vdash t : A \quad \Sigma;\ \Gamma \vdash \bar t : \Theta[t/x]}{\Sigma;\ \Gamma \vdash (t,\ \bar t) : (x :^{q}_{p} A,\ \Theta)}\;(\mathsf{tel}_{,})
+```
+
+Equal arguments give equal applications:
+
+```math
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{tel}_{\equiv\varepsilon})
+\qquad
+\frac{\Sigma;\ \Gamma \vdash t \equiv u : A \quad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta[t/x]}{\Sigma;\ \Gamma \vdash (t,\ \bar t) \equiv (u,\ \bar u) : (x :^{q}_{p} A,\ \Theta)}\;(\mathsf{tel}_{\equiv,})
+\qquad
+\frac{X : (\Theta \vdash A) \in \Gamma \quad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta}{\Sigma;\ \Gamma \vdash X[\bar t] \equiv X[\bar u] : A[\bar t / \Theta]}\;(\mathsf{var}_{\vdash\equiv})
+```
+
+Here $`A[\bar t / \Theta]`$ substitutes the terms $`\bar t`$ for the variables of $`\Theta`$, all at once.
+A second-order variable does not know how it uses its arguments, so its telescope says it: the application uses $`X`$ itself as a variable, with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode of this grade, as the argument of a [function](#functions):
+
+```math
+\frac{X : (\Theta \vdash A) \in \Gamma \quad \Theta = (x_1 :^{q_1}_{p_1} A_1,\ \dots,\ x_k :^{q_k}_{p_k} A_k) \quad \Sigma;\ \delta_j \mathrel{▶_{m \odot p_j}} t_j \quad \text{for each } j}{\Sigma;\ (\mathbb{0}^{\mathsf{c}}, X \mathrel{≔} \ulcorner m \urcorner) +^{\mathsf{c}} p_1 \cdot^{\mathsf{c}} \delta_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_k \cdot^{\mathsf{c}} \delta_k \mathrel{▶_m} X[\bar t]}\;(\mathsf{var}_{\vdash\mathsf{m}})
+```
+
+A use of a declaration instantiates each second-order variable $`X : (\Theta \vdash A)`$ with an abstraction $`\bar x.\, B`$, a term $`B`$ of type $`A`$ under the variables $`\bar x`$ of $`\Theta`$, and the instantiation $`[\bar x.\, B / X]`$ replaces each application $`X[\bar t]`$ by $`B[\bar t / \bar x]`$.
+
+##### Well-Formed Declarations
+
+A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort that $`\kappa`$ bounds, which the relation $`\kappa_1 \preceq \kappa_2`$ defines: both sorts are at levels $`l_1 \le l_2`$, and $`\kappa_1`$ is a universe of propositions when $`\kappa_2`$ is.
+An entry whose type is a proposition is a proof, whose grade has no use at run time, as the [strict propositions](#strict-propositions) require:
+
+```math
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : \kappa}\;(\mathsf{tel}_{\kappa\varepsilon})
+\qquad
+\frac{\Sigma;\ \Gamma \vdash A : \kappa_1 \quad \kappa_1 \preceq \kappa_2 \quad \llcorner p \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \kappa_1 = \Omega_{l_1} \quad \Sigma;\ \Gamma,\ x : A \vdash \Theta : \kappa_2}{\Sigma;\ \Gamma \vdash (x :^{q}_{p} A,\ \Theta) : \kappa_2}\;(\mathsf{tel}_{\kappa,})
+```
+
+A data type is well formed when the fields of each constructor live in its sort, its parameters forming a context, which the fields imply unless there is no constructor; the fields of a data type in a universe of propositions are thus propositions, since irrelevance would otherwise equate data that hold different values:
+
+```math
+\frac{\begin{gathered}{}\Sigma \vdash \Delta \text{ if } n = 0 \\ \Sigma;\ \Delta \vdash \Theta_i : \kappa \quad c_i \ne c_j \text{ for } i \ne j \quad \text{for each } i\end{gathered}}{\Sigma \vdash \mathsf{data}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ c_1 : \Theta_1 \mid \dots \mid c_n : \Theta_n}\;(\mathsf{data})
+```
+
+A codata type is well formed when the arguments of each destructor live in any sort at its level $`l`$, and its result, a telescope of one entry with the grades of the destructor, in its sort; the earlier destructors are second-order variables in the types of each one, so that a destructor may depend on the results of those before it:
+
+```math
+\frac{\begin{gathered}{}\Sigma \vdash \Delta \text{ if } n = 0 \quad \kappa = s_l \\ \Sigma;\ \Delta_i \vdash \Theta_i : U_l \quad \Sigma;\ \Delta_i,\ \Theta_i \vdash (d_i :^{q_i}_{p_i} B_i) : \kappa \quad d_i \ne d_j \text{ for } i \ne j \quad \text{for each } i \\ \Delta_i \;=\; \Delta,\ d_1 : (\Theta_1 \vdash B_1),\ \dots,\ d_{i - 1} : (\Theta_{i - 1} \vdash B_{i - 1})\end{gathered}}{\Sigma \vdash \mathsf{codata}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ d_1 :^{q_1}_{p_1} \Theta_1 \to B_1 \mid \dots \mid d_n :^{q_n}_{p_n} \Theta_n \to B_n}\;(\mathsf{codata})
+```
+
+A declaration is checked once with its level variables, which are constants within the rules, and for each sort of each sort variable and each grade of each grade variable, which are finitely many, since the conditions on sorts and grades must hold whatever instantiates them, as Rocq accepts a sort polymorphic declaration when each of its instances is valid.
+The grades $`q`$ of the entries and of the destructors bound the uses in the types after them, which the usage of the declared types checks with the rules of the data and codata.
 
 #### Variables
 
 A variable has the type of its declaration, and, checked in the mode $`m`$, uses itself with the grade $`\ulcorner m \urcorner`$ of the [mode](#modes) and nothing else:
 
 ```math
-\frac{\vdash \Gamma_1,\ x : A,\ \Gamma_2}{\Gamma_1,\ x : A,\ \Gamma_2 \vdash x : A}\;(\mathsf{var})
+\frac{\Sigma \vdash \Gamma_1,\ x : A,\ \Gamma_2}{\Sigma;\ \Gamma_1,\ x : A,\ \Gamma_2 \vdash x : A}\;(\mathsf{var})
 \qquad
-\frac{}{(\mathbb{0}^{\mathsf{c}}, x \mathrel{≔} \ulcorner m \urcorner) \mathrel{▶_m} x}\;(\mathsf{var}_{\mathsf{m}})
+\frac{}{\Sigma;\ (\mathbb{0}^{\mathsf{c}}, x \mathrel{≔} \ulcorner m \urcorner) \mathrel{▶_m} x}\;(\mathsf{var}_{\mathsf{m}})
 ```
 
 #### Equality
@@ -279,19 +385,19 @@ A variable has the type of its declaration, and, checked in the mode $`m`$, uses
 The equality of types and the equality of terms are equivalence relations, reflexive, symmetric and transitive:
 
 ```math
-\frac{\Gamma \vdash A}{\Gamma \vdash A \equiv A}\;(\mathsf{refl}_{\mathsf{type}})
+\frac{\Sigma;\ \Gamma \vdash A}{\Sigma;\ \Gamma \vdash A \equiv A}\;(\mathsf{refl}_{\mathsf{type}})
 \qquad
-\frac{\Gamma \vdash A \equiv B}{\Gamma \vdash B \equiv A}\;(\mathsf{sym}_{\mathsf{type}})
+\frac{\Sigma;\ \Gamma \vdash A \equiv B}{\Sigma;\ \Gamma \vdash B \equiv A}\;(\mathsf{sym}_{\mathsf{type}})
 \qquad
-\frac{\Gamma \vdash A_1 \equiv A_2 \quad \Gamma \vdash A_2 \equiv A_3}{\Gamma \vdash A_1 \equiv A_3}\;(\mathsf{trans}_{\mathsf{type}})
+\frac{\Sigma;\ \Gamma \vdash A_1 \equiv A_2 \quad \Sigma;\ \Gamma \vdash A_2 \equiv A_3}{\Sigma;\ \Gamma \vdash A_1 \equiv A_3}\;(\mathsf{trans}_{\mathsf{type}})
 ```
 
 ```math
-\frac{\Gamma \vdash t : A}{\Gamma \vdash t \equiv t : A}\;(\mathsf{refl})
+\frac{\Sigma;\ \Gamma \vdash t : A}{\Sigma;\ \Gamma \vdash t \equiv t : A}\;(\mathsf{refl})
 \qquad
-\frac{\Gamma \vdash t \equiv u : A}{\Gamma \vdash u \equiv t : A}\;(\mathsf{sym})
+\frac{\Sigma;\ \Gamma \vdash t \equiv u : A}{\Sigma;\ \Gamma \vdash u \equiv t : A}\;(\mathsf{sym})
 \qquad
-\frac{\Gamma \vdash t_1 \equiv t_2 : A \quad \Gamma \vdash t_2 \equiv t_3 : A}{\Gamma \vdash t_1 \equiv t_3 : A}\;(\mathsf{trans})
+\frac{\Sigma;\ \Gamma \vdash t_1 \equiv t_2 : A \quad \Sigma;\ \Gamma \vdash t_2 \equiv t_3 : A}{\Sigma;\ \Gamma \vdash t_1 \equiv t_3 : A}\;(\mathsf{trans})
 ```
 
 Each construct adds its own rules of congruence and computation, and two types are also equal when they are equal terms of a [universe](#universes) or of a universe of [strict propositions](#strict-propositions).
@@ -301,9 +407,9 @@ Each construct adds its own rules of congruence and computation, and two types a
 Conversion gives a term any type equal to its own, and an equality of two terms as well, which the other rules do not derive, since a rule of computation gives its equality at one type only:
 
 ```math
-\frac{\Gamma \vdash t : A \quad \Gamma \vdash A \equiv B}{\Gamma \vdash t : B}\;(\mathsf{conv})
+\frac{\Sigma;\ \Gamma \vdash t : A \quad \Sigma;\ \Gamma \vdash A \equiv B}{\Sigma;\ \Gamma \vdash t : B}\;(\mathsf{conv})
 \qquad
-\frac{\Gamma \vdash t \equiv u : A \quad \Gamma \vdash A \equiv B}{\Gamma \vdash t \equiv u : B}\;(\mathsf{conv}_\equiv)
+\frac{\Sigma;\ \Gamma \vdash t \equiv u : A \quad \Sigma;\ \Gamma \vdash A \equiv B}{\Sigma;\ \Gamma \vdash t \equiv u : B}\;(\mathsf{conv}_\equiv)
 ```
 
 The core has no cumulativity, so conversion checks an equality of types, not a subtyping.
@@ -313,7 +419,7 @@ The core has no cumulativity, so conversion checks an equality of types, not a s
 A term may be given grades lower than its uses, in the order of the [grades](#grades) taken on each component, written $`\le^{\mathsf{c}}`$:
 
 ```math
-\frac{\gamma \mathrel{▶_m} t \quad \delta \le^{\mathsf{c}} \gamma}{\delta \mathrel{▶_m} t}\;(\mathsf{sub})
+\frac{\Sigma;\ \gamma \mathrel{▶_m} t \quad \delta \le^{\mathsf{c}} \gamma}{\Sigma;\ \delta \mathrel{▶_m} t}\;(\mathsf{sub})
 ```
 
 This rule lets an unrestricted variable be used once or not at all, and a variable of grade $`\langle \omega, 1 \rangle`$ be used once, at run time or not.
@@ -324,12 +430,13 @@ The following properties are not rules: they follow from the rules, and the form
 
 - Context conversion: a judgment still holds when the type of a declaration of its context is replaced by an equal type.
 - Level instantiation: a judgment still holds when its level variables are replaced by levels, so that a definition checked once with its level variables is used at any levels, as the [universes](#universes) require.
-- Presuppositions: every judgment implies that its context is well formed, a typing $`\Gamma \vdash t : A`$ implies $`\Gamma \vdash A`$, and an equality implies that both its sides are types, or terms of its type.
+- Presuppositions: every judgment implies that its signature and its context are well formed, a typing $`\Sigma;\ \Gamma \vdash t : A`$ implies $`\Sigma;\ \Gamma \vdash A`$, and an equality implies that both its sides are types, or terms of its type.
+- Second-order substitution: a judgment still holds when an abstraction of the type of a second-order variable instantiates it, and a usage with the usage of the abstraction scaled by the grade of the variable, when the abstraction uses each variable of the telescope within its grade $`p`$.
 - Subject reduction: a term keeps its types when it reduces, as the [conversion](#conversion) reduces terms.
 - Substitution: a judgment still holds when terms of the types of its variables are substituted for them, and equal terms substituted give equal results; a usage still holds with the usages of the substituted terms, each scaled by the grade of its variable, added together.
-- Types in sorts: every type is a term of a [sort](#letters), since the rules that make the terms of a sort types are the only rules that conclude $`\Gamma \vdash A`$.
+- Types in sorts: every type is a term of a [sort](#letters), since the rules that make the terms of a sort types are the only rules that conclude $`\Sigma;\ \Gamma \vdash A`$.
 - Usage preservation: a term keeps its usages when it reduces by a $`\beta`$ rule, though not conversely, since a reduction may drop an argument with its uses; the reduction of a neutral match keeps them only when the record is not used at all, as the [unresolved questions](#unresolved-questions) say.
-- Weakening: a judgment still holds in a well-formed context that extends its own.
+- Weakening: a judgment still holds in a well-formed context that extends its own, and in a well-formed signature that extends its own.
 
 ### Universes
 
@@ -352,11 +459,11 @@ Levels are not terms: they appear only as the subscripts of universes, and use n
 A universe is a type in the universe just above it, in any well-formed context, and uses no variable:
 
 ```math
-\frac{\vdash \Gamma}{\Gamma \vdash U_l : U_{l + 1}}\;(U)
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash U_l : U_{l + 1}}\;(U)
 \qquad
-\frac{\vdash \Gamma \quad l_1 = l_2}{\Gamma \vdash U_{l_1} \equiv U_{l_2} : U_{l_1 + 1}}\;(U_\equiv)
+\frac{\Sigma \vdash \Gamma \quad l_1 = l_2}{\Sigma;\ \Gamma \vdash U_{l_1} \equiv U_{l_2} : U_{l_1 + 1}}\;(U_\equiv)
 \qquad
-\frac{}{\mathbb{0}^{\mathsf{c}} \mathrel{▶_m} U_l}\;(U_{\mathsf{m}})
+\frac{}{\Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_m} U_l}\;(U_{\mathsf{m}})
 ```
 
 The hierarchy is not cumulative: a type of $`U_l`$ is not a type of $`U_{l + 1}`$, as in Agda and Lean, and unlike Rocq.
@@ -367,9 +474,9 @@ The type of a function lives in the larger universe of its domain and codomain, 
 A term of a universe is a type, and two equal terms of a universe are equal types, as the rule `univ` of the [formalization of ADE](https://github.com/graded-type-theory/graded-type-theory/blob/master/Definition/Typed.agda), which does not write the decoding $`\mathsf{El}`$ of Nordström, Petersson and Smith either:
 
 ```math
-\frac{\Gamma \vdash A : U_l}{\Gamma \vdash A}\;(U_{\mathsf{type}})
+\frac{\Sigma;\ \Gamma \vdash A : U_l}{\Sigma;\ \Gamma \vdash A}\;(U_{\mathsf{type}})
 \qquad
-\frac{\Gamma \vdash A \equiv B : U_l}{\Gamma \vdash A \equiv B}\;(U_{\mathsf{type}\equiv})
+\frac{\Sigma;\ \Gamma \vdash A \equiv B : U_l}{\Sigma;\ \Gamma \vdash A \equiv B}\;(U_{\mathsf{type}\equiv})
 ```
 
 #### Universe Polymorphism
@@ -386,11 +493,11 @@ A proposition is a type whose proofs carry no information but their existence.
 The propositions live in universes of their own, written $`\Omega_l`$ as the propositions of categorical semantics, which form a second predicative hierarchy, strict as the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html), from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316):
 
 ```math
-\frac{\vdash \Gamma}{\Gamma \vdash \Omega_l : U_{l + 1}}\;(\Omega)
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \Omega_l : U_{l + 1}}\;(\Omega)
 \qquad
-\frac{\vdash \Gamma \quad l_1 = l_2}{\Gamma \vdash \Omega_{l_1} \equiv \Omega_{l_2} : U_{l_1 + 1}}\;(\Omega_\equiv)
+\frac{\Sigma \vdash \Gamma \quad l_1 = l_2}{\Sigma;\ \Gamma \vdash \Omega_{l_1} \equiv \Omega_{l_2} : U_{l_1 + 1}}\;(\Omega_\equiv)
 \qquad
-\frac{}{\mathbb{0}^{\mathsf{c}} \mathrel{▶_m} \Omega_l}\;(\Omega_{\mathsf{m}})
+\frac{}{\Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_m} \Omega_l}\;(\Omega_{\mathsf{m}})
 ```
 
 The `Prop` of Lean and the `SProp` of Rocq are impredicative instead: a proposition that quantifies over all propositions is itself one of them; together with proof irrelevance and the elimination of subsingletons, this makes the conversion of Lean undecidable ([Carneiro](https://github.com/digama0/lean-type-theory)).
@@ -400,9 +507,9 @@ The `Prop` of Lean and the `SProp` of Rocq are impredicative instead: a proposit
 A sort is a universe $`U_l`$ or a universe of propositions $`\Omega_l`$; a proposition is a type, as a term of a universe is, and two equal propositions are equal types:
 
 ```math
-\frac{\Gamma \vdash A : \Omega_l}{\Gamma \vdash A}\;(\Omega_{\mathsf{type}})
+\frac{\Sigma;\ \Gamma \vdash A : \Omega_l}{\Sigma;\ \Gamma \vdash A}\;(\Omega_{\mathsf{type}})
 \qquad
-\frac{\Gamma \vdash A \equiv B : \Omega_l}{\Gamma \vdash A \equiv B}\;(\Omega_{\mathsf{type}\equiv})
+\frac{\Sigma;\ \Gamma \vdash A \equiv B : \Omega_l}{\Sigma;\ \Gamma \vdash A \equiv B}\;(\Omega_{\mathsf{type}\equiv})
 ```
 
 #### Proof Irrelevance
@@ -410,7 +517,7 @@ A sort is a universe $`U_l`$ or a universe of propositions $`\Omega_l`$; a propo
 Proof irrelevance is definitional: two proofs of the same proposition are equal.
 
 ```math
-\frac{\Gamma \vdash t : A \quad \Gamma \vdash u : A \quad \Gamma \vdash A : \Omega_l}{\Gamma \vdash t \equiv u : A}\;(\mathsf{irr})
+\frac{\Sigma;\ \Gamma \vdash t : A \quad \Sigma;\ \Gamma \vdash u : A \quad \Sigma;\ \Gamma \vdash A : \Omega_l}{\Sigma;\ \Gamma \vdash t \equiv u : A}\;(\mathsf{irr})
 ```
 
 Since equality carries no grade, two proofs are equal even when they use their hypotheses differently; the usage of each is checked on its own.
@@ -432,13 +539,13 @@ The type of a function binds its argument with two grades: $`p`$ for its uses in
 It lives in a sort of the kind of $`B`$, at the larger level of its domain and its codomain, so that a function into a proposition is a proposition; when the domain is a proposition, the argument is a proof, whose grade has no use at run time, as the [strict propositions](#strict-propositions) require:
 
 ```math
-\frac{\begin{gathered}{}\Gamma \vdash A : \kappa_1 \quad \Gamma,\ x : A \vdash B : \kappa_2 \quad \kappa_1 \in \{U_{l_1}, \Omega_{l_1}\} \quad \kappa_2 \in \{U_{l_2}, \Omega_{l_2}\} \\ \llcorner p \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \kappa_1 = \Omega_{l_1} \quad \kappa = U_{l_1 \sqcup l_2} \text{ if } \kappa_2 = U_{l_2} \quad \kappa = \Omega_{l_1 \sqcup l_2} \text{ if } \kappa_2 = \Omega_{l_2}\end{gathered}}{\Gamma \vdash \Pi^{q}_{p}\, (x : A).\, B : \kappa}\;(\Pi)
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A : \kappa_1 \quad \Sigma;\ \Gamma,\ x : A \vdash B : \kappa_2 \quad \kappa_1 \in \{U_{l_1}, \Omega_{l_1}\} \quad \kappa_2 \in \{U_{l_2}, \Omega_{l_2}\} \\ \llcorner p \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \kappa_1 = \Omega_{l_1} \quad \kappa = U_{l_1 \sqcup l_2} \text{ if } \kappa_2 = U_{l_2} \quad \kappa = \Omega_{l_1 \sqcup l_2} \text{ if } \kappa_2 = \Omega_{l_2}\end{gathered}}{\Sigma;\ \Gamma \vdash \Pi^{q}_{p}\, (x : A).\, B : \kappa}\;(\Pi)
 ```
 
 The type of a function uses the variables of its domain as many times as the argument is used, and the domain is checked in the mode of this grade; its codomain uses the argument with the grade $`q`$:
 
 ```math
-\frac{\gamma \mathrel{▶_{m \odot p}} A \quad \delta \bullet \ulcorner m \urcorner \cdot q \mathrel{▶_m} B}{p \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \Pi^{q}_{p}\, (x : A).\, B}\;(\Pi_{\mathsf{m}})
+\frac{\Sigma;\ \gamma \mathrel{▶_{m \odot p}} A \quad \Sigma;\ \delta \bullet \ulcorner m \urcorner \cdot q \mathrel{▶_m} B}{\Sigma;\ p \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \Pi^{q}_{p}\, (x : A).\, B}\;(\Pi_{\mathsf{m}})
 ```
 
 #### Construction
@@ -446,9 +553,9 @@ The type of a function uses the variables of its domain as many times as the arg
 A function is introduced by abstraction, which carries the type of its argument, so that the type of every term is determined by the term; its body uses its argument with the grade $`p`$ of its type, and the type of the argument, as every type a term carries, uses no variable:
 
 ```math
-\frac{\Gamma \vdash \Pi^{q}_{p}\, (x : A).\, B \quad \Gamma,\ x : A \vdash t : B}{\Gamma \vdash \lambda_{p}\, (x : A).\, t : \Pi^{q}_{p}\, (x : A).\, B}\;(\lambda)
+\frac{\Sigma;\ \Gamma \vdash \Pi^{q}_{p}\, (x : A).\, B \quad \Sigma;\ \Gamma,\ x : A \vdash t : B}{\Sigma;\ \Gamma \vdash \lambda_{p}\, (x : A).\, t : \Pi^{q}_{p}\, (x : A).\, B}\;(\lambda)
 \qquad
-\frac{\gamma \bullet \ulcorner m \urcorner \cdot p \mathrel{▶_m} t}{\gamma \mathrel{▶_m} \lambda_{p}\, (x : A).\, t}\;(\lambda_{\mathsf{m}})
+\frac{\Sigma;\ \gamma \bullet \ulcorner m \urcorner \cdot p \mathrel{▶_m} t}{\Sigma;\ \gamma \mathrel{▶_m} \lambda_{p}\, (x : A).\, t}\;(\lambda_{\mathsf{m}})
 ```
 
 #### Application
@@ -456,9 +563,9 @@ A function is introduced by abstraction, which carries the type of its argument,
 A function is eliminated by application, which uses the argument as many times as the function does, checking it in the mode of this grade:
 
 ```math
-\frac{\Gamma \vdash t : \Pi^{q}_{p}\, (x : A).\, B \quad \Gamma \vdash a : A}{\Gamma \vdash t \circ_{p} a : B[a/x]}\;(\circ)
+\frac{\Sigma;\ \Gamma \vdash t : \Pi^{q}_{p}\, (x : A).\, B \quad \Sigma;\ \Gamma \vdash a : A}{\Sigma;\ \Gamma \vdash t \circ_{p} a : B[a/x]}\;(\circ)
 \qquad
-\frac{\gamma \mathrel{▶_m} t \quad \delta \mathrel{▶_{m \odot p}} a}{\gamma +^{\mathsf{c}} p \cdot^{\mathsf{c}} \delta \mathrel{▶_m} t \circ_{p} a}\;(\circ_{\mathsf{m}})
+\frac{\Sigma;\ \gamma \mathrel{▶_m} t \quad \Sigma;\ \delta \mathrel{▶_{m \odot p}} a}{\Sigma;\ \gamma +^{\mathsf{c}} p \cdot^{\mathsf{c}} \delta \mathrel{▶_m} t \circ_{p} a}\;(\circ_{\mathsf{m}})
 ```
 
 The substitution $`B[a/x]`$ replaces the free occurrences of $`x`$ in $`B`$ by $`a`$, renaming the bound variables of $`B`$ that $`a`$ would capture.
@@ -467,9 +574,9 @@ An argument that is a proof is thus checked in a mode without use at run time, $
 Applying an abstraction computes by substitution, and a function is equal to the abstraction of its application:
 
 ```math
-\frac{\Gamma \vdash \Pi^{q}_{p}\, (x : A).\, B \quad \Gamma,\ x : A \vdash t : B \quad \Gamma \vdash a : A}{\Gamma \vdash (\lambda_{p}\, (x : A).\, t) \circ_{p} a \equiv t[a/x] : B[a/x]}\;(\beta)
+\frac{\Sigma;\ \Gamma \vdash \Pi^{q}_{p}\, (x : A).\, B \quad \Sigma;\ \Gamma,\ x : A \vdash t : B \quad \Sigma;\ \Gamma \vdash a : A}{\Sigma;\ \Gamma \vdash (\lambda_{p}\, (x : A).\, t) \circ_{p} a \equiv t[a/x] : B[a/x]}\;(\beta)
 \qquad
-\frac{\Gamma \vdash t : \Pi^{q}_{p}\, (x : A).\, B \quad x \notin \Gamma}{\Gamma \vdash t \equiv \lambda_{p}\, (x : A).\, t \circ_{p} x : \Pi^{q}_{p}\, (x : A).\, B}\;(\eta)
+\frac{\Sigma;\ \Gamma \vdash t : \Pi^{q}_{p}\, (x : A).\, B \quad x \notin \Gamma}{\Sigma;\ \Gamma \vdash t \equiv \lambda_{p}\, (x : A).\, t \circ_{p} x : \Pi^{q}_{p}\, (x : A).\, B}\;(\eta)
 ```
 
 Equality is also a congruence for the type of functions, abstraction and application, with the premises of their rules.
@@ -494,7 +601,7 @@ Its type argument thus has the grade `none / none`: it does not exist at run tim
 
 A record groups fields, whose types may depend on the fields before them, as the declarations of a context do.
 This order makes the fields positional: a field is known by its position, and its name only binds it in the types of the fields after it, so that two records that differ only by the names of their fields are equal, up to the renaming of bound variables.
-Records are anonymous and compared by their structure, as the [tuples of Rust](https://doc.rust-lang.org/reference/types/tuple.html); a type distinct from every other type with the same fields, as a [struct of Rust](https://doc.rust-lang.org/reference/types/struct.html), comes from a declaration, which this RFC does not define, and the language may name its fields and reorder them, each name being translated to a position.
+Records are anonymous and compared by their structure, as the [tuples of Rust](https://doc.rust-lang.org/reference/types/tuple.html); a type distinct from every other type with the same fields, as a [struct of Rust](https://doc.rust-lang.org/reference/types/struct.html), comes from a [declaration](#signatures), and the language may name its fields and reorder them, each name being translated to a position.
 Each field carries two grades, as the argument of a [function](#functions) does: $`p`$ counts how many times one use of the record gives access to the field, as the grade of the first component of the pairs of ADE, so that the grade of a field used through a variable is the grade of the variable times the grade of the field; $`q`$ counts how many times the types of the fields after it use the field.
 
 #### Formation
@@ -529,15 +636,15 @@ The level $`l`$ of the record bounds the levels of its fields, where $`l_1 \le l
 A field that is a proof has a grade without use at run time, as the [strict propositions](#strict-propositions) require:
 
 ```math
-\frac{\begin{gathered}{}\vdash \Gamma \text{ if } n = 0 \quad \kappa \in \{U_l, \Omega_l\} \\ \Gamma_i \vdash A_i : \kappa_i \quad \kappa_i \in \{U_{l_i}, \Omega_{l_i}\} \quad l_i \le l \quad \kappa_i = \Omega_{l_i} \text{ if } \kappa = \Omega_l \quad f_i \notin \Gamma_i \quad \llcorner p_i \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \kappa_i = \Omega_{l_i} \quad \text{for each } i\end{gathered}}{\Gamma \vdash \Sigma^{\diamond}_\kappa\{f_1 :^{q_1}_{p_1} A_1,\ \dots,\ f_n :^{q_n}_{p_n} A_n\} : \kappa}\;(\Sigma\{\})
+\frac{\begin{gathered}{}\Sigma \vdash \Gamma \text{ if } n = 0 \quad \kappa \in \{U_l, \Omega_l\} \\ \Sigma;\ \Gamma_i \vdash A_i : \kappa_i \quad \kappa_i \in \{U_{l_i}, \Omega_{l_i}\} \quad l_i \le l \quad \kappa_i = \Omega_{l_i} \text{ if } \kappa = \Omega_l \quad f_i \notin \Gamma_i \quad \llcorner p_i \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \kappa_i = \Omega_{l_i} \quad \text{for each } i\end{gathered}}{\Sigma;\ \Gamma \vdash \Sigma^{\diamond}_\kappa\{f_1 :^{q_1}_{p_1} A_1,\ \dots,\ f_n :^{q_n}_{p_n} A_n\} : \kappa}\;(\Sigma\{\})
 ```
 
-The premise $`\vdash \Gamma`$ keeps the context well formed when there is no field; otherwise, the typing of the first field type implies it, since every typing judgment implies that its context is well formed, as the [admissible properties](#admissible-properties) state.
+The premise $`\Sigma \vdash \Gamma`$ keeps the context well formed when there is no field; otherwise, the typing of the first field type implies it, since every typing judgment implies that its context is well formed, as the [admissible properties](#admissible-properties) state.
 
 The type of a record uses the variables of each field type as many times as the field is used, checked in the mode of its grade, as the domain of a function; the grade $`q_i`$ of each field $`f_i`$ allows its uses in the types of the fields after it, added up, in the order of the [grades](#grades), as (sub) does for a term:
 
 ```math
-\frac{\gamma_i \mathrel{▶_{m \odot p_i}} A_i \quad \text{for each } i \quad \delta \bullet \ulcorner m \urcorner \cdot q_1 \bullet \dots \bullet \ulcorner m \urcorner \cdot q_n \le^{\mathsf{c}} p_1 \cdot^{\mathsf{c}} \gamma_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \gamma_n}{\delta \mathrel{▶_m} \Sigma^{\diamond}_\kappa\{f_1 :^{q_1}_{p_1} A_1,\ \dots,\ f_n :^{q_n}_{p_n} A_n\}}\;(\Sigma\{\}_{\mathsf{m}})
+\frac{\Sigma;\ \gamma_i \mathrel{▶_{m \odot p_i}} A_i \quad \text{for each } i \quad \delta \bullet \ulcorner m \urcorner \cdot q_1 \bullet \dots \bullet \ulcorner m \urcorner \cdot q_n \le^{\mathsf{c}} p_1 \cdot^{\mathsf{c}} \gamma_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \gamma_n}{\Sigma;\ \delta \mathrel{▶_m} \Sigma^{\diamond}_\kappa\{f_1 :^{q_1}_{p_1} A_1,\ \dots,\ f_n :^{q_n}_{p_n} A_n\}}\;(\Sigma\{\}_{\mathsf{m}})
 ```
 
 The vector $`\gamma_i`$, which has a grade for each variable of $`\Gamma_i`$, is extended by $`\mathbb{0}`$ for the fields from $`f_i`$ on, and a sum of no vector is $`\mathbb{0}^{\mathsf{c}}`$.
@@ -562,19 +669,19 @@ A record is built from a term for each field, whose type takes the terms of the 
 The term carries its type $`R`$, as the type carries its sort, and the usage reads the connective and the grades of the fields in $`R`$, so that they are written once, in the type, as a constructor of a [structure of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) carries the parameters of its type:
 
 ```math
-\frac{\Gamma \vdash R \quad \Gamma \vdash t_i : A_i[t_1/f_1, \dots, t_{i - 1}/f_{i - 1}] \quad \text{for each } i}{\Gamma \vdash R\{t_1,\ \dots,\ t_n\} : R}\;(\Sigma\{\}_{\mathsf{i}})
+\frac{\Sigma;\ \Gamma \vdash R \quad \Sigma;\ \Gamma \vdash t_i : A_i[t_1/f_1, \dots, t_{i - 1}/f_{i - 1}] \quad \text{for each } i}{\Sigma;\ \Gamma \vdash R\{t_1,\ \dots,\ t_n\} : R}\;(\Sigma\{\}_{\mathsf{i}})
 ```
 
 A multiplicative record uses the variables of each term as many times as the grade of its field, checking the term in the mode of this grade, and its type $`R`$ uses none, as the type of a pair in ADE:
 
 ```math
-\frac{\diamond = \text{⊗} \quad \gamma_i \mathrel{▶_{m \odot p_i}} t_i \quad \text{for each } i}{p_1 \cdot^{\mathsf{c}} \gamma_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \gamma_n \mathrel{▶_m} R\{t_1,\ \dots,\ t_n\}}\;(\Sigma\{\}^{\text{⊗}}_{\mathsf{i}\mathsf{m}})
+\frac{\diamond = \text{⊗} \quad \Sigma;\ \gamma_i \mathrel{▶_{m \odot p_i}} t_i \quad \text{for each } i}{\Sigma;\ p_1 \cdot^{\mathsf{c}} \gamma_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \gamma_n \mathrel{▶_m} R\{t_1,\ \dots,\ t_n\}}\;(\Sigma\{\}^{\text{⊗}}_{\mathsf{i}\mathsf{m}})
 ```
 
 Since the user of an additive record gets one field only, the record needs the resources of each field, but not of all of them together: its uses are bounded by the uses of each field, counted with the grade of its field:
 
 ```math
-\frac{\diamond = \text{\&} \quad \gamma_i \mathrel{▶_{m \odot p_i}} t_i \quad \delta \le^{\mathsf{c}} p_i \cdot^{\mathsf{c}} \gamma_i \quad \text{for each } i \quad \delta \le^{\mathsf{c}} \ulcorner m \urcorner \cdot^{\mathsf{c}} \delta}{\delta \mathrel{▶_m} R\{t_1,\ \dots,\ t_n\}}\;(\Sigma\{\}^{\text{\&}}_{\mathsf{i}\mathsf{m}})
+\frac{\diamond = \text{\&} \quad \Sigma;\ \gamma_i \mathrel{▶_{m \odot p_i}} t_i \quad \delta \le^{\mathsf{c}} p_i \cdot^{\mathsf{c}} \gamma_i \quad \text{for each } i \quad \delta \le^{\mathsf{c}} \ulcorner m \urcorner \cdot^{\mathsf{c}} \delta}{\Sigma;\ \delta \mathrel{▶_m} R\{t_1,\ \dots,\ t_n\}}\;(\Sigma\{\}^{\text{\&}}_{\mathsf{i}\mathsf{m}})
 ```
 
 For a record with fields, the greatest such vector is the meet $`p_1 \cdot^{\mathsf{c}} \gamma_1 \wedge^{\mathsf{c}} \dots \wedge^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \gamma_n`$, which is at most each of its operands, so a variable used once by every field is used once by the record, which may then give any one of them.
@@ -592,7 +699,7 @@ A record is matched by a body $`u`$ that receives all its fields at once as vari
 The match carries $`R`$ and $`C`$, as the matches of ADE carry their type of result, so that its type is determined by the term:
 
 ```math
-\frac{\Gamma,\ z : R \vdash C \quad \Gamma \vdash t : R \quad \Gamma,\ \Theta \vdash u : C[R\{x_1,\ \dots,\ x_n\}/z]}{\Gamma \vdash \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u : C[t/z]}\;(\mathsf{match})
+\frac{\Sigma;\ \Gamma,\ z : R \vdash C \quad \Sigma;\ \Gamma \vdash t : R \quad \Sigma;\ \Gamma,\ \Theta \vdash u : C[R\{x_1,\ \dots,\ x_n\}/z]}{\Sigma;\ \Gamma \vdash \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u : C[t/z]}\;(\mathsf{match})
 ```
 
 A record of propositions is a proof, and is matched for any result: its fields are proofs, which the body uses only in erased positions, and by the $`\eta`$ rule of the [projections](#projections), the match of a proof equals its body with the projections of the proof substituted, so that the matches of two proofs of the same proposition are equal.
@@ -605,13 +712,13 @@ The record is used $`r`$ times, and the type $`C`$ is checked in the mode $`\mat
 The body of the match of a multiplicative record uses each variable $`x_i`$ with the grade of its field times $`r`$:
 
 ```math
-\frac{\begin{gathered}{}\diamond = \text{⊗} \quad \gamma \mathrel{▶_{m \odot r}} t \quad \delta \bullet \ulcorner m \urcorner \cdot r \cdot p_1 \bullet \dots \bullet \ulcorner m \urcorner \cdot r \cdot p_n \mathrel{▶_m} u \quad \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \\ \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}}\end{gathered}}{r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u}\;(\mathsf{match}^{\text{⊗}}_{\mathsf{m}})
+\frac{\begin{gathered}{}\diamond = \text{⊗} \quad \Sigma;\ \gamma \mathrel{▶_{m \odot r}} t \quad \Sigma;\ \delta \bullet \ulcorner m \urcorner \cdot r \cdot p_1 \bullet \dots \bullet \ulcorner m \urcorner \cdot r \cdot p_n \mathrel{▶_m} u \quad \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \\ \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}}\end{gathered}}{\Sigma;\ r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u}\;(\mathsf{match}^{\text{⊗}}_{\mathsf{m}})
 ```
 
 The body of the match of an additive record uses one field $`f_i`$ of its choice, and the other fields only when they are discarded or duplicated freely; it uses the others with $`\mathbb{0}`$, that is, in erased positions only:
 
 ```math
-\frac{\begin{gathered}{}\diamond = \text{\&} \quad \gamma \mathrel{▶_{m \odot r}} t \quad \delta \bullet g_1 \bullet \dots \bullet g_n \mathrel{▶_m} u \quad \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \quad \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}} \\ g_j = \ulcorner m \urcorner \cdot r \cdot p_j \text{ if } j = i \text{ or } \ulcorner m \urcorner \cdot p_j \le \mathbb{0} \quad g_j = \mathbb{0} \text{ otherwise} \quad \text{for each } j\end{gathered}}{r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u}\;(\mathsf{match}^{\text{\&}}_{\mathsf{m}})
+\frac{\begin{gathered}{}\diamond = \text{\&} \quad \Sigma;\ \gamma \mathrel{▶_{m \odot r}} t \quad \Sigma;\ \delta \bullet g_1 \bullet \dots \bullet g_n \mathrel{▶_m} u \quad \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \quad \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}} \\ g_j = \ulcorner m \urcorner \cdot r \cdot p_j \text{ if } j = i \text{ or } \ulcorner m \urcorner \cdot p_j \le \mathbb{0} \quad g_j = \mathbb{0} \text{ otherwise} \quad \text{for each } j\end{gathered}}{\Sigma;\ r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u}\;(\mathsf{match}^{\text{\&}}_{\mathsf{m}})
 ```
 
 The condition on $`r`$ forbids, in a term that runs, the match of a record that does not exist at run time: the body would run while the record is erased.
@@ -622,7 +729,7 @@ ADE also give the type of the result a grade $`q`$ for its uses of $`z`$, which 
 Matching a record that has just been built substitutes its terms for the variables:
 
 ```math
-\frac{\Gamma,\ z : R \vdash C \quad \Gamma \vdash t_i : A_i[t_1/f_1, \dots, t_{i - 1}/f_{i - 1}] \quad \text{for each } i \quad \Gamma,\ \Theta \vdash u : C[R\{x_1,\ \dots,\ x_n\}/z]}{\Gamma \vdash \mathsf{match}_r\ R\{t_1,\ \dots,\ t_n\}\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u \equiv u[t_1/x_1, \dots, t_n/x_n] : C[R\{t_1,\ \dots,\ t_n\}/z]}\;(\mathsf{match}_\beta)
+\frac{\Sigma;\ \Gamma,\ z : R \vdash C \quad \Sigma;\ \Gamma \vdash t_i : A_i[t_1/f_1, \dots, t_{i - 1}/f_{i - 1}] \quad \text{for each } i \quad \Sigma;\ \Gamma,\ \Theta \vdash u : C[R\{x_1,\ \dots,\ x_n\}/z]}{\Sigma;\ \Gamma \vdash \mathsf{match}_r\ R\{t_1,\ \dots,\ t_n\}\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u \equiv u[t_1/x_1, \dots, t_n/x_n] : C[R\{t_1,\ \dots,\ t_n\}/z]}\;(\mathsf{match}_\beta)
 ```
 
 Equality is also a congruence for the record types, their terms and their match, with the premises of their rules, so that a record whose type is written differently but equal is matched as well.
@@ -632,14 +739,14 @@ Equality is also a congruence for the record types, their terms and their match,
 A record is also used by projecting one of its fields, whose type takes the projections of the fields before it, as the strong pairs of ADE are; the projection carries the type $`R`$, in which the usage reads the connective and the grades:
 
 ```math
-\frac{\Gamma \vdash t : R \quad 1 \le i \le n}{\Gamma \vdash \pi_{R, i}\ t : A_i[\pi_{R, 1}\ t/f_1, \dots, \pi_{R, i - 1}\ t/f_{i - 1}]}\;(\pi)
+\frac{\Sigma;\ \Gamma \vdash t : R \quad 1 \le i \le n}{\Sigma;\ \Gamma \vdash \pi_{R, i}\ t : A_i[\pi_{R, 1}\ t/f_1, \dots, \pi_{R, i - 1}\ t/f_{i - 1}]}\;(\pi)
 ```
 
 A projection uses the record once, and gets the field once; this is allowed only when the grade of the field allows one use in the mode of the projection.
 It also drops the other fields, which an additive record allows, since its user takes one field, and a multiplicative record allows only when they are discarded freely:
 
 ```math
-\frac{\gamma \mathrel{▶_m} t \quad \ulcorner m \urcorner \cdot p_i \le \ulcorner m \urcorner \quad \ulcorner m \urcorner \cdot p_j \le \mathbb{0} \text{ for each } j \ne i \text{ if } \diamond = \text{⊗}}{\gamma \mathrel{▶_m} \pi_{R, i}\ t}\;(\pi_{\mathsf{m}})
+\frac{\Sigma;\ \gamma \mathrel{▶_m} t \quad \ulcorner m \urcorner \cdot p_i \le \ulcorner m \urcorner \quad \ulcorner m \urcorner \cdot p_j \le \mathbb{0} \text{ for each } j \ne i \text{ if } \diamond = \text{⊗}}{\Sigma;\ \gamma \mathrel{▶_m} \pi_{R, i}\ t}\;(\pi_{\mathsf{m}})
 ```
 
 A field without use at run time, such as a proof, is thus projected only in an erased term: in the mode $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$, the condition is $`p_i \le \mathbb{1}`$, which fails when the run-time multiplicity of $`p_i`$ is $`0`$, since $`0`$ and $`1`$ are not comparable.
@@ -649,11 +756,11 @@ In the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, every field of every record i
 Projecting a record that has just been built gives the term of its field, and two records are equal when all their projections are, which gives the $`\eta`$ rule:
 
 ```math
-\frac{\Gamma \vdash R \quad \Gamma \vdash t_j : A_j[t_1/f_1, \dots, t_{j - 1}/f_{j - 1}] \quad \text{for each } j \quad 1 \le i \le n}{\Gamma \vdash \pi_{R, i}\ R\{t_1,\ \dots,\ t_n\} \equiv t_i : A_i[t_1/f_1, \dots, t_{i - 1}/f_{i - 1}]}\;(\pi_\beta)
+\frac{\Sigma;\ \Gamma \vdash R \quad \Sigma;\ \Gamma \vdash t_j : A_j[t_1/f_1, \dots, t_{j - 1}/f_{j - 1}] \quad \text{for each } j \quad 1 \le i \le n}{\Sigma;\ \Gamma \vdash \pi_{R, i}\ R\{t_1,\ \dots,\ t_n\} \equiv t_i : A_i[t_1/f_1, \dots, t_{i - 1}/f_{i - 1}]}\;(\pi_\beta)
 ```
 
 ```math
-\frac{\Gamma \vdash t : R \quad \Gamma \vdash u : R \quad \Gamma \vdash \pi_{R, i}\ t \equiv \pi_{R, i}\ u : A_i[\pi_{R, 1}\ t/f_1, \dots, \pi_{R, i - 1}\ t/f_{i - 1}] \quad \text{for each } i}{\Gamma \vdash t \equiv u : R}\;(\Sigma\{\}_\eta)
+\frac{\Sigma;\ \Gamma \vdash t : R \quad \Sigma;\ \Gamma \vdash u : R \quad \Sigma;\ \Gamma \vdash \pi_{R, i}\ t \equiv \pi_{R, i}\ u : A_i[\pi_{R, 1}\ t/f_1, \dots, \pi_{R, i - 1}\ t/f_{i - 1}] \quad \text{for each } i}{\Sigma;\ \Gamma \vdash t \equiv u : R}\;(\Sigma\{\}_\eta)
 ```
 
 With $`(\pi_\beta)`$, it makes every record equal to the record of its projections, $`t \equiv R\{\pi_{R, 1}\ t,\ \dots,\ \pi_{R, n}\ t\}`$, and with $`(\mathsf{match}_\beta)`$ and congruence, every match equal to its body with the projections substituted:
@@ -705,7 +812,7 @@ It is the extraction of ADE, written $`t^\bullet`$ as in their paper, extended t
 A program is a closed term that is well typed and well used in the mode of run time:
 
 ```math
-\varepsilon \vdash t : A \qquad \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}}}} t
+\Sigma;\ \varepsilon \vdash t : A \qquad \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}}}} t
 ```
 
 Only the run-time multiplicity of a grade matters: a grade $`p`$ is erased when $`\llcorner p \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}}`$, that is, when its run-time multiplicity is $`0`$, whatever its total multiplicity.
@@ -847,8 +954,9 @@ At run time, the proof takes no room: $`R\{t,\ u\}^\bullet = \{t^\bullet\}`$, an
 
 ## Unresolved Questions
 
-Four choices of this RFC are provisional, each tied to a question below:
+Five choices of this RFC are provisional, each tied to a question below:
 
+- The declared types are not [recursive](#signatures), until this RFC adds the recursive declarations, without which the core has no natural numbers.
 - The empty additive record absorbs any resources, until the conjecture that a program shows in its type the resources it abandons is settled.
 - A term that runs does not match a [record](#matching) without use at run time, until erased matches are studied.
 - The fields of an additive record are delayed at run time by the [erasure](#erasure), until the soundness of this choice is proved.
@@ -873,3 +981,8 @@ Four choices of this RFC are provisional, each tied to a question below:
 - Does erasure stay sound when the fields of the additive records are delayed, which the strict target of ADE does not do for its strong pairs?
 - Is a term checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ erased safely?
   ADE prove the soundness of erasure for their two modes only; the projection of a grade on its run-time multiplicity preserves the operations and the order, and could carry their result to the three modes.
+- How do the recursive declarations extend the core, without which it has no natural numbers?
+  They need a signature extended by blocks of declarations checked together, so that types may also be mutually recursive, as the mutual blocks of [Rocq](https://rocq-prover.org/doc/master/refman/language/core/inductive.html), [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#mutual-inductive-types) and [Agda](https://agda.readthedocs.io/en/latest/language/mutual-recursion.html), and whether a block may mix data and codata, as Agda allows, is to be decided.
+  They also need a condition of positivity on the declarations, an elimination of the data that recurses, by a recursor as the natural numbers of ADE or by fixed points with a check of termination, and a corecursion of the codata with a check of productivity.
+  The usage of a recursion is the delicate part, as the functions $`\mathsf{nr}`$ of ADE for their natural numbers show, and the elimination of the data of this RFC, with its usage, should become a case of the recursive one rather than a second mechanism.
+  Whether the $`\eta`$ rules of the data and codata still hold, and stay decidable, for recursive declarations is open as well.
