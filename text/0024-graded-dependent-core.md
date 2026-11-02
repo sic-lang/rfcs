@@ -298,7 +298,7 @@ A context is either empty, written $`\varepsilon`$, in a well-formed signature, 
 ```math
 \frac{\vdash \Sigma}{\Sigma \vdash \varepsilon}\;(\mathsf{ctx}_\varepsilon)
 \qquad
-\frac{\Sigma;\ \Gamma \vdash A \quad x \notin \Gamma}{\Sigma \vdash \Gamma,\ x : A}\;(\mathsf{ctx}_{,})
+\frac{\Sigma;\ \Gamma \vdash A \quad x \notin \Gamma}{\Sigma \vdash \Gamma,\ x : A}\;(\mathsf{ctx}_x)
 ```
 
 The variable $`x`$ is fresh, absent from $`\Gamma`$, so that a name designates one declaration; ADE, whose variables are de Bruijn indices, needs no such condition.
@@ -351,9 +351,9 @@ A second-order variable is used applied to terms for the variables of its telesc
 The arguments $`\bar t = (t_1,\ \dots,\ t_k)`$ are typed by the telescope, whose grades typing ignores, each argument instantiating the types after it:
 
 ```math
-\frac{\Sigma;\ \Gamma,\ \Theta \vdash A \quad X \notin \Gamma}{\Sigma \vdash \Gamma,\ X : (\Theta \vdash A)}\;(\mathsf{ctx}_{\vdash})
+\frac{\Sigma;\ \Gamma,\ \Theta \vdash A \quad X \notin \Gamma}{\Sigma \vdash \Gamma,\ X : (\Theta \vdash A)}\;(\mathsf{ctx}_X)
 \qquad
-\frac{X : (\Theta \vdash A) \in \Gamma \quad \Sigma;\ \Gamma \vdash \bar t : \Theta}{\Sigma;\ \Gamma \vdash X[\bar t] : A[\bar t / \Theta]}\;(\mathsf{var}_{\vdash})
+\frac{X : (\Theta \vdash A) \in \Gamma \quad \Sigma;\ \Gamma \vdash \bar t : \Theta}{\Sigma;\ \Gamma \vdash X[\bar t] : A[\bar t / \Theta]}\;(\mathsf{var}_X)
 ```
 
 ```math
@@ -369,14 +369,14 @@ Equal arguments give equal applications:
 \qquad
 \frac{\Sigma;\ \Gamma \vdash t \equiv u : A \quad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta[t/x]}{\Sigma;\ \Gamma \vdash (t,\ \bar t) \equiv (u,\ \bar u) : (x :^{q}_{p} A,\ \Theta)}\;(\mathsf{tel}_{\equiv,})
 \qquad
-\frac{X : (\Theta \vdash A) \in \Gamma \quad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta}{\Sigma;\ \Gamma \vdash X[\bar t] \equiv X[\bar u] : A[\bar t / \Theta]}\;(\mathsf{var}_{\vdash\equiv})
+\frac{X : (\Theta \vdash A) \in \Gamma \quad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta}{\Sigma;\ \Gamma \vdash X[\bar t] \equiv X[\bar u] : A[\bar t / \Theta]}\;(\mathsf{var}_{X\equiv})
 ```
 
 Here $`A[\bar t / \Theta]`$ substitutes the terms $`\bar t`$ for the variables of $`\Theta`$, all at once.
 A second-order variable does not know how it uses its arguments, so its telescope says it: the application uses $`X`$ itself as a variable, with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode of this grade, as the argument of a [function](#functions):
 
 ```math
-\frac{X : (\Theta \vdash A) \in \Gamma \quad \Theta = (x_1 :^{q_1}_{p_1} A_1,\ \dots,\ x_k :^{q_k}_{p_k} A_k) \quad \Sigma;\ \delta_j \mathrel{▶_{m \odot p_j}} t_j \quad \text{for each } j}{\Sigma;\ (\mathbb{0}^{\mathsf{c}}, X \mathrel{≔} \ulcorner m \urcorner) +^{\mathsf{c}} p_1 \cdot^{\mathsf{c}} \delta_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_k \cdot^{\mathsf{c}} \delta_k \mathrel{▶_m} X[\bar t]}\;(\mathsf{var}_{\vdash\mathsf{m}})
+\frac{X : (\Theta \vdash A) \in \Gamma \quad \Theta = (x_1 :^{q_1}_{p_1} A_1,\ \dots,\ x_k :^{q_k}_{p_k} A_k) \quad \Sigma;\ \delta_j \mathrel{▶_{m \odot p_j}} t_j \quad \text{for each } j}{\Sigma;\ (\mathbb{0}^{\mathsf{c}}, X \mathrel{≔} \ulcorner m \urcorner) +^{\mathsf{c}} p_1 \cdot^{\mathsf{c}} \delta_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_k \cdot^{\mathsf{c}} \delta_k \mathrel{▶_m} X[\bar t]}\;(\mathsf{var}_{X\mathsf{m}})
 ```
 
 A use of a declaration instantiates each second-order variable $`X : (\Theta \vdash A)`$ with an abstraction $`\bar x.\, B`$, a term $`B`$ of type $`A`$ under the variables $`\bar x`$ of $`\Theta`$, and the instantiation $`[\bar x.\, B / X]`$ replaces each application $`X[\bar t]`$ by $`B[\bar t / \bar x]`$.
@@ -389,19 +389,19 @@ An entry whose type is a proposition is a proof, whose grade has no use at run t
 ```math
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : \kappa}\;(\mathsf{tel}_{\kappa\varepsilon})
 \qquad
-\frac{\Sigma;\ \Gamma \vdash A : \kappa_1 \quad \kappa_1 \preceq \kappa_2 \quad \llcorner p \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \kappa_1 = \Omega_{l_1} \quad \Sigma;\ \Gamma,\ x : A \vdash \Theta : \kappa_2}{\Sigma;\ \Gamma \vdash (x :^{q}_{p} A,\ \Theta) : \kappa_2}\;(\mathsf{tel}_{\kappa,})
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A : \kappa_1 \quad \kappa_1 \preceq \kappa_2 \quad \Sigma;\ \Gamma,\ x : A \vdash \Theta : \kappa_2 \\ \llcorner p \lrcorner \ne \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \kappa_1 = \Omega_{l_1}\end{gathered}}{\Sigma;\ \Gamma \vdash (x :^{q}_{p} A,\ \Theta) : \kappa_2}\;(\mathsf{tel}_{\kappa,})
 ```
 
 A data type is well formed when the fields of each constructor live in its sort, its parameters forming a context, which the fields imply unless there is no constructor; the fields of a data type in a universe of propositions are thus propositions, since irrelevance would otherwise equate data that hold different values:
 
 ```math
-\frac{\begin{gathered}{}\Sigma \vdash \Delta \text{ if } n = 0 \\ \Sigma;\ \Delta \vdash \Theta_i : \kappa \quad c_i \ne c_j \text{ for } i \ne j \quad \text{for each } i\end{gathered}}{\Sigma \vdash \mathsf{data}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ c_1 : \Theta_1 \mid \dots \mid c_n : \Theta_n}\;(\mathsf{data})
+\frac{\begin{gathered}{}\Sigma;\ \Delta \vdash \Theta_i : \kappa \quad c_i \ne c_j \text{ for } i \ne j \quad \text{for each } i \\ \Sigma \vdash \Delta \text{ if } n = 0\end{gathered}}{\Sigma \vdash \mathsf{data}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ c_1 : \Theta_1 \mid \dots \mid c_n : \Theta_n}\;(\mathsf{data})
 ```
 
 A codata type is well formed when the arguments of each destructor live in any sort at its level $`l`$, and its result, a telescope of one entry with the grades of the destructor, in its sort; the earlier destructors are second-order variables in the types of each one, so that a destructor may depend on the results of those before it:
 
 ```math
-\frac{\begin{gathered}{}\Sigma \vdash \Delta \text{ if } n = 0 \quad \kappa = s_l \\ \Sigma;\ \Delta_i \vdash \Theta_i : U_l \quad \Sigma;\ \Delta_i,\ \Theta_i \vdash (d_i :^{q_i}_{p_i} B_i) : \kappa \quad d_i \ne d_j \text{ for } i \ne j \quad \text{for each } i \\ \Delta_i \;=\; \Delta,\ d_1 : (\Theta_1 \vdash B_1),\ \dots,\ d_{i - 1} : (\Theta_{i - 1} \vdash B_{i - 1})\end{gathered}}{\Sigma \vdash \mathsf{codata}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ d_1 :^{q_1}_{p_1} \Theta_1 \to B_1 \mid \dots \mid d_n :^{q_n}_{p_n} \Theta_n \to B_n}\;(\mathsf{codata})
+\frac{\begin{gathered}{}\kappa = s_l \quad \Sigma;\ \Delta_i \vdash \Theta_i : U_l \quad \Sigma;\ \Delta_i,\ \Theta_i \vdash (d_i :^{q_i}_{p_i} B_i) : \kappa \quad d_i \ne d_j \text{ for } i \ne j \quad \text{for each } i \\ \Delta_i \;=\; \Delta,\ d_1 : (\Theta_1 \vdash B_1),\ \dots,\ d_{i - 1} : (\Theta_{i - 1} \vdash B_{i - 1}) \\ \Sigma \vdash \Delta \text{ if } n = 0\end{gathered}}{\Sigma \vdash \mathsf{codata}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ d_1 :^{q_1}_{p_1} \Theta_1 \to B_1 \mid \dots \mid d_n :^{q_n}_{p_n} \Theta_n \to B_n}\;(\mathsf{codata})
 ```
 
 A declaration is checked once with its level variables, which are constants within the rules, and for each sort of each sort variable and each grade of each grade variable, which are finitely many, since the conditions on sorts and grades must hold whatever instantiates them, as Rocq accepts a sort polymorphic declaration when each of its instances is valid.
@@ -486,7 +486,7 @@ A judgment in a context $`\Gamma`$ is hypothetical: its context is meaningful, a
 ```math
 \begin{aligned}
 \mathsf{eq}(\varepsilon) = {}& \{((),\ ())\} &&(\mathsf{eq}_\varepsilon) \\
-\mathsf{eq}(\Gamma,\ x : A) = {}& \{((\sigma_1, v_1),\ (\sigma_2, v_2)) \mid (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma),\ \Sigma \vDash v_1 \equiv v_2 : A[\sigma_1]\} &&(\mathsf{eq}_{,}) \\
+\mathsf{eq}(\Gamma,\ x : A) = {}& \{((\sigma_1, v_1),\ (\sigma_2, v_2)) \mid (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma),\ \Sigma \vDash v_1 \equiv v_2 : A[\sigma_1]\} &&(\mathsf{eq}_x) \\
 \mathsf{eq}(\Gamma,\ X : (\Theta \vdash A)) = {}& \{((\sigma_1, \bar x.\, B_1),\ (\sigma_2, \bar x.\, B_2)) \mid &&(\mathsf{eq}_X) \\
 & \quad (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma), \\
 & \quad \forall (\tau_1, \tau_2) \in \mathsf{eq}(\Theta[\sigma_1]).\ \Sigma \vDash B_1[\tau_1] \equiv B_2[\tau_2] : A[\sigma_1, \tau_1]\}
@@ -503,13 +503,13 @@ A judgment in a context $`\Gamma`$ is hypothetical: its context is meaningful, a
 ```
 
 A telescope has the equal substitutions of the context it forms, whose grades the meaning ignores.
-A context is meaningful when its last type is a type in the context before it, which makes this context meaningful too, as the rule $`(\mathsf{ctx}_{,})`$ needs no other premise.
+A context is meaningful when its last type is a type in the context before it, which makes this context meaningful too, as the rule $`(\mathsf{ctx}_x)`$ needs no other premise.
 A signature is meaningful when each of its declarations gives the equality of the canonical terms of each instance of the type it declares, in the signature before it, as the data and codata types define:
 
 ```math
 \begin{aligned}
 \Sigma \vDash \varepsilon &\iff \vDash \Sigma &&({\vDash}\mathsf{ctx}_\varepsilon) \\
-\Sigma \vDash \Gamma,\ x : A &\iff \Sigma;\ \Gamma \vDash A &&({\vDash}\mathsf{ctx}_{,}) \\
+\Sigma \vDash \Gamma,\ x : A &\iff \Sigma;\ \Gamma \vDash A &&({\vDash}\mathsf{ctx}_x) \\
 \Sigma \vDash \Gamma,\ X : (\Theta \vdash A) &\iff \Sigma;\ \Gamma,\ \Theta \vDash A &&({\vDash}\mathsf{ctx}_X) \\
 \vDash \Sigma &\iff \text{each declaration } \mathcal{D} \text{ of } \Sigma \text{ gives } \mathsf{eq}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \text{ for each instance, in the signature before } \mathcal{D} &&({\vDash}\mathsf{sig})
 \end{aligned}
@@ -725,7 +725,7 @@ The arguments are typed by the parameters, each argument instantiating the types
 ```math
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () : \varepsilon}\;(\mathsf{arg}_\varepsilon)
 \qquad
-\frac{\Sigma;\ \Gamma \vdash \bar a : \Delta \quad \Sigma;\ \Gamma \vdash a : A[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash (\bar a,\ a) : (\Delta,\ x : A)}\;(\mathsf{arg}_{,})
+\frac{\Sigma;\ \Gamma \vdash \bar a : \Delta \quad \Sigma;\ \Gamma \vdash a : A[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash (\bar a,\ a) : (\Delta,\ x : A)}\;(\mathsf{arg}_x)
 ```
 
 ```math
@@ -738,7 +738,7 @@ Equal arguments are defined by the same rules with equalities:
 ```math
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{arg}_{\equiv\varepsilon})
 \qquad
-\frac{\Sigma;\ \Gamma \vdash \bar a \equiv \bar b : \Delta \quad \Sigma;\ \Gamma \vdash a \equiv b : A[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash (\bar a,\ a) \equiv (\bar b,\ b) : (\Delta,\ x : A)}\;(\mathsf{arg}_{\equiv,})
+\frac{\Sigma;\ \Gamma \vdash \bar a \equiv \bar b : \Delta \quad \Sigma;\ \Gamma \vdash a \equiv b : A[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash (\bar a,\ a) \equiv (\bar b,\ b) : (\Delta,\ x : A)}\;(\mathsf{arg}_{\equiv x})
 ```
 
 ```math
@@ -796,7 +796,7 @@ The term is used $`r`$ times, and the type $`C`$ is checked in the mode $`\mathb
 Each branch uses the field $`x_{ij}`$ with the grade of its field times $`r`$, and all the branches share the same vector $`\delta`$, since only one of them runs:
 
 ```math
-\frac{\begin{gathered}{}\Sigma;\ \gamma \mathrel{▶_{m \odot r}} t \quad \Sigma;\ \delta \bullet \ulcorner m \urcorner \cdot r \cdot p_{i1} \bullet \dots \bullet \ulcorner m \urcorner \cdot r \cdot p_{ik_i} \mathrel{▶_m} u_i \quad \text{for each } i \\ \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \\ \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ and } n \ge 2\end{gathered}}{\Sigma;\ r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_{r}\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n}\;(D_{\mathsf{match}\mathsf{m}})
+\frac{\begin{gathered}{}\Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \quad \Sigma;\ \gamma \mathrel{▶_{m \odot r}} t \\ \Sigma;\ \delta \bullet \ulcorner m \urcorner \cdot r \cdot p_{i1} \bullet \dots \bullet \ulcorner m \urcorner \cdot r \cdot p_{ik_i} \mathrel{▶_m} u_i \quad \text{for each } i \\ \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ and } n \ge 2\end{gathered}}{\Sigma;\ r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_{r}\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n}\;(D_{\mathsf{match}\mathsf{m}})
 ```
 
 A variable used once by each branch is thus used once by the match, and a variable used by one branch only is given, by $`(\mathsf{sub})`$, a grade that also allows it to be discarded by the others.
