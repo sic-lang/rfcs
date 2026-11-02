@@ -658,11 +658,11 @@ Proof irrelevance is definitional: two proofs of the same proposition are equal.
 
 Since equality carries no grade, two proofs are equal even when they use their hypotheses differently; the usage of each is checked on its own.
 
-A proof cannot be analyzed to build data, since irrelevance would identify the data built from two proofs; this restriction of elimination concerns the inductive types of a later RFC, as in Agda, and not the [records](#records) of propositions, whose single construction leaves nothing to analyze.
+A proof cannot be analyzed to build a term that is not a proof, since irrelevance would identify the terms built from two proofs: a proof of a [data type](#data) with two constructors or more is matched only to build a proof, while one with no constructor or a single one is matched for any result, which needs no analysis of the proof.
 
 #### Erased Proofs
 
-A proof exists only in erased positions: every binder whose type is a proposition has a [grade](#grades) without use at run time, so that a proof is checked in the [mode](#modes) $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ or $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$, which the rules of the [functions](#functions) and the [records](#records) check.
+A proof exists only in erased positions: every binder whose type is a proposition has a [grade](#grades) without use at run time, so that a proof is checked in the [mode](#modes) $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ or $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$, which the rules of the [functions](#functions), the [records](#records) and the [declarations](#well-formed-declarations) check.
 The erasure of proofs is then the erasure of the grades without use at run time, with no mechanism of its own.
 
 #### Meaning
@@ -703,6 +703,144 @@ The denotation is exact for the proofs: two closed terms are equal proofs of a p
 \implies {}& \Sigma \vDash t \equiv u : A \iff \Sigma \vDash t : A \text{ and } \Sigma \vDash u : A
 \end{aligned}
 ```
+
+### Data
+
+A data type is known by its constructors: each of its terms is built by one of them from terms for its fields, and is used by matching on the constructor that built it.
+It is declared by a [declaration](#declarations) whose rules this section gives.
+
+#### Formation
+
+A declared type is used through an instance of its declaration $`\mathcal{D}`$, which gives its variables sorts, levels and grades, and its parameters arguments $`\bar a`$: a term for each variable of $`\Delta`$, and an abstraction for each second-order variable.
+In the rules of this section, $`T`$ stands for the instance, in which $`\bar s`$, $`\bar l`$ and $`\bar p`$ now stand for sorts, levels and grades, substituted for the variables of the declaration in $`\Delta`$, $`\kappa`$ and the telescopes $`\Theta_i`$:
+
+```math
+T \;=\; D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a
+\qquad
+\mathcal{D} \;=\; \mathsf{data}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ c_1 : \Theta_1 \mid \dots \mid c_n : \Theta_n
+```
+
+The arguments are typed by the parameters, each argument instantiating the types after it, as a substitution of the context $`\Delta`$:
+
+```math
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () : \varepsilon}\;(\mathsf{arg}_\varepsilon)
+\qquad
+\frac{\Sigma;\ \Gamma \vdash \bar a : \Delta \quad \Sigma;\ \Gamma \vdash a : A[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash (\bar a,\ a) : (\Delta,\ x : A)}\;(\mathsf{arg}_{,})
+```
+
+```math
+\frac{\Sigma;\ \Gamma \vdash \bar a : \Delta \quad \Sigma;\ \Gamma,\ \Theta[\bar a / \Delta] \vdash B : A[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash (\bar a,\ \bar x.\, B) : (\Delta,\ X : (\Theta \vdash A))}\;(\mathsf{arg}_X)
+```
+
+Here $`[\bar a / \Delta]`$ substitutes the terms of $`\bar a`$ for the variables of $`\Delta`$ and instantiates its second-order variables with the abstractions of $`\bar a`$, as the [parameters](#parameters) define, and $`\bar x`$ are the variables of $`\Theta`$, which the abstraction binds.
+Equal arguments are defined by the same rules with equalities:
+
+```math
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{arg}_{\equiv\varepsilon})
+\qquad
+\frac{\Sigma;\ \Gamma \vdash \bar a \equiv \bar b : \Delta \quad \Sigma;\ \Gamma \vdash a \equiv b : A[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash (\bar a,\ a) \equiv (\bar b,\ b) : (\Delta,\ x : A)}\;(\mathsf{arg}_{\equiv,})
+```
+
+```math
+\frac{\Sigma;\ \Gamma \vdash \bar a \equiv \bar b : \Delta \quad \Sigma;\ \Gamma,\ \Theta[\bar a / \Delta] \vdash B_1 \equiv B_2 : A[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash (\bar a,\ \bar x.\, B_1) \equiv (\bar b,\ \bar x.\, B_2) : (\Delta,\ X : (\Theta \vdash A))}\;(\mathsf{arg}_{\equiv X})
+```
+
+An instance of a declaration of the signature is a type in the sort of the declaration, and two instances are equal when their arguments are, and their levels too, as the levels of two [universes](#universes):
+
+```math
+\frac{\mathcal{D} \in \Sigma \quad \Sigma;\ \Gamma \vdash \bar a : \Delta}{\Sigma;\ \Gamma \vdash T : \kappa}\;(D)
+\qquad
+\frac{\mathcal{D} \in \Sigma \quad \Sigma;\ \Gamma \vdash \bar a \equiv \bar b : \Delta \quad \bar l_1 = \bar l_2}{\Sigma;\ \Gamma \vdash D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a \equiv D.\{\bar s;\ \bar l_2;\ \bar p\}\ \bar b : \kappa}\;(D_\equiv)
+```
+
+In the rule $`(D_\equiv)`$, $`\Delta`$ and $`\kappa`$ are instantiated with the levels $`\bar l_1`$.
+No rule equates two instances with different sorts or grades, as no rule equates the types of two functions whose grades differ.
+
+The type uses the variables of each field type as many times as the field is used, checked in the mode of its grade, and the uses of all the constructors added, since the type mentions all of them.
+With the $`k_i`$ fields of the constructor $`c_i`$ written as the telescope $`\Theta_i[\bar a / \Delta] = (x_{i1} :^{q_{i1}}_{p_{i1}} A_{i1},\ \dots,\ x_{ik_i} :^{q_{ik_i}}_{p_{ik_i}} A_{ik_i})`$, the grade $`q_{ij}`$ of each field allows its uses in the types of the fields after it:
+
+```math
+\frac{\Sigma;\ \gamma_{ij} \mathrel{▶_{m \odot p_{ij}}} A_{ij} \quad \text{for each } i, j \quad \delta_i \bullet \ulcorner m \urcorner \cdot q_{i1} \bullet \dots \bullet \ulcorner m \urcorner \cdot q_{ik_i} \le^{\mathsf{c}} p_{i1} \cdot^{\mathsf{c}} \gamma_{i1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{ik_i} \cdot^{\mathsf{c}} \gamma_{ik_i} \quad \text{for each } i}{\Sigma;\ \delta_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} \delta_n \mathrel{▶_m} T}\;(D_{\mathsf{m}})
+```
+
+The vector $`\gamma_{ij}`$, which has a grade for each variable of $`\Gamma`$ and of the fields before $`x_{ij}`$, is extended by $`\mathbb{0}`$ for the fields from $`x_{ij}`$ on.
+The grades $`q`$ of a declaration are thus checked for each of its instances, and a parameter that no field type uses is not used by the type.
+
+#### Construction
+
+A term of a data type is built by one of its constructors from a term for each of its fields, whose type takes the terms of the fields before it.
+The constructor $`D.c_i`$ carries the instance, written $`T.c_i(t_1,\ \dots,\ t_{k_i})`$, so that the type of the term is determined by the term.
+The term $`t_j`$ is given for the field $`x_{ij} :^{q_{ij}}_{p_{ij}} A_{ij}`$ of the $`k_i`$ fields that the [formation](#formation-2) writes; it uses the variables as many times as the grade of its field, checked in the mode of this grade $`p_{ij}`$, and the instance uses none:
+
+```math
+\frac{\Sigma;\ \Gamma \vdash T \quad 1 \le i \le n \quad \Sigma;\ \Gamma \vdash \bar t : \Theta_i[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash T.c_i(\bar t) : T}\;(D_{\mathsf{c}})
+\qquad
+\frac{\Sigma;\ \gamma_j \mathrel{▶_{m \odot p_{ij}}} t_j \quad \text{for each } j}{\Sigma;\ p_{i1} \cdot^{\mathsf{c}} \gamma_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{ik_i} \cdot^{\mathsf{c}} \gamma_{k_i} \mathrel{▶_m} T.c_i(t_1,\ \dots,\ t_{k_i})}\;(D_{\mathsf{cm}})
+```
+
+Equality is also a congruence for the instances, their constructors, their match and their projections, with the premises of their rules.
+
+#### Matching
+
+A term of a data type is matched by a branch for each constructor, in the order of the declaration, which receives the fields $`\bar x_i = (x_{i1},\ \dots,\ x_{ik_i})`$ of its constructor as variables, and the type $`C`$ of the result may depend on the term, bound to the variable $`z`$ of type $`T`$, which carries the instance, as every binder of the core carries its type; the sort $`\kappa_C`$ of $`C`$ is restricted for the propositions:
+
+```math
+\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ z : T \vdash C : \kappa_C \quad \Sigma;\ \Gamma \vdash t : T \\ \Sigma;\ \Gamma,\ \Theta_i[\bar a / \Delta] \vdash u_i : C[T.c_i(\bar x_i)/z] \quad \text{for each } i \\ \kappa_C = \Omega_{l_C} \text{ if } \kappa = \Omega_l \text{ and } n \ge 2 \quad \kappa_C \in \{U_{l_C}, \Omega_{l_C}\} \text{ otherwise}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{match}_{r}\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n : C[t/z]}\;(D_{\mathsf{match}})
+```
+
+A data type without constructors is matched with no branch, for any result: no term of it is ever built.
+A proof of a data type in a universe of propositions is matched for any result when this type has at most one constructor, and for a proposition only otherwise: since irrelevance equates the proofs built by two different constructors, a match returning other terms would equate the terms of their branches.
+With no constructor, there is no branch to choose, and with one, the $`\eta`$ rule of the [projections](#projections) makes the match equal to its body with the projections of the proof substituted, so that no match waits for a proof to compute, as the [meaning](#meaning-4) of the strict propositions requires.
+
+The term is used $`r`$ times, and the type $`C`$ is checked in the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, so that it uses no variable.
+Each branch uses the field $`x_{ij}`$ with the grade of its field times $`r`$, and all the branches share the same vector $`\delta`$, since only one of them runs:
+
+```math
+\frac{\begin{gathered}{}\Sigma;\ \gamma \mathrel{▶_{m \odot r}} t \quad \Sigma;\ \delta \bullet \ulcorner m \urcorner \cdot r \cdot p_{i1} \bullet \dots \bullet \ulcorner m \urcorner \cdot r \cdot p_{ik_i} \mathrel{▶_m} u_i \quad \text{for each } i \\ \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \\ \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ and } n \ge 2\end{gathered}}{\Sigma;\ r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_{r}\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n}\;(D_{\mathsf{match}\mathsf{m}})
+```
+
+A variable used once by each branch is thus used once by the match, and a variable used by one branch only is given, by $`(\mathsf{sub})`$, a grade that also allows it to be discarded by the others.
+A field that a branch does not use is discarded, which its grade must allow, so that a branch never loses a linear field.
+
+The condition on $`r`$ forbids, in a term that runs, the match of a term without use at run time only when the type has two constructors or more, since the branch to run depends on the constructor, which is absent at run time.
+With one constructor, there is no branch to choose, and the body uses the fields only in erased positions, since $`r \cdot p_{1j}`$ has no use at run time when $`r`$ has none; the $`\eta`$ rule reduces the match of a neutral term to its body, so that it is never blocked, while the [counterexamples of ADE](https://github.com/graded-type-theory/graded-type-theory/blob/master/Graded/Erasure/Consequences/Soundness.agda) to the soundness of erasure for the erased matches of their pairs and units need types without $`\eta`$.
+Whether this reduction keeps the usage for the erased grades other than $`\mathbb{0}`$, of the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$, is still open, as the [unresolved questions](#unresolved-questions) say.
+With no constructor, there is no branch at all, and no closed term of the type exists, so that a closed program never reaches the match, whose extraction is never run; ADE allow it with their option `Emptyrec-allowed`, under which they prove the soundness of erasure for the programs that run under consistent hypotheses only, their counterexample being a term that runs under a hypothesis of an empty type, which no closed program provides.
+A proof of an empty proposition, which never exists at run time, thus eliminates the impossible cases of a program that runs.
+
+Matching a term that has just been built runs the branch of its constructor, with the terms of its fields substituted for the variables:
+
+```math
+\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ z : T \vdash C : \kappa_C \quad 1 \le i \le n \quad \Sigma;\ \Gamma \vdash \bar t : \Theta_i[\bar a / \Delta] \\ \Sigma;\ \Gamma,\ \Theta_j[\bar a / \Delta] \vdash u_j : C[T.c_j(\bar x_j)/z] \quad \text{for each } j \\ \kappa_C = \Omega_{l_C} \text{ if } \kappa = \Omega_l \text{ and } n \ge 2 \quad \kappa_C \in \{U_{l_C}, \Omega_{l_C}\} \text{ otherwise}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{match}_{r}\ T.c_i(\bar t)\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n \equiv u_i[\bar t / \bar x_i] : C[T.c_i(\bar t)/z]}\;(D_\beta)
+```
+
+#### Projections
+
+A data type with a single constructor is also used by projecting one of its fields, and two of its terms are equal when all their projections are.
+With the fields of the constructor written $`\Theta_1[\bar a / \Delta] = (x_{11} :^{q_{11}}_{p_{11}} A_{11},\ \dots,\ x_{1k} :^{q_{1k}}_{p_{1k}} A_{1k})`$, the type of a field takes the projections of the fields before it, and a projection uses the term once, gets the field once, and drops the other fields, which their grades must allow:
+
+```math
+\frac{\Sigma;\ \Gamma \vdash t : T \quad n = 1 \quad 1 \le j \le k}{\Sigma;\ \Gamma \vdash \pi_{T, j}\ t : A_{1j}[\pi_{T, 1}\ t/x_{11}, \dots, \pi_{T, j - 1}\ t/x_{1(j - 1)}]}\;(D_\pi)
+\qquad
+\frac{\Sigma;\ \gamma \mathrel{▶_m} t \quad \ulcorner m \urcorner \cdot p_{1j} \le \ulcorner m \urcorner \quad \ulcorner m \urcorner \cdot p_{1i} \le \mathbb{0} \text{ for each } i \ne j}{\Sigma;\ \gamma \mathrel{▶_m} \pi_{T, j}\ t}\;(D_{\pi\mathsf{m}})
+```
+
+Projecting a term that has just been built gives the term of its field, and two terms are equal when all their projections are, which gives the $`\eta`$ rule:
+
+```math
+\frac{\Sigma;\ \Gamma \vdash T \quad n = 1 \quad \Sigma;\ \Gamma \vdash \bar t : \Theta_1[\bar a / \Delta] \quad 1 \le j \le k}{\Sigma;\ \Gamma \vdash \pi_{T, j}\ T.c_1(t_1,\ \dots,\ t_k) \equiv t_j : A_{1j}[t_1/x_{11}, \dots, t_{j - 1}/x_{1(j - 1)}]}\;(D_{\pi\beta})
+```
+
+```math
+\frac{\Sigma;\ \Gamma \vdash t : T \quad \Sigma;\ \Gamma \vdash u : T \quad n = 1 \quad \Sigma;\ \Gamma \vdash \pi_{T, j}\ t \equiv \pi_{T, j}\ u : A_{1j}[\pi_{T, 1}\ t/x_{11}, \dots, \pi_{T, j - 1}\ t/x_{1(j - 1)}] \quad \text{for each } j}{\Sigma;\ \Gamma \vdash t \equiv u : T}\;(D_\eta)
+```
+
+With $`(D_{\pi\beta})`$, it makes every term equal to the constructor of its projections, $`t \equiv T.c_1(\pi_{T, 1}\ t,\ \dots,\ \pi_{T, k}\ t)`$, and with $`(D_\beta)`$ and congruence, every match equal to its body with the projections substituted, so that no match of a type with a single constructor is neutral.
+Since equality carries no grade, the two sides of these equalities may use their variables differently; the usage of each is checked on its own.
+
+The types with no constructor or with two or more have no $`\eta`$ rule, so that their match of a neutral term stays neutral.
+For no constructor, $`\eta`$ would equate all the terms of every type in a context that declares a term of a type without constructors, which the conversion would have to detect; for two constructors or more, it needs commuting conversions, which move a match through the terms around it.
+[Agda](https://agda.readthedocs.io/en/latest/language/record-types.html), [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) and [Rocq](https://rocq-prover.org/doc/master/refman/language/core/records.html) likewise give $`\eta`$ only to their records and structures, which have a single constructor.
 
 ### Functions
 
@@ -806,7 +944,7 @@ Each field type is checked in the context $`\Gamma_i`$, which extends $`\Gamma`$
 ```
 
 The sort of a record is chosen by whoever writes it, and the rule only checks it, as [Agda](https://agda.readthedocs.io/en/latest/language/prop.html) and [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) check the sort declared for a record.
-A record in a universe of propositions $`\Omega_l`$ has only propositions as fields, which gives the conjunction of propositions, since irrelevance would otherwise equate records that hold different data; a record in a universe $`U_l`$ may have fields of any sort, even propositions only, and is then an ordinary type, whose elements are all equal by the $`\eta`$ rule of the [projections](#projections) without being irrelevant.
+A record in a universe of propositions $`\Omega_l`$ has only propositions as fields, which gives the conjunction of propositions, since irrelevance would otherwise equate records that hold different data; a record in a universe $`U_l`$ may have fields of any sort, even propositions only, and is then an ordinary type, whose elements are all equal by the $`\eta`$ rule of the [projections](#projections-1) without being irrelevant.
 The level $`l`$ of the record bounds the levels of its fields in the [order](#equality-and-order) of levels: a record may thus live in a universe above its fields, which lifts a type to a higher universe without cumulativity, as the [`ULift` of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/#--tech-term-universe-lifting) does.
 A field that is a proof has a grade without use at run time, as the [strict propositions](#strict-propositions) require:
 
@@ -877,10 +1015,10 @@ The match carries $`R`$ and $`C`$, as the matches of ADE carry their type of res
 \frac{\Sigma;\ \Gamma,\ z : R \vdash C \quad \Sigma;\ \Gamma \vdash t : R \quad \Sigma;\ \Gamma,\ \Theta \vdash u : C[R\{x_1,\ \dots,\ x_n\}/z]}{\Sigma;\ \Gamma \vdash \mathsf{match}_r\ t\ \mathsf{as}\ z\ \mathsf{return}\ C\ \mathsf{with}\ R\{x_1,\ \dots,\ x_n\} \Rightarrow u : C[t/z]}\;(\mathsf{match})
 ```
 
-A record of propositions is a proof, and is matched for any result: its fields are proofs, which the body uses only in erased positions, and by the $`\eta`$ rule of the [projections](#projections), the match of a proof equals its body with the projections of the proof substituted, so that the matches of two proofs of the same proposition are equal.
+A record of propositions is a proof, and is matched for any result: its fields are proofs, which the body uses only in erased positions, and by the $`\eta`$ rule of the [projections](#projections-1), the match of a proof equals its body with the projections of the proof substituted, so that the matches of two proofs of the same proposition are equal.
 
 On the seven grades, the grades $`p`$ that allow discarding, $`p \le \mathbb{0}`$, are exactly those that allow duplicating, $`p \le p + p`$: $`\mathbb{0}`$, $`\langle 0, \omega \rangle`$ and $`\langle \omega, \omega \rangle`$.
-A multiplicative record provides all its fields, so that taking fewer than all of them discards the others, as a [projection](#projections) does; an additive record provides one field, so that taking more than one duplicates the resources they share, as a match does.
+A multiplicative record provides all its fields, so that taking fewer than all of them discards the others, as a [projection](#projections-1) does; an additive record provides one field, so that taking more than one duplicates the resources they share, as a match does.
 In the mode $`m`$, the field $`f_i`$ is discarded or duplicated freely when $`\ulcorner m \urcorner \cdot p_i \le \mathbb{0}`$, which always holds in the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, and in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ fails only for the grades whose total multiplicity is $`1`$.
 
 The record is used $`r`$ times, and the type $`C`$ is checked in the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, as in ADE, so that it uses no variable.
@@ -974,7 +1112,7 @@ Since typing carries no grade otherwise, the modes and the seven grades play no 
 
 Checking a type needs a decision procedure for equality.
 The one of this RFC is the algorithm of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), whose formalization ADE extend: both terms are reduced to their weak head normal forms, whose heads are compared, and terms are compared by their type, through $`\eta`$, at the types of functions and of records.
-A match whose record is neutral reduces to its body with the projections of the record substituted, which the [projections](#projections) show equal, so that no match is neutral: as [Agda](https://agda.readthedocs.io/en/latest/language/runtime-irrelevance.html) puts it, a match on a record type with $`\eta`$-equality is not really a match.
+A match whose record is neutral reduces to its body with the projections of the record substituted, which the [projections](#projections-1) show equal, so that no match is neutral: as [Agda](https://agda.readthedocs.io/en/latest/language/runtime-irrelevance.html) puts it, a match on a record type with $`\eta`$-equality is not really a match.
 A type that is a proposition is checked first, and two of its terms are then equal without being compared, which keeps irrelevance decidable, as [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316) show; two levels are compared by deciding their formula of Presburger arithmetic.
 
 ADE prove normalization and the decidability of equality for functions, both kinds of pairs and both kinds of units, with the $`\eta`$ rules of functions, strong pairs and the strong unit, which are those of all the records here, and [Pujet and Tabareau](https://doi.org/10.1145/3498693) prove normalization, with the same framework, for a theory with a universe of strict propositions.
@@ -1133,7 +1271,7 @@ Five choices of this RFC are provisional, each tied to a question below:
 
 - The declared types are not [recursive](#signatures), until this RFC adds the recursive declarations, without which the core has no natural numbers.
 - The empty additive record absorbs any resources, until the conjecture that a program shows in its type the resources it abandons is settled.
-- A term that runs does not match a [record](#matching) without use at run time, until erased matches are studied.
+- A term that runs does not match a [record](#matching-1) without use at run time, until erased matches are studied.
 - The fields of an additive record are delayed at run time by the [erasure](#erasure), until the soundness of this choice is proved.
 - The [erasure](#erasure) targets evaluation by value, until the evaluation order of Sic is fixed.
 
