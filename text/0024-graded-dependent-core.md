@@ -126,22 +126,22 @@ The multiplicities are ordered by their meet, as in ADE: $`\omega`$ is below $`0
 The multiplicities are an [abstract interpretation](https://doi.org/10.1145/512950.512973) of the numbers of uses, in the sense of Cousot and Cousot: a multiplicity stands for the numbers of uses it allows, and its operations approximate those of the numbers, soundly and as precisely as the multiplicities can, from which its tables and its order follow:
 
 ```math
-\mathsf{uses}(0) = \{0\} \qquad \mathsf{uses}(1) = \{1\} \qquad \mathsf{uses}(\omega) = \mathbb{N}
+\mathsf{uses}(0) = \{0\} \qquad \mathsf{uses}(1) = \{1\} \qquad \mathsf{uses}(\omega) = \mathbb{N} \qquad (\mathsf{uses}_u)
 ```
 
 The best multiplicity for a non-empty set $`S`$ of numbers of uses is the one that allows all of them, and allows the fewest numbers among those that do; the empty set has none, since $`0`$ and $`1`$ both allow its elements, vacuously, and neither allows fewer numbers than the other, but no operation below needs it.
 Each operation is the [best abstraction](https://doi.org/10.1145/567752.567778) of the same operation on numbers, and the order is the reverse inclusion, so that a lower multiplicity allows more numbers of uses, the reverse of the usual order of abstract interpretation:
 
 ```math
-\mathsf{best}(S) = u \iff S \subseteq \mathsf{uses}(u) \text{ and } \forall w.\ S \subseteq \mathsf{uses}(w) \implies \mathsf{uses}(u) \subseteq \mathsf{uses}(w)
+\mathsf{best}(S) = u \iff S \subseteq \mathsf{uses}(u) \text{ and } \forall w.\ S \subseteq \mathsf{uses}(w) \implies \mathsf{uses}(u) \subseteq \mathsf{uses}(w) \qquad (\mathsf{best}_u)
 ```
 
 ```math
 \begin{aligned}
-u + v &= \mathsf{best}(\{a + b \mid a \in \mathsf{uses}(u),\ b \in \mathsf{uses}(v)\}) \\
-u \cdot v &= \mathsf{best}(\{a \cdot b \mid a \in \mathsf{uses}(u),\ b \in \mathsf{uses}(v)\}) \\
-u \wedge v &= \mathsf{best}(\mathsf{uses}(u) \cup \mathsf{uses}(v)) \\
-u \le v &\iff \mathsf{uses}(v) \subseteq \mathsf{uses}(u)
+u + v &= \mathsf{best}(\{a + b \mid a \in \mathsf{uses}(u),\ b \in \mathsf{uses}(v)\}) &&(+_u) \\
+u \cdot v &= \mathsf{best}(\{a \cdot b \mid a \in \mathsf{uses}(u),\ b \in \mathsf{uses}(v)\}) &&(\cdot_u) \\
+u \wedge v &= \mathsf{best}(\mathsf{uses}(u) \cup \mathsf{uses}(v)) &&(\wedge_u) \\
+u \le v &\iff \mathsf{uses}(v) \subseteq \mathsf{uses}(u) &&(\le_u)
 \end{aligned}
 ```
 
@@ -184,21 +184,21 @@ For instance, passing a permission of grade `none / linear` to a parameter of th
 The grades are an abstract interpretation of the pairs of numbers of uses, as the [multiplicities](#multiplicities) are of the numbers: a grade stands for the pairs it allows, at run time and in total, the uses at run time being among all the uses:
 
 ```math
-\mathsf{uses}(\langle r, t \rangle) = \{(a, b) \mid a \in \mathsf{uses}(r),\ b \in \mathsf{uses}(t),\ a \le b\}
+\mathsf{uses}(\langle r, t \rangle) = \{(a, b) \mid a \in \mathsf{uses}(r),\ b \in \mathsf{uses}(t),\ a \le b\} \qquad (\mathsf{uses}_p)
 ```
 
 Each operation gives the best grade for a non-empty set $`S`$ of pairs of numbers of uses, as for the multiplicities, and the order is again the reverse inclusion:
 
 ```math
-\mathsf{best}(S) = p \iff S \subseteq \mathsf{uses}(p) \text{ and } \forall w.\ S \subseteq \mathsf{uses}(w) \implies \mathsf{uses}(p) \subseteq \mathsf{uses}(w)
+\mathsf{best}(S) = p \iff S \subseteq \mathsf{uses}(p) \text{ and } \forall w.\ S \subseteq \mathsf{uses}(w) \implies \mathsf{uses}(p) \subseteq \mathsf{uses}(w) \qquad (\mathsf{best}_p)
 ```
 
 ```math
 \begin{aligned}
-p + q &= \mathsf{best}(\{(a_1 + a_2, b_1 + b_2) \mid (a_1, b_1) \in \mathsf{uses}(p),\ (a_2, b_2) \in \mathsf{uses}(q)\}) \\
-p \cdot q &= \mathsf{best}(\{(a_1 \cdot a_2, b_1 \cdot b_2) \mid (a_1, b_1) \in \mathsf{uses}(p),\ (a_2, b_2) \in \mathsf{uses}(q)\}) \\
-p \wedge q &= \mathsf{best}(\mathsf{uses}(p) \cup \mathsf{uses}(q)) \\
-p \le q &\iff \mathsf{uses}(q) \subseteq \mathsf{uses}(p)
+p + q &= \mathsf{best}(\{(a_1 + a_2, b_1 + b_2) \mid (a_1, b_1) \in \mathsf{uses}(p),\ (a_2, b_2) \in \mathsf{uses}(q)\}) &&(+_p) \\
+p \cdot q &= \mathsf{best}(\{(a_1 \cdot a_2, b_1 \cdot b_2) \mid (a_1, b_1) \in \mathsf{uses}(p),\ (a_2, b_2) \in \mathsf{uses}(q)\}) &&(\cdot_p) \\
+p \wedge q &= \mathsf{best}(\mathsf{uses}(p) \cup \mathsf{uses}(q)) &&(\wedge_p) \\
+p \le q &\iff \mathsf{uses}(q) \subseteq \mathsf{uses}(p) &&(\le_p)
 \end{aligned}
 ```
 
@@ -241,16 +241,16 @@ An assignment $`\rho`$ gives a natural number to each level variable, and the va
 
 ```math
 \begin{aligned}
-\rho(0) &= 0 \\
-\rho(l + 1) &= \rho(l) + 1 \\
-\rho(l_1 \sqcup l_2) &= \max(\rho(l_1),\ \rho(l_2))
+\rho(0) &= 0 &&(\rho_0) \\
+\rho(l + 1) &= \rho(l) + 1 &&(\rho_+) \\
+\rho(l_1 \sqcup l_2) &= \max(\rho(l_1),\ \rho(l_2)) &&(\rho_\sqcup)
 \end{aligned}
 ```
 
 ```math
 \begin{aligned}
-l_1 = l_2 &\iff \forall \rho.\ \rho(l_1) = \rho(l_2) \\
-l_1 \le l_2 &\iff \forall \rho.\ \rho(l_1) \le \rho(l_2)
+l_1 = l_2 &\iff \forall \rho.\ \rho(l_1) = \rho(l_2) &&(=_l) \\
+l_1 \le l_2 &\iff \forall \rho.\ \rho(l_1) \le \rho(l_2) &&(\le_l)
 \end{aligned}
 ```
 
@@ -472,10 +472,10 @@ A closed judgment requires its signature to be meaningful, as every judgment of 
 
 ```math
 \begin{aligned}
-\Sigma \vDash A \equiv B &\iff \vDash \Sigma,\ A \Downarrow A_0,\ B \Downarrow B_0,\ \mathsf{eq}(A_0) \text{ and } \mathsf{eq}(B_0) \text{ are defined, and } \mathsf{eq}(A_0) = \mathsf{eq}(B_0) \\
-\Sigma \vDash A &\iff \Sigma \vDash A \equiv A \\
-\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A,\ A \Downarrow A_0,\ t \Downarrow v,\ u \Downarrow w \text{ and } (v, w) \in \mathsf{eq}(A_0) \\
-\Sigma \vDash t : A &\iff \Sigma \vDash t \equiv t : A
+\Sigma \vDash A \equiv B &\iff \vDash \Sigma,\ A \Downarrow A_0,\ B \Downarrow B_0,\ \mathsf{eq}(A_0) \text{ and } \mathsf{eq}(B_0) \text{ are defined, and } \mathsf{eq}(A_0) = \mathsf{eq}(B_0) &&(\vDash_{\mathsf{type}\equiv}) \\
+\Sigma \vDash A &\iff \Sigma \vDash A \equiv A &&(\vDash_{\mathsf{type}}) \\
+\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A,\ A \Downarrow A_0,\ t \Downarrow v,\ u \Downarrow w \text{ and } (v, w) \in \mathsf{eq}(A_0) &&(\vDash_\equiv) \\
+\Sigma \vDash t : A &\iff \Sigma \vDash t \equiv t : A &&(\vDash)
 \end{aligned}
 ```
 
@@ -485,9 +485,9 @@ A judgment in a context $`\Gamma`$ is hypothetical: its context is meaningful, a
 
 ```math
 \begin{aligned}
-\mathsf{eq}(\varepsilon) = {}& \{((),\ ())\} \\
-\mathsf{eq}(\Gamma,\ x : A) = {}& \{((\sigma_1, v_1),\ (\sigma_2, v_2)) \mid (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma),\ \Sigma \vDash v_1 \equiv v_2 : A[\sigma_1]\} \\
-\mathsf{eq}(\Gamma,\ X : (\Theta \vdash A)) = {}& \{((\sigma_1, \bar x.\, B_1),\ (\sigma_2, \bar x.\, B_2)) \mid \\
+\mathsf{eq}(\varepsilon) = {}& \{((),\ ())\} &&(\mathsf{eq}_\varepsilon) \\
+\mathsf{eq}(\Gamma,\ x : A) = {}& \{((\sigma_1, v_1),\ (\sigma_2, v_2)) \mid (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma),\ \Sigma \vDash v_1 \equiv v_2 : A[\sigma_1]\} &&(\mathsf{eq}_{,}) \\
+\mathsf{eq}(\Gamma,\ X : (\Theta \vdash A)) = {}& \{((\sigma_1, \bar x.\, B_1),\ (\sigma_2, \bar x.\, B_2)) \mid &&(\mathsf{eq}_X) \\
 & \quad (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma), \\
 & \quad \forall (\tau_1, \tau_2) \in \mathsf{eq}(\Theta[\sigma_1]).\ \Sigma \vDash B_1[\tau_1] \equiv B_2[\tau_2] : A[\sigma_1, \tau_1]\}
 \end{aligned}
@@ -495,10 +495,10 @@ A judgment in a context $`\Gamma`$ is hypothetical: its context is meaningful, a
 
 ```math
 \begin{aligned}
-\Sigma;\ \Gamma \vDash A \equiv B &\iff \Sigma \vDash \Gamma \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash A[\sigma_1] \equiv B[\sigma_2] \\
-\Sigma;\ \Gamma \vDash A &\iff \Sigma;\ \Gamma \vDash A \equiv A \\
-\Sigma;\ \Gamma \vDash t \equiv u : A &\iff \Sigma;\ \Gamma \vDash A \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash t[\sigma_1] \equiv u[\sigma_2] : A[\sigma_1] \\
-\Sigma;\ \Gamma \vDash t : A &\iff \Sigma;\ \Gamma \vDash t \equiv t : A
+\Sigma;\ \Gamma \vDash A \equiv B &\iff \Sigma \vDash \Gamma \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash A[\sigma_1] \equiv B[\sigma_2] &&({\vDash}\Gamma_{\mathsf{type}\equiv}) \\
+\Sigma;\ \Gamma \vDash A &\iff \Sigma;\ \Gamma \vDash A \equiv A &&({\vDash}\Gamma_{\mathsf{type}}) \\
+\Sigma;\ \Gamma \vDash t \equiv u : A &\iff \Sigma;\ \Gamma \vDash A \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash t[\sigma_1] \equiv u[\sigma_2] : A[\sigma_1] &&({\vDash}\Gamma_\equiv) \\
+\Sigma;\ \Gamma \vDash t : A &\iff \Sigma;\ \Gamma \vDash t \equiv t : A &&({\vDash}\Gamma)
 \end{aligned}
 ```
 
@@ -508,10 +508,10 @@ A signature is meaningful when each of its declarations gives the equality of th
 
 ```math
 \begin{aligned}
-\Sigma \vDash \varepsilon &\iff \vDash \Sigma \\
-\Sigma \vDash \Gamma,\ x : A &\iff \Sigma;\ \Gamma \vDash A \\
-\Sigma \vDash \Gamma,\ X : (\Theta \vdash A) &\iff \Sigma;\ \Gamma,\ \Theta \vDash A \\
-\vDash \Sigma &\iff \text{each declaration } \mathcal{D} \text{ of } \Sigma \text{ gives } \mathsf{eq}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \text{ for each instance, in the signature before } \mathcal{D}
+\Sigma \vDash \varepsilon &\iff \vDash \Sigma &&({\vDash}\mathsf{ctx}_\varepsilon) \\
+\Sigma \vDash \Gamma,\ x : A &\iff \Sigma;\ \Gamma \vDash A &&({\vDash}\mathsf{ctx}_{,}) \\
+\Sigma \vDash \Gamma,\ X : (\Theta \vdash A) &\iff \Sigma;\ \Gamma,\ \Theta \vDash A &&({\vDash}\mathsf{ctx}_X) \\
+\vDash \Sigma &\iff \text{each declaration } \mathcal{D} \text{ of } \Sigma \text{ gives } \mathsf{eq}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \text{ for each instance, in the signature before } \mathcal{D} &&({\vDash}\mathsf{sig})
 \end{aligned}
 ```
 
@@ -519,12 +519,12 @@ The rules are sound for this meaning: every judgment they derive is true, which 
 
 ```math
 \begin{aligned}
-\vdash \Sigma &\implies \vDash \Sigma \\
-\Sigma \vdash \Gamma &\implies \Sigma \vDash \Gamma \\
-\Sigma;\ \Gamma \vdash A &\implies \Sigma;\ \Gamma \vDash A \\
-\Sigma;\ \Gamma \vdash A \equiv B &\implies \Sigma;\ \Gamma \vDash A \equiv B \\
-\Sigma;\ \Gamma \vdash t : A &\implies \Sigma;\ \Gamma \vDash t : A \\
-\Sigma;\ \Gamma \vdash t \equiv u : A &\implies \Sigma;\ \Gamma \vDash t \equiv u : A
+\vdash \Sigma &\implies \vDash \Sigma &&(\mathsf{sound}_{\mathsf{sig}}) \\
+\Sigma \vdash \Gamma &\implies \Sigma \vDash \Gamma &&(\mathsf{sound}_{\mathsf{ctx}}) \\
+\Sigma;\ \Gamma \vdash A &\implies \Sigma;\ \Gamma \vDash A &&(\mathsf{sound}_{\mathsf{type}}) \\
+\Sigma;\ \Gamma \vdash A \equiv B &\implies \Sigma;\ \Gamma \vDash A \equiv B &&(\mathsf{sound}_{\mathsf{type}\equiv}) \\
+\Sigma;\ \Gamma \vdash t : A &\implies \Sigma;\ \Gamma \vDash t : A &&(\mathsf{sound}) \\
+\Sigma;\ \Gamma \vdash t \equiv u : A &\implies \Sigma;\ \Gamma \vDash t \equiv u : A &&(\mathsf{sound}_\equiv)
 \end{aligned}
 ```
 
@@ -604,7 +604,7 @@ A judgment $`\Sigma;\ \Gamma \vdash \mathcal{J}`$ whose levels use level variabl
 
 ```math
 \begin{aligned}
-\Sigma;\ \Gamma \vDash \mathcal{J} &\iff \forall \rho.\ \Sigma;\ \Gamma[\rho] \vDash \mathcal{J}[\rho]
+\Sigma;\ \Gamma \vDash \mathcal{J} &\iff \forall \rho.\ \Sigma;\ \Gamma[\rho] \vDash \mathcal{J}[\rho] &&(\vDash_\rho)
 \end{aligned}
 ```
 
@@ -612,7 +612,7 @@ The canonical terms of the universe $`U_n`$ are the canonical types that live in
 
 ```math
 \begin{aligned}
-(U_k,\ U_k) \in \mathsf{eq}(U_n) &\quad \text{if } k + 1 = n
+(U_k,\ U_k) \in \mathsf{eq}(U_n) &\quad \text{if } k + 1 = n &&(\mathsf{eq}_U)
 \end{aligned}
 ```
 
@@ -672,16 +672,16 @@ A closed canonical type $`A_0`$ is a proposition when it is a term of a universe
 
 ```math
 \begin{aligned}
-\mathsf{eq}(A_0) &= \{(t,\ u) \mid t \text{ and } u \text{ are closed terms}\} &&\text{if } \mathsf{true}(A_0) \\
-\mathsf{eq}(A_0) &= \varnothing &&\text{otherwise}
+\mathsf{eq}(A_0) &= \{(t,\ u) \mid t \text{ and } u \text{ are closed terms}\} &&\text{if } \mathsf{true}(A_0) &&(\mathsf{eq}_{\mathsf{true}}) \\
+\mathsf{eq}(A_0) &= \varnothing &&\text{otherwise} &&(\mathsf{eq}_{\mathsf{false}})
 \end{aligned}
 ```
 
-A proof carries no information but the truth of its proposition, so that it need not compute, as the proofs of Pujet and Tabareau have no reduction: for a proposition, this relation holds between the terms themselves, and the following clause replaces the one of the judgments, which asks them to compute:
+A proof carries no information but the truth of its proposition, so that it need not compute, as the proofs of Pujet and Tabareau have no reduction: for a proposition, this relation holds between the terms themselves, and the following clause replaces the clause $`(\vDash_\equiv)`$ of the judgments, which asks them to compute:
 
 ```math
 \begin{aligned}
-\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A,\ A \Downarrow A_0,\ (A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ for some } k, \text{ and } (t,\ u) \in \mathsf{eq}(A_0)
+\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A,\ A \Downarrow A_0,\ (A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ for some } k, \text{ and } (t,\ u) \in \mathsf{eq}(A_0) &&(\vDash_{\equiv\Omega})
 \end{aligned}
 ```
 
@@ -691,7 +691,7 @@ The universes of propositions are canonical types of the universes, and $`\maths
 
 ```math
 \begin{aligned}
-(\Omega_k,\ \Omega_k) \in \mathsf{eq}(U_n) &\quad \text{if } k + 1 = n
+(\Omega_k,\ \Omega_k) \in \mathsf{eq}(U_n) &\quad \text{if } k + 1 = n &&(\mathsf{eq}_\Omega)
 \end{aligned}
 ```
 
