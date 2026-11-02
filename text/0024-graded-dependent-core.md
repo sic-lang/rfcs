@@ -504,14 +504,15 @@ A judgment in a context $`\Gamma`$ is hypothetical: its context is meaningful, a
 
 A telescope has the equal substitutions of the context it forms, whose grades the meaning ignores.
 A context is meaningful when its last type is a type in the context before it, which makes this context meaningful too, as the rule $`(\mathsf{ctx}_x)`$ needs no other premise.
-A signature is meaningful when each of its declarations gives the equality of the canonical terms of each instance of the type it declares, in the signature before it, as the data and codata types define:
+A signature is meaningful when each of its declarations is meaningful in the signature before it, as the data and codata types define:
 
 ```math
 \begin{aligned}
 \Sigma \vDash \varepsilon &\iff \vDash \Sigma &&({\vDash}\mathsf{ctx}_\varepsilon) \\
 \Sigma \vDash \Gamma,\ x : A &\iff \Sigma;\ \Gamma \vDash A &&({\vDash}\mathsf{ctx}_x) \\
 \Sigma \vDash \Gamma,\ X : (\Theta \vdash A) &\iff \Sigma;\ \Gamma,\ \Theta \vDash A &&({\vDash}\mathsf{ctx}_X) \\
-\vDash \Sigma &\iff \text{each declaration } \mathcal{D} \text{ of } \Sigma \text{ gives } \mathsf{eq}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \text{ for each instance, in the signature before } \mathcal{D} &&({\vDash}\mathsf{sig})
+\vDash \varnothing & &&({\vDash}\mathsf{sig}_\varnothing) \\
+\vDash \Sigma,\ \mathcal{D} &\iff \vDash \Sigma \text{ and } \Sigma \vDash \mathcal{D} &&({\vDash}\mathsf{sig}_{,})
 \end{aligned}
 ```
 
@@ -538,7 +539,7 @@ They are not complete, since a true judgment need not be derivable, written with
 \end{aligned}
 ```
 
-Two functions with equal results on all their arguments are also equal in this meaning but not by the rules.
+Two functions with equal results on all their arguments are also equal in this meaning but not by the rules, as the [data types](#meaning-5) show.
 The truth of a judgment is not decidable either, since it asks whether a computation ends: the abstractions and the applications already contain the untyped λ-calculus, in which a term applied to $`U_0`$ may compute to $`U_0`$ or never end, so that whether a closed term is a term of $`U_1`$ in this meaning is not decidable, even in the empty signature:
 
 ```math
@@ -841,6 +842,95 @@ Since equality carries no grade, the two sides of these equalities may use their
 The types with no constructor or with two or more have no $`\eta`$ rule, so that their match of a neutral term stays neutral.
 For no constructor, $`\eta`$ would equate all the terms of every type in a context that declares a term of a type without constructors, which the conversion would have to detect; for two constructors or more, it needs commuting conversions, which move a match through the terms around it.
 [Agda](https://agda.readthedocs.io/en/latest/language/record-types.html), [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) and [Rocq](https://rocq-prover.org/doc/master/refman/language/core/records.html) likewise give $`\eta`$ only to their records and structures, which have a single constructor.
+
+#### Meaning
+
+The data types complete the [meaning](#meaning-2) of the judgments with the meaning of their declarations and the canonical terms of their instances, as sums, over their constructors, of the dependent products of their fields.
+For a closed instance $`T`$ of a declaration of the signature, $`\kappa[T]`$ and $`\Theta_i[T]`$ are its sort and the telescopes of its fields, in which the sorts, levels, grades and arguments of $`T`$ are substituted.
+
+Two closed telescopes are equal in a sort $`\kappa`$ when their first types are equal types of a sort that $`\kappa`$ bounds, and the rest of them equal for every pair of equal terms of these types, as the rule $`(\mathsf{tel}_{\kappa,})`$ checks; the meaning ignores their grades, as it does for the [telescopes](#meaning-2) of the contexts, so that the formulas omit them:
+
+```math
+\begin{aligned}
+\Sigma \vDash \varepsilon \equiv \varepsilon : \kappa \iff {}& \vDash \Sigma &&({\vDash}\mathsf{tel}_{\kappa\varepsilon}) \\
+\Sigma \vDash (x : A_1,\ \Theta_1) \equiv (x : A_2,\ \Theta_2) : \kappa \iff {}& \Sigma \vDash A_1 \equiv A_2 : \kappa_1 \text{ for some } \kappa_1 \preceq \kappa, \text{ and} &&({\vDash}\mathsf{tel}_{\kappa,}) \\
+& \forall v_1, v_2.\ \Sigma \vDash v_1 \equiv v_2 : A_1 \implies \\
+& \quad \Sigma \vDash \Theta_1[v_1/x] \equiv \Theta_2[v_2/x] : \kappa
+\end{aligned}
+```
+
+A declaration is meaningful when each of its instantiations is, which gives its variables $`\bar s`$, $`\bar l`$ and $`\bar p`$ sorts, natural numbers and grades, as the [levels](#meaning-3) of a judgment are given numbers; the following formula defines it for a declaration $`\mathcal{D}`$ of a data type, written as in the [formation](#formation-2), whose variables are instantiated: its parameters form a meaningful context, and the fields of each constructor live in its sort for every pair of equal arguments, as the rule $`(\mathsf{data})`$ checks:
+
+```math
+\begin{aligned}
+\Sigma \vDash \mathcal{D} &\iff \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \Sigma \vDash \Theta_i[\sigma_1] \equiv \Theta_i[\sigma_2] : \kappa \text{ for each } i &&({\vDash}_{\mathsf{data}})
+\end{aligned}
+```
+
+The canonical terms of an instance $`T`$ in a universe are built by its constructors, and two of them are equal when they are built by the same constructor from equal terms for its fields, which a [telescope](#meaning-2) relates as the substitutions of the context it forms.
+The fields are not computed, since a term in constructor form is canonical, and the instances $`T_1`$ and $`T_2`$ that the constructors carry are any instances of $`D`$, since they only determine the type of the term.
+A proposition declared as a data type is true when one of its constructors has terms for its fields, which are proofs, since its fields are propositions:
+
+```math
+\begin{aligned}
+\mathsf{eq}(T) &= \{(T_1.c_i(\bar t),\ T_2.c_i(\bar u)) \mid 1 \le i \le n,\ (\bar t,\ \bar u) \in \mathsf{eq}(\Theta_i[T])\} &&\text{if } \kappa[T] = U_k &&(\mathsf{eq}_{\mathsf{con}}) \\
+\mathsf{true}(T) &\iff \mathsf{eq}(\Theta_i[T]) \ne \varnothing \text{ for some } i &&\text{if } \kappa[T] = \Omega_k &&(\mathsf{true}_{\mathsf{data}})
+\end{aligned}
+```
+
+The instances are canonical types of the universes, and two of them are equal when they are instances of the same declaration in the same sort, whose fields are equal telescopes:
+
+```math
+\begin{aligned}
+(T_1,\ T_2) \in \mathsf{eq}(s_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are instances of } D \text{ and } \kappa[T_1] = \kappa[T_2] = s_n, &&(\mathsf{eq}_{\mathsf{data}}) \\
+&\quad \text{and } \Sigma \vDash \Theta_i[T_1] \equiv \Theta_i[T_2] : s_n \text{ for each } i
+\end{aligned}
+```
+
+The clause relates the types of the fields in the sorts that $`s_n`$ bounds: in $`s_n`$ itself, which the least relation of the [universes](#meaning-3) allows, and in $`\Omega_n`$ for an instance in $`U_n`$, whose relation is defined first, since the fields of a proposition are propositions and $`\mathsf{eq}(\Omega_n)`$ thus needs no universe $`U_n`$.
+
+A match of a type with a single constructor computes to its body with the projections of its term substituted, as the [conversion](#conversion) reduces the match of a neutral term, so that it never waits for its term to compute: the match of a proof for any result is thus sound, since the projections of a proof are proofs, which need not compute.
+The rules of the arguments, the rule $`(\mathsf{data})`$ and the rules $`(D)`$, $`(D_\equiv)`$, $`(D_{\mathsf{c}})`$, $`(D_{\mathsf{match}})`$, $`(D_\beta)`$, $`(D_\pi)`$, $`(D_{\pi\beta})`$ and $`(D_\eta)`$ are then sound.
+
+The meaning ignores the grades, which no clause reads, as well as the levels and the arguments that neither the sort nor the fields use: two instances of a declaration whose sorts are equal, and whose telescopes of fields are equal once all their grades are erased, written $`|\Theta|`$, are equal types in this meaning, but not by the rule $`(D_\equiv)`$ when their grades or their levels differ:
+
+```math
+\begin{aligned}
+& T_1 \text{ and } T_2 \text{ are instances of } D,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}_{D\equiv}) \\
+& \kappa[T_1] = \kappa[T_2] \text{ and } |\Theta_i[T_1]| = |\Theta_i[T_2]| \text{ for each } i \\
+\implies {}& \Sigma \vDash T_1 \equiv T_2 \text{ and} \\
+& \Sigma;\ \varepsilon \nvdash T_1 \equiv T_2 \text{ if their grades or their levels differ}
+\end{aligned}
+```
+
+The identity of an instance $`T`$ and the function that rebuilds its argument by matching it are:
+
+```math
+\begin{aligned}
+\mathsf{id}_T = {}& \lambda_{\mathbb{1}}\, (y : T).\, y \\
+\mathsf{rebuild}_T = {}& \lambda_{\mathbb{1}}\, (y : T).\, \mathsf{match}_{\mathbb{1}}\ y\ \mathsf{return}\ (z : T).\, T\ \mathsf{with} \\
+& \quad c_1(\bar x_1) \Rightarrow T.c_1(\bar x_1) \mid \dots \mid c_n(\bar x_n) \Rightarrow T.c_n(\bar x_n)
+\end{aligned}
+```
+
+The meaning validates $`\eta`$ for any number of constructors: every closed term of an instance in a universe computes to one of its constructors, so that it is equal to its rebuilding, vacuously when there is no constructor, and every proof of a proposition is equal to its rebuilding by irrelevance:
+
+```math
+\begin{aligned}
+& \Sigma;\ \Gamma \vdash t : T &&(\mathsf{valid}_\eta) \\
+\implies {}& \Sigma;\ \Gamma \vDash t \equiv \mathsf{rebuild}_T \circ_{\mathbb{1}} t : T
+\end{aligned}
+```
+
+The types that have no $`\eta`$ rule lack it for the decidability of the conversion, as the [projections](#projections) say, not because the meaning refutes it: for an instance in a universe of a data type with two constructors or more, $`\mathsf{id}_T`$ and $`\mathsf{rebuild}_T`$ give equal results on every closed term of $`T`$, so that they are equal in this meaning, but not by the rules; for an instance in a universe of propositions, both functions are proofs, equal by irrelevance:
+
+```math
+\begin{aligned}
+& \Sigma;\ \varepsilon \vdash T,\ \kappa[T] = U_k \text{ and } n \ge 2 &&(\mathsf{incomplete}_\eta) \\
+\implies {}& \Sigma \vDash \mathsf{id}_T \equiv \mathsf{rebuild}_T : \Pi^{\mathbb{0}}_{\mathbb{1}}\, (y : T).\, T \text{ and} \\
+& \Sigma;\ \varepsilon \nvdash \mathsf{id}_T \equiv \mathsf{rebuild}_T : \Pi^{\mathbb{0}}_{\mathbb{1}}\, (y : T).\, T
+\end{aligned}
+```
 
 ### Functions
 
