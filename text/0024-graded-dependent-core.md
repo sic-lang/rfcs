@@ -665,6 +665,45 @@ A proof cannot be analyzed to build data, since irrelevance would identify the d
 A proof exists only in erased positions: every binder whose type is a proposition has a [grade](#grades) without use at run time, so that a proof is checked in the [mode](#modes) $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ or $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$, which the rules of the [functions](#functions) and the [records](#records) check.
 The erasure of proofs is then the erasure of the grades without use at run time, with no mechanism of its own.
 
+#### Meaning
+
+The strict propositions complete the [meaning](#meaning-2) of the judgments with a denotation of the propositions by truth values, as the setoid model of [Pujet and Tabareau](https://doi.org/10.1145/3498693) interprets them by the sets with at most one element.
+A closed canonical type $`A_0`$ is a proposition when it is a term of a universe of propositions, and it is known by its truth $`\mathsf{true}(A_0)`$, which the data types and the codata types declared in a universe of propositions give; when it is true, all the closed terms are equal proofs of it, and when it is false, none is:
+
+```math
+\begin{aligned}
+\mathsf{eq}(A_0) &= \{(t,\ u) \mid t \text{ and } u \text{ are closed terms}\} &&\text{if } \mathsf{true}(A_0) \\
+\mathsf{eq}(A_0) &= \varnothing &&\text{otherwise}
+\end{aligned}
+```
+
+A proof carries no information but the truth of its proposition, so that it need not compute, as the proofs of Pujet and Tabareau have no reduction: for a proposition, this relation holds between the terms themselves, and the following clause replaces the one of the judgments, which asks them to compute:
+
+```math
+\begin{aligned}
+\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A,\ A \Downarrow A_0,\ (A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ for some } k, \text{ and } (t,\ u) \in \mathsf{eq}(A_0)
+\end{aligned}
+```
+
+A variable of a proposition then stands for any closed term, which may not compute, so that no computation of a term whose type is not a proposition may wait for a proof to compute: a proof is only used to build other proofs, or eliminated without being inspected.
+
+The universes of propositions are canonical types of the universes, and $`\mathsf{eq}(\Omega_n)`$ is the least relation that the clauses of the data types and the codata types declared in $`\Omega_n`$ define, as for the universes; two propositions are then equal types when they are both true or both false:
+
+```math
+\begin{aligned}
+(\Omega_k,\ \Omega_k) \in \mathsf{eq}(U_n) &\quad \text{if } k + 1 = n
+\end{aligned}
+```
+
+The denotation is exact for the proofs: two closed terms are equal proofs of a proposition in this meaning exactly when each of them is a proof of it, as the rule $`(\mathsf{irr})`$ says, which is then sound, as the rules $`(\Omega)`$, $`(\Omega_\equiv)`$, $`(\Omega_{\mathsf{type}})`$ and $`(\Omega_{\mathsf{type}\equiv})`$ are:
+
+```math
+\begin{aligned}
+& \Sigma \vDash A : \Omega_k &&(\mathsf{exact}_\Omega) \\
+\implies {}& \Sigma \vDash t \equiv u : A \iff \Sigma \vDash t : A \text{ and } \Sigma \vDash u : A
+\end{aligned}
+```
+
 ### Functions
 
 The rules of the functions are those of ADE, with sorts in place of its universes.
