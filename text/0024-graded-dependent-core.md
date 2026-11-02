@@ -16,7 +16,7 @@ This RFC gives the typing rules of the constructs on which every later RFC of th
 
 ## Proposal
 
-The proposal first fixes the notation, the grading, which counts the uses of the variables, and the judgments of the core.
+The proposal first fixes the notation, the grading, which counts the uses of the variables, the levels, which stratify the sorts, and the judgments of the core.
 It then defines the universes, the strict propositions, the functions and the records, each with its rules of typing and of usage, and ends with the conversion, the erasure and examples.
 
 ### Notation
@@ -225,6 +225,44 @@ ADE has the two modes $`\mathbb{0}^{\mathsf{m}}`$ and $`\mathbb{1}^{\mathsf{m}}`
 The mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ is added so that an erased term still counts all its uses: in $`\mathbb{0}^{\mathsf{m}}`$, a proof could drop or duplicate a permission of grade `none / linear`.
 The three modes form a mode structure of the formalization of ADE, which defines modes abstractly; this was checked in Agda with the seven grades.
 
+### Levels
+
+The sorts $`U_l`$ and $`\Omega_l`$ are indexed by levels, which stratify the [universes](#universes) and the universes of [strict propositions](#strict-propositions) into hierarchies.
+
+#### Syntax
+
+A level $`l`$ is $`0`$, a successor $`l + 1`$, the larger $`l_1 \sqcup l_2`$ of two levels, or a level variable.
+Levels are not terms: they appear only as the subscripts of sorts, and use no variable of the context, unlike the levels of the formalization of ADE, which are terms of a type of levels since [Danielsson, Favier and Kubánek](https://doi.org/10.1145/3776645).
+
+#### Equality and Order
+
+Since a definition is checked once with its level variables and then used at any levels, two levels are equal when they are equal whatever natural numbers their variables take, and ordered when they are ordered whatever numbers their variables take.
+An assignment $`\rho`$ gives a natural number to each level variable, and the value $`\rho(l)`$ of a level $`l`$ under $`\rho`$ follows its syntax:
+
+```math
+\begin{aligned}
+\rho(0) &= 0 \\
+\rho(l + 1) &= \rho(l) + 1 \\
+\rho(l_1 \sqcup l_2) &= \max(\rho(l_1),\ \rho(l_2))
+\end{aligned}
+```
+
+```math
+\begin{aligned}
+l_1 = l_2 &\iff \forall \rho.\ \rho(l_1) = \rho(l_2) \\
+l_1 \le l_2 &\iff \forall \rho.\ \rho(l_1) \le \rho(l_2)
+\end{aligned}
+```
+
+These formulas define the equality and the order of levels by the values of the levels, which are thus their meaning: unlike the grades, levels need no meaning apart from their definition, which is exact for it by construction.
+For level variables $`l_1`$ and $`l_2`$, $`l_1 \sqcup l_1`$ equals $`l_1`$, but $`l_1 \sqcup l_2`$ does not equal $`l_1`$, since they agree only when $`l_2 \le l_1`$.
+The order is also $`l_1 \le l_2`$ exactly when $`l_1 \sqcup l_2 = l_2`$, and both are decidable, since they are formulas of [Presburger arithmetic](https://en.wikipedia.org/wiki/Presburger_arithmetic).
+
+#### Level Variables
+
+Level polymorphism is prenex, as in [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/): level variables are parameters of a top-level definition or of a [declaration](#declarations) only, instantiated with levels at each use, and the definition is checked once, with its level variables.
+Within the rules, a level variable is a constant; no type quantifies over levels, so no universe beyond the hierarchies is needed, unlike the $`\mathsf{Set}\omega`$ of [Agda](https://agda.readthedocs.io/en/latest/language/universe-levels.html).
+
 ### Judgments
 
 The core has the four judgments of Martin-Löf type theory, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, with a judgment for signatures, a judgment for contexts and a judgment for usage:
@@ -292,7 +330,7 @@ A declaration introduces either a data type, known by its constructors, each wit
 \mathsf{codata}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ d_1 :^{q_1}_{p_1} \Theta_1 \to B_1 \mid \dots \mid d_n :^{q_n}_{p_n} \Theta_n \to B_n
 ```
 
-The sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ are parameters of the declaration, instantiated at each use with sorts, levels and grades, as the level variables of a top-level definition are under [universe polymorphism](#universe-polymorphism): the types of functions, for instance, are one declaration for all the grades of their argument and all the sorts of their domain and codomain.
+The sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ are parameters of the declaration, instantiated at each use with sorts, levels and grades, as the [level variables](#level-variables) of a top-level definition are: the types of functions, for instance, are one declaration for all the grades of their argument and all the sorts of their domain and codomain.
 A sort variable $`s`$ stands for $`U`$ or $`\Omega`$, and $`s_l`$ for the sort $`U_l`$ or $`\Omega_l`$, as the sort qualities of the [sort polymorphism of Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html) stand for its sorts, whose theory [Bounded Sort Polymorphism with Elimination Constraints](https://doi.org/10.1145/3776732) gives.
 The context $`\Delta`$ declares the parameters, which carry no grades and which the types of the fields, arguments and results use, and $`\kappa`$ is the sort in which the declared type lives, written $`s_l`$ where $`s`$ is $`U`$, $`\Omega`$ or a sort variable, and $`l`$ a level that may use the level variables.
 The types of the parameters do not bound the level of the declared type, as in Lean, since every use instantiates them: only the fields, the arguments and the results live in its sort.
@@ -345,7 +383,7 @@ A use of a declaration instantiates each second-order variable $`X : (\Theta \vd
 
 ##### Well-Formed Declarations
 
-A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort that $`\kappa`$ bounds, which the relation $`\kappa_1 \preceq \kappa_2`$ defines: both sorts are at levels $`l_1 \le l_2`$, and $`\kappa_1`$ is a universe of propositions when $`\kappa_2`$ is.
+A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort that $`\kappa`$ bounds, which the relation $`\kappa_1 \preceq \kappa_2`$ defines: both sorts are at levels in the [order](#equality-and-order) $`l_1 \le l_2`$, and $`\kappa_1`$ is a universe of propositions when $`\kappa_2`$ is.
 An entry whose type is a proposition is a proof, whose grade has no use at run time, as the [strict propositions](#strict-propositions) require:
 
 ```math
@@ -516,7 +554,7 @@ Usage has no meaning of its own in this RFC, since the uses of a variable that a
 The following properties are not rules: they follow from the rules, and the formalization has to prove them.
 
 - Context conversion: a judgment still holds when the type of a declaration of its context is replaced by an equal type.
-- Level instantiation: a judgment still holds when its level variables are replaced by levels, so that a definition checked once with its level variables is used at any levels, as the [universes](#universes) require.
+- Level instantiation: a judgment still holds when its level variables are replaced by levels, so that a definition checked once with its level variables is used at any levels, as the [level variables](#level-variables) require.
 - Presuppositions: every judgment implies that its signature and its context are well formed, a typing $`\Sigma;\ \Gamma \vdash t : A`$ implies $`\Sigma;\ \Gamma \vdash A`$, and an equality implies that both its sides are types, or terms of its type.
 - Second-order substitution: a judgment still holds when an abstraction of the type of a second-order variable instantiates it, and a usage with the usage of the abstraction scaled by the grade of the variable, when the abstraction uses each variable of the telescope within its grade $`p`$.
 - Subject reduction: a term keeps its types when it reduces, as the [conversion](#conversion) reduces terms.
@@ -533,13 +571,6 @@ A universe that contains itself makes the theory inconsistent ([Girard's paradox
 ```math
 U_0 : U_1 : U_2 : \cdots
 ```
-
-#### Levels
-
-A level $`l`$ is $`0`$, a successor $`l + 1`$, the larger $`l_1 \sqcup l_2`$ of two levels, or a level variable.
-Since a definition is checked once with its level variables and then used at any levels, two levels are equal when they are equal whatever levels their variables take: for level variables $`l_1`$ and $`l_2`$, $`l_1 \sqcup l_1`$ equals $`l_1`$, but $`l_1 \sqcup l_2`$ does not equal $`l_1`$, since they agree only when $`l_2`$ is at most $`l_1`$.
-This equality is decidable, since it is a formula of [Presburger arithmetic](https://en.wikipedia.org/wiki/Presburger_arithmetic).
-Levels are not terms: they appear only as the subscripts of universes, and use no variable of the context, unlike the levels of the formalization of ADE, which are terms of a type of levels since [Danielsson, Favier and Kubánek](https://doi.org/10.1145/3776645).
 
 #### Formation
 
@@ -566,10 +597,28 @@ A term of a universe is a type, and two equal terms of a universe are equal type
 \frac{\Sigma;\ \Gamma \vdash A \equiv B : U_l}{\Sigma;\ \Gamma \vdash A \equiv B}\;(U_{\mathsf{type}\equiv})
 ```
 
-#### Universe Polymorphism
+#### Meaning
 
-Universe polymorphism is prenex, as in [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/): level variables are parameters of a top-level definition only, instantiated with levels at each use, and the definition is checked once, with its level variables.
-Within the rules, a level variable is a constant; no type quantifies over levels, so no universe beyond the hierarchy is needed, unlike the $`\mathsf{Set}\omega`$ of [Agda](https://agda.readthedocs.io/en/latest/language/universe-levels.html).
+The universes complete the [meaning](#meaning-2) of the judgments with the values of the levels and the canonical terms of the universes.
+A judgment $`\Sigma;\ \Gamma \vdash \mathcal{J}`$ whose levels use level variables is true when it is true for every assignment $`\rho`$ of [natural numbers](#equality-and-order) to them, as a definition checked once with its level variables is used at any levels; the instance $`\mathcal{J}[\rho]`$ replaces each level $`l`$ by the level without variables whose value is $`\rho(l)`$, written as this number, and $`\Gamma[\rho]`$ does so in the context, so that the clauses of the meaning of the judgments apply:
+
+```math
+\begin{aligned}
+\Sigma;\ \Gamma \vDash \mathcal{J} &\iff \forall \rho.\ \Sigma;\ \Gamma[\rho] \vDash \mathcal{J}[\rho]
+\end{aligned}
+```
+
+The canonical terms of the universe $`U_n`$ are the canonical types that live in it, and two of them are equal when they are equal types; $`\mathsf{eq}(U_n)`$ is the least relation such that the following holds, together with the clauses that the [strict propositions](#strict-propositions), the data types and the codata types add:
+
+```math
+\begin{aligned}
+(U_k,\ U_k) \in \mathsf{eq}(U_n) &\quad \text{if } k + 1 = n
+\end{aligned}
+```
+
+The relation is inductive, since a type of $`U_n`$ may be built from other types of $`U_n`$, such as the types of the fields of a data type: each of its types is built by finitely many clauses, which define together the equality $`\mathsf{eq}(A_0)`$ of the terms of each type $`A_0`$ it relates, equal to that of every type it relates to $`A_0`$.
+The clause of $`U_k`$ needs only the universe below $`U_n`$, so that the universes are defined one after the other, by induction on $`n`$.
+The rules $`(U_{\mathsf{type}})`$ and $`(U_{\mathsf{type}\equiv})`$ are then sound: a term of a universe is a type, and two equal terms of a universe are equal types.
 
 ### Strict Propositions
 
@@ -719,7 +768,7 @@ Each field type is checked in the context $`\Gamma_i`$, which extends $`\Gamma`$
 
 The sort of a record is chosen by whoever writes it, and the rule only checks it, as [Agda](https://agda.readthedocs.io/en/latest/language/prop.html) and [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) check the sort declared for a record.
 A record in a universe of propositions $`\Omega_l`$ has only propositions as fields, which gives the conjunction of propositions, since irrelevance would otherwise equate records that hold different data; a record in a universe $`U_l`$ may have fields of any sort, even propositions only, and is then an ordinary type, whose elements are all equal by the $`\eta`$ rule of the [projections](#projections) without being irrelevant.
-The level $`l`$ of the record bounds the levels of its fields, where $`l_1 \le l_2`$ when $`l_1 \sqcup l_2 = l_2`$, which is decidable as their equality: a record may thus live in a universe above its fields, which lifts a type to a higher universe without cumulativity, as the [`ULift` of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/#--tech-term-universe-lifting) does.
+The level $`l`$ of the record bounds the levels of its fields in the [order](#equality-and-order) of levels: a record may thus live in a universe above its fields, which lifts a type to a higher universe without cumulativity, as the [`ULift` of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/#--tech-term-universe-lifting) does.
 A field that is a proof has a grade without use at run time, as the [strict propositions](#strict-propositions) require:
 
 ```math
@@ -1052,7 +1101,7 @@ Five choices of this RFC are provisional, each tied to a question below:
 - Which word names the strict propositions in the language, given that `Prop` is impredicative in Lean and Rocq?
 - Does definitional proof irrelevance keep the metatheory of a graded type theory?
   Abel, Danielsson and Eriksson note that their framework cannot model it.
-- Which RFC defines the top-level definitions, whose level variables the [universes](#universes) assume?
+- Which RFC defines the top-level definitions, whose [level variables](#level-variables) the levels assume?
 - Should the usage rule of the type of functions be written with a bound, as the usage rules of the types and of the additive terms of the [records](#records), so that the rules of usage share one style?
   It keeps the exact form of ADE for now, and this point is to be analyzed again.
 - Which mechanism declares the types with named fields, distinct from every other type, and how does it relate to the inductive types, of which the [structures of Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Inductive-Types/#structures) are the case with a single constructor?
