@@ -943,6 +943,114 @@ The types that have no $`\eta`$ rule lack it for the decidability of the convers
 \end{aligned}
 ```
 
+### Codata
+
+A codata type is known by its destructors: each of its terms is observed by one of them, applied to terms for its arguments, and is built by giving the result of each observation.
+It is declared by a [declaration](#declarations) whose rules this section gives.
+
+#### Formation
+
+In the rules of this section, $`\mathcal{D}`$ is the declaration of a codata type, of which $`T`$ is an [instance](#declared-types):
+
+```math
+\mathcal{D} \;=\; \mathsf{codata}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ d_1 :^{q_1}_{p_1} \Theta_1 \to B_1 \mid \dots \mid d_n :^{q_n}_{p_n} \Theta_n \to B_n
+```
+
+The $`k_i`$ arguments of the destructor $`d_i`$ are written as the telescope $`\Theta_i[\bar a / \Delta] = (x_{i1} :^{q_{i1}}_{p_{i1}} A_{i1},\ \dots,\ x_{ik_i} :^{q_{ik_i}}_{p_{ik_i}} A_{ik_i})`$, and its result as $`B_i[\bar a / \Delta]`$.
+The destructors before $`d_i`$ stay second-order variables of these types, as the [declaration](#well-formed-declarations) checks them, and the rules instantiate them in two ways: $`[\bar x.\, \bar u / \bar d]`$ instantiates each $`d_j`$ with the abstraction $`\bar x_j.\, u_j`$ of a term $`u_j`$ under the variables $`\bar x_j`$ of its arguments, and $`[t.T.\bar d]`$ with the abstraction $`\bar x_j.\, t.T.d_j(\bar x_j)`$ of the [destruction](#destruction) of a term $`t`$ by $`d_j`$.
+
+The type uses the variables of each destructor as many times as the destructor is used, and the uses of all the destructors added, since the type mentions all of them.
+A destructor is counted as a single entry whose type gathers its arguments and its result: they are checked in the mode of its grade, each argument type in the mode of the grade of its argument within it, and their uses, each argument type counted as many times as its argument is used, are multiplied by the grade of the destructor, as its branch is in a [comatch](#construction-1).
+The grade $`q_{ij}`$ of each argument allows its uses in the types of the arguments after it and in the result, counted before this multiplication, and the grade $`q_i`$ of each destructor its uses in the types of the destructors after it:
+
+```math
+\frac{\begin{gathered}{}\Sigma;\ \gamma_{ij} \mathrel{▶_{(m \odot p_i) \odot p_{ij}}} A_{ij} \quad \text{for each } i, j \quad \Sigma;\ \beta_i \mathrel{▶_{m \odot p_i}} B_i[\bar a / \Delta] \quad \text{for each } i \\ \varepsilon_i \bullet \ulcorner m \odot p_i \urcorner \cdot q_{i1} \bullet \dots \bullet \ulcorner m \odot p_i \urcorner \cdot q_{ik_i} \le^{\mathsf{c}} p_{i1} \cdot^{\mathsf{c}} \gamma_{i1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{ik_i} \cdot^{\mathsf{c}} \gamma_{ik_i} +^{\mathsf{c}} \beta_i \quad \text{for each } i \\ \delta \bullet \ulcorner m \urcorner \cdot q_1 \bullet \dots \bullet \ulcorner m \urcorner \cdot q_n \le^{\mathsf{c}} p_1 \cdot^{\mathsf{c}} \varepsilon_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \varepsilon_n\end{gathered}}{\Sigma;\ \delta \mathrel{▶_m} T}\;(D^{-}_{\mathsf{m}})
+```
+
+The vector $`\gamma_{ij}`$ has a grade for each variable of $`\Gamma`$, each destructor before $`d_i`$ and each argument before $`x_{ij}`$, and $`\beta_i`$ for each variable of $`\Gamma`$, each destructor before $`d_i`$ and each argument of $`d_i`$; both are extended by $`\mathbb{0}`$ for the arguments from $`x_{ij}`$ on, as for the data types.
+The vector $`\varepsilon_i`$ has a grade for each variable of $`\Gamma`$ and each destructor before $`d_i`$, and is extended by $`\mathbb{0}`$ for the destructors from $`d_i`$ on.
+
+#### Construction
+
+A term of a codata type is built by a comatch, as the copattern matching of [Abel, Pientka, Thibodeau and Setzer](https://doi.org/10.1145/2429069.2429075) defines a term by its observations: a branch for each destructor, in the order of the declaration, receives the arguments $`\bar x_i = (x_{i1},\ \dots,\ x_{ik_i})`$ of its destructor as variables and gives the result of the observation, whose type takes the branches of the destructors before it.
+The comatch carries the instance, as the constructors do, and writes each destructor after a dot, as its [destruction](#destruction) does, as the objects $`\{H \to e\}`$ of [Downen, Sullivan, Ariola and Peyton Jones](https://doi.org/10.1007/978-3-030-17184-1_5) give a branch for each observation $`H`$; a destructor without arguments is written without parentheses:
+
+```math
+\frac{\Sigma;\ \Gamma \vdash T \quad \Sigma;\ \Gamma,\ \Theta_i[\bar a / \Delta][\bar x.\, \bar u / \bar d] \vdash u_i : B_i[\bar a / \Delta][\bar x.\, \bar u / \bar d] \quad \text{for each } i}{\Sigma;\ \Gamma \vdash \mathsf{comatch}\ T\ \mathsf{with}\ .d_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid .d_n(\bar x_n) \Rightarrow u_n : T}\;(D^{-}_{\mathsf{i}})
+```
+
+Since the user of the term observes it by one destructor at each use, the term needs the resources of each branch, but not of all of them together: its uses are bounded by the uses of each branch, counted with the grade of its destructor.
+Each branch is checked in the mode of this grade, and uses each argument with its grade:
+
+```math
+\frac{\Sigma;\ \gamma_i \bullet \ulcorner m \odot p_i \urcorner \cdot p_{i1} \bullet \dots \bullet \ulcorner m \odot p_i \urcorner \cdot p_{ik_i} \mathrel{▶_{m \odot p_i}} u_i \quad \delta \le^{\mathsf{c}} p_i \cdot^{\mathsf{c}} \gamma_i \quad \text{for each } i \quad \delta \le^{\mathsf{c}} \ulcorner m \urcorner \cdot^{\mathsf{c}} \delta}{\Sigma;\ \delta \mathrel{▶_m} \mathsf{comatch}\ T\ \mathsf{with}\ .d_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid .d_n(\bar x_n) \Rightarrow u_n}\;(D^{-}_{\mathsf{i}\mathsf{m}})
+```
+
+For a type with destructors, the greatest such vector is the meet $`p_1 \cdot^{\mathsf{c}} \gamma_1 \wedge^{\mathsf{c}} \dots \wedge^{\mathsf{c}} p_n \cdot^{\mathsf{c}} \gamma_n`$, so that a variable used once by every branch is used once by the term.
+For a type without destructors, the bounds are vacuous, and the term may use any resources, which it never gives back; the last premise keeps the erased uses of a term checked in an erased mode erased.
+
+Equality is also a congruence for the comatches, their destructions and their match, with the premises of their rules.
+
+#### Destruction
+
+A term of a codata type is observed by one of its destructors applied to terms $`\bar b = (b_1,\ \dots,\ b_{k_i})`$ for its arguments, written after the term, $`t.T.d_i(\bar b)`$, as the [projections](#projections) of the data types; the types of the arguments and of the result take the destructions of $`t`$ by the destructors before $`d_i`$:
+
+```math
+\frac{\Sigma;\ \Gamma \vdash t : T \quad 1 \le i \le n \quad \Sigma;\ \Gamma \vdash \bar b : \Theta_i[\bar a / \Delta][t.T.\bar d]}{\Sigma;\ \Gamma \vdash t.T.d_i(\bar b) : B_i[\bar a / \Delta][t.T.\bar d][\bar b / \Theta_i]}\;(D^{-}_\pi)
+```
+
+A destruction uses the term once and gets the result once, which the grade of the destructor must allow, and uses each argument as many times as its grade, checked in the mode of this grade:
+
+```math
+\frac{\Sigma;\ \gamma \mathrel{▶_m} t \quad \Sigma;\ \delta_j \mathrel{▶_{m \odot p_{ij}}} b_j \quad \text{for each } j \quad \ulcorner m \urcorner \cdot p_i \le \ulcorner m \urcorner}{\Sigma;\ \gamma +^{\mathsf{c}} p_{i1} \cdot^{\mathsf{c}} \delta_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{ik_i} \cdot^{\mathsf{c}} \delta_{k_i} \mathrel{▶_m} t.T.d_i(b_1,\ \dots,\ b_{k_i})}\;(D^{-}_{\pi\mathsf{m}})
+```
+
+Destructing a term that has just been built runs the branch of its destructor, with the arguments substituted for its variables:
+
+```math
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash T \quad \Sigma;\ \Gamma,\ \Theta_j[\bar a / \Delta][\bar x.\, \bar u / \bar d] \vdash u_j : B_j[\bar a / \Delta][\bar x.\, \bar u / \bar d] \quad \text{for each } j \\ 1 \le i \le n \quad \Sigma;\ \Gamma \vdash \bar b : \Theta_i[\bar a / \Delta][\bar x.\, \bar u / \bar d]\end{gathered}}{\Sigma;\ \Gamma \vdash (\mathsf{comatch}\ T\ \mathsf{with}\ .d_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid .d_n(\bar x_n) \Rightarrow u_n).T.d_i(\bar b) \equiv u_i[\bar b / \bar x_i] : B_i[\bar a / \Delta][\bar x.\, \bar u / \bar d][\bar b / \Theta_i]}\;(D^{-}_{\pi\beta})
+```
+
+Two terms are equal when all their destructions are, on the variables of their arguments, which gives the $`\eta`$ rule:
+
+```math
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash t : T \quad \Sigma;\ \Gamma \vdash u : T \\ \Sigma;\ \Gamma,\ \Theta_i[\bar a / \Delta][t.T.\bar d] \vdash t.T.d_i(\bar x_i) \equiv u.T.d_i(\bar x_i) : B_i[\bar a / \Delta][t.T.\bar d] \quad \text{for each } i\end{gathered}}{\Sigma;\ \Gamma \vdash t \equiv u : T}\;(D^{-}_\eta)
+```
+
+With $`(D^{-}_{\pi\beta})`$, it makes every term equal to the comatch of its destructions, $`t \equiv \mathsf{comatch}\ T\ \mathsf{with}\ .d_1(\bar x_1) \Rightarrow t.T.d_1(\bar x_1) \mid \dots \mid .d_n(\bar x_n) \Rightarrow t.T.d_n(\bar x_n)`$, and makes all the terms of a type without destructors equal.
+Unlike the data types, the codata types have the $`\eta`$ rule whatever their number of destructors: it compares the observations of two terms, which the conversion does at their type, and needs no commuting conversion.
+Since equality carries no grade, the two sides of these equalities may use their variables differently; the usage of each is checked on its own, as for the data types.
+
+#### Matching
+
+A codata type whose destructors have no arguments is also used by matching a term against all its destructors at once.
+The body $`u`$ receives the results of the destructions as the variables $`\bar y = (y_1,\ \dots,\ y_n)`$, each of which has the type of the result of its destructor, in which $`[\bar y / \bar d]`$ instantiates the destructors before it, which have no arguments, with the variables before it, as $`[\bar u / \bar d]`$ does with terms.
+The pattern names each destructor with the variable it binds, as the record patterns $`\mathsf{record}\ \{\mathsf{fst} = x;\ \mathsf{snd} = y\}`$ of [Agda](https://agda.readthedocs.io/en/latest/language/record-types.html) do, and, in the rules below, $`T\{\bar u\}`$ stands for the comatch $`\mathsf{comatch}\ T\ \mathsf{with}\ .d_1 \Rightarrow u_1 \mid \dots \mid .d_n \Rightarrow u_n`$ of the terms $`\bar u`$:
+
+```math
+\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ z : T \vdash C : \kappa_C \quad \kappa_C \in \{U_{l_C}, \Omega_{l_C}\} \quad \Sigma;\ \Gamma \vdash t : T \quad k_i = 0 \text{ for each } i \\ \Sigma;\ \Gamma,\ y_1 : B_1[\bar a / \Delta][\bar y / \bar d],\ \dots,\ y_n : B_n[\bar a / \Delta][\bar y / \bar d] \vdash u : C[T\{\bar y\}/z]\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{match}_r\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ \{.d_1 = y_1,\ \dots,\ .d_n = y_n\} \Rightarrow u : C[t/z]}\;(D^{-}_{\mathsf{match}})
+```
+
+A proof of a codata type in a universe of propositions is matched for any result, as a data type with a single constructor: by the $`\eta`$ rule, the match equals its body with the destructions of the proof substituted, so that no match waits for a proof to compute.
+
+The term is used $`r`$ times, and the type $`C`$ is checked in the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, as for the data types.
+The body uses the result $`y_i`$ of one destructor of its choice with the grade of this destructor times $`r`$, and the others only when they are discarded or duplicated freely:
+
+```math
+\frac{\begin{gathered}{}\Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \quad \Sigma;\ \gamma \mathrel{▶_{m \odot r}} t \quad \Sigma;\ \delta \bullet g_1 \bullet \dots \bullet g_n \mathrel{▶_m} u \\ g_j = \ulcorner m \urcorner \cdot r \cdot p_j \text{ if } j = i \text{ or } \ulcorner m \urcorner \cdot p_j \le \mathbb{0} \quad g_j = \mathbb{0} \text{ otherwise} \quad \text{for each } j\end{gathered}}{\Sigma;\ r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_r\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ \{.d_1 = y_1,\ \dots,\ .d_n = y_n\} \Rightarrow u}\;(D^{-}_{\mathsf{match}\mathsf{m}})
+```
+
+Unlike the match of a data type with two constructors or more, no condition forbids, in a term that runs, the match of a term without use at run time: the body then uses the results only in erased positions, since $`r \cdot p_j`$ has no use at run time when $`r`$ has none, and the $`\eta`$ rule reduces the match of a neutral term to its body, as for the data types with a single constructor.
+Whether this reduction keeps the usage for the erased grades other than $`\mathbb{0}`$, of the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$, is still open, as for the data types with a single constructor, as the [unresolved questions](#unresolved-questions) say.
+
+Matching a term that has just been built substitutes the terms of its branches for the variables:
+
+```math
+\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ z : T \vdash C : \kappa_C \quad \kappa_C \in \{U_{l_C}, \Omega_{l_C}\} \quad \Sigma;\ \Gamma \vdash T \quad k_j = 0 \text{ and } \Sigma;\ \Gamma \vdash u_j : B_j[\bar a / \Delta][\bar u / \bar d] \quad \text{for each } j \\ \Sigma;\ \Gamma,\ y_1 : B_1[\bar a / \Delta][\bar y / \bar d],\ \dots,\ y_n : B_n[\bar a / \Delta][\bar y / \bar d] \vdash u : C[T\{\bar y\}/z]\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{match}_r\ T\{\bar u\}\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ \{.d_1 = y_1,\ \dots,\ .d_n = y_n\} \Rightarrow u \equiv u[\bar u / \bar y] : C[T\{\bar u\}/z]}\;(D^{-}_{\mathsf{match}\beta})
+```
+
+With $`(D^{-}_\eta)`$ and $`(D^{-}_{\pi\beta})`$, every match is equal to its body with the destructions of its term substituted, $`u[t.T.d_1/y_1, \dots, t.T.d_n/y_n]`$, so that no match of a codata type is neutral.
+
 ### Functions
 
 The rules of the functions are those of ADE, with sorts in place of its universes.
@@ -1372,7 +1480,7 @@ Five choices of this RFC are provisional, each tied to a question below:
 
 - The declared types are not [recursive](#signatures), until this RFC adds the recursive declarations, without which the core has no natural numbers.
 - The empty additive record absorbs any resources, until the conjecture that a program shows in its type the resources it abandons is settled.
-- A term that runs does not match a [record](#matching-1) without use at run time, until erased matches are studied.
+- A term that runs does not match a [record](#matching-2) without use at run time, until erased matches are studied.
 - The fields of an additive record are delayed at run time by the [erasure](#erasure), until the soundness of this choice is proved.
 - The [erasure](#erasure) targets evaluation by value, until the evaluation order of Sic is fixed.
 
