@@ -618,7 +618,7 @@ The canonical terms of the universe $`U_n`$ are the canonical types that live in
 ```
 
 The relation is inductive, since a type of $`U_n`$ may be built from other types of $`U_n`$, such as the types of the fields of a data type: each of its types is built by finitely many clauses, which define together the equality $`\mathsf{eq}(A_0)`$ of the terms of each type $`A_0`$ it relates, equal to that of every type it relates to $`A_0`$.
-The clause of $`U_k`$ needs only the universe below $`U_n`$, so that the universes are defined one after the other, by induction on $`n`$.
+The clause of $`U_k`$ needs only the universe below $`U_n`$, so that the universes are defined one level after the other, by induction on $`n`$.
 The rules $`(U_{\mathsf{type}})`$ and $`(U_{\mathsf{type}\equiv})`$ are then sound: a term of a universe is a type, and two equal terms of a universe are equal types.
 
 ### Strict Propositions
@@ -898,7 +898,7 @@ The instances are canonical types of the universes, and two of them are equal wh
 \end{aligned}
 ```
 
-The clause relates the types of the fields in the sorts that $`s_n`$ bounds: in $`s_n`$ itself, which the least relation of the [universes](#meaning-3) allows, and in $`\Omega_n`$ for an instance in $`U_n`$, whose relation is defined first, since the fields of a proposition are propositions and $`\mathsf{eq}(\Omega_n)`$ thus needs no universe $`U_n`$.
+The clause relates the types of the fields in the sorts that $`s_n`$ bounds: in $`s_n`$ itself, which the least relation of the [universes](#meaning-3) allows, and in $`\Omega_n`$ for an instance in $`U_n`$, whose relation is defined together with $`\mathsf{eq}(U_n)`$, as the [codata types](#meaning-6) require.
 
 A match of a type with a single constructor computes to its body with the projections of its term substituted, as the [conversion](#conversion) reduces the match of a neutral term, so that it never waits for its term to compute: the match of a proof for any result is thus sound, since the projections of a proof are proofs, which need not compute.
 The rules of the arguments, the rule $`(\mathsf{data})`$ and the rules $`(D)`$, $`(D_\equiv)`$, $`(D^{+}_{\mathsf{i}})`$, $`(D^{+}_{\mathsf{match}})`$, $`(D^{+}_{\mathsf{match}\beta})`$, $`(D^{+}_\pi)`$, $`(D^{+}_{\pi\beta})`$ and $`(D^{+}_\eta)`$ are then sound.
@@ -907,7 +907,7 @@ The meaning ignores the grades, which no clause reads, as well as the levels and
 
 ```math
 \begin{aligned}
-& T_1 \text{ and } T_2 \text{ are instances of } D,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}_{D\equiv}) \\
+& T_1 \text{ and } T_2 \text{ are instances of } D,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{+}_{D\equiv}) \\
 & \kappa[T_1] = \kappa[T_2] \text{ and } |\Theta_i[T_1]| = |\Theta_i[T_2]| \text{ for each } i \\
 \implies {}& \Sigma \vDash T_1 \equiv T_2 \text{ and} \\
 & \Sigma;\ \varepsilon \nvdash T_1 \equiv T_2 \text{ if their grades or their levels differ}
@@ -1050,6 +1050,78 @@ Matching a term that has just been built substitutes the terms of its branches f
 ```
 
 With $`(D^{-}_\eta)`$ and $`(D^{-}_{\pi\beta})`$, every match is equal to its body with the destructions of its term substituted, $`u[t.T.d_1/y_1, \dots, t.T.d_n/y_n]`$, so that no match of a codata type is neutral.
+
+#### Meaning
+
+The codata types complete the [meaning](#meaning-2) of the judgments with the meaning of their declarations and the canonical terms of their instances, as products, over their destructors, of the dependent functions of their arguments.
+The destructors of a declaration form a context of second-order variables, each of which stands for the results of its destructor on its arguments, as the rule $`(\mathsf{codata})`$ checks them:
+
+```math
+\Xi \;=\; d_1 : (\Theta_1 \vdash B_1),\ \dots,\ d_n : (\Theta_n \vdash B_n)
+```
+
+For a closed instance $`T`$ of a declaration of the signature, $`\kappa[T]`$ and $`\Xi[T]`$ are its sort and this context, in which the sorts, levels, grades and arguments of $`T`$ are substituted; the context carries no grade of the destructors, and the meaning ignores the grades of their arguments, as for the [data types](#meaning-5), so that the formulas omit them.
+
+Two closed contexts of destructors are equal in a sort $`s_l`$ when the arguments of their first destructors are equal telescopes in $`U_l`$, their results equal in $`s_l`$, as telescopes of one entry, for every pair of equal arguments, and the rest of them equal for every pair of equal abstractions of the first destructor, which $`(\mathsf{eq}_X)`$ relates as the substitutions of a context of one entry; the rule $`(\mathsf{codata})`$ checks the same with the telescopes:
+
+```math
+\begin{aligned}
+\Sigma \vDash \varepsilon \equiv \varepsilon : s_l \iff {}& \vDash \Sigma &&({\vDash}\mathsf{dtor}_{\kappa\varepsilon}) \\
+\Sigma \vDash (d : (\Theta_1 \vdash B_1),\ \Xi_1) \equiv (d : (\Theta_2 \vdash B_2),\ \Xi_2) : s_l \iff {}& \Sigma \vDash \Theta_1 \equiv \Theta_2 : U_l, &&({\vDash}\mathsf{dtor}_{\kappa,}) \\
+& \forall (\tau_1, \tau_2) \in \mathsf{eq}(\Theta_1). \\
+& \quad \Sigma \vDash (d : B_1[\tau_1]) \equiv (d : B_2[\tau_2]) : s_l, \text{ and} \\
+& \forall (\bar x.\, u_1,\ \bar x.\, u_2) \in \mathsf{eq}(d : (\Theta_1 \vdash B_1)). \\
+& \quad \Sigma \vDash \Xi_1[\bar x.\, u_1 / d] \equiv \Xi_2[\bar x.\, u_2 / d] : s_l
+\end{aligned}
+```
+
+A declaration of a codata type, written as in the [formation](#formation-3), whose variables are instantiated as for the data types, is meaningful when its parameters form a meaningful context, and its destructors live in its sort for every pair of equal arguments:
+
+```math
+\begin{aligned}
+\Sigma \vDash \mathcal{D} &\iff \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \Sigma \vDash \Xi[\sigma_1] \equiv \Xi[\sigma_2] : \kappa &&({\vDash}_{\mathsf{codata}})
+\end{aligned}
+```
+
+The canonical terms of an instance $`T`$ in a universe are its comatches, and two of them are equal when their branches are equal abstractions of its destructors, which the context $`\Xi[T]`$ relates as its substitutions: the branches of each destructor give equal results for equal arguments, and those of the destructors before it instantiate its types.
+Here $`\mathsf{comatch}\ T\ \mathsf{with}\ \bar x.\, \bar u`$ stands for $`\mathsf{comatch}\ T\ \mathsf{with}\ .d_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid .d_n(\bar x_n) \Rightarrow u_n`$.
+The branches are not computed, since a comatch is canonical, and the instances $`T_1`$ and $`T_2`$ that the comatches carry are any instances of $`D`$, as for the data types.
+A proposition declared as a codata type is true when its destructors have such abstractions, which are proofs of their results for all their arguments, since its results are propositions:
+
+```math
+\begin{aligned}
+\mathsf{eq}(T) = {}& \{(\mathsf{comatch}\ T_1\ \mathsf{with}\ \bar x.\, \bar u_1,\ \mathsf{comatch}\ T_2\ \mathsf{with}\ \bar x.\, \bar u_2) \mid &&(\mathsf{eq}_{\mathsf{cocon}}) \\
+& \quad (\bar x.\, \bar u_1,\ \bar x.\, \bar u_2) \in \mathsf{eq}(\Xi[T])\} \quad \text{if } \kappa[T] = U_k \\
+\mathsf{true}(T) \iff {}& \mathsf{eq}(\Xi[T]) \ne \varnothing \quad \text{if } \kappa[T] = \Omega_k &&(\mathsf{true}_{\mathsf{codata}})
+\end{aligned}
+```
+
+The instances are canonical types of the universes, and two of them are equal when they are instances of the same declaration in the same sort, whose destructors are equal:
+
+```math
+\begin{aligned}
+(T_1,\ T_2) \in \mathsf{eq}(s_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are instances of } D \text{ and } \kappa[T_1] = \kappa[T_2] = s_n, &&(\mathsf{eq}_{\mathsf{codata}}) \\
+&\quad \text{and } \Sigma \vDash \Xi[T_1] \equiv \Xi[T_2] : s_n
+\end{aligned}
+```
+
+The clause relates the arguments of the destructors in $`U_n`$, and their results in the sorts that $`s_n`$ bounds: $`\mathsf{eq}(\Omega_n)`$ needs $`\mathsf{eq}(U_n)`$ for the arguments of a proposition, as $`\mathsf{eq}(U_n)`$ needs $`\mathsf{eq}(\Omega_n)`$ for the fields and the results that are propositions.
+Both relations are thus defined together, at each level, by a single inductive definition, and the equality of the terms of each type they relate by recursion on the clauses that relate it, as the setoid model of [Pujet and Tabareau](https://doi.org/10.1145/3498693) defines its universes of relevant types and of propositions together by induction-recursion, under an induction on their level.
+
+A destruction computes its term to a comatch, then runs the branch of its destructor, as the rule $`(D^{-}_{\pi\beta})`$ says; the destruction of a proof is a proof, which need not compute, since the results of a proposition are propositions.
+A match is equal to its body with the destructions of its term substituted, as the [matching](#matching-1) says, so that it never waits for its term to compute, and the match of a proof for any result is thus sound.
+The rule $`(\mathsf{codata})`$ and the rules $`(D^{-}_{\mathsf{i}})`$, $`(D^{-}_\pi)`$, $`(D^{-}_{\pi\beta})`$, $`(D^{-}_\eta)`$, $`(D^{-}_{\mathsf{match}})`$ and $`(D^{-}_{\mathsf{match}\beta})`$ are then sound; the rule $`(D^{-}_\eta)`$ is so for any number of destructors, since the clause $`(\mathsf{eq}_{\mathsf{cocon}})`$ compares two comatches by their destructions.
+
+The meaning ignores the grades, which no clause reads, as well as the levels and the arguments that neither the sort nor the destructors use, as for the data types: two instances of a declaration whose sorts are equal, and whose contexts of destructors are equal once the grades of their arguments are erased, written $`|\Xi|`$, are equal types in this meaning, but not by the rule $`(D_\equiv)`$ when their grades or their levels differ:
+
+```math
+\begin{aligned}
+& T_1 \text{ and } T_2 \text{ are instances of } D,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{-}_{D\equiv}) \\
+& \kappa[T_1] = \kappa[T_2] \text{ and } |\Xi[T_1]| = |\Xi[T_2]| \\
+\implies {}& \Sigma \vDash T_1 \equiv T_2 \text{ and} \\
+& \Sigma;\ \varepsilon \nvdash T_1 \equiv T_2 \text{ if their grades or their levels differ}
+\end{aligned}
+```
 
 ### Functions
 
