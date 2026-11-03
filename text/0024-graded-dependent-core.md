@@ -705,20 +705,17 @@ The denotation is exact for the proofs: two closed terms are equal proofs of a p
 \end{aligned}
 ```
 
-### Data
+### Declared Types
 
-A data type is known by its constructors: each of its terms is built by one of them from terms for its fields, and is used by matching on the constructor that built it.
-It is declared by a [declaration](#declarations) whose rules this section gives.
-
-#### Formation
+A declared type is a data type, known by how its terms are built, or a codata type, known by how its terms are observed: the positive and the negative types of polarity, as in the [thesis of Zeilberger](https://noamz.org/thesis.pdf), whose terms are introduced and eliminated in dual ways.
+This section gives what they share: their instances and the rules that form them.
+The rules of each kind are named after the name $`D`$ of its declaration, with the exponent $`+`$ for a data type and $`-`$ for a codata type, so that two dual rules differ only by their sign, and with an index that names the construct: $`\mathsf{i}`$ for an introduction, $`\mathsf{match}`$ for an elimination that binds the parts of a term, $`\pi`$ for one that observes a part of it, and $`\mathsf{m}`$ for the usage, as for the other rules; the rules of this section, which both kinds share, have no sign.
 
 A declared type is used through an instance of its declaration $`\mathcal{D}`$, which gives its variables sorts, levels and grades, and its parameters arguments $`\bar a`$: a term for each variable of $`\Delta`$, and an abstraction for each second-order variable.
-In the rules of this section, $`T`$ stands for the instance, in which $`\bar s`$, $`\bar l`$ and $`\bar p`$ now stand for sorts, levels and grades, substituted for the variables of the declaration in $`\Delta`$, $`\kappa`$ and the telescopes $`\Theta_i`$:
+In the rules of this section and of the data and codata types, $`T`$ stands for the instance, in which $`\bar s`$, $`\bar l`$ and $`\bar p`$ now stand for sorts, levels and grades, substituted for the variables of the declaration in its parameters $`\Delta`$, its sort $`\kappa`$, and its telescopes:
 
 ```math
 T \;=\; D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a
-\qquad
-\mathcal{D} \;=\; \mathsf{data}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ c_1 : \Theta_1 \mid \dots \mid c_n : \Theta_n
 ```
 
 The arguments are typed by the parameters, each argument instantiating the types after it, as a substitution of the context $`\Delta`$:
@@ -757,11 +754,24 @@ An instance of a declaration of the signature is a type in the sort of the decla
 In the rule $`(D_\equiv)`$, $`\Delta`$ and $`\kappa`$ are instantiated with the levels $`\bar l_1`$.
 No rule equates two instances with different sorts or grades, as no rule equates the types of two functions whose grades differ.
 
+### Data
+
+A data type is known by its constructors: each of its terms is built by one of them from terms for its fields, and is used by matching on the constructor that built it.
+It is declared by a [declaration](#declarations) whose rules this section gives.
+
+#### Formation
+
+In the rules of this section, $`\mathcal{D}`$ is the declaration of a data type, of which $`T`$ is an [instance](#declared-types):
+
+```math
+\mathcal{D} \;=\; \mathsf{data}\ D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ c_1 : \Theta_1 \mid \dots \mid c_n : \Theta_n
+```
+
 The type uses the variables of each field type as many times as the field is used, checked in the mode of its grade, and the uses of all the constructors added, since the type mentions all of them.
 With the $`k_i`$ fields of the constructor $`c_i`$ written as the telescope $`\Theta_i[\bar a / \Delta] = (x_{i1} :^{q_{i1}}_{p_{i1}} A_{i1},\ \dots,\ x_{ik_i} :^{q_{ik_i}}_{p_{ik_i}} A_{ik_i})`$, the grade $`q_{ij}`$ of each field allows its uses in the types of the fields after it:
 
 ```math
-\frac{\Sigma;\ \gamma_{ij} \mathrel{▶_{m \odot p_{ij}}} A_{ij} \quad \text{for each } i, j \quad \delta_i \bullet \ulcorner m \urcorner \cdot q_{i1} \bullet \dots \bullet \ulcorner m \urcorner \cdot q_{ik_i} \le^{\mathsf{c}} p_{i1} \cdot^{\mathsf{c}} \gamma_{i1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{ik_i} \cdot^{\mathsf{c}} \gamma_{ik_i} \quad \text{for each } i}{\Sigma;\ \delta_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} \delta_n \mathrel{▶_m} T}\;(D_{\mathsf{m}})
+\frac{\Sigma;\ \gamma_{ij} \mathrel{▶_{m \odot p_{ij}}} A_{ij} \quad \text{for each } i, j \quad \delta_i \bullet \ulcorner m \urcorner \cdot q_{i1} \bullet \dots \bullet \ulcorner m \urcorner \cdot q_{ik_i} \le^{\mathsf{c}} p_{i1} \cdot^{\mathsf{c}} \gamma_{i1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{ik_i} \cdot^{\mathsf{c}} \gamma_{ik_i} \quad \text{for each } i}{\Sigma;\ \delta_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} \delta_n \mathrel{▶_m} T}\;(D^{+}_{\mathsf{m}})
 ```
 
 The vector $`\gamma_{ij}`$, which has a grade for each variable of $`\Gamma`$ and of the fields before $`x_{ij}`$, is extended by $`\mathbb{0}`$ for the fields from $`x_{ij}`$ on.
@@ -774,9 +784,9 @@ The constructor $`D.c_i`$ carries the instance, written $`T.c_i(t_1,\ \dots,\ t_
 The term $`t_j`$ is given for the field $`x_{ij} :^{q_{ij}}_{p_{ij}} A_{ij}`$ of the $`k_i`$ fields that the [formation](#formation-2) writes; it uses the variables as many times as the grade of its field, checked in the mode of this grade $`p_{ij}`$, and the instance uses none:
 
 ```math
-\frac{\Sigma;\ \Gamma \vdash T \quad 1 \le i \le n \quad \Sigma;\ \Gamma \vdash \bar t : \Theta_i[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash T.c_i(\bar t) : T}\;(D_{\mathsf{c}})
+\frac{\Sigma;\ \Gamma \vdash T \quad 1 \le i \le n \quad \Sigma;\ \Gamma \vdash \bar t : \Theta_i[\bar a / \Delta]}{\Sigma;\ \Gamma \vdash T.c_i(\bar t) : T}\;(D^{+}_{\mathsf{i}})
 \qquad
-\frac{\Sigma;\ \gamma_j \mathrel{▶_{m \odot p_{ij}}} t_j \quad \text{for each } j}{\Sigma;\ p_{i1} \cdot^{\mathsf{c}} \gamma_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{ik_i} \cdot^{\mathsf{c}} \gamma_{k_i} \mathrel{▶_m} T.c_i(t_1,\ \dots,\ t_{k_i})}\;(D_{\mathsf{cm}})
+\frac{\Sigma;\ \gamma_j \mathrel{▶_{m \odot p_{ij}}} t_j \quad \text{for each } j}{\Sigma;\ p_{i1} \cdot^{\mathsf{c}} \gamma_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{ik_i} \cdot^{\mathsf{c}} \gamma_{k_i} \mathrel{▶_m} T.c_i(t_1,\ \dots,\ t_{k_i})}\;(D^{+}_{\mathsf{i}\mathsf{m}})
 ```
 
 Equality is also a congruence for the instances, their constructors, their match and their projections, with the premises of their rules.
@@ -786,7 +796,7 @@ Equality is also a congruence for the instances, their constructors, their match
 A term of a data type is matched by a branch for each constructor, in the order of the declaration, which receives the fields $`\bar x_i = (x_{i1},\ \dots,\ x_{ik_i})`$ of its constructor as variables, and the type $`C`$ of the result may depend on the term, bound to the variable $`z`$ of type $`T`$, which carries the instance, as every binder of the core carries its type; the sort $`\kappa_C`$ of $`C`$ is restricted for the propositions:
 
 ```math
-\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ z : T \vdash C : \kappa_C \quad \Sigma;\ \Gamma \vdash t : T \\ \Sigma;\ \Gamma,\ \Theta_i[\bar a / \Delta] \vdash u_i : C[T.c_i(\bar x_i)/z] \quad \text{for each } i \\ \kappa_C = \Omega_{l_C} \text{ if } \kappa = \Omega_l \text{ and } n \ge 2 \quad \kappa_C \in \{U_{l_C}, \Omega_{l_C}\} \text{ otherwise}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{match}_{r}\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n : C[t/z]}\;(D_{\mathsf{match}})
+\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ z : T \vdash C : \kappa_C \quad \Sigma;\ \Gamma \vdash t : T \\ \Sigma;\ \Gamma,\ \Theta_i[\bar a / \Delta] \vdash u_i : C[T.c_i(\bar x_i)/z] \quad \text{for each } i \\ \kappa_C = \Omega_{l_C} \text{ if } \kappa = \Omega_l \text{ and } n \ge 2 \quad \kappa_C \in \{U_{l_C}, \Omega_{l_C}\} \text{ otherwise}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{match}_{r}\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n : C[t/z]}\;(D^{+}_{\mathsf{match}})
 ```
 
 A data type without constructors is matched with no branch, for any result: no term of it is ever built.
@@ -797,7 +807,7 @@ The term is used $`r`$ times, and the type $`C`$ is checked in the mode $`\mathb
 Each branch uses the field $`x_{ij}`$ with the grade of its field times $`r`$, and all the branches share the same vector $`\delta`$, since only one of them runs:
 
 ```math
-\frac{\begin{gathered}{}\Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \quad \Sigma;\ \gamma \mathrel{▶_{m \odot r}} t \\ \Sigma;\ \delta \bullet \ulcorner m \urcorner \cdot r \cdot p_{i1} \bullet \dots \bullet \ulcorner m \urcorner \cdot r \cdot p_{ik_i} \mathrel{▶_m} u_i \quad \text{for each } i \\ \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ and } n \ge 2\end{gathered}}{\Sigma;\ r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_{r}\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n}\;(D_{\mathsf{match}\mathsf{m}})
+\frac{\begin{gathered}{}\Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} C \quad \Sigma;\ \gamma \mathrel{▶_{m \odot r}} t \\ \Sigma;\ \delta \bullet \ulcorner m \urcorner \cdot r \cdot p_{i1} \bullet \dots \bullet \ulcorner m \urcorner \cdot r \cdot p_{ik_i} \mathrel{▶_m} u_i \quad \text{for each } i \\ \llcorner r \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ and } n \ge 2\end{gathered}}{\Sigma;\ r \cdot^{\mathsf{c}} \gamma +^{\mathsf{c}} \delta \mathrel{▶_m} \mathsf{match}_{r}\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n}\;(D^{+}_{\mathsf{match}\mathsf{m}})
 ```
 
 A variable used once by each branch is thus used once by the match, and a variable used by one branch only is given, by $`(\mathsf{sub})`$, a grade that also allows it to be discarded by the others.
@@ -812,31 +822,32 @@ A proof of an empty proposition, which never exists at run time, thus eliminates
 Matching a term that has just been built runs the branch of its constructor, with the terms of its fields substituted for the variables:
 
 ```math
-\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ z : T \vdash C : \kappa_C \quad 1 \le i \le n \quad \Sigma;\ \Gamma \vdash \bar t : \Theta_i[\bar a / \Delta] \\ \Sigma;\ \Gamma,\ \Theta_j[\bar a / \Delta] \vdash u_j : C[T.c_j(\bar x_j)/z] \quad \text{for each } j \\ \kappa_C = \Omega_{l_C} \text{ if } \kappa = \Omega_l \text{ and } n \ge 2 \quad \kappa_C \in \{U_{l_C}, \Omega_{l_C}\} \text{ otherwise}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{match}_{r}\ T.c_i(\bar t)\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n \equiv u_i[\bar t / \bar x_i] : C[T.c_i(\bar t)/z]}\;(D_\beta)
+\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ z : T \vdash C : \kappa_C \quad 1 \le i \le n \quad \Sigma;\ \Gamma \vdash \bar t : \Theta_i[\bar a / \Delta] \\ \Sigma;\ \Gamma,\ \Theta_j[\bar a / \Delta] \vdash u_j : C[T.c_j(\bar x_j)/z] \quad \text{for each } j \\ \kappa_C = \Omega_{l_C} \text{ if } \kappa = \Omega_l \text{ and } n \ge 2 \quad \kappa_C \in \{U_{l_C}, \Omega_{l_C}\} \text{ otherwise}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{match}_{r}\ T.c_i(\bar t)\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c_1(\bar x_1) \Rightarrow u_1 \mid \dots \mid c_n(\bar x_n) \Rightarrow u_n \equiv u_i[\bar t / \bar x_i] : C[T.c_i(\bar t)/z]}\;(D^{+}_{\mathsf{match}\beta})
 ```
 
 #### Projections
 
 A data type with a single constructor is also used by projecting one of its fields, and two of its terms are equal when all their projections are.
+The projection of the field $`j`$ of a term $`t`$ is written after it, $`t.T.j`$, as [Agda](https://agda.readthedocs.io/en/latest/language/record-types.html) writes its projections in postfix, $`p\ .\mathsf{Pair}.\mathsf{fst}`$, and carries the instance, as the constructors do.
 With the fields of the constructor written $`\Theta_1[\bar a / \Delta] = (x_{11} :^{q_{11}}_{p_{11}} A_{11},\ \dots,\ x_{1k} :^{q_{1k}}_{p_{1k}} A_{1k})`$, the type of a field takes the projections of the fields before it, and a projection uses the term once, gets the field once, and drops the other fields, which their grades must allow:
 
 ```math
-\frac{\Sigma;\ \Gamma \vdash t : T \quad n = 1 \quad 1 \le j \le k}{\Sigma;\ \Gamma \vdash \pi_{T, j}\ t : A_{1j}[\pi_{T, 1}\ t/x_{11}, \dots, \pi_{T, j - 1}\ t/x_{1(j - 1)}]}\;(D_\pi)
+\frac{\Sigma;\ \Gamma \vdash t : T \quad n = 1 \quad 1 \le j \le k}{\Sigma;\ \Gamma \vdash t.T.j : A_{1j}[t.T.1/x_{11}, \dots, t.T.(j - 1)/x_{1(j - 1)}]}\;(D^{+}_\pi)
 \qquad
-\frac{\Sigma;\ \gamma \mathrel{▶_m} t \quad \ulcorner m \urcorner \cdot p_{1j} \le \ulcorner m \urcorner \quad \ulcorner m \urcorner \cdot p_{1i} \le \mathbb{0} \text{ for each } i \ne j}{\Sigma;\ \gamma \mathrel{▶_m} \pi_{T, j}\ t}\;(D_{\pi\mathsf{m}})
+\frac{\Sigma;\ \gamma \mathrel{▶_m} t \quad \ulcorner m \urcorner \cdot p_{1j} \le \ulcorner m \urcorner \quad \ulcorner m \urcorner \cdot p_{1i} \le \mathbb{0} \text{ for each } i \ne j}{\Sigma;\ \gamma \mathrel{▶_m} t.T.j}\;(D^{+}_{\pi\mathsf{m}})
 ```
 
 Projecting a term that has just been built gives the term of its field, and two terms are equal when all their projections are, which gives the $`\eta`$ rule:
 
 ```math
-\frac{\Sigma;\ \Gamma \vdash T \quad n = 1 \quad \Sigma;\ \Gamma \vdash \bar t : \Theta_1[\bar a / \Delta] \quad 1 \le j \le k}{\Sigma;\ \Gamma \vdash \pi_{T, j}\ T.c_1(t_1,\ \dots,\ t_k) \equiv t_j : A_{1j}[t_1/x_{11}, \dots, t_{j - 1}/x_{1(j - 1)}]}\;(D_{\pi\beta})
+\frac{\Sigma;\ \Gamma \vdash T \quad n = 1 \quad \Sigma;\ \Gamma \vdash \bar t : \Theta_1[\bar a / \Delta] \quad 1 \le j \le k}{\Sigma;\ \Gamma \vdash T.c_1(t_1,\ \dots,\ t_k).T.j \equiv t_j : A_{1j}[t_1/x_{11}, \dots, t_{j - 1}/x_{1(j - 1)}]}\;(D^{+}_{\pi\beta})
 ```
 
 ```math
-\frac{\Sigma;\ \Gamma \vdash t : T \quad \Sigma;\ \Gamma \vdash u : T \quad n = 1 \quad \Sigma;\ \Gamma \vdash \pi_{T, j}\ t \equiv \pi_{T, j}\ u : A_{1j}[\pi_{T, 1}\ t/x_{11}, \dots, \pi_{T, j - 1}\ t/x_{1(j - 1)}] \quad \text{for each } j}{\Sigma;\ \Gamma \vdash t \equiv u : T}\;(D_\eta)
+\frac{\Sigma;\ \Gamma \vdash t : T \quad \Sigma;\ \Gamma \vdash u : T \quad n = 1 \quad \Sigma;\ \Gamma \vdash t.T.j \equiv u.T.j : A_{1j}[t.T.1/x_{11}, \dots, t.T.(j - 1)/x_{1(j - 1)}] \quad \text{for each } j}{\Sigma;\ \Gamma \vdash t \equiv u : T}\;(D^{+}_\eta)
 ```
 
-With $`(D_{\pi\beta})`$, it makes every term equal to the constructor of its projections, $`t \equiv T.c_1(\pi_{T, 1}\ t,\ \dots,\ \pi_{T, k}\ t)`$, and with $`(D_\beta)`$ and congruence, every match equal to its body with the projections substituted, so that no match of a type with a single constructor is neutral.
+With $`(D^{+}_{\pi\beta})`$, it makes every term equal to the constructor of its projections, $`t \equiv T.c_1(t.T.1,\ \dots,\ t.T.k)`$, and with $`(D^{+}_{\mathsf{match}\beta})`$ and congruence, every match equal to its body with the projections substituted, so that no match of a type with a single constructor is neutral.
 Since equality carries no grade, the two sides of these equalities may use their variables differently; the usage of each is checked on its own.
 
 The types with no constructor or with two or more have no $`\eta`$ rule, so that their match of a neutral term stays neutral.
@@ -890,7 +901,7 @@ The instances are canonical types of the universes, and two of them are equal wh
 The clause relates the types of the fields in the sorts that $`s_n`$ bounds: in $`s_n`$ itself, which the least relation of the [universes](#meaning-3) allows, and in $`\Omega_n`$ for an instance in $`U_n`$, whose relation is defined first, since the fields of a proposition are propositions and $`\mathsf{eq}(\Omega_n)`$ thus needs no universe $`U_n`$.
 
 A match of a type with a single constructor computes to its body with the projections of its term substituted, as the [conversion](#conversion) reduces the match of a neutral term, so that it never waits for its term to compute: the match of a proof for any result is thus sound, since the projections of a proof are proofs, which need not compute.
-The rules of the arguments, the rule $`(\mathsf{data})`$ and the rules $`(D)`$, $`(D_\equiv)`$, $`(D_{\mathsf{c}})`$, $`(D_{\mathsf{match}})`$, $`(D_\beta)`$, $`(D_\pi)`$, $`(D_{\pi\beta})`$ and $`(D_\eta)`$ are then sound.
+The rules of the arguments, the rule $`(\mathsf{data})`$ and the rules $`(D)`$, $`(D_\equiv)`$, $`(D^{+}_{\mathsf{i}})`$, $`(D^{+}_{\mathsf{match}})`$, $`(D^{+}_{\mathsf{match}\beta})`$, $`(D^{+}_\pi)`$, $`(D^{+}_{\pi\beta})`$ and $`(D^{+}_\eta)`$ are then sound.
 
 The meaning ignores the grades, which no clause reads, as well as the levels and the arguments that neither the sort nor the fields use: two instances of a declaration whose sorts are equal, and whose telescopes of fields are equal once all their grades are erased, written $`|\Theta|`$, are equal types in this meaning, but not by the rule $`(D_\equiv)`$ when their grades or their levels differ:
 
