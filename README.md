@@ -15,6 +15,12 @@ An RFC (request for comments) proposes a substantial change to the language, its
 An accepted RFC is never deleted nor renumbered, and only receives very minor amendments, such as fixing a typo.
 A substantial change is a new RFC, which supersedes the old one: a note is added at the top of the old RFC, linking to the new one.
 
+## Visions
+
+The [`visions/`](visions/) directory holds running examples of what Sic should make possible, which RFCs refer to.
+They are not normative: they change through ordinary pull requests, without the RFC process.
+An RFC refers to a vision by a permalink to a commit of `main`, so that later changes to the vision do not alter what the RFC discussed.
+
 ## License
 
 Licensed under the [Apache License, Version 2.0](LICENSES/Apache-2.0.txt) with [LLVM Exceptions](LICENSES/LLVM-exception.txt) (`Apache-2.0 WITH LLVM-exception`).
