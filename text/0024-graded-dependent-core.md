@@ -588,6 +588,15 @@ The meaning of a judgment is written with $`\vDash`$ in place of $`\vdash`$.
 A closed term $`t`$ computes to a canonical term $`v`$, written $`t \Downarrow v`$, when its weak head reduction, the one of the [conversion](#conversion), ends on $`v`$, a head normal form: the meaning explanations evaluate lazily, as Nordström, Petersson and Smith note, and this computation is the one of the type theory, not the evaluation of a program.
 A closed canonical type $`A_0`$ is known by its canonical terms and by their equality, a partial equivalence relation $`\mathsf{eq}(A_0)`$, symmetric and transitive, between closed canonical terms, which the sorts and the kinds of declarations give.
 The computation, the relations $`\mathsf{eq}`$ and $`\mathsf{true}`$ and the interpretation $`\iota`$ of the constants, which the [meaning of the signatures](#meaning-of-the-signatures) introduces, all depend on the signature $`\Sigma`$ of the judgment, which their notation omits.
+A closed canonical type is a proposition when it is a term of a universe of propositions, whose relation $`\mathsf{eq}(\Omega_k)`$ the [meaning of the strict propositions](#meaning-of-the-strict-propositions) gives, and a closed type computes to a proposition when its canonical form is one, which the clauses of the equality of terms distinguish:
+
+```math
+\begin{aligned}
+A_0 \text{ is a proposition} &\iff \exists k.\ (A_0,\ A_0) \in \mathsf{eq}(\Omega_k) &&(\mathsf{prop}) \\
+A \text{ computes to a proposition} &\iff \exists A_0.\ A \Downarrow A_0 \text{ and } A_0 \text{ is a proposition} &&(\mathsf{prop}_\Downarrow)
+\end{aligned}
+```
+
 A closed judgment requires its signature to be meaningful, as every judgment of the rules implies that its signature is well formed, so that it is the hypothetical judgment in the empty context:
 
 ```math
@@ -691,12 +700,12 @@ The rules $`(U_{\mathsf{type}})`$ and $`(U_{\mathsf{type}\equiv})`$ are then sou
 #### Meaning of the Strict Propositions
 
 The strict propositions complete the meaning of the judgments with a denotation of the propositions by truth values, as the setoid model of [Pujet and Tabareau](https://doi.org/10.1145/3498693) interprets them by the sets with at most one element.
-A closed canonical type $`A_0`$ is a proposition when it is a term of a universe of propositions, and it is known by its truth $`\mathsf{true}(A_0)`$, which the kinds of declarations give for their instances in a universe of propositions; when it is true, all the closed terms are equal proofs of it, and when it is false, none is:
+A closed canonical type $`A_0`$ that is a proposition, as $`(\mathsf{prop})`$ of the [meaning of the judgments](#meaning-of-the-judgments) defines, is known by its truth $`\mathsf{true}(A_0)`$, which the kinds of declarations give for their instances in a universe of propositions; when it is true, all the closed terms are equal proofs of it, and when it is false, none is:
 
 ```math
 \begin{aligned}
-(A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ and } \mathsf{true}(A_0) &\implies \mathsf{eq}(A_0) = \{(t,\ u) \mid t \text{ and } u \text{ are closed terms}\} &&(\mathsf{eq}_{\mathsf{true}}) \\
-(A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ and not } \mathsf{true}(A_0) &\implies \mathsf{eq}(A_0) = \varnothing &&(\mathsf{eq}_{\mathsf{false}})
+A_0 \text{ is a proposition and } \mathsf{true}(A_0) &\implies \mathsf{eq}(A_0) = \{(t,\ u) \mid t \text{ and } u \text{ are closed terms}\} &&(\mathsf{eq}_{\mathsf{true}}) \\
+A_0 \text{ is a proposition and not } \mathsf{true}(A_0) &\implies \mathsf{eq}(A_0) = \varnothing &&(\mathsf{eq}_{\mathsf{false}})
 \end{aligned}
 ```
 
