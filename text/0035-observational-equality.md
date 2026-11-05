@@ -133,14 +133,14 @@ A \sim_{U_n} B &\equiv \bot \quad \text{if } A \text{ and } B \text{ are canonic
 
 The rules are rules of equality whose premises are those of the formation of the equality, written as equations, and $`(\sim_{\mathsf{prop}})`$ is the extensionality of propositions, which the strict propositions make consistent, since two equivalent propositions have the same proofs.
 It is the only rule on a sort of propositions, as in the observational equality of [Pujet and Tabareau](https://doi.org/10.1145/3498693): two propositions that are instances of a declared type are compared by their implications, not by their bodies, since their proofs are the same by irrelevance, and their grades have no use at run time.
-Two instances of a declared type in a universe $`U_n`$ are compared by their kind, which the [contract](#the-contract-extended) below asks of every kind: the instances $`T_1`$ and $`T_2`$ of a type $`D_j`$ with the same sorts $`\bar s`$ and grades $`\bar p`$, and levels equal by the equality of the [levels](https://github.com/sic-lang/rfcs/pull/24), are equal when the bodies of $`D_j`$ instantiated by them are, which the data and codata types state as the equality of the telescopes of their fields, or of the contexts of their destructors; two instances with different sorts or grades, or unequal levels, are unequal, as two different declared types:
+Two instances of a declared type in a universe $`U_n`$ are compared by their kind, which the [contract](#the-contract-extended) below asks of every kind: the instances $`T_1`$ and $`T_2`$ of a type $`D_j`$ with the same sorts $`\bar s`$ and grades $`\bar p`$, and levels equal by the equality of the [levels](https://github.com/sic-lang/rfcs/pull/24), are equal when the bodies of $`D_j`$ instantiated by them are, which the data and codata types state as the equality of the telescopes of their fields, or of the contexts of their destructors; two instances with different sorts or grades, or unequal levels, are unequal, as two different declared types.
+Two instances are compatible when they are instances of one declared type with the same sorts and grades and equal levels, which the rules below and the [cast](#cast-of-terms) require:
 
 ```math
 \begin{aligned}
-T_1 \sim_{U_n} T_2 &\equiv \textstyle\bigwedge_{i} \Theta_{ji}[T_1] \sim \Theta_{ji}[T_2] &&(\sim^{+}_D) \\
-T_1 \sim_{U_n} T_2 &\equiv \Xi_j[T_1] \sim \Xi_j[T_2] &&(\sim^{-}_D) \\
-T_1 \sim_{U_n} T_2 &\equiv \bot \quad \text{if } T_1 \text{ and } T_2 \text{ are instances of different types, or of one type with} &&(\sim_{D\ne}) \\
-& \quad \text{different sorts or grades, or unequal levels}
+T_1 \sim_{U_n} T_2 &\equiv \textstyle\bigwedge_{i} \Theta_{ji}[T_1] \sim \Theta_{ji}[T_2] \quad \text{if } T_1 \text{ and } T_2 \text{ are compatible instances of a data type } D_j &&(\sim^{+}_D) \\
+T_1 \sim_{U_n} T_2 &\equiv \Xi_j[T_1] \sim \Xi_j[T_2] \quad \text{if } T_1 \text{ and } T_2 \text{ are compatible instances of a codata type } D_j &&(\sim^{-}_D) \\
+T_1 \sim_{U_n} T_2 &\equiv \bot \quad \text{if } T_1 \text{ and } T_2 \text{ are instances of declared types that are not compatible} &&(\sim_{D\ne})
 \end{aligned}
 ```
 
@@ -222,7 +222,7 @@ A term built by a constructor is cast to the same constructor of the equal insta
 
 ```math
 \begin{aligned}
-\mathsf{cast}(T_1,\ T_2,\ e,\ T_1.c_{ji}(\bar t)) &\equiv T_2.c_{ji}(\mathsf{cast}_{\Theta_{ji}[T_1]}(e_i,\ \bar t)) \quad \text{where } e_i \text{ is the conjunct of } e \text{ for } c_{ji}, \text{ if } \kappa[T_1] \text{ is a universe} &&(\mathsf{cast}^{+})
+\mathsf{cast}(T_1,\ T_2,\ e,\ T_1.c_{ji}(\bar t)) &\equiv T_2.c_{ji}(\mathsf{cast}_{\Theta_{ji}[T_1]}(e_i,\ \bar t)) \quad \text{where } e_i \text{ is the conjunct of } e \text{ for } c_{ji}, \text{ if } \kappa[T_1] \text{ is a universe and } T_1, T_2 \text{ are compatible} &&(\mathsf{cast}^{+})
 \end{aligned}
 ```
 
@@ -237,7 +237,7 @@ A term of a codata type is cast to the equal instance by a corecursor whose stat
 \mathsf{cast}(T_1,\ T_2,\ e,\ t) &\equiv \mathsf{corec}_{\mathbb{1}}\ T_2\ \mathsf{from}\ (\bar a_{1\mathsf{nu}},\ t,\ e)\ \mathsf{return}\ \bar S\ \mathsf{as}\ (\bar x_1,\ w,\ \varepsilon)\ \mathsf{with}\ D_1.d_{11}(\bar x_{11}) \Rightarrow \lceil v_{11} \rceil \mid \dots &&(\mathsf{cast}^{-}) \\
 & \quad \text{where } S_j = (\bar x_1 :_{\mathbb{0}} \Delta_{\mathsf{nu}}[\bar a_{1\mathsf{u}}],\ w :_{\mathbb{1}} T_{1j}[\bar x_1],\ \varepsilon :_{\mathbb{0}} T_{1j}[\bar x_1] \sim_{U_n} T_{2j}[\bar x_{\mathsf{nu}}]) \quad \text{for each } j, \\
 & \quad v_{ji} = \mathsf{cast}(B_{ji}[T_{1j}[\bar x_1]][w.\bar d][\bar x'_{ji}],\ B_{ji}[T_{2j}[\bar x_{\mathsf{nu}}]][c.\bar d][\bar x_{ji}],\ e_{ji},\ w.d_{ji}(\bar x'_{ji})) \\
-& \quad \text{and } \bar x'_{ji} = \mathsf{cast}_{\Theta_{ji}[T_{2j}[\bar x_{\mathsf{nu}}]][c.\bar d]}(e_{ji1},\ \bar x_{ji}), \text{ if } \kappa[T_1] \text{ is a universe}
+& \quad \text{and } \bar x'_{ji} = \mathsf{cast}_{\Theta_{ji}[T_{2j}[\bar x_{\mathsf{nu}}]][c.\bar d]}(e_{ji1},\ \bar x_{ji}), \text{ if } \kappa[T_1] \text{ is a universe and } T_1, T_2 \text{ are compatible}
 \end{aligned}
 ```
 
@@ -300,8 +300,8 @@ Eliminating a class that has just been built runs the branch on its term, and tw
 \begin{aligned}
 \mathsf{rec}_r\ T.c(t)\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c(x) \Rightarrow u\ \mathsf{by}\ e &\equiv u[t/x] &&(D^{/}_{\mathsf{rec}\beta}) \\
 T_1.c(t) \sim_{T} T_2.c(u) &\equiv R[\bar a / \Delta][t/x,\ u/y] &&(\sim^{/}) \\
-T_1 \sim_{U_n} T_2 &\equiv (e : A[T_1] \sim_{U_n} A[T_2]) \wedge \forall (x\ y : A[T_1]).\, R[T_1] \sim_{\Omega_n} R[T_2][\mathsf{cast}(A[T_1], A[T_2], e, x)/x,\ \mathsf{cast}(A[T_1], A[T_2], e, y)/y] &&(\sim^{/}_{D}) \\
-\mathsf{cast}(T_1,\ T_2,\ e,\ T_1.c(t)) &\equiv T_2.c(\mathsf{cast}(A[T_1],\ A[T_2],\ e_1,\ t)) \quad \text{where } e_1 \text{ is the first conjunct of } e &&(\mathsf{cast}^{/})
+T_1 \sim_{U_n} T_2 &\equiv (e : A[T_1] \sim_{U_n} A[T_2]) \wedge \forall (x\ y : A[T_1]).\, R[T_1] \sim_{\Omega_n} R[T_2][\mathsf{cast}(A[T_1], A[T_2], e, x)/x,\ \mathsf{cast}(A[T_1], A[T_2], e, y)/y] \quad \text{if } T_1 \text{ and } T_2 \text{ are compatible} &&(\sim^{/}_{D}) \\
+\mathsf{cast}(T_1,\ T_2,\ e,\ T_1.c(t)) &\equiv T_2.c(\mathsf{cast}(A[T_1],\ A[T_2],\ e_1,\ t)) \quad \text{where } e_1 \text{ is the first conjunct of } e, \text{ if } T_1 \text{ and } T_2 \text{ are compatible} &&(\mathsf{cast}^{/})
 \end{aligned}
 ```
 
