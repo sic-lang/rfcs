@@ -31,6 +31,7 @@ This RFC uses the notation and the conventions of the [core](https://github.com/
 The equality is written $`t \sim_A u`$, a proposition of the sort $`\Omega_l`$ of the level of $`A`$; its rules are named after the symbol $`\sim`$, with the polarity of the kind they concern as an exponent, and the rules of the cast after $`\mathsf{cast}`$.
 The connectives of the propositions are the instances in $`\Omega`$ of the declarations of the [data and codata types](https://github.com/sic-lang/rfcs/pull/34), which the signature holds before the first equality: the true and the false propositions $`\top`$ and $`\bot`$, the conjunction $`P \wedge Q`$, which is the pair whose second field may depend on the first, the implication $`P \Rightarrow Q`$ and the quantification $`\forall (x : A).\, P`$, which are the functions into a proposition.
 The equality of two telescopes of terms, field by field, is written $`\bar t \sim_\Theta \bar u`$, and the cast of a telescope of terms along a proof, field by field, $`\mathsf{cast}_\Theta(e,\ \bar t)`$; both are defined below, by recursion on the telescope.
+As in the core, a variable left free in a formula is universally quantified over the kind that its letter names, and a rule holds for every instance of its schematic variables; the rules of the equality and of the cast that are written as equations, since their premises are those of the formation of the equality, are rules as well.
 
 ### Equality
 
@@ -87,7 +88,7 @@ The congruence of a term $`f`$, of a type $`B`$ that does not depend on the vari
 
 ```math
 \begin{aligned}
-\mathsf{ap}(x.\, f,\ e) &= \mathsf{transp}(y.\, f[t/x] \sim_B f[y/x],\ e,\ \mathsf{refl}_B(f[t/x])) : f[t/x] \sim_B f[u/x] \quad \text{for } e : t \sim_A u &&(\mathsf{ap}_\sim)
+\mathsf{ap}(x.\, f,\ e) &= \mathsf{transp}(y.\, f[t/x] \sim_B f[y/x],\ e,\ \mathsf{refl}_B(f[t/x])) : f[t/x] \sim_B f[u/x] \quad \text{if } e : t \sim_A u,\ f : B \text{ and } x \text{ is not free in } B &&(\mathsf{ap}_\sim)
 \end{aligned}
 ```
 
@@ -143,15 +144,15 @@ The equality of two telescopes of types is the conjunction of the equalities of 
 ```math
 \begin{aligned}
 \varepsilon \sim \varepsilon &= \top &&(\sim_{\mathsf{tel}\varepsilon}) \\
-(x : A_1,\ \Theta_1) \sim (x : A_2,\ \Theta_2) &= (e : A_1 \sim_{\kappa} A_2) \wedge \forall (x : A_1).\, \Theta_1 \sim \Theta_2[\mathsf{cast}(A_1,\ A_2,\ e,\ x)/x] &&(\sim_{\mathsf{tel},}) \\
+(x : A_1,\ \Theta_1) \sim (x : A_2,\ \Theta_2) &= (e : A_1 \sim_{\kappa} A_2) \wedge \forall (x : A_1).\, \Theta_1 \sim \Theta_2[\mathsf{cast}(A_1,\ A_2,\ e,\ x)/x] \quad \text{if } A_1 : \kappa &&(\sim_{\mathsf{tel},}) \\
 \varepsilon \sim \varepsilon &= \top &&(\sim_{\mathsf{dtor}\varepsilon}) \\
 (d : (\Theta_1 \vdash B_1),\ \Xi_1) \sim (d : (\Theta_2 \vdash B_2),\ \Xi_2) &= (e : \Theta_2 \sim \Theta_1) \wedge (e' : \forall (\bar x : \Theta_2).\, B_1[\mathsf{cast}_{\Theta_2}(e,\ \bar x)/\Theta_1] \sim_{\kappa} B_2) &&(\sim_{\mathsf{dtor},}) \\
 & \quad \wedge \forall (\bar x.\, u : (\Theta_1 \vdash B_1)).\, \Xi_1[\bar x.\, u/d] \sim \Xi_2[\bar x.\, \mathsf{cast}(B_1[\bar x'/\Theta_1],\ B_2,\ e'[\bar x],\ u[\bar x'/\bar x])/d] \\
-& \quad \text{where } \bar x' = \mathsf{cast}_{\Theta_2}(e,\ \bar x)
+& \quad \text{where } \bar x' = \mathsf{cast}_{\Theta_2}(e,\ \bar x), \text{ if } B_1 \text{ and } B_2 \text{ live in } \kappa
 \end{aligned}
 ```
 
-In $`(\sim_{\mathsf{tel},})`$, the sort $`\kappa`$ is the sort of $`A_1`$, and the conjunction binds its proof $`e`$ for the second conjunct, as the pair of the propositions allows.
+In $`(\sim_{\mathsf{tel},})`$ and $`(\sim_{\mathsf{dtor},})`$, the conjunction binds its proof $`e`$ for the second conjunct, as the pair of the propositions allows.
 In $`(\sim_{\mathsf{dtor},})`$, the equality of the arguments goes from the second telescope to the first, so that the arguments of the second destructor are cast to the first along $`e`$, and the results and the abstractions of the first along $`e'`$, with no symmetry, which has no proof term; the quantification over the abstractions of $`d`$ stands for the quantification over the functions that the [data and codata types](https://github.com/sic-lang/rfcs/pull/34) declare.
 The equality of two instances of a recursive declared type is then a proposition that mentions the equality of the instances at its positions, which the rules unfold as far as the terms are compared; for a proposition that no rule unfolds further, the comparison ends on the terms, as the equality of two streams does below.
 
@@ -199,7 +200,7 @@ The cast of a telescope of terms along a proof of the equality of two telescopes
 ```math
 \begin{aligned}
 \mathsf{cast}_{\varepsilon}(e,\ ()) &= () &&(\mathsf{cast}_{\mathsf{tel}\varepsilon}) \\
-\mathsf{cast}_{(x : A_1,\ \Theta_1)}(e,\ (t,\ \bar t)) &= (t',\ \mathsf{cast}_{\Theta_1[t/x]}(e_2[t],\ \bar t)) \quad \text{where } t' = \mathsf{cast}(A_1,\ A_2,\ e_1,\ t) &&(\mathsf{cast}_{\mathsf{tel},})
+\mathsf{cast}_{(x : A_1,\ \Theta_1)}(e,\ (t,\ \bar t)) &= (t',\ \mathsf{cast}_{\Theta_1[t/x]}(e_2[t],\ \bar t)) \quad \text{where } t' = \mathsf{cast}(A_1,\ A_2,\ e_1,\ t), \text{ if } e : (x : A_1,\ \Theta_1) \sim (x : A_2,\ \Theta_2) &&(\mathsf{cast}_{\mathsf{tel},})
 \end{aligned}
 ```
 
@@ -343,7 +344,7 @@ The equality of two closed terms is a canonical proposition, which reduces on th
 ```math
 \begin{aligned}
 \mathsf{true}(t \sim_A u) &\iff \Sigma \vDash t \equiv u : A \quad \text{if } \Sigma \vDash A : U_k &&(\mathsf{true}_\sim) \\
-\mathsf{true}(A \sim_{U_k} B) &\iff \Sigma \vDash A \equiv B \text{ and } A \Downarrow A_0,\ B \Downarrow B_0 \text{ have the same grades} &&(\mathsf{true}_{\sim\mathsf{type}})
+\mathsf{true}(A \sim_{U_k} B) &\iff \Sigma \vDash A \equiv B \text{ and } \exists A_0, B_0.\ A \Downarrow A_0,\ B \Downarrow B_0 \text{ and } A_0, B_0 \text{ have the same grades} &&(\mathsf{true}_{\sim\mathsf{type}})
 \end{aligned}
 ```
 
@@ -371,9 +372,9 @@ A quotient is meaningful when its carrier is a type, its relation a proposition 
 ```math
 \begin{aligned}
 \Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \Sigma \vDash A[\sigma_1] \equiv A[\sigma_2] : U_l, &&({\vDash}_{\mathsf{quotient}}) \\
-& \quad \Sigma;\ x : A[\sigma_1],\ y : A[\sigma_1] \vDash R[\sigma_1] \equiv R[\sigma_2] : \Omega_l, \text{ and the three proofs are proofs} \\
-\mathsf{eq}(T) = {}& \{(T_1.c(v),\ T_2.c(w)) \mid \Sigma \vDash v : A[T],\ \Sigma \vDash w : A[T],\ \mathsf{true}(R[T][v/x,\ w/y])\} &&(\mathsf{eq}^{/}) \\
-(T_1,\ T_2) \in \mathsf{eq}(U_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are instances of } D,\ \Sigma \vDash A[T_1] \equiv A[T_2] : U_n, &&(\mathsf{eq}_{\mathsf{quotient}}) \\
+& \quad \Sigma;\ x : A[\sigma_1],\ y : A[\sigma_1] \vDash R[\sigma_1] \equiv R[\sigma_2] : \Omega_l, \text{ and the three proofs are proofs} \quad \text{if } \mathcal{D} \text{ is a quotient} \\
+\mathsf{eq}(T) = {}& \{(T_1.c(v),\ T_2.c(w)) \mid T_1, T_2 \text{ instances of } D,\ \Sigma \vDash v : A[T],\ \Sigma \vDash w : A[T],\ \mathsf{true}(R[T][v/x,\ w/y])\} \quad \text{if } T \text{ is a closed instance of a quotient } D \text{ of } \Sigma &&(\mathsf{eq}^{/}) \\
+(T_1,\ T_2) \in \mathsf{eq}(U_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are closed instances of a quotient } D \text{ of } \Sigma,\ \Sigma \vDash A[T_1] \equiv A[T_2] : U_n, &&(\mathsf{eq}_{\mathsf{quotient}}) \\
 & \quad \text{and } \Sigma;\ x : A[T_1],\ y : A[T_1] \vDash R[T_1] \equiv R[T_2] : \Omega_n
 \end{aligned}
 ```
@@ -387,11 +388,11 @@ The symmetry and the transitivity of the equality, and the eliminator $`J`$ into
 
 ```math
 \begin{aligned}
-& \Sigma;\ \Gamma \vdash e : t \sim_A u \implies \Sigma;\ \Gamma \vdash e' : u \sim_A t \text{ for some } e' &&(\mathsf{sym}_\sim) \\
-& \Sigma;\ \Gamma \vdash e_1 : t \sim_A u \text{ and } \Sigma;\ \Gamma \vdash e_2 : u \sim_A v \implies \Sigma;\ \Gamma \vdash e' : t \sim_A v \text{ for some } e' &&(\mathsf{trans}_\sim) \\
+& \Sigma;\ \Gamma \vdash e : t \sim_A u \implies \exists e'.\ \Sigma;\ \Gamma \vdash e' : u \sim_A t &&(\mathsf{sym}_\sim) \\
+& \Sigma;\ \Gamma \vdash e_1 : t \sim_A u \text{ and } \Sigma;\ \Gamma \vdash e_2 : u \sim_A v \implies \exists e'.\ \Sigma;\ \Gamma \vdash e' : t \sim_A v &&(\mathsf{trans}_\sim) \\
 & \Sigma;\ \Gamma,\ y : A \vdash C : U_{l'},\ \Sigma;\ \Gamma \vdash e : t \sim_A u \text{ and } \Sigma;\ \Gamma \vdash v : C[t/y] &&(J_\sim) \\
-\implies {}& \Sigma;\ \Gamma \vdash J_e(v) : C[u/y] \text{ for some term } J_e(v) \\
-& (J_\sim) \text{ and } \Sigma;\ \Gamma \vdash t \equiv u : A \implies \Sigma;\ \Gamma \vdash J_e(v) \equiv v : C[u/y] &&(J_{\sim\beta})
+\implies {}& \exists J_e(v).\ \Sigma;\ \Gamma \vdash J_e(v) : C[u/y] \\
+& \text{the premises of } (J_\sim) \text{ and } \Sigma;\ \Gamma \vdash t \equiv u : A \implies \Sigma;\ \Gamma \vdash J_e(v) \equiv v : C[u/y] &&(J_{\sim\beta})
 \end{aligned}
 ```
 
@@ -400,12 +401,12 @@ The symmetry and the transitivity of the equality, and the eliminator $`J`$ into
 & \text{the rules of the equality, of the cast and of the quotients are sound for the meaning above} &&(\mathsf{sound}_\sim) \\
 & \Sigma;\ \gamma \mathrel{▶_m} t \text{ and } t \longrightarrow u \text{ by } (\mathsf{cast}^{+}),\ (\mathsf{cast}^{-}),\ (\mathsf{cast}^{/}) \text{ or } (D^{/}_{\mathsf{rec}\beta}) \implies \Sigma;\ \gamma \mathrel{▶_m} u &&(\mathsf{usage}_{\mathsf{cast}}) \\
 & \Sigma;\ \Gamma \vdash t \equiv u : A \text{ stays decidable with the rule } (\mathsf{cast}_{\mathsf{refl}}) &&(\mathsf{decidable}_{\mathsf{cast}}) \\
-& \Sigma;\ \varepsilon \nvdash e : \bot, \text{ hence no closed program reaches a stuck cast} &&(\mathsf{consistent}_\sim) \\
-& \Sigma;\ \varepsilon \vdash t : A,\ \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}}}} t \text{ and } t \Downarrow v \implies t^\bullet \Downarrow v^\bullet, \text{ with the casts erased to their terms} &&(\mathsf{sound}_{\bullet\mathsf{cast}})
+& (\mathsf{hyp}_\iota) \implies \Sigma;\ \varepsilon \nvdash e : \bot, \text{ hence no closed program reaches a stuck cast} &&(\mathsf{consistent}_\sim) \\
+& (\mathsf{hyp}_\bullet),\ \Sigma;\ \varepsilon \vdash t : A,\ \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}}}} t \text{ and } t \Downarrow v \implies t^\bullet \Downarrow v^\bullet, \text{ with the casts erased to their terms} &&(\mathsf{sound}_{\bullet\mathsf{cast}})
 \end{aligned}
 ```
 
-The extensionality of functions and of propositions follow from the rules $`(\sim^{-})`$ and $`(\sim_{\mathsf{prop}})`$, and the consistency follows from the soundness, since the setoid model refutes $`\bot`$.
+The extensionality of functions and of propositions follow from the rules $`(\sim^{-})`$ and $`(\sim_{\mathsf{prop}})`$, and the consistency follows from the soundness, since the setoid model refutes $`\bot`$, under the hypotheses $`(\mathsf{hyp}_\iota)`$ and $`(\mathsf{hyp}_\bullet)`$ of the [core](https://github.com/sic-lang/rfcs/pull/24) on the constants of the signature, as the consistency and the soundness of the erasure of the core are.
 The soundness of the erasure of the casts is the risk of this RFC: a cast disappears at run time, so that the program that runs must compute the same values as the type theory does with the casts; the argument is that a closed proof of an equality of types relates two instances of one type with the same grades and equal fields, on which the cast is the identity up to the casts of the fields, that the proofs of equality held by the fields of a data type are erased, as every proof, and that a quotient is represented by its carrier.
 No published proof covers it for the observational type theories, as the [unresolved questions](#unresolved-questions) say.
 
