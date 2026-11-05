@@ -30,6 +30,7 @@ This RFC uses the notation and the conventions of the [core](https://github.com/
 
 The equality is written $`t \sim_A u`$, a proposition of the sort $`\Omega_l`$ of the level of $`A`$; its rules are named after the symbol $`\sim`$, with the polarity of the kind they concern as an exponent, and the rules of the cast after $`\mathsf{cast}`$.
 The connectives of the propositions are the instances in $`\Omega`$ of the declarations of the [data and codata types](https://github.com/sic-lang/rfcs/pull/34), which the signature holds before the first equality: the true and the false propositions $`\top`$ and $`\bot`$, the conjunction $`P \wedge Q`$, which is the pair whose second field may depend on the first, the implication $`P \Rightarrow Q`$ and the quantification $`\forall (x : A).\, P`$, which are the functions into a proposition.
+The sort of an instance $`T`$ of a declared type, the sort of its declaration at the sorts and levels of $`T`$, is written $`\kappa[T]`$, as the [data and codata types](https://github.com/sic-lang/rfcs/pull/34) write it.
 The equality of two telescopes of terms, field by field, is written $`\bar t \sim_\Theta \bar u`$, and the cast of a telescope of terms along a proof, field by field, $`\mathsf{cast}_\Theta(e,\ \bar t)`$; both are defined below, by recursion on the telescope.
 As in the core, a variable left free in a formula is universally quantified over the kind that its letter names, and a rule holds for every instance of its schematic variables; the rules of the equality and of the cast that are written as equations, since their premises are those of the formation of the equality, are rules as well.
 
@@ -161,7 +162,8 @@ The equality of two instances of a recursive declared type is then a proposition
 
 ### Equality of Terms
 
-The equality of two terms of a declared type computes on their canonical forms, which the kind of the declaration gives: constructor by constructor for the data types, and observation by observation for the codata types.
+The equality of two terms of a declared type in a universe computes on their canonical forms, which the kind of the declaration gives: constructor by constructor for the data types, and observation by observation for the codata types.
+In a universe of propositions, two terms are proofs, whose equality is $`\top`$ by $`(\sim_{\mathsf{irr}})`$, and no rule of a kind compares them: comparing two proofs by their constructors would make unequal two proofs built by different constructors, which irrelevance makes equal, so that $`\top`$ and $`\bot`$ would be equal types.
 
 #### Equality of Data
 
@@ -169,8 +171,8 @@ Two terms of a data type built by the same constructor are equal when their fiel
 
 ```math
 \begin{aligned}
-T_1.c_{ji}(\bar t) \sim_{T} T_2.c_{ji}(\bar u) &\equiv \bar t \sim_{\Theta_{ji}[T]} \bar u &&(\sim^{+}) \\
-T_1.c_{ji}(\bar t) \sim_{T} T_2.c_{ji'}(\bar u) &\equiv \bot \quad \text{if } i \ne i' &&(\sim^{+}_{\ne}) \\
+T_1.c_{ji}(\bar t) \sim_{T} T_2.c_{ji}(\bar u) &\equiv \bar t \sim_{\Theta_{ji}[T]} \bar u \quad \text{if } \kappa[T] \text{ is a universe} &&(\sim^{+}) \\
+T_1.c_{ji}(\bar t) \sim_{T} T_2.c_{ji'}(\bar u) &\equiv \bot \quad \text{if } \kappa[T] \text{ is a universe and } i \ne i' &&(\sim^{+}_{\ne}) \\
 () \sim_{\varepsilon} () &= \top &&(\sim_{\mathsf{fields}\varepsilon}) \\
 (t,\ \bar t) \sim_{(x : A,\ \Theta)} (u,\ \bar u) &= (e : t \sim_A u) \wedge \mathsf{cast}_{\Theta[t/x]}(\mathsf{ap}(x.\, \Theta,\ e),\ \bar t) \sim_{\Theta[u/x]} \bar u &&(\sim_{\mathsf{fields},})
 \end{aligned}
@@ -188,7 +190,7 @@ For a recursive codata type, the bisimilarity is itself recursive, at the positi
 & \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ (\Delta,\ t : T_j,\ u : T_j) : \Omega_l\ \mathsf{where}\ D_j^{\sim} \mathrel{≔} d_{j1}^{\sim} :^{\mathbb{0}}_{\mathbb{0}} \Theta_{j1}[t.\bar d] \to (t'_{j1} \sim_{B_{j1}[u.\bar d][\bar x'_{j1}]} u.d_{j1}(\bar x'_{j1})) \mid \dots &&(\sim^{-}_{\mathsf{decl}}) \\
 & \quad \text{where } t'_{ji} = \mathsf{cast}(B_{ji}[t.\bar d][\bar x_{ji}],\ B_{ji}[u.\bar d][\bar x'_{ji}],\ e_{ji},\ t.d_{ji}(\bar x_{ji})), \\
 & \quad \text{and the equality at a position of } D_j \text{ in } B_{ji} \text{ is } D_j^{\sim} \text{ at the two observations} \\
-t \sim_{T_j} u &\equiv D_j^{\sim}.\{\bar s;\ \bar l;\ \bar p\}\ (\bar a,\ t,\ u) &&(\sim^{-})
+t \sim_{T_j} u &\equiv D_j^{\sim}.\{\bar s;\ \bar l;\ \bar p\}\ (\bar a,\ t,\ u) \quad \text{if } \kappa[T_j] \text{ is a universe} &&(\sim^{-})
 \end{aligned}
 ```
 
@@ -309,7 +311,7 @@ A quotient has no $`\eta`$ rule: its recursor on a neutral term stays neutral, s
 This RFC extends the contract of the [core](https://github.com/sic-lang/rfcs/pull/24) for every kind of declaration: a kind provides, for its instances and its terms, what the equality and the cast need, as the data types, the codata types and the quotients do above.
 
 1. Equality of the instances: the rule that reduces $`T_1 \sim_{U_n} T_2`$, for two instances of a type of the kind in a universe $`U_n`$ with the same sorts and grades and equal levels, to the equality of their bodies, as $`(\sim^{+}_D)`$, $`(\sim^{-}_D)`$ and $`(\sim^{/}_{D})`$ do; two instances in a sort of propositions are compared by $`(\sim_{\mathsf{prop}})`$ alone.
-2. Equality of the terms: the rules that reduce $`t \sim_T u`$ on the canonical forms of its terms, as $`(\sim^{+})`$, $`(\sim^{+}_{\ne})`$, $`(\sim^{-})`$ and $`(\sim^{/})`$ do.
+2. Equality of the terms: the rules that reduce $`t \sim_T u`$, for an instance $`T`$ of a type of the kind in a universe, on the canonical forms of its terms, as $`(\sim^{+})`$, $`(\sim^{+}_{\ne})`$, $`(\sim^{-})`$ and $`(\sim^{/})`$ do.
 3. Cast: the rules that reduce $`\mathsf{cast}(T_1,\ T_2,\ e,\ t)`$ on the canonical forms of $`t`$, as $`(\mathsf{cast}^{+})`$, $`(\mathsf{cast}^{-})`$ and $`(\mathsf{cast}^{/})`$ do.
 4. Erasure: the cast of a canonical form of the kind erases to the erasure of the form, so that the [erasure](#erasure) of the cast is the identity.
 5. Obligations: the soundness of the rules above for the [meaning](#meaning) of the equality, and the preservation of usage by the reductions of the cast.
