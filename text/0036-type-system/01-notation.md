@@ -10,7 +10,7 @@ Each letter keeps one kind, in every annex, so that the kind of an object, and w
 | Letters | Denote |
 | --- | --- |
 | $`n, k`$ | Natural numbers, such as numbers of uses and values of levels |
-| $`\mu, \nu`$ | Multiplicities |
+| $`\pi`$ | Multiplicities |
 | $`p, q, r`$ | Grades |
 | $`m`$ | Modes |
 | $`S`$ | Sets of numbers of uses, of pairs of numbers of uses, or of grades |
@@ -45,7 +45,7 @@ A subscript numbers objects of the same kind that come from different premises o
 - A rule that extends a context, a telescope or a signature by one kind of entry is indexed by a comma.
 - A rule with one case per kind of entry is indexed by the letter of the entry: $`x`$ for a variable, $`X`$ for a second-order variable.
 - A formula is named in its last column.
-- The name of a formula about multiplicities is indexed by $`\mu`$, and that of a formula about grades by $`p`$.
+- The name of a formula about multiplicities is indexed by $`\pi`$, and that of a formula about grades by $`p`$.
 - The name of a formula of a meaning has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, and $`\mathsf{eq}`$ for a clause of the equality of a canonical type.
 - Every name designates one rule or one formula in all the annexes.
 
