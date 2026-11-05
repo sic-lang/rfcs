@@ -568,17 +568,18 @@ A program is a closed term that is well typed and well used in the mode of run t
 
 The two erasures are one translation, parametrized by the grades it erases: $`t^\bullet`$ erases a position whose grade has no use at run time, $`\mathsf{run}(p) = 0`$, and $`t^\circ`$ a position whose grade has no use at all, $`p = \mathbb{0}`$, so that $`t^\circ`$ keeps the proofs, the specifications and the permissions that $`t^\bullet`$ removes, as the ghost code of [Verus](https://doi.org/10.1145/3586037) is checked but never run.
 A position is a subterm that a rule of usage checks in a mode of its own: the grade of the position is the grade with which the rule uses it, and the mode in which it is checked is the mode of the term times this grade.
-The target language has variables, the constants, and a value $`\text{↯}`$ that stands for what was erased; the kinds of declarations add the forms of their terms.
+The target language has variables, the entries of the signature at the grades of their instances, and a value $`\text{↯}`$ that stands for what was erased; the kinds of declarations add the forms of their terms.
 The translation is defined on the terms of the core, and each kind adds the clauses of its terms:
 
 | Term | $`t^\bullet`$ | $`t^\circ`$ |
 | --- | --- | --- |
 | $`U_l`$, $`\Omega_l`$, $`T`$ | $`\text{↯}`$ | $`\text{↯}`$ |
 | $`x`$ | $`x`$ | $`x`$ |
-| $`c.\{\bar s;\ \bar l;\ \bar p\}`$ | $`c`$ | $`c`$ |
+| $`c.\{\bar s;\ \bar l;\ \bar p\}`$ | $`c.\{\bar p\}`$ | $`c.\{\bar p\}`$ |
 | A position of grade $`p`$ | $`\text{↯}`$ if $`\mathsf{run}(p) = 0`$ | $`\text{↯}`$ if $`p = \mathbb{0}`$ |
 
-A definition is extracted with the program, its name standing for its extracted body, and a foreign constant stands for its implementation; a ghost constant and an axiom are never reached by $`t^\bullet`$, since they are used in erased positions only, as their mode requires.
+An entry keeps the grades of its instance and loses its sorts and levels: the positions of a body that the erasure removes depend on the grades that instantiate its grade variables, and on nothing else, since the erasure follows the grades alone.
+A definition is thus extracted with the program once for each instance of its grade variables that the program uses, $`c.\{\bar p\}`$ standing for the extraction of its body at the grades $`\bar p`$, as a monomorphization by the grades, and a foreign constant $`c.\{\bar p\}`$ stands for its implementation at these grades; a ghost constant and an axiom are never reached by $`t^\bullet`$, since they are used in erased positions only, as their mode requires.
 A term that is checked in an erased mode is never extracted: a proof, an erased argument, and the types that the terms carry disappear.
 The erasure follows the grades alone, and depends on no evaluation order: it is a translation from terms to terms, whose soundness the [properties](#erasure-properties) state on the computation of the type theory, and the RFC of the calling convention chooses how the target runs.
 
@@ -842,15 +843,15 @@ The erasure of a program is sound: a program and its extraction compute the same
 
 ```math
 \begin{aligned}
-& \text{the implementation of each foreign constant } c \text{ of } \Sigma \text{ computes,} &&(\mathsf{hyp}_\bullet) \\
-& \quad \text{on extracted arguments of its type, the extraction of a term} \\
+& \text{the implementation of each foreign constant } c \text{ of } \Sigma \text{ at each instance } \bar p \text{ of its grade variables} &&(\mathsf{hyp}_\bullet) \\
+& \quad \text{computes, on extracted arguments of its type, the extraction of a term} \\
 & \quad \text{of its result type, using each argument as its grade allows} \\
 & (\mathsf{hyp}_\bullet),\ \Sigma;\ \varepsilon \vdash t : A,\ \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}}}} t \text{ and } t \Downarrow v &&(\mathsf{sound}_\bullet) \\
 \implies {}& t^\bullet \Downarrow v^\bullet
 \end{aligned}
 ```
 
-The target computes by the weak head reduction that the clauses of the kinds of declarations give it, so that the property depends on no evaluation order; a program whose extraction runs in another order computes the same canonical term, since the core is total, which the RFC of the calling convention has to show for the order it chooses.
+The target computes by the weak head reduction that the clauses of the kinds of declarations give it, a definition $`c.\{\bar p\}`$ unfolding to the extraction of its body at the grades $`\bar p`$, so that the property depends on no evaluation order; a program whose extraction runs in another order computes the same canonical term, since the core is total, which the RFC of the calling convention has to show for the order it chooses.
 
 A variable without use at run time is absent from the extraction, and a variable without any use from the ghost program, which gives the total multiplicity its meaning: a proof cannot duplicate or drop a permission counted once in total, since the permission occurs in the proof and the proof is checked for it:
 

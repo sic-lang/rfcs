@@ -27,4 +27,4 @@ The proposition $`\mathsf{Sorted}`$ is foreign too, as a type, and $`\mathsf{sor
 \end{aligned}
 ```
 
-The extraction of the program $`\mathsf{origin}.\{\}`$ is $`\mathsf{origin}`$, which stands for $`\mathsf{zero}`$, the value that the machine provides; $`\mathsf{bound}`$ and $`\mathsf{sorted}`$ never reach the extraction of a program.
+The extraction of the program $`\mathsf{origin}.\{\}`$ is $`\mathsf{origin}.\{\}`$, the definition at the empty instance of its grade variables, which stands for $`\mathsf{zero}.\{\}`$, the value that the machine provides; $`\mathsf{bound}`$ and $`\mathsf{sorted}`$ never reach the extraction of a program.
