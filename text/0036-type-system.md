@@ -9,7 +9,7 @@ It gives no definition, rule or property itself: the system is defined in the an
 
 ## Motivation
 
-The type system of Sic combines dependent types with grades that count the uses of each variable, the first two layers of [RFC 13](https://github.com/sic-lang/rfcs/pull/13), on which the refinement of specifications is to be built.
+The type system of Sic combines dependent types with grades that count the uses of each variable.
 Its pieces are tightly bound: the declared types need an equality to state their indices and their extensionality, and the equality is defined on the declared types, so that the system cannot be split into documents that each stand alone without one of them depending on a later one.
 This RFC therefore states the system in one place, and keeps apart the two things a reader looks for: the main document says what the system is made of and why, for a reader who decides or reviews the design, and the annexes say exactly what it is, for a reader who checks or implements it.
 
