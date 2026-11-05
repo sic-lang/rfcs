@@ -594,12 +594,12 @@ A closed judgment requires its signature to be meaningful, as every judgment of 
 \begin{aligned}
 \Sigma \vDash A \equiv B &\iff \vDash \Sigma \text{ and } \exists A_0, B_0.\ A \Downarrow A_0,\ B \Downarrow B_0,\ \mathsf{eq}(A_0) \text{ and } \mathsf{eq}(B_0) \text{ are defined, and } \mathsf{eq}(A_0) = \mathsf{eq}(B_0) &&(\vDash_{\mathsf{type}\equiv}) \\
 \Sigma \vDash A &\iff \Sigma \vDash A \equiv A &&(\vDash_{\mathsf{type}}) \\
-\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A \text{ and } \exists A_0, v, w.\ A \Downarrow A_0,\ t \Downarrow v,\ u \Downarrow w \text{ and } (v, w) \in \mathsf{eq}(A_0) &&(\vDash_\equiv) \\
+\text{if } A \text{ does not compute to a proposition, then } \Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A \text{ and } \exists A_0, v, w.\ A \Downarrow A_0,\ t \Downarrow v,\ u \Downarrow w \text{ and } (v, w) \in \mathsf{eq}(A_0) &&(\vDash_\equiv) \\
 \Sigma \vDash t : A &\iff \Sigma \vDash t \equiv t : A &&(\vDash)
 \end{aligned}
 ```
 
-A proof of a [strict proposition](#strict-propositions) need not compute to a canonical term, since irrelevance makes all the proofs of a proposition equal: the strict propositions refine this meaning for their proofs.
+The clause $`(\vDash_\equiv)`$ asks the terms to compute, which a proof of a [strict proposition](#strict-propositions) need not, since irrelevance makes all the proofs of a proposition equal: the strict propositions give the clause of the types that compute to a proposition.
 
 A judgment in a context $`\Gamma`$ is hypothetical: its context is meaningful, and it holds under every pair of equal closed substitutions of $`\Gamma`$, which give each variable a closed term of its type, and each second-order variable an abstraction whose instances by equal arguments are equal terms of its type:
 
@@ -700,11 +700,11 @@ A closed canonical type $`A_0`$ is a proposition when it is a term of a universe
 \end{aligned}
 ```
 
-A proof carries no information but the truth of its proposition, so that it need not compute, as the proofs of Pujet and Tabareau have no reduction: for a proposition, this relation holds between the terms themselves, and the following clause replaces the clause $`(\vDash_\equiv)`$ of the judgments, which asks them to compute:
+A proof carries no information but the truth of its proposition, so that it need not compute, as the proofs of Pujet and Tabareau have no reduction: for a type that computes to a proposition, this relation holds between the terms themselves:
 
 ```math
 \begin{aligned}
-\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A \text{ and } \exists A_0, k.\ A \Downarrow A_0,\ (A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ and } (t,\ u) \in \mathsf{eq}(A_0) &&(\vDash_{\equiv\Omega})
+\text{if } A \text{ computes to a proposition, then } \Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A \text{ and } \exists A_0.\ A \Downarrow A_0 \text{ and } (t,\ u) \in \mathsf{eq}(A_0) &&(\vDash_{\equiv\Omega})
 \end{aligned}
 ```
 
