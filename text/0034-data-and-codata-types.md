@@ -462,10 +462,10 @@ A block is meaningful when each of its instantiations is, which gives its variab
 
 ```math
 \begin{aligned}
-\Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \forall j, i. &&({\vDash}_{\mathsf{data}}) \\
-& \quad \Sigma,\ \mathcal{D} \vDash \Theta_{ji}[\sigma_1] \equiv \Theta_{ji}[\sigma_2] : \kappa \quad \text{if } \mathcal{D} \text{ is a block of data types} \\
-\Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \forall j. &&({\vDash}_{\mathsf{codata}}) \\
-& \quad \Sigma,\ \mathcal{D} \vDash \Xi_j[\sigma_1] \equiv \Xi_j[\sigma_2] : \kappa \quad \text{if } \mathcal{D} \text{ is a block of codata types}
+\text{if } \mathcal{D} \text{ is a block of data types, then } \Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \forall j, i. &&({\vDash}_{\mathsf{data}}) \\
+& \quad \Sigma,\ \mathcal{D} \vDash \Theta_{ji}[\sigma_1] \equiv \Theta_{ji}[\sigma_2] : \kappa \\
+\text{if } \mathcal{D} \text{ is a block of codata types, then } \Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \forall j. &&({\vDash}_{\mathsf{codata}}) \\
+& \quad \Sigma,\ \mathcal{D} \vDash \Xi_j[\sigma_1] \equiv \Xi_j[\sigma_2] : \kappa
 \end{aligned}
 ```
 
@@ -519,10 +519,10 @@ A proposition declared as a codata type is true when its destructors have proofs
 
 ```math
 \begin{aligned}
-(v,\ w) \in \mathsf{eq}(T_j) \iff {}& v \text{ and } w \text{ are corecursors of instances of } D_j, \text{ and } \forall i. &&(\mathsf{eq}_{\mathsf{corec}}) \\
+\text{if } \kappa[T_j] \text{ is a universe, then } (v,\ w) \in \mathsf{eq}(T_j) \iff {}& v \text{ and } w \text{ are corecursors of instances of } D_j, \text{ and } \forall i. &&(\mathsf{eq}_{\mathsf{corec}}) \\
 & \forall (\bar b_1,\ \bar b_2) \in \mathsf{eq}(\Theta_{ji}[T_j][v.\bar d]). \\
-& \quad \Sigma \vDash v.d_{ji}(\bar b_1) \equiv w.d_{ji}(\bar b_2) : B_{ji}[T_j][v.\bar d][\bar b_1 / \Theta_{ji}] \quad \text{if } \kappa[T_j] \text{ is a universe} \\
-\mathsf{true}(T_j) \iff {}& \mathsf{eq}(\Xi_j[T_j]) \ne \varnothing \quad \text{if } \kappa[T_j] \text{ is a universe of propositions} &&(\mathsf{true}_{\mathsf{codata}}) \\
+& \quad \Sigma \vDash v.d_{ji}(\bar b_1) \equiv w.d_{ji}(\bar b_2) : B_{ji}[T_j][v.\bar d][\bar b_1 / \Theta_{ji}] \\
+\text{if } \kappa[T_j] \text{ is a universe of propositions, then } \mathsf{true}(T_j) \iff {}& \mathsf{eq}(\Xi_j[T_j]) \ne \varnothing &&(\mathsf{true}_{\mathsf{codata}}) \\
 (\mathsf{eq}(T_j[\bar b]))_{j, \bar b} &\text{ and } (\mathsf{true}(T_j[\bar b]))_{j, \bar b} \text{ are the greatest families such that } (\mathsf{eq}_{\mathsf{corec}}) \text{ and } (\mathsf{true}_{\mathsf{codata}}) \text{ hold} &&(\mathsf{eq}_\nu)
 \end{aligned}
 ```
