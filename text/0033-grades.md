@@ -302,7 +302,7 @@ A derivation of usage in the three modes thus projects on a derivation in the tw
 
 ## Drawbacks
 
-- The grade $`\langle \omega, 1 \rangle`$, `affine / linear`, exists to keep the multiplication distributive over the meet, rather than for a need of programs.
+- The grade $`\langle \omega, 1 \rangle`$, `affine / linear`, is almost never written by hand, since it comes from the meet of two branches, one of which erases a variable that the other uses at run time; it still brings the number of grades to seven, each with its row in the tables and its name.
 - Seven grades, among which a programmer chooses on every binder, are many: the surface language has to infer most of them, which no RFC designs yet.
 - The meaning counts the uses that a term makes, not those that a program makes when it runs, which depend on the evaluation order; the multiplicities $`1`$ and $`\omega`$ at run time wait for the RFC of the calling convention to mean a number of uses.
 
