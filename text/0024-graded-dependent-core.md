@@ -861,13 +861,14 @@ The decidability of typing needs the terms to determine their types, which the k
 #### Consistency and Canonicity
 
 The signature assumes its constants, so the properties that depend on what the terms compute hold under named hypotheses.
-A signature is consistent when some closed proposition has no proof; by soundness, it suffices that the meaning interprets every constant, which the following hypothesis on the signature $`\Sigma`$ and its interpretation $`\iota`$ names, the two being the parameters of the hypothesis rather than its variables:
+A signature is consistent when some closed proposition has no proof; by soundness, it suffices that the meaning interprets every constant, which the following hypothesis on the signature $`\Sigma`$ and its interpretation $`\iota`$ names, the two being the parameters of the hypothesis rather than its variables; the interpretation of a constant is a term of its type in the signature before it, as the clause $`({\vDash}\mathsf{sig}_c)`$ reads it, since it is built from the entries before the constant:
 
 ```math
 \begin{aligned}
 & \text{an interpretation } \iota \text{ gives each constant } c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \text{ of } \Sigma &&(\mathsf{hyp}_\iota) \\
-& \quad \text{a closed term with } \Sigma \vDash \iota(c)[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\
-& \quad \text{for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] \text{ of its sort and grade variables} \\
+& \quad \text{a closed term with } \Sigma_1 \vDash \iota(c)[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \quad \text{for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] \text{ of its sort and grade variables,} \\
+& \quad \text{where } \Sigma = \Sigma_1,\ c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A,\ \Sigma_2 \\
 & (\mathsf{hyp}_\iota),\ \Sigma \vDash A,\ A \Downarrow A_0 \text{ and } \mathsf{eq}(A_0) = \varnothing &&(\mathsf{consistent}) \\
 \implies {}& \Sigma;\ \varepsilon \nvdash t : A \text{ for every } t
 \end{aligned}
