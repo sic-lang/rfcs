@@ -456,7 +456,7 @@ A kind of declaration adds types to the core by fulfilling the contract below, s
 2. Liftings: for each strictly positive parameter of a type, a derived lifting, which turns a predicate on the terms of the parameter into a predicate on the terms of the instance, stating that the first holds at every position of the parameter, and a derived map, which builds a proof of the lifted predicate from proofs of the first at every position; the eliminations of recursive declarations use them for the fields nested through other types.
 3. Usage of the instances: the rule of usage of an instance $`T`$, which counts the uses of the variables of its arguments by its body, with the grades of its entries.
 4. Rules of the terms: the introductions, the eliminations, the computations $`\beta`$ and the extensionalities $`\eta`$ of the terms of its types, each with its rule of usage, and each with its conditions on the sorts, as the [strict propositions](#strict-propositions) restrict what a proof may build.
-5. Meaning: the formula $`\Sigma \vDash \mathcal{D}`$, the clauses $`\mathsf{eq}(T)`$ and $`\mathsf{true}(T)`$ that give the equal canonical terms of an instance in a universe and the truth of an instance in a universe of propositions, and the clause that puts the instances in $`\mathsf{eq}(s_n)`$, which the [meaning](#meaning-of-the-universes) of the sorts receives.
+5. Meaning: the formula $`\Sigma \vDash \mathcal{D}`$, the clauses $`\mathsf{eq}(T)`$ and $`\mathsf{true}(T)`$ that give the equal canonical terms of an instance in a universe and the truth of an instance in a universe of propositions, and the clauses that put the instances in $`\mathsf{eq}(U_n)`$ or in $`\mathsf{wf}(\Omega_n)`$, which the [meaning](#meaning-of-the-universes) of the sorts receives.
 6. Reduction: the head normal forms and the neutral terms that its terms add to $`(\mathsf{whnf})`$ and $`(\mathsf{neutral})`$, and the rules of the [reduction](#reduction) of its terms, which keep it deterministic, so that the [conversion](#conversion) of the core decides their equality.
 7. Erasure: the clauses of $`t^\bullet`$ and $`t^\circ`$ for its terms, as the [erasure](#erasure) of the core defines them, with the forms they add to the target language.
 8. Obligations: the soundness of each of its rules for its meaning, the preservation of usage by its rules $`\beta`$, and the compatibility of its rules of usage with the [projection](#projection-lemma) of the modes, so that the properties of the core hold with its types.
@@ -645,11 +645,11 @@ The meaning of a judgment is written with $`\vDash`$ in place of $`\vdash`$.
 A closed term $`t`$ computes to a canonical term $`v`$, written $`t \Downarrow v`$, as the formula $`(\Downarrow)`$ of the [reduction](#reduction) defines.
 A closed canonical type $`A_0`$ is known by its canonical terms and by their equality, a partial equivalence relation $`\mathsf{eq}(A_0)`$, symmetric and transitive, between closed canonical terms, which the sorts and the kinds of declarations give.
 The computation, the relations $`\mathsf{eq}`$ and $`\mathsf{true}`$ and the interpretation $`\iota`$ of the constants, which the [meaning of the signatures](#meaning-of-the-signatures) introduces, all depend on the signature $`\Sigma`$ of the judgment, which their notation omits.
-A closed canonical type is a proposition when it is a term of a universe of propositions, whose relation $`\mathsf{eq}(\Omega_k)`$ the [meaning of the strict propositions](#meaning-of-the-strict-propositions) gives, and a closed type computes to a proposition when its canonical form is one, which the clauses of the equality of terms distinguish:
+A closed canonical type is a proposition when it is a term of a universe of propositions, whose set of propositions $`\mathsf{wf}(\Omega_k)`$ the [meaning of the strict propositions](#meaning-of-the-strict-propositions) gives, and a closed type computes to a proposition when its canonical form is one, which the clauses of the equality of terms distinguish:
 
 ```math
 \begin{aligned}
-A_0 \text{ is a proposition} &\iff \exists k.\ (A_0,\ A_0) \in \mathsf{eq}(\Omega_k) &&(\mathsf{prop}) \\
+A_0 \text{ is a proposition} &\iff \exists k.\ A_0 \in \mathsf{wf}(\Omega_k) &&(\mathsf{prop}) \\
 A \text{ computes to a proposition} &\iff \exists A_0.\ A \Downarrow A_0 \text{ and } A_0 \text{ is a proposition} &&(\mathsf{prop}_\Downarrow)
 \end{aligned}
 ```
@@ -776,7 +776,7 @@ A proof carries no information but the truth of its proposition, so that it need
 
 A variable of a proposition then stands for any closed term, which may not compute, so that no computation of a term whose type is not a proposition may wait for a proof to compute: a proof is only used to build other proofs, or eliminated without being inspected.
 
-The universes of propositions are canonical types of the universes, and $`\mathsf{eq}(\Omega_n)`$ is the least relation that the clauses of the kinds of declarations define for their instances in $`\Omega_n`$, as for the universes; two propositions are then equal types when they are both true or both false:
+The universes of propositions are canonical types of the universes:
 
 ```math
 \begin{aligned}
@@ -784,8 +784,18 @@ The universes of propositions are canonical types of the universes, and $`\maths
 \end{aligned}
 ```
 
-The clauses of a kind relate the entries of its instances in the sorts that $`s_n`$ bounds: in $`s_n`$ itself, which the least relation allows, and in $`\Omega_n`$ for an instance in $`U_n`$, whose relation is defined together with $`\mathsf{eq}(U_n)`$, since the arguments of a proposition may be types of $`U_n`$, as the entries of a type of $`U_n`$ may be propositions.
-Both relations are thus defined together, at each level, by a single inductive definition, and the equality of the terms of each type they relate by recursion on the clauses that relate it, as the setoid model of Pujet and Tabareau defines its universes of relevant types and of propositions together by induction-recursion, under an induction on their level.
+The clauses of the kinds of declarations say which closed canonical types are propositions of level $`n`$: the set $`\mathsf{wf}(\Omega_n)`$ of these propositions is the least set that the clauses define for their instances in $`\Omega_n`$, as $`\mathsf{eq}(U_n)`$ is the least relation of its clauses.
+Two propositions of level $`n`$ are then equal terms of $`\Omega_n`$ when they are both true or both false, whatever their kinds and their declared types, as the propositions of the setoid model of Pujet and Tabareau are equal when they are equivalent:
+
+```math
+\begin{aligned}
+(A_0,\ B_0) \in \mathsf{eq}(\Omega_n) &\iff A_0 \in \mathsf{wf}(\Omega_n),\ B_0 \in \mathsf{wf}(\Omega_n) \text{ and } (\mathsf{true}(A_0) \iff \mathsf{true}(B_0)) &&(\mathsf{eq}_{\mathsf{prop}})
+\end{aligned}
+```
+
+Two equal propositions are thus equal types, since their relations $`\mathsf{eq}`$ are both the relation of all the closed terms or both empty, by $`(\mathsf{eq}_{\mathsf{true}})`$ and $`(\mathsf{eq}_{\mathsf{false}})`$, which makes the rule $`(\Omega_{\mathsf{type}\equiv})`$ sound; the clauses of the kinds give no equality of propositions, and a term of a universe of propositions is never analyzed, only used as a type, so that no construct tells apart two propositions of the same truth.
+The clauses of a kind relate the entries of its instances in the sorts that the sort of the instance bounds: in $`U_n`$ and in $`\Omega_n`$ for an instance in $`U_n`$, and in $`\Omega_n`$ for an instance in $`\Omega_n`$, so that $`\mathsf{eq}(U_n)`$ and $`\mathsf{wf}(\Omega_n)`$ are defined together, since the arguments of a proposition may be types of $`U_n`$, as the entries of a type of $`U_n`$ may be propositions.
+They are thus defined together, at each level, by a single inductive definition, and the equality of the terms of each type that $`\mathsf{eq}(U_n)`$ relates, with the truth of each proposition of $`\mathsf{wf}(\Omega_n)`$, by recursion on the clauses that relate or contain it, as the setoid model of Pujet and Tabareau defines its universes of relevant types and of propositions together by induction-recursion, under an induction on their level.
 
 The denotation is exact for the proofs: two closed terms are equal proofs of a proposition in this meaning exactly when each of them is a proof of it, as the rule $`(\mathsf{irr})`$ says, which is then sound, as the rules $`(\Omega)`$, $`(\Omega_\equiv)`$, $`(\Omega_{\mathsf{type}})`$ and $`(\Omega_{\mathsf{type}\equiv})`$ are:
 
