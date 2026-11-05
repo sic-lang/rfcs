@@ -83,7 +83,7 @@ The best grade for a set $`S`$ of pairs of numbers of uses is defined as for the
 
 ```math
 \begin{aligned}
-& {\Longleftrightarrow} &&(\mathsf{best}_p) \\
+& \text{⟺} &&(\mathsf{best}_p) \\
 & \quad \mathsf{best}(S) = p \\
 & \quad \text{and} \\
 & \qquad S \subseteq \mathsf{uses}(p) \\
