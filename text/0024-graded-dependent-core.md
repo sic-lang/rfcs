@@ -611,7 +611,15 @@ A program is a closed term that is well typed and well used in the mode of run t
 
 The two erasures are one translation, parametrized by the grades it erases: $`t^\bullet`$ erases a position whose grade has no use at run time, $`\mathsf{run}(p) = 0`$, and $`t^\circ`$ a position whose grade has no use at all, $`p = \mathbb{0}`$, so that $`t^\circ`$ keeps the proofs, the specifications and the permissions that $`t^\bullet`$ removes, as the ghost code of [Verus](https://doi.org/10.1145/3586037) is checked but never run.
 A position is a subterm that a rule of usage checks in a mode of its own: the grade of the position is the grade with which the rule uses it, and the mode in which it is checked is the mode of the term times this grade.
-The target language has variables, the entries of the signature at the grades of their instances, and a value $`\text{↯}`$ that stands for what was erased; the kinds of declarations add the forms of their terms.
+The erasure is defined on the terms whose scope has variables only, without second-order variables: a program is closed, and the binders of the kinds of declarations in terms bind variables only, so that the subterms of a program are in its domain; a second-order variable exists only in the contexts in which a declaration is checked, and never reaches the erasure, so that the table has no clause for $`X[\bar t]`$.
+The target language has variables, all of the first order, the entries of the signature at the grades of their instances, and a value $`\text{↯}`$ that stands for what was erased, to which the kinds of declarations add the forms of their terms:
+
+```math
+\begin{aligned}
+e &\;::=\; x \mid c.\{\bar p\} \mid \text{↯} \mid \dots &&(\mathsf{target})
+\end{aligned}
+```
+
 The translation is defined on the terms of the core, and each kind adds the clauses of its terms:
 
 | Term | $`t^\bullet`$ | $`t^\circ`$ |
