@@ -498,16 +498,18 @@ The family of the relations $`\mathsf{eq}(T_j[\bar b])`$, over all the types of 
 \end{aligned}
 ```
 
-The instances are canonical types of the universes, and two of them are equal when they are instances of the same type in the same sort, whose fields are equal telescopes:
+The instances in a universe are canonical types of it, and two of them are equal when they are instances of the same type in the same sort, whose fields are equal telescopes; the instances in a universe of propositions are propositions of it, whose fields are telescopes in it, and the [core](https://github.com/sic-lang/rfcs/pull/24) relates two propositions by their truth:
 
 ```math
 \begin{aligned}
-(T_1,\ T_2) \in \mathsf{eq}(s_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are closed instances of a data type } D_j \text{ of } \Sigma,\ \kappa[T_1] = \kappa[T_2] = s_n, &&(\mathsf{eq}_{\mathsf{data}}) \\
-&\quad \text{and } \forall i.\ \Sigma \vDash \Theta_{ji}[T_1] \equiv \Theta_{ji}[T_2] : s_n
+(T_1,\ T_2) \in \mathsf{eq}(U_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are closed instances of a data type } D_j \text{ of } \Sigma,\ \kappa[T_1] = \kappa[T_2] = U_n, &&(\mathsf{eq}_{\mathsf{data}}) \\
+&\quad \text{and } \forall i.\ \Sigma \vDash \Theta_{ji}[T_1] \equiv \Theta_{ji}[T_2] : U_n \\
+T \in \mathsf{wf}(\Omega_n) &\quad \text{if } T \text{ is a closed instance of a data type } D_j \text{ of } \Sigma,\ \kappa[T] = \Omega_n, &&(\mathsf{wf}_{\mathsf{data}}) \\
+&\quad \text{and } \forall i.\ \Sigma \vDash \Theta_{ji}[T] \equiv \Theta_{ji}[T] : \Omega_n
 \end{aligned}
 ```
 
-The clause relates the types of the fields in the sorts that $`s_n`$ bounds, as the [core](https://github.com/sic-lang/rfcs/pull/24) defines $`\mathsf{eq}(U_n)`$ and $`\mathsf{eq}(\Omega_n)`$ together.
+The clauses relate the types of the fields in the sorts that the sort of the instance bounds, as the [core](https://github.com/sic-lang/rfcs/pull/24) defines $`\mathsf{eq}(U_n)`$ and $`\mathsf{wf}(\Omega_n)`$ together.
 A recursor computes its term to a constructor, then runs its branch, with the recursion on the fields, as the rule $`(D^{+}_{\mathsf{rec}\beta})`$ says, which ends since every canonical term is built in finitely many steps; a recursor on a proof for a proposition is a proof, which need not compute, and a recursor on a proof of a type with one constructor and no recursion for any result is equal to its branch by $`(D^{+}_\eta)`$, so that it never waits for the proof to compute.
 The rules $`(\mathsf{data})`$, $`(D^{+}_{\mathsf{i}})`$, $`(D^{+}_{\mathsf{rec}})`$, $`(D^{+}_{\mathsf{rec}\beta})`$ and $`(D^{+}_\eta)`$ are then sound.
 
@@ -527,12 +529,14 @@ A proposition declared as a codata type is true when its destructors have proofs
 \end{aligned}
 ```
 
-The instances are canonical types of the universes, and two of them are equal when they are instances of the same type in the same sort, whose destructors are equal:
+The instances in a universe are canonical types of it, and two of them are equal when they are instances of the same type in the same sort, whose destructors are equal; the instances in a universe of propositions are propositions of it, whose destructors are in it:
 
 ```math
 \begin{aligned}
-(T_1,\ T_2) \in \mathsf{eq}(s_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are closed instances of a codata type } D_j \text{ of } \Sigma,\ \kappa[T_1] = \kappa[T_2] = s_n, &&(\mathsf{eq}_{\mathsf{codata}}) \\
-&\quad \text{and } \Sigma \vDash \Xi_j[T_1] \equiv \Xi_j[T_2] : s_n
+(T_1,\ T_2) \in \mathsf{eq}(U_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are closed instances of a codata type } D_j \text{ of } \Sigma,\ \kappa[T_1] = \kappa[T_2] = U_n, &&(\mathsf{eq}_{\mathsf{codata}}) \\
+&\quad \text{and } \Sigma \vDash \Xi_j[T_1] \equiv \Xi_j[T_2] : U_n \\
+T \in \mathsf{wf}(\Omega_n) &\quad \text{if } T \text{ is a closed instance of a codata type } D_j \text{ of } \Sigma,\ \kappa[T] = \Omega_n, &&(\mathsf{wf}_{\mathsf{codata}}) \\
+&\quad \text{and } \Sigma \vDash \Xi_j[T] \equiv \Xi_j[T] : \Omega_n
 \end{aligned}
 ```
 
