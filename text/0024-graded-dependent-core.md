@@ -154,7 +154,7 @@ Every other judgment holds in a [signature](#signatures) $`\Sigma`$, the entries
 The judgment for contexts makes explicit the condition that Nordström, Petersson and Smith put on the context of a judgment: each declared type is a type in the context of the declarations before it.
 
 Typing and the equalities are those of Martin-Löf type theory: they carry no grade.
-Usage is defined on the term and the signature, whose binders and entries carry the grades, and its vector has a grade for each variable of the context of the term.
+Usage is defined on the term and the signature, without a context: the binders of the term and the entries of the signature carry the grades, as the binder of a second-order variable carries the grades of its telescope, which its [usage](#parameters) reads, and the vector has a grade for each variable in the scope of the term.
 A program is a term that is both well typed and well used: typing tells what it computes, and usage how it uses its resources.
 
 Equality is written $`\equiv`$; in the conditions of the rules, $`=`$ is an equality of the metalanguage, which for levels is the one the [levels](#levels) define, not the equality of their syntax.
@@ -248,10 +248,11 @@ Equal arguments give equal applications:
 ```
 
 Here $`A[\bar t / \Theta]`$ substitutes the terms $`\bar t`$ for the variables of $`\Theta`$, all at once.
-A second-order variable does not know how it uses its arguments, so its telescope says it: the application uses $`X`$ itself as a variable, with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode of this grade:
+A second-order variable does not know how it uses its arguments, so its telescope says it: the application uses $`X`$ itself as a variable, with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode of this grade.
+The binder of $`X`$, a parameter of a declaration or an earlier destructor in the types of a codata type, carries the grades $`p_1,\ \dots,\ p_k`$ of its telescope $`\Theta = (x_1 :^{q_1}_{p_1} A_1,\ \dots,\ x_k :^{q_k}_{p_k} A_k)`$, which the usage reads there, as the vectors of grades have a grade for each variable in scope, without the types of a context:
 
 ```math
-\frac{X : (\Theta \vdash A) \in \Gamma \quad \Theta = (x_1 :^{q_1}_{p_1} A_1,\ \dots,\ x_k :^{q_k}_{p_k} A_k) \quad \Sigma;\ \delta_j \mathrel{▶_{m \odot p_j}} t_j \quad \text{for each } j}{\Sigma;\ (\mathbb{0}^{\mathsf{c}}, X \mathrel{≔} \ulcorner m \urcorner) +^{\mathsf{c}} p_1 \cdot^{\mathsf{c}} \delta_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_k \cdot^{\mathsf{c}} \delta_k \mathrel{▶_m} X[\bar t]}\;(\mathsf{var}_{X\mathsf{m}})
+\frac{X \text{ is bound with the grades } p_1,\ \dots,\ p_k \quad \Sigma;\ \delta_j \mathrel{▶_{m \odot p_j}} t_j \quad \text{for each } j}{\Sigma;\ (\mathbb{0}^{\mathsf{c}}, X \mathrel{≔} \ulcorner m \urcorner) +^{\mathsf{c}} p_1 \cdot^{\mathsf{c}} \delta_1 +^{\mathsf{c}} \dots +^{\mathsf{c}} p_k \cdot^{\mathsf{c}} \delta_k \mathrel{▶_m} X[\bar t]}\;(\mathsf{var}_{X\mathsf{m}})
 ```
 
 A use of a declaration instantiates each second-order variable $`X : (\Theta \vdash A)`$ with an abstraction $`\bar x.\, B`$, a term $`B`$ of type $`A`$ under the variables $`\bar x`$ of $`\Theta`$, and the instantiation $`[\bar x.\, B / X]`$ replaces each application $`X[\bar t]`$ by $`B[\bar t / \bar x]`$.
