@@ -17,7 +17,7 @@ This RFC gives the rules of both kinds, the recursion of each, with the usage of
 
 ## Proposal
 
-The proposal first fixes the notation, then defines the declarations of both kinds, their polarity, their positivity, their prelude and their liftings, the data types with their constructors and their recursor, the codata types with their destructors and their corecursor, the conversion and the erasure of their terms.
+The proposal first fixes the notation, then defines the declarations of both kinds, their polarity, their positivity, their prelude and their liftings, the data types with their constructors and their recursor, the codata types with their destructors and their corecursor, the reduction, the conversion and the erasure of their terms.
 It then gives their meaning, as least and greatest fixed points, and the properties that the kinds bring to the core.
 
 ### Notation
@@ -430,10 +430,42 @@ With $`(D^{-}_{\pi\beta})`$, it makes every term of such a type equal to the cor
 A recursive codata type has no $`\eta`$ rule, since comparing two streams by their observations never ends; the [observational equality](https://github.com/sic-lang/rfcs/pull/35) gives it back as a proposition, the bisimilarity, and [Agda](https://agda.readthedocs.io/en/latest/language/record-types.html) likewise withholds $`\eta`$ from its coinductive records.
 Since equality carries no grade, the two sides may use their variables differently; the usage of each is checked on its own.
 
+### Reduction
+
+The terms of both kinds add to the [reduction](https://github.com/sic-lang/rfcs/pull/24) of the core their head normal forms, their neutral terms and their steps, as its contract requires.
+In the rules of this section, $`\mathcal{D}`$ is a block of data types or of codata types, with the notation of the [data types](#data-types) and of the [codata types](#codata-types): $`T_j`$ is an instance of each type $`D_j`$, all with the same arguments $`\bar a`$.
+The head normal forms of the data types are the terms built by their constructors, and those of the codata types the corecursors; a recursor whose term is neutral, and an observation of a neutral term, are neutral, even at a type that has an $`\eta`$ rule, which the [conversion](#conversion) applies, not the reduction:
+
+```math
+\begin{aligned}
+n &\;::=\; \dots \mid \mathsf{rec}_r\ n\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \mid n.d_{ji}(\bar b) &&(\mathsf{neutral}^{\pm}) \\
+v &\;::=\; \dots \mid T_j.c_{ji}(\bar t) \mid \mathsf{corec}_r\ T_h\ \mathsf{from}\ \bar s\ \mathsf{return}\ \bar S\ \mathsf{as}\ \bar w\ \mathsf{with}\ \bar u &&(\mathsf{whnf}^{\pm})
+\end{aligned}
+```
+
+A recursor on a constructor runs the branch of the constructor, and an observation of a corecursor runs the branch of the destructor, as the computations $`(D^{+}_{\mathsf{rec}\beta})`$ and $`(D^{-}_{\pi\beta})`$ state them at a type; the steps read the arguments of the instance in the constructor or in the corecursor, and the maps and $`\lfloor \cdot \rfloor`$ follow the types of the declaration at these arguments, so that no step needs a type:
+
+```math
+\frac{v_l = \mathsf{map}_{A_{hil}}[\bar C,\ \bar f](t_l) \quad \text{for each recursive field } l \quad f_j = \bar x_{\mathsf{nu}}.\, z.\, \mathsf{rec}_r\ z\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \quad \text{for each } j}{\Sigma \vdash \mathsf{rec}_r\ T_h[\bar b].c_{hi}(\bar t)\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \longrightarrow u_{hi}[\bar b / \bar x_{\mathsf{nu}},\ \bar t / \bar x_{hi},\ \bar v / \bar y_{hi}]}\;(D^{+}_{\mathsf{rec}\beta\longrightarrow})
+```
+
+```math
+\frac{\lfloor \cdot \rfloor \text{ as in } (D^{-}_{\pi\beta}) \quad c_{\bar s} = \mathsf{corec}_r\ T_h\ \mathsf{from}\ \bar s\ \mathsf{return}\ \bar S\ \mathsf{as}\ \bar w\ \mathsf{with}\ \bar u}{\Sigma \vdash c_{\bar s}.d_{hi}(\bar b) \longrightarrow \lfloor u_{hi}[\bar a_{\mathsf{nu}} / \bar x_{\mathsf{nu}},\ \bar s / \bar w,\ \bar b / \bar x_{hi}] \rfloor_{B_{hi}[\bar a_{\mathsf{u}}][\bar a_{\mathsf{nu}} / \bar x_{\mathsf{nu}}][c_{\bar s}.\bar d]}}\;(D^{-}_{\pi\beta\longrightarrow})
+```
+
+An elimination of a term that reduces reduces the term:
+
+```math
+\frac{\Sigma \vdash t \longrightarrow t'}{\Sigma \vdash \mathsf{rec}_r\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \longrightarrow \mathsf{rec}_r\ t'\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u}\;(D^{+}_{\mathsf{rec}\longrightarrow})
+\qquad
+\frac{\Sigma \vdash t \longrightarrow t'}{\Sigma \vdash t.d_{ji}(\bar b) \longrightarrow t'.d_{ji}(\bar b)}\;(D^{-}_{\pi\longrightarrow})
+```
+
+The reduction stays deterministic: a computation applies to an elimination of an introduction, which is a head normal form and does not reduce, and a step of the eliminated term to an elimination of a term that reduces; as a weak head reduction, it reduces neither the fields of a constructor, nor the arguments of an instance or of an observation, nor the branches.
+
 ### Conversion
 
-The head normal forms of the data types are the terms built by their constructors, and those of the codata types the corecursors; a recursor whose term is neutral, and an observation of a neutral term, are neutral.
-The reduction of the terms of both kinds is deterministic: a recursor reduces its term to a head normal form, then runs the branch of its constructor by $`(D^{+}_{\mathsf{rec}\beta})`$, and an observation reduces its term to a head normal form, then runs the branch of its destructor by $`(D^{-}_{\pi\beta})`$, which the [conversion](https://github.com/sic-lang/rfcs/pull/24) of the core uses as its computations.
+The [conversion](https://github.com/sic-lang/rfcs/pull/24) of the core reduces the terms of both kinds by the [reduction](#reduction) above.
 The equality of two terms is then decided at their type: at a data type with one constructor and no recursion, and at a codata type without recursion, the comparison goes through $`\eta`$, by the recursor on each side for the data and by the observations for the codata; at every other type, two head normal forms are compared by their heads, and two neutral terms by their structure.
 Comparing two neutral recursors through $`(D^{+}_\eta)`$ needs no projection: a term of a type with one constructor is compared by the recursors that return each of its fields, which an implementation of the conversion does without a rule of its own.
 
@@ -627,7 +659,7 @@ Each rule of both kinds is sound for the meaning above, the computations keep th
 \begin{aligned}
 & \text{the rules } (\mathsf{data}),\ (D^{+}_{\mathsf{m}}),\ (D^{+}_{\mathsf{i}}),\ (D^{+}_{\mathsf{rec}}),\ (D^{+}_{\mathsf{rec}\beta}) \text{ and } (D^{+}_\eta) \text{ are sound} &&(\mathsf{sound}_{\mathsf{data}}) \\
 & \text{the rules } (\mathsf{codata}),\ (D^{-}_{\mathsf{m}}),\ (D^{-}_{\mathsf{i}}),\ (D^{-}_\pi),\ (D^{-}_{\pi\beta}) \text{ and } (D^{-}_\eta) \text{ are sound} &&(\mathsf{sound}_{\mathsf{codata}}) \\
-& \Sigma;\ \gamma \mathrel{▶_m} t \text{ and } t \longrightarrow u \text{ by } (D^{+}_{\mathsf{rec}\beta}) \text{ or } (D^{-}_{\pi\beta}) \implies \Sigma;\ \gamma \mathrel{▶_m} u &&(\mathsf{usage}^{\pm}_\beta) \\
+& \Sigma;\ \gamma \mathrel{▶_m} t \text{ and } t \longrightarrow u \text{ by } (D^{+}_{\mathsf{rec}\beta\longrightarrow}) \text{ or } (D^{-}_{\pi\beta\longrightarrow}) \implies \Sigma;\ \gamma \mathrel{▶_m} u &&(\mathsf{usage}^{\pm}_\beta) \\
 & \text{the rules } (D^{\pm}_{\mathsf{m}}),\ (D^{+}_{\mathsf{i}\mathsf{m}}),\ (D^{+}_{\mathsf{rec}\mathsf{m}}),\ (D^{-}_{\pi\mathsf{m}}) \text{ and } (D^{-}_{\mathsf{i}\mathsf{m}}) \text{ project on the two modes of ADE} &&(\mathsf{project}^{\pm})
 \end{aligned}
 ```
