@@ -215,6 +215,14 @@ Here $`e_1`$ and $`e_2`$ are the two conjuncts of $`e`$, taken by the recursor o
 ### Cast of Terms
 
 The cast of a term of a declared type in a universe to an equal instance computes on its canonical form, which the kind of the declaration gives: a constructor is cast field by field, and a codata term is cast lazily, observation by observation.
+A cast between two equal sorts is the identity on their types, as the rule Cast-Univ of [Pujet and Tabareau](https://doi.org/10.1145/3498693), so that the cast of a closed type computes:
+
+```math
+\begin{aligned}
+\mathsf{cast}(U_k,\ U_k,\ e,\ A) &\equiv A &&(\mathsf{cast}_U) \\
+\mathsf{cast}(\Omega_k,\ \Omega_k,\ e,\ P) &\equiv P &&(\mathsf{cast}_\Omega)
+\end{aligned}
+```
 
 #### Cast of Data
 
@@ -361,7 +369,7 @@ The rules $`(\sim)`$, $`(\sim_{\mathsf{irr}})`$, $`(\mathsf{refl})`$ and $`(\mat
 
 #### Meaning of the Cast
 
-A cast is meaningful when its types are equal types, which its proof ensures, since no closed term proves a false proposition: it then computes as its term does, which the rules $`(\mathsf{cast}^{+})`$, $`(\mathsf{cast}^{-})`$ and $`(\mathsf{cast}^{/})`$ say, and is equal to its term in the meaning, which validates the rule $`(\mathsf{cast}_{\mathsf{refl}})`$ for every proof:
+A cast is meaningful when its types are equal types, which its proof ensures, since no closed term proves a false proposition: it then computes as its term does, which the rules $`(\mathsf{cast}_U)`$, $`(\mathsf{cast}_\Omega)`$, $`(\mathsf{cast}^{+})`$, $`(\mathsf{cast}^{-})`$ and $`(\mathsf{cast}^{/})`$ say, and is equal to its term in the meaning, which validates the rule $`(\mathsf{cast}_{\mathsf{refl}})`$ for every proof:
 
 ```math
 \begin{aligned}
@@ -406,7 +414,7 @@ The symmetry and the transitivity of the equality, and the eliminator $`J`$ into
 ```math
 \begin{aligned}
 & \text{the rules of the equality, of the cast and of the quotients are sound for the meaning above} &&(\mathsf{sound}_\sim) \\
-& \Sigma;\ \gamma \mathrel{▶_m} t \text{ and } t \longrightarrow u \text{ by } (\mathsf{cast}^{+}),\ (\mathsf{cast}^{-}),\ (\mathsf{cast}^{/}) \text{ or } (D^{/}_{\mathsf{rec}\beta}) \implies \Sigma;\ \gamma \mathrel{▶_m} u &&(\mathsf{usage}_{\mathsf{cast}}) \\
+& \Sigma;\ \gamma \mathrel{▶_m} t \text{ and } t \longrightarrow u \text{ by } (\mathsf{cast}_U),\ (\mathsf{cast}_\Omega),\ (\mathsf{cast}^{+}),\ (\mathsf{cast}^{-}),\ (\mathsf{cast}^{/}) \text{ or } (D^{/}_{\mathsf{rec}\beta}) \implies \Sigma;\ \gamma \mathrel{▶_m} u &&(\mathsf{usage}_{\mathsf{cast}}) \\
 & \Sigma;\ \Gamma \vdash t \equiv u : A \text{ stays decidable with the rule } (\mathsf{cast}_{\mathsf{refl}}) &&(\mathsf{decidable}_{\mathsf{cast}}) \\
 & (\mathsf{hyp}_\iota) \implies \Sigma;\ \varepsilon \nvdash e : \bot, \text{ hence no closed program reaches a stuck cast} &&(\mathsf{consistent}_\sim) \\
 & (\mathsf{hyp}_\bullet),\ \Sigma;\ \varepsilon \vdash t : A,\ \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}}}} t \text{ and } t \Downarrow v \implies t^\bullet \Downarrow v^\bullet, \text{ with the casts erased to their terms} &&(\mathsf{sound}_{\bullet\mathsf{cast}})
