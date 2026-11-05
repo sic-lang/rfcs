@@ -27,7 +27,6 @@ Their meaning is an abstract interpretation of the numbers of uses: each grade s
 
 The usage of a term is checked in one of three [modes](0036-type-system/04-modes.md): no use, all the uses but none at run time, and all the uses.
 The theory of Abel, Danielsson and Eriksson has only the first and the last; the mode in between is added so that an erased term, such as a proof, still counts all its uses, and cannot drop or duplicate a permission that may be used once.
-The three modes project on their two, as a grade projects on its run-time multiplicity, so that what runs is read on the run-time multiplicities alone.
 
 ### Annexes
 
@@ -38,7 +37,7 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Notation](0036-type-system/01-notation.md): the letters that name each kind of object, and the conventions shared by all the rules and formulas of the annexes.
 - [Multiplicities](0036-type-system/02-multiplicities.md): the numbers of uses $`0`$, $`1`$ and $`\omega`$, their operations, their order and their meaning.
 - [Grades](0036-type-system/03-grades.md): the pairs of multiplicities that count the uses at run time and in total, their meaning, their properties and their projection on the run-time multiplicity.
-- [Modes](0036-type-system/04-modes.md): the three settings in which the usage of a term is checked, and their projection on the two modes of Abel, Danielsson and Eriksson.
+- [Modes](0036-type-system/04-modes.md): the three settings in which the usage of a term is checked, and their structure on the grades.
 
 ## Drawbacks
 

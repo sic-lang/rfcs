@@ -121,7 +121,7 @@ The projection on the run-time multiplicity is sound for the first components of
 
 ## Properties
 
-The properties of the grades are those of a modality, of its greatest lower bounds, and of its projection on the run-time multiplicity.
+The properties of the grades are those of a modality and of its greatest lower bounds.
 
 ### Modality
 
@@ -177,21 +177,5 @@ For all families $`(p_i)_{i \in I}`$ and $`(q_i)_{i \in I}`$ of grades indexed b
 \begin{aligned}
 & \textstyle\bigwedge_{i \in I} p_i + \bigwedge_{i \in I} q_i \le \bigwedge_{i \in I} (p_i + q_i) &&(\textstyle\bigwedge{+}_p) \\[1em]
 & r \cdot \textstyle\bigwedge_{i \in I} p_i = \bigwedge_{i \in I} (r \cdot p_i) &&(\textstyle\bigwedge{\cdot}_p)
-\end{aligned}
-```
-
-### Projection
-
-The projection on the run-time multiplicity is a homomorphism of modalities, which preserves the operations, the units and the order:
-
-```math
-\begin{aligned}
-& \text{and} &&(\mathsf{run}_{\mathsf{op}}) \\
-& \quad \mathsf{run}(p + q) = \mathsf{run}(p) + \mathsf{run}(q) \\
-& \quad \mathsf{run}(p \cdot q) = \mathsf{run}(p) \cdot \mathsf{run}(q) \\
-& \quad \mathsf{run}(p \wedge q) = \mathsf{run}(p) \wedge \mathsf{run}(q) \\
-& \quad \mathsf{run}(\mathbb{0}) = 0 \\
-& \quad \mathsf{run}(\mathbb{1}) = 1 \\[1em]
-& p \le q \implies \mathsf{run}(p) \le \mathsf{run}(q) &&(\mathsf{run}_{\le})
 \end{aligned}
 ```
