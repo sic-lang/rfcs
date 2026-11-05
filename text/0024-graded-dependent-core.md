@@ -904,12 +904,13 @@ The erasure of a program is sound: a program and its extraction compute the same
 
 The target computes by the weak head reduction that the clauses of the kinds of declarations give it, a definition $`c.\{\bar p\}`$ unfolding to the extraction of its body at the grades $`\bar p`$, so that the property depends on no evaluation order; a program whose extraction runs in another order computes the same canonical term, since the core is total, which the RFC of the calling convention has to show for the order it chooses.
 
-A variable without use at run time is absent from the extraction, and a variable without any use from the ghost program, which gives the total multiplicity its meaning: a proof cannot duplicate or drop a permission counted once in total, since the permission occurs in the proof and the proof is checked for it:
+A variable without use at run time is absent from the extraction of a term checked in the mode of run time, and a variable without any use from the ghost program of a term checked in a mode that counts its uses, which gives the total multiplicity its meaning: a proof cannot duplicate or drop a permission counted once in total, since the permission occurs in the proof and the proof is checked for it.
+The conditions on the mode are needed: the variable $`x`$ checked in the mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ uses itself with $`\ulcorner \mathbb{0}\mathbb{1}^{\mathsf{m}} \urcorner`$, whose run-time multiplicity is $`0`$, but $`x^\bullet = x`$, and checked in the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ it uses itself with $`\mathbb{0}`$, but $`x^\circ = x`$; ADE likewise state the absence for the mode `𝟙ᵐ` only, as [`erased-hasX`](https://github.com/graded-type-theory/graded-type-theory/blob/master/Graded/Erasure/Extraction/Properties/Usage.agda):
 
 ```math
 \begin{aligned}
-\Sigma;\ \gamma \mathrel{▶_m} t \text{ and } \mathsf{run}(\gamma(x)) = 0 &\implies x \text{ does not occur in } t^\bullet &&(\mathsf{absent}_\bullet) \\
-\Sigma;\ \gamma \mathrel{▶_m} t \text{ and } \gamma(x) = \mathbb{0} &\implies x \text{ does not occur in } t^\circ &&(\mathsf{absent}_\circ) \\
+\Sigma;\ \gamma \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}}}} t \text{ and } \mathsf{run}(\gamma(x)) = 0 &\implies x \text{ does not occur in } t^\bullet &&(\mathsf{absent}_\bullet) \\
+\Sigma;\ \gamma \mathrel{▶_m} t,\ m \ne \mathbb{0}\mathbb{0}^{\mathsf{m}} \text{ and } \gamma(x) = \mathbb{0} &\implies x \text{ does not occur in } t^\circ &&(\mathsf{absent}_\circ) \\
 t^\bullet &= (t^\circ)^\bullet &&(\bullet_\circ)
 \end{aligned}
 ```
