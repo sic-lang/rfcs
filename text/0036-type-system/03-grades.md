@@ -91,10 +91,14 @@ The best grade for a set $`S`$ of pairs of numbers of uses is defined as for the
 & \mathsf{best}(S) = p \text{ and } \mathsf{best}(S) = q \implies p = q &&(\mathsf{unique}_p) \\
 & {=} &&(+_p) \\
 & \quad p + q \\
-& \quad \mathsf{best}(\{(n_1 + n_3,\ n_2 + n_4) \mid (n_1, n_2) \in \mathsf{uses}(p),\ (n_3, n_4) \in \mathsf{uses}(q)\}) \\
+& \quad \mathsf{best}( \\
+& \qquad \{(n_1 + n_3,\ n_2 + n_4) \mid (n_1, n_2) \in \mathsf{uses}(p), \\
+& \qquad (n_3, n_4) \in \mathsf{uses}(q)\}) \\
 & {=} &&(\cdot_p) \\
 & \quad p \cdot q \\
-& \quad \mathsf{best}(\{(n_1 \cdot n_3,\ n_2 \cdot n_4) \mid (n_1, n_2) \in \mathsf{uses}(p),\ (n_3, n_4) \in \mathsf{uses}(q)\}) \\
+& \quad \mathsf{best}( \\
+& \qquad \{(n_1 \cdot n_3,\ n_2 \cdot n_4) \mid (n_1, n_2) \in \mathsf{uses}(p), \\
+& \qquad (n_3, n_4) \in \mathsf{uses}(q)\}) \\
 & p \wedge q = \mathsf{best}(\mathsf{uses}(p) \cup \mathsf{uses}(q)) &&(\wedge_p) \\
 & p \le q \iff \mathsf{uses}(q) \subseteq \mathsf{uses}(p) &&(\le_p)
 \end{aligned}
