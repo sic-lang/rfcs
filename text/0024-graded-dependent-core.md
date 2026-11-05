@@ -76,6 +76,7 @@ The rules and the formulas of the core and of the kinds of declarations follow t
 - The rules of a kind of declaration are named after the name $`D`$ of the declared type, with an exponent for its polarity when the kind has one, and an index that names the construct: $`\mathsf{i}`$ for an introduction, $`\pi`$ for an observation, $`\beta`$ for a computation and $`\eta`$ for an extensionality.
 - In a rule, the conditional premises, written $`\dots \text{ if } \dots`$, come after the others, on a line of their own.
 - A formula is named in its last column, as a rule is named after its fraction, and its name has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, $`\mathsf{eq}`$ and $`\mathsf{true}`$ for a clause of the equality or of the truth of a canonical type, $`\mathsf{sound}`$ for a soundness, $`\mathsf{incomplete}`$ for a non-completeness, $`\mathsf{exact}`$ for an exactness, $`\mathsf{undecidable}`$ for an undecidability, $`\mathsf{valid}`$ for a rule valid in the meaning but absent from the rules, and $`\mathsf{hyp}`$ for a hypothesis of a property.
+- A variable left free in a formula is universally quantified, over the kind that its letter names, as a rule holds for every instance of the schematic variables of its fraction.
 - A rule or a formula that the system does not define, but which is derived from its rules, is said so where it appears.
 
 #### Correspondence With ADE
@@ -586,13 +587,14 @@ This section gives the meaning of the judgments, of the levels, of the signature
 The meaning of a judgment is written with $`\vDash`$ in place of $`\vdash`$.
 A closed term $`t`$ computes to a canonical term $`v`$, written $`t \Downarrow v`$, when its weak head reduction, the one of the [conversion](#conversion), ends on $`v`$, a head normal form: the meaning explanations evaluate lazily, as Nordström, Petersson and Smith note, and this computation is the one of the type theory, not the evaluation of a program.
 A closed canonical type $`A_0`$ is known by its canonical terms and by their equality, a partial equivalence relation $`\mathsf{eq}(A_0)`$, symmetric and transitive, between closed canonical terms, which the sorts and the kinds of declarations give.
+The computation, the relations $`\mathsf{eq}`$ and $`\mathsf{true}`$ and the interpretation $`\iota`$ of the constants, which the [meaning of the signatures](#meaning-of-the-signatures) introduces, all depend on the signature $`\Sigma`$ of the judgment, which their notation omits.
 A closed judgment requires its signature to be meaningful, as every judgment of the rules implies that its signature is well formed, so that it is the hypothetical judgment in the empty context:
 
 ```math
 \begin{aligned}
-\Sigma \vDash A \equiv B &\iff \vDash \Sigma,\ A \Downarrow A_0,\ B \Downarrow B_0,\ \mathsf{eq}(A_0) \text{ and } \mathsf{eq}(B_0) \text{ are defined, and } \mathsf{eq}(A_0) = \mathsf{eq}(B_0) &&(\vDash_{\mathsf{type}\equiv}) \\
+\Sigma \vDash A \equiv B &\iff \vDash \Sigma \text{ and } \exists A_0, B_0.\ A \Downarrow A_0,\ B \Downarrow B_0,\ \mathsf{eq}(A_0) \text{ and } \mathsf{eq}(B_0) \text{ are defined, and } \mathsf{eq}(A_0) = \mathsf{eq}(B_0) &&(\vDash_{\mathsf{type}\equiv}) \\
 \Sigma \vDash A &\iff \Sigma \vDash A \equiv A &&(\vDash_{\mathsf{type}}) \\
-\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A,\ A \Downarrow A_0,\ t \Downarrow v,\ u \Downarrow w \text{ and } (v, w) \in \mathsf{eq}(A_0) &&(\vDash_\equiv) \\
+\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A \text{ and } \exists A_0, v, w.\ A \Downarrow A_0,\ t \Downarrow v,\ u \Downarrow w \text{ and } (v, w) \in \mathsf{eq}(A_0) &&(\vDash_\equiv) \\
 \Sigma \vDash t : A &\iff \Sigma \vDash t \equiv t : A &&(\vDash)
 \end{aligned}
 ```
@@ -626,7 +628,7 @@ Two closed telescopes are equal in a sort $`\kappa`$ when their first types are 
 ```math
 \begin{aligned}
 \Sigma \vDash \varepsilon \equiv \varepsilon : \kappa \iff {}& \vDash \Sigma &&({\vDash}\mathsf{tel}_{\kappa\varepsilon}) \\
-\Sigma \vDash (x : A_1,\ \Theta_1) \equiv (x : A_2,\ \Theta_2) : \kappa \iff {}& \Sigma \vDash A_1 \equiv A_2 : \kappa_1 \text{ for some } \kappa_1 \preceq \kappa, \text{ and} &&({\vDash}\mathsf{tel}_{\kappa,}) \\
+\Sigma \vDash (x : A_1,\ \Theta_1) \equiv (x : A_2,\ \Theta_2) : \kappa \iff {}& \exists \kappa_1 \preceq \kappa.\ \Sigma \vDash A_1 \equiv A_2 : \kappa_1, \text{ and} &&({\vDash}\mathsf{tel}_{\kappa,}) \\
 & \forall v_1, v_2.\ \Sigma \vDash v_1 \equiv v_2 : A_1 \implies \\
 & \quad \Sigma \vDash \Theta_1[v_1/x] \equiv \Theta_2[v_2/x] : \kappa
 \end{aligned}
@@ -693,8 +695,8 @@ A closed canonical type $`A_0`$ is a proposition when it is a term of a universe
 
 ```math
 \begin{aligned}
-\mathsf{eq}(A_0) &= \{(t,\ u) \mid t \text{ and } u \text{ are closed terms}\} &&\text{if } \mathsf{true}(A_0) &&(\mathsf{eq}_{\mathsf{true}}) \\
-\mathsf{eq}(A_0) &= \varnothing &&\text{otherwise} &&(\mathsf{eq}_{\mathsf{false}})
+(A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ and } \mathsf{true}(A_0) &\implies \mathsf{eq}(A_0) = \{(t,\ u) \mid t \text{ and } u \text{ are closed terms}\} &&(\mathsf{eq}_{\mathsf{true}}) \\
+(A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ and not } \mathsf{true}(A_0) &\implies \mathsf{eq}(A_0) = \varnothing &&(\mathsf{eq}_{\mathsf{false}})
 \end{aligned}
 ```
 
@@ -702,7 +704,7 @@ A proof carries no information but the truth of its proposition, so that it need
 
 ```math
 \begin{aligned}
-\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A,\ A \Downarrow A_0,\ (A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ for some } k, \text{ and } (t,\ u) \in \mathsf{eq}(A_0) &&(\vDash_{\equiv\Omega})
+\Sigma \vDash t \equiv u : A &\iff \Sigma \vDash A \text{ and } \exists A_0, k.\ A \Downarrow A_0,\ (A_0,\ A_0) \in \mathsf{eq}(\Omega_k) \text{ and } (t,\ u) \in \mathsf{eq}(A_0) &&(\vDash_{\equiv\Omega})
 \end{aligned}
 ```
 
@@ -782,7 +784,7 @@ Every well-typed term reduces to a weak head normal form, and the equality and t
 
 ```math
 \begin{aligned}
-\Sigma;\ \Gamma \vdash t : A &\implies t \longrightarrow^{*} v \text{ for some head normal form } v &&(\mathsf{normal}) \\
+\Sigma;\ \Gamma \vdash t : A &\implies \exists v.\ t \longrightarrow^{*} v \text{ and } v \text{ is a head normal form} &&(\mathsf{normal}) \\
 & \Sigma;\ \Gamma \vdash t \equiv u : A \text{ is decidable,} &&(\mathsf{decidable}_\equiv) \\
 & \quad \text{given } \Sigma;\ \Gamma \vdash t : A \text{ and } \Sigma;\ \Gamma \vdash u : A \\
 & \vdash \Sigma,\ \Sigma \vdash \Gamma,\ \Sigma;\ \Gamma \vdash t : A \text{ and } \Sigma;\ \gamma \mathrel{▶_m} t \text{ are decidable} &&(\mathsf{decidable}_\vdash)
@@ -794,13 +796,13 @@ The decidability of typing needs the terms to determine their types, which the k
 #### Consistency and Canonicity
 
 The signature assumes its constants, so the properties that depend on what the terms compute hold under named hypotheses.
-A signature is consistent when some closed proposition has no proof; by soundness, it suffices that the meaning interprets every constant, which the following hypothesis names:
+A signature is consistent when some closed proposition has no proof; by soundness, it suffices that the meaning interprets every constant, which the following hypothesis on the signature $`\Sigma`$ and its interpretation $`\iota`$ names, the two being the parameters of the hypothesis rather than its variables:
 
 ```math
 \begin{aligned}
 & \text{an interpretation } \iota \text{ gives each constant } c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \text{ of } \Sigma &&(\mathsf{hyp}_\iota) \\
 & \quad \text{a closed term with } \Sigma \vDash \iota(c) : A \\
-& (\mathsf{hyp}_\iota),\ \Sigma \vDash A \text{ and } \mathsf{eq}(A_0) = \varnothing \text{ for } A \Downarrow A_0 &&(\mathsf{consistent}) \\
+& (\mathsf{hyp}_\iota),\ \Sigma \vDash A,\ A \Downarrow A_0 \text{ and } \mathsf{eq}(A_0) = \varnothing &&(\mathsf{consistent}) \\
 \implies {}& \Sigma;\ \varepsilon \nvdash t : A \text{ for every } t
 \end{aligned}
 ```
@@ -814,7 +816,7 @@ A closed term computes to a canonical term when it depends on no relevant consta
 \begin{aligned}
 & \Sigma;\ \varepsilon \vdash t : A \text{ and no relevant constant occurs in } t &&(\mathsf{canonical}) \\
 & \quad \text{once its definitions are unfolded} \\
-\implies {}& t \Downarrow v \text{ for some canonical term } v
+\implies {}& \exists v.\ t \Downarrow v
 \end{aligned}
 ```
 
@@ -822,7 +824,7 @@ A term that depends on a foreign constant computes as far as the constant, which
 
 #### Erasure Properties
 
-The erasure of a program is sound: a program and its extraction compute the same canonical term, under the hypothesis that the implementation of each foreign constant respects its type and its grades:
+The erasure of a program is sound: a program and its extraction compute the same canonical term, under the hypothesis, on the signature $`\Sigma`$ as its parameter, that the implementation of each foreign constant respects its type and its grades:
 
 ```math
 \begin{aligned}
