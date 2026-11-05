@@ -280,7 +280,7 @@ The grades $`q`$ of the entries bound the uses in the types after them, which th
 ##### Instances
 
 A declared type is used through an instance of its declaration $`\mathcal{D}`$, which gives its variables sorts, levels and grades, and its parameters arguments $`\bar a`$: a term for each variable of $`\Delta`$, and an abstraction for each second-order variable.
-In the rules of this section and of the kinds of declarations, $`T`$ stands for the instance of a type $`D`$ of the block, in which $`\bar s`$, $`\bar l`$ and $`\bar p`$ now stand for sorts, levels and grades, substituted for the variables of the declaration in its parameters $`\Delta`$, its sort $`\kappa`$, and its bodies:
+In the rules of this section and of the kinds of declarations, $`T`$ stands for the instance of a type $`D`$ of the block, in which $`\bar s`$, $`\bar l`$ and $`\bar p`$ now stand for sorts, levels and grades, as many as the declaration has variables of each kind, substituted for these variables in its parameters $`\Delta`$, its sort $`\kappa`$, and its bodies:
 
 ```math
 T \;=\; D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a
@@ -314,9 +314,11 @@ Equal arguments are defined by the same rules with equalities:
 An instance of a type declared in the signature is a type in the sort of its declaration, and two instances are equal when their arguments are, and their levels too, as the levels of two [universes](#universes):
 
 ```math
-\frac{\mathcal{D} \in \Sigma \quad D \text{ declared by } \mathcal{D} \quad \Sigma;\ \Gamma \vdash \bar a : \Delta}{\Sigma;\ \Gamma \vdash T : \kappa}\;(D)
-\qquad
-\frac{\mathcal{D} \in \Sigma \quad D \text{ declared by } \mathcal{D} \quad \Sigma;\ \Gamma \vdash \bar a \equiv \bar b : \Delta \quad \bar l_1 = \bar l_2}{\Sigma;\ \Gamma \vdash D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a \equiv D.\{\bar s;\ \bar l_2;\ \bar p\}\ \bar b : \kappa}\;(D_\equiv)
+\frac{\mathcal{D} \in \Sigma \quad D \text{ declared by } \mathcal{D} \quad \bar s,\ \bar l,\ \bar p \text{ as long as the variables of } \mathcal{D} \quad \Sigma;\ \Gamma \vdash \bar a : \Delta}{\Sigma;\ \Gamma \vdash T : \kappa}\;(D)
+```
+
+```math
+\frac{\mathcal{D} \in \Sigma \quad D \text{ declared by } \mathcal{D} \quad \bar s,\ \bar l_1,\ \bar l_2,\ \bar p \text{ as long as the variables of } \mathcal{D} \quad \Sigma;\ \Gamma \vdash \bar a \equiv \bar b : \Delta \quad \bar l_1 = \bar l_2}{\Sigma;\ \Gamma \vdash D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a \equiv D.\{\bar s;\ \bar l_2;\ \bar p\}\ \bar b : \kappa}\;(D_\equiv)
 ```
 
 In the rule $`(D_\equiv)`$, $`\Delta`$ and $`\kappa`$ are instantiated with the levels $`\bar l_1`$.
@@ -331,17 +333,18 @@ A definition names a closed term, so that a program is written once and used man
 c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t
 ```
 
-Its sort, level and grade variables are prenex, as those of a [declaration](#declarations), and instantiated at each use.
-Its body is checked once, in the empty context, in the [mode](https://github.com/sic-lang/rfcs/pull/33) $`m`$ that the definition states: a definition checked in $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$ is a program, one checked in $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ a proof or a ghost term, which counts all its uses but runs nowhere, and one checked in $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ a specification, as the modes of [Verus](https://doi.org/10.1145/3586037) separate executable code, proofs and specifications:
+Its sort, level and grade variables are prenex, as those of a [declaration](#declarations), and instantiated at each use; an instance $`[\bar s' / \bar s,\ \bar p' / \bar p]`$ of its sort and grade variables gives each sort variable a sort, $`U`$ or $`\Omega`$, and each grade variable one of the seven grades.
+Its type and its body are checked in the empty context as a declaration is, once with its level variables, which are constants within the rules, and for each instance of its sort and grade variables, which are finitely many, since the conditions on sorts and grades, such as the order of the grades in the rule $`(\mathsf{sub})`$, must hold whatever instantiates them.
+Its body is checked in the [mode](https://github.com/sic-lang/rfcs/pull/33) $`m`$ that the definition states: a definition checked in $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$ is a program, one checked in $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ a proof or a ghost term, which counts all its uses but runs nowhere, and one checked in $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ a specification, as the modes of [Verus](https://doi.org/10.1145/3586037) separate executable code, proofs and specifications:
 
 ```math
-\frac{\Sigma;\ \varepsilon \vdash A : \kappa \quad \Sigma;\ \varepsilon \vdash t : A \quad \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_m} t}{\Sigma \vdash c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t}\;(\mathsf{def})
+\frac{\begin{gathered}{}\Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \quad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \quad \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_m} t[\bar s' / \bar s,\ \bar p' / \bar p] \\ \text{for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] \text{ of the sort and grade variables}\end{gathered}}{\Sigma \vdash c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t}\;(\mathsf{def})
 ```
 
-A definition is used by its name, instantiated with sorts, levels and grades for its variables, written $`[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]`$ and applied to its type:
+A definition is used by its name, instantiated with sorts, levels and grades for its variables, as many as it has variables of each kind, written $`[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]`$ and applied to its type:
 
 ```math
-\frac{\Sigma \vdash \Gamma \quad c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t \in \Sigma}{\Sigma;\ \Gamma \vdash c.\{\bar s';\ \bar l';\ \bar p'\} : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(c)
+\frac{\Sigma \vdash \Gamma \quad c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t \in \Sigma \quad \bar s',\ \bar l',\ \bar p' \text{ as long as } \bar s,\ \bar l,\ \bar p}{\Sigma;\ \Gamma \vdash c.\{\bar s';\ \bar l';\ \bar p'\} : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(c)
 \qquad
 \frac{c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t \in \Sigma \quad m' \cdot^{\mathsf{m}} m = m'}{\Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{m'}} c.\{\bar s';\ \bar l';\ \bar p'\}}\;(c_{\mathsf{m}})
 ```
@@ -350,7 +353,7 @@ Its body is closed, so a use of a definition uses no variable, any number of tim
 A definition unfolds to its body, instantiated likewise:
 
 ```math
-\frac{\Sigma \vdash \Gamma \quad c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t \in \Sigma}{\Sigma;\ \Gamma \vdash c.\{\bar s';\ \bar l';\ \bar p'\} \equiv t[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(\delta)
+\frac{\Sigma \vdash \Gamma \quad c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t \in \Sigma \quad \bar s',\ \bar l',\ \bar p' \text{ as long as } \bar s,\ \bar l,\ \bar p}{\Sigma;\ \Gamma \vdash c.\{\bar s';\ \bar l';\ \bar p'\} \equiv t[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(\delta)
 ```
 
 A definition is transparent: the core has no opaque definition, since a proposition hides the proofs it packs by irrelevance, and the modules of a later RFC may hide what a definition is.
@@ -373,8 +376,10 @@ One mechanism covers three needs, told apart by the sort of the type and the mod
 | Ghost constant | $`U_l`$ | $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ or $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ | A value or a type that specifications and proofs use, absent from the program that runs |
 | Foreign constant | $`U_l`$ | $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$ | A type, a value or a function that the program that runs gets from outside, such as a machine integer or a system call |
 
+Its type is checked as the type of a definition, once with its level variables and for each instance of its sort and grade variables:
+
 ```math
-\frac{\Sigma;\ \varepsilon \vdash A : \kappa}{\Sigma \vdash c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A}\;(\mathsf{const})
+\frac{\Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \quad \text{for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] \text{ of the sort and grade variables}}{\Sigma \vdash c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A}\;(\mathsf{const})
 ```
 
 A constant is closed, so a use of it uses no variable, any number of times, as a definition: whatever a foreign constant produces is produced from no resource of the program, and may thus be duplicated or discarded freely.
@@ -675,8 +680,8 @@ A constant has no body to compute: the meaning takes an interpretation $`\iota`$
 \begin{aligned}
 \vDash \varnothing & &&({\vDash}\mathsf{sig}_\varnothing) \\
 \vDash \Sigma,\ \mathcal{D} &\iff \vDash \Sigma \text{ and } \Sigma \vDash \mathcal{D} &&({\vDash}\mathsf{sig}_{\mathcal{D}}) \\
-\vDash \Sigma,\ c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t &\iff \vDash \Sigma \text{ and } \Sigma \vDash t : A &&({\vDash}\mathsf{sig}_{≔}) \\
-\vDash \Sigma,\ c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A &\iff \vDash \Sigma \text{ and } \Sigma \vDash \iota(c) : A &&({\vDash}\mathsf{sig}_c)
+\vDash \Sigma,\ c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t &\iff \vDash \Sigma \text{ and } \Sigma \vDash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \text{ for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] &&({\vDash}\mathsf{sig}_{≔}) \\
+\vDash \Sigma,\ c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A &\iff \vDash \Sigma \text{ and } \Sigma \vDash \iota(c)[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \text{ for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] &&({\vDash}\mathsf{sig}_c)
 \end{aligned}
 ```
 
@@ -809,7 +814,8 @@ A signature is consistent when some closed proposition has no proof; by soundnes
 ```math
 \begin{aligned}
 & \text{an interpretation } \iota \text{ gives each constant } c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \text{ of } \Sigma &&(\mathsf{hyp}_\iota) \\
-& \quad \text{a closed term with } \Sigma \vDash \iota(c) : A \\
+& \quad \text{a closed term with } \Sigma \vDash \iota(c)[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \quad \text{for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] \text{ of its sort and grade variables} \\
 & (\mathsf{hyp}_\iota),\ \Sigma \vDash A,\ A \Downarrow A_0 \text{ and } \mathsf{eq}(A_0) = \varnothing &&(\mathsf{consistent}) \\
 \implies {}& \Sigma;\ \varepsilon \nvdash t : A \text{ for every } t
 \end{aligned}
