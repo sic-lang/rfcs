@@ -101,12 +101,13 @@ The congruence of a telescope of types $`\Theta`$, $`\mathsf{ap}(x.\, \Theta,\ e
 A term of a type is cast along an equality of types to the equal type; the cast carries both types and the proof, and the proof is erased, so that a cast is a term that computes as its term does, which the rules of computation below define type by type:
 
 ```math
-\frac{\Sigma;\ \Gamma \vdash A : U_l \quad \Sigma;\ \Gamma \vdash B : U_l \quad \Sigma;\ \Gamma \vdash e : A \sim_{U_l} B \quad \Sigma;\ \Gamma \vdash t : A}{\Sigma;\ \Gamma \vdash \mathsf{cast}(A,\ B,\ e,\ t) : B}\;(\mathsf{cast})
+\frac{\Sigma;\ \Gamma \vdash A : \kappa \quad \Sigma;\ \Gamma \vdash B : \kappa \quad \kappa \in \{U_l, \Omega_l\} \quad \Sigma;\ \Gamma \vdash e : A \sim_{\kappa} B \quad \Sigma;\ \Gamma \vdash t : A}{\Sigma;\ \Gamma \vdash \mathsf{cast}(A,\ B,\ e,\ t) : B}\;(\mathsf{cast})
 \qquad
 \frac{\Sigma;\ \gamma_1 \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} A \quad \Sigma;\ \gamma_2 \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} B \quad \Sigma;\ \gamma_3 \mathrel{▶_{\mathbb{0}\mathbb{0}^{\mathsf{m}}}} e \quad \Sigma;\ \gamma \mathrel{▶_m} t}{\Sigma;\ \gamma \mathrel{▶_m} \mathsf{cast}(A,\ B,\ e,\ t)}\;(\mathsf{cast}_{\mathsf{m}})
 ```
 
 A cast uses its term as the term is used, and its types and its proof with $`\mathbb{0}`$: the proof is a proof, and the cast of a term costs the resources of the term alone.
+The types of a cast live in any sort, as in the rule Cast of [Pujet and Tabareau](https://doi.org/10.1145/3498693), which allows it for the uniformity of the rules: the casts of the telescopes and of the codata types below cast their entries along their equalities whatever their sorts, proofs included; a cast in a sort of propositions is a proof, which the transport $`\mathsf{transp}(X.\, X,\ e,\ t)`$ would give as well, and which never computes.
 A cast between equal types is the term itself, whatever the proof, which is the rule of conversion of [Pujet, Leray and Tabareau](https://doi.org/10.1145/3719342): it is a rule of equality on the head normal forms and the neutral terms, not a rule of reduction, since deciding it needs a comparison of the two types, which a reduction cannot make:
 
 ```math
@@ -213,7 +214,7 @@ Here $`e_1`$ and $`e_2`$ are the two conjuncts of $`e`$, taken by the recursor o
 
 ### Cast of Terms
 
-The cast of a term of a declared type to an equal instance computes on its canonical form, which the kind of the declaration gives: a constructor is cast field by field, and a codata term is cast lazily, observation by observation.
+The cast of a term of a declared type in a universe to an equal instance computes on its canonical form, which the kind of the declaration gives: a constructor is cast field by field, and a codata term is cast lazily, observation by observation.
 
 #### Cast of Data
 
@@ -221,7 +222,7 @@ A term built by a constructor is cast to the same constructor of the equal insta
 
 ```math
 \begin{aligned}
-\mathsf{cast}(T_1,\ T_2,\ e,\ T_1.c_{ji}(\bar t)) &\equiv T_2.c_{ji}(\mathsf{cast}_{\Theta_{ji}[T_1]}(e_i,\ \bar t)) \quad \text{where } e_i \text{ is the conjunct of } e \text{ for } c_{ji} &&(\mathsf{cast}^{+})
+\mathsf{cast}(T_1,\ T_2,\ e,\ T_1.c_{ji}(\bar t)) &\equiv T_2.c_{ji}(\mathsf{cast}_{\Theta_{ji}[T_1]}(e_i,\ \bar t)) \quad \text{where } e_i \text{ is the conjunct of } e \text{ for } c_{ji}, \text{ if } \kappa[T_1] \text{ is a universe} &&(\mathsf{cast}^{+})
 \end{aligned}
 ```
 
@@ -236,7 +237,7 @@ A term of a codata type is cast to the equal instance by a corecursor whose stat
 \mathsf{cast}(T_1,\ T_2,\ e,\ t) &\equiv \mathsf{corec}_{\mathbb{1}}\ T_2\ \mathsf{from}\ (\bar a_{1\mathsf{nu}},\ t,\ e)\ \mathsf{return}\ \bar S\ \mathsf{as}\ (\bar x_1,\ w,\ \varepsilon)\ \mathsf{with}\ D_1.d_{11}(\bar x_{11}) \Rightarrow \lceil v_{11} \rceil \mid \dots &&(\mathsf{cast}^{-}) \\
 & \quad \text{where } S_j = (\bar x_1 :_{\mathbb{0}} \Delta_{\mathsf{nu}}[\bar a_{1\mathsf{u}}],\ w :_{\mathbb{1}} T_{1j}[\bar x_1],\ \varepsilon :_{\mathbb{0}} T_{1j}[\bar x_1] \sim_{U_n} T_{2j}[\bar x_{\mathsf{nu}}]) \quad \text{for each } j, \\
 & \quad v_{ji} = \mathsf{cast}(B_{ji}[T_{1j}[\bar x_1]][w.\bar d][\bar x'_{ji}],\ B_{ji}[T_{2j}[\bar x_{\mathsf{nu}}]][c.\bar d][\bar x_{ji}],\ e_{ji},\ w.d_{ji}(\bar x'_{ji})) \\
-& \quad \text{and } \bar x'_{ji} = \mathsf{cast}_{\Theta_{ji}[T_{2j}[\bar x_{\mathsf{nu}}]][c.\bar d]}(e_{ji1},\ \bar x_{ji})
+& \quad \text{and } \bar x'_{ji} = \mathsf{cast}_{\Theta_{ji}[T_{2j}[\bar x_{\mathsf{nu}}]][c.\bar d]}(e_{ji1},\ \bar x_{ji}), \text{ if } \kappa[T_1] \text{ is a universe}
 \end{aligned}
 ```
 
@@ -312,7 +313,7 @@ This RFC extends the contract of the [core](https://github.com/sic-lang/rfcs/pul
 
 1. Equality of the instances: the rule that reduces $`T_1 \sim_{U_n} T_2`$, for two instances of a type of the kind in a universe $`U_n`$ with the same sorts and grades and equal levels, to the equality of their bodies, as $`(\sim^{+}_D)`$, $`(\sim^{-}_D)`$ and $`(\sim^{/}_{D})`$ do; two instances in a sort of propositions are compared by $`(\sim_{\mathsf{prop}})`$ alone.
 2. Equality of the terms: the rules that reduce $`t \sim_T u`$, for an instance $`T`$ of a type of the kind in a universe, on the canonical forms of its terms, as $`(\sim^{+})`$, $`(\sim^{+}_{\ne})`$, $`(\sim^{-})`$ and $`(\sim^{/})`$ do.
-3. Cast: the rules that reduce $`\mathsf{cast}(T_1,\ T_2,\ e,\ t)`$ on the canonical forms of $`t`$, as $`(\mathsf{cast}^{+})`$, $`(\mathsf{cast}^{-})`$ and $`(\mathsf{cast}^{/})`$ do.
+3. Cast: the rules that reduce $`\mathsf{cast}(T_1,\ T_2,\ e,\ t)`$, for two instances of a type of the kind in a universe, on the canonical forms of $`t`$, as $`(\mathsf{cast}^{+})`$, $`(\mathsf{cast}^{-})`$ and $`(\mathsf{cast}^{/})`$ do.
 4. Erasure: the cast of a canonical form of the kind erases to the erasure of the form, so that the [erasure](#erasure) of the cast is the identity.
 5. Obligations: the soundness of the rules above for the [meaning](#meaning) of the equality, and the preservation of usage by the reductions of the cast.
 
@@ -364,7 +365,7 @@ A cast is meaningful when its types are equal types, which its proof ensures, si
 
 ```math
 \begin{aligned}
-& \Sigma \vDash A \equiv B,\ \Sigma \vDash e : A \sim_{U_k} B \text{ and } \Sigma \vDash t : A &&(\mathsf{valid}_{\mathsf{cast}}) \\
+& \Sigma \vDash A \equiv B,\ \Sigma \vDash e : A \sim_{\kappa} B \text{ and } \Sigma \vDash t : A &&(\mathsf{valid}_{\mathsf{cast}}) \\
 \implies {}& \Sigma \vDash \mathsf{cast}(A,\ B,\ e,\ t) \equiv t : B
 \end{aligned}
 ```
