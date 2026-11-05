@@ -13,6 +13,6 @@ The data type without fields is the unit, the data type without constructors is 
 \end{aligned}
 ```
 
-A term of the absorbing type is built by a corecursor without branches, from any state, which it never gives back: $`\mathsf{corec}_{\mathbb{1}}\ x\ \mathsf{return}\ (x :_{\mathbb{1}} A)\ \mathsf{as}\ x\ \mathsf{with}`$ absorbs the linear variable $`x`$.
+A term of the absorbing type is built by a corecursor without branches, from any state, which it never gives back: $`\mathsf{corec}_{\mathbb{1}}\ \top\ \mathsf{from}\ x\ \mathsf{return}\ (x :_{\mathbb{1}} A)\ \mathsf{as}\ x\ \mathsf{with}`$ absorbs the linear variable $`x`$.
 The unit of the prelude of the RFC has the shape of $`\mathbb{1}`$, and is a declaration of its own.
 In $`\Omega`$, the unit and the empty type are the true and the false propositions, and the absorbing type a true proposition that absorbs erased resources, such as a permission of grade $`\langle 0, 1 \rangle`$.

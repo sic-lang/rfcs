@@ -8,8 +8,8 @@ A stream is a recursive codata type, whose corecursor builds it from a state; th
 ```math
 \begin{aligned}
 & \mathsf{codata}.\{\}\ (A : U_0) : U_0\ \mathsf{where}\ \mathsf{Stream} \mathrel{≔} \mathsf{head} :^{\mathbb{0}}_{\mathbb{1}} () \to A \mid \mathsf{tail} :^{\mathbb{0}}_{\mathbb{1}} () \to \mathsf{Stream}\ A &&(\mathsf{ex}_{\mathsf{Stream}}) \\
-& \mathsf{from}(t) \;=\; \mathsf{corec}_{\mathbb{1}}\ t\ \mathsf{return}\ (n :_{\mathbb{1}} \mathbb{N})\ \mathsf{as}\ n\ \mathsf{with}\ .\mathsf{head} \Rightarrow n \mid .\mathsf{tail} \Rightarrow \mathsf{next}\ (\mathbb{N}.\mathsf{succ}(n)) &&(\mathsf{ex}_{\mathsf{from}}) \\
-& \mathsf{cons}(x,\ s) \;=\; \mathsf{corec}_{\mathbb{1}}\ (x,\ s)\ \mathsf{return}\ (x :_{\mathbb{1}} A,\ s :_{\mathbb{1}} \mathsf{Stream}\ A)\ \mathsf{as}\ (x,\ s)\ \mathsf{with}\ .\mathsf{head} \Rightarrow x \mid .\mathsf{tail} \Rightarrow \mathsf{done}\ s &&(\mathsf{ex}_{\mathsf{cons}}) \\
+& \mathsf{from}(t) \;=\; \mathsf{corec}_{\mathbb{1}}\ \mathsf{Stream}\ \mathbb{N}\ \mathsf{from}\ t\ \mathsf{return}\ (n :_{\mathbb{1}} \mathbb{N})\ \mathsf{as}\ n\ \mathsf{with}\ .\mathsf{head} \Rightarrow n \mid .\mathsf{tail} \Rightarrow \mathsf{next}\ (\mathbb{N}.\mathsf{succ}(n)) &&(\mathsf{ex}_{\mathsf{from}}) \\
+& \mathsf{cons}(x,\ s) \;=\; \mathsf{corec}_{\mathbb{1}}\ \mathsf{Stream}\ A\ \mathsf{from}\ (x,\ s)\ \mathsf{return}\ (x :_{\mathbb{1}} A,\ s :_{\mathbb{1}} \mathsf{Stream}\ A)\ \mathsf{as}\ (x,\ s)\ \mathsf{with}\ .\mathsf{head} \Rightarrow x \mid .\mathsf{tail} \Rightarrow \mathsf{done}\ s &&(\mathsf{ex}_{\mathsf{cons}}) \\
 & \mathsf{cons}(x,\ s).\mathsf{tail} \equiv s : \mathsf{Stream}\ A
 \end{aligned}
 ```
