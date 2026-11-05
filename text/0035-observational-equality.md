@@ -343,7 +343,7 @@ The equality of two closed terms is a canonical proposition, which reduces on th
 
 ```math
 \begin{aligned}
-\mathsf{true}(t \sim_A u) &\iff \Sigma \vDash t \equiv u : A \quad \text{if } \Sigma \vDash A : U_k &&(\mathsf{true}_\sim) \\
+\text{if } \Sigma \vDash A : U_k \text{, then } \mathsf{true}(t \sim_A u) &\iff \Sigma \vDash t \equiv u : A &&(\mathsf{true}_\sim) \\
 \mathsf{true}(A \sim_{U_k} B) &\iff \Sigma \vDash A \equiv B \text{ and } \exists A_0, B_0.\ A \Downarrow A_0,\ B \Downarrow B_0 \text{ and } A_0, B_0 \text{ have the same grades} &&(\mathsf{true}_{\sim\mathsf{type}})
 \end{aligned}
 ```
@@ -371,8 +371,8 @@ A quotient is meaningful when its carrier is a type, its relation a proposition 
 
 ```math
 \begin{aligned}
-\Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \Sigma \vDash A[\sigma_1] \equiv A[\sigma_2] : U_l, &&({\vDash}_{\mathsf{quotient}}) \\
-& \quad \Sigma;\ x : A[\sigma_1],\ y : A[\sigma_1] \vDash R[\sigma_1] \equiv R[\sigma_2] : \Omega_l, \text{ and the three proofs are proofs} \quad \text{if } \mathcal{D} \text{ is a quotient} \\
+\text{if } \mathcal{D} \text{ is a quotient, then } \Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \Sigma \vDash A[\sigma_1] \equiv A[\sigma_2] : U_l, &&({\vDash}_{\mathsf{quotient}}) \\
+& \quad \Sigma;\ x : A[\sigma_1],\ y : A[\sigma_1] \vDash R[\sigma_1] \equiv R[\sigma_2] : \Omega_l, \text{ and the three proofs are proofs} \\
 \mathsf{eq}(T) = {}& \{(T_1.c(v),\ T_2.c(w)) \mid T_1, T_2 \text{ instances of } D,\ \Sigma \vDash v : A[T],\ \Sigma \vDash w : A[T],\ \mathsf{true}(R[T][v/x,\ w/y])\} \quad \text{if } T \text{ is a closed instance of a quotient } D \text{ of } \Sigma &&(\mathsf{eq}^{/}) \\
 (T_1,\ T_2) \in \mathsf{eq}(U_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are closed instances of a quotient } D \text{ of } \Sigma,\ \Sigma \vDash A[T_1] \equiv A[T_2] : U_n, &&(\mathsf{eq}_{\mathsf{quotient}}) \\
 & \quad \text{and } \Sigma;\ x : A[T_1],\ y : A[T_1] \vDash R[T_1] \equiv R[T_2] : \Omega_n
