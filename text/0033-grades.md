@@ -40,6 +40,7 @@ p + q \qquad p \cdot q \qquad p \wedge q \qquad p \le q
 ```
 
 They are the addition, the multiplication, the meet and the order; the meet of a non-empty set $`S`$ of grades is written $`\bigwedge S`$.
+Likewise, $`\mathsf{run}`$ denotes the projection of a grade or of a mode, and $`\ulcorner m \urcorner`$, $`\llcorner p \lrcorner`$, $`\cdot^{\mathsf{m}}`$ and $`\odot`$ the structure of the three [modes](#modes) on the grades or that of the two modes of ADE on the multiplicities, the kind of their operands telling which is meant.
 The formulas of the meaning and of the properties are named in their last column, as the rules of the other RFCs are named after their fraction; a formula about multiplicities is indexed by $`u`$ and a formula about grades by $`p`$, the letters of their metavariables.
 A variable left free in a formula is universally quantified, over the kind that its letter names.
 
@@ -51,6 +52,8 @@ The rules of ADE know the grades only as a modality, whose notation this RFC kee
 | `𝟘ᵐ`, `𝟙ᵐ` | $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$, $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$, with the [mode](#modes) $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ between them |
 | `⌜ m ⌝`, `⌞ p ⌟` | $`\ulcorner m \urcorner`$, $`\llcorner p \lrcorner`$ |
 | `m ᵐ· p` | $`m \odot p`$ |
+
+The two modes of ADE keep their names $`\mathbb{0}^{\mathsf{m}}`$ and $`\mathbb{1}^{\mathsf{m}}`$ where the [modes](#modes) project on them.
 
 ### Multiplicities
 
@@ -143,7 +146,27 @@ Inside a term checked in the mode $`m`$, a subterm used with the grade $`p`$ is 
 
 ADE have the two modes $`\mathbb{0}^{\mathsf{m}}`$ and $`\mathbb{1}^{\mathsf{m}}`$ only, which are $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ and $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$ here.
 The mode $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ is added so that an erased term still counts all its uses: in $`\mathbb{0}^{\mathsf{m}}`$, a proof could drop or duplicate a permission of grade `none / linear`.
-The modes project on those of ADE as the grades project on their run-time multiplicity, which the [properties](#properties) state.
+The two modes of ADE have on the multiplicities the structure that the three modes have on the grades, written alike: each is named after its multiplicity $`\ulcorner m \urcorner`$, with which a variable checked in the mode $`m`$ uses itself:
+
+| Mode of ADE | Multiplicity | Counts |
+| --- | --- | --- |
+| $`\mathbb{0}^{\mathsf{m}}`$ | $`0`$ | no use |
+| $`\mathbb{1}^{\mathsf{m}}`$ | $`1`$ | the uses |
+
+A term used with the multiplicity $`u`$ is checked in the mode $`\llcorner u \lrcorner`$ of this multiplicity, $`\mathbb{0}^{\mathsf{m}}`$ for $`0`$ and $`\mathbb{1}^{\mathsf{m}}`$ for the multiplicities that are used:
+
+```math
+\llcorner 0 \lrcorner = \mathbb{0}^{\mathsf{m}} \qquad \llcorner u \lrcorner = \mathbb{1}^{\mathsf{m}} \text{ if } u \ne 0
+```
+
+The product of two modes of ADE is the mode of the product of their multiplicities, $`m_1 \cdot^{\mathsf{m}} m_2 = \llcorner \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \lrcorner`$, whose multiplicity is the product $`\ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner`$ itself since $`0`$ and $`1`$ are closed under multiplication, and, inside a term checked in the mode $`m`$, a subterm used with the multiplicity $`u`$ is checked in the mode $`m \odot u = m \cdot^{\mathsf{m}} \llcorner u \lrcorner`$.
+The modes project on those of ADE as the grades project on their run-time multiplicity, the two erased modes on $`\mathbb{0}^{\mathsf{m}}`$ and the mode of run time on $`\mathbb{1}^{\mathsf{m}}`$:
+
+```math
+\mathsf{run}(\mathbb{0}\mathbb{0}^{\mathsf{m}}) = \mathsf{run}(\mathbb{0}\mathbb{1}^{\mathsf{m}}) = \mathbb{0}^{\mathsf{m}} \qquad \mathsf{run}(\mathbb{1}\mathbb{1}^{\mathsf{m}}) = \mathbb{1}^{\mathsf{m}} \qquad (\mathsf{run}_m)
+```
+
+The [properties](#properties) state that this projection respects the two structures.
 
 ### Meaning
 
@@ -266,13 +289,12 @@ The projection on the run-time multiplicity is a homomorphism of modalities, whi
 \end{aligned}
 ```
 
-The modes project on the two modes of ADE, whose modality is the multiplicities, the two erased modes on $`\mathbb{0}^{\mathsf{m}}`$ and the mode of run time on $`\mathbb{1}^{\mathsf{m}}`$, and the projection commutes with the mode of a grade and with the product of a mode by a grade:
+The projection of the [modes](#modes) on the two modes of ADE, whose modality is the multiplicities, is a homomorphism of mode structures as well: it commutes with the mode of a grade, with the grade of a mode and with the product of a mode by a grade, the structure on its right being that of the modes of ADE:
 
 ```math
 \begin{aligned}
-& \mathsf{run}(\mathbb{0}\mathbb{0}^{\mathsf{m}}) = \mathsf{run}(\mathbb{0}\mathbb{1}^{\mathsf{m}}) = \mathbb{0}^{\mathsf{m}}, \quad \mathsf{run}(\mathbb{1}\mathbb{1}^{\mathsf{m}}) = \mathbb{1}^{\mathsf{m}} &&(\mathsf{run}_{m}) \\
-& \mathsf{run}(\llcorner p \lrcorner) = \llcorner \mathsf{run}(p) \lrcorner, \quad \ulcorner \mathsf{run}(m) \urcorner = \mathsf{run}(\ulcorner m \urcorner), &&(\mathsf{run}_{\odot}) \\
-& \quad \mathsf{run}(m \odot p) = \mathsf{run}(m) \odot \mathsf{run}(p)
+& \mathsf{run}(\llcorner p \lrcorner) = \llcorner \mathsf{run}(p) \lrcorner, \quad \ulcorner \mathsf{run}(m) \urcorner = \mathsf{run}(\ulcorner m \urcorner) &&(\mathsf{run}_{\odot}) \\
+& \quad \text{and } \mathsf{run}(m \odot p) = \mathsf{run}(m) \odot \mathsf{run}(p)
 \end{aligned}
 ```
 
