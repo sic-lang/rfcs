@@ -76,7 +76,7 @@ This meaning chooses the seven grades among the nine pairs: $`\langle 1, 0 \rang
 \begin{aligned}
 & \text{and} &&(\mathsf{excluded}_p) \\
 & \quad \mathsf{uses}(\langle 1, 0 \rangle) = \varnothing \\
-& \quad \mathsf{uses}(\langle \omega, 0 \rangle) = \mathsf{uses}(\mathbb{0}) \\
+& \quad \mathsf{uses}(\langle \omega, 0 \rangle) = \mathsf{uses}(\mathbb{0}) \\[1em]
 & \text{and} &&(\mathsf{distinct}_p) \\
 & \quad \mathsf{uses}(p) \ne \varnothing \\
 & \quad \mathsf{uses}(p) = \mathsf{uses}(q) \implies p = q
@@ -91,19 +91,19 @@ The best grade for a set $`S`$ of pairs of numbers of uses is defined as for the
 & \quad \mathsf{best}(S) = p \\
 & \quad \text{and} \\
 & \qquad S \subseteq \mathsf{uses}(p) \\
-& \qquad \forall q.\ S \subseteq \mathsf{uses}(q) \implies \mathsf{uses}(p) \subseteq \mathsf{uses}(q) \\
-& \mathsf{best}(S) = p \text{ and } \mathsf{best}(S) = q \implies p = q &&(\mathsf{unique}_p) \\
+& \qquad \forall q.\ S \subseteq \mathsf{uses}(q) \implies \mathsf{uses}(p) \subseteq \mathsf{uses}(q) \\[1em]
+& \mathsf{best}(S) = p \text{ and } \mathsf{best}(S) = q \implies p = q &&(\mathsf{unique}_p) \\[1em]
 & {=} &&(+_p) \\
 & \quad p + q \\
 & \quad \mathsf{best}( \\
 & \qquad \{(n_1 + n_3,\ n_2 + n_4) \mid (n_1, n_2) \in \mathsf{uses}(p), \\
-& \qquad (n_3, n_4) \in \mathsf{uses}(q)\}) \\
+& \qquad (n_3, n_4) \in \mathsf{uses}(q)\}) \\[1em]
 & {=} &&(\cdot_p) \\
 & \quad p \cdot q \\
 & \quad \mathsf{best}( \\
 & \qquad \{(n_1 \cdot n_3,\ n_2 \cdot n_4) \mid (n_1, n_2) \in \mathsf{uses}(p), \\
-& \qquad (n_3, n_4) \in \mathsf{uses}(q)\}) \\
-& p \wedge q = \mathsf{best}(\mathsf{uses}(p) \cup \mathsf{uses}(q)) &&(\wedge_p) \\
+& \qquad (n_3, n_4) \in \mathsf{uses}(q)\}) \\[1em]
+& p \wedge q = \mathsf{best}(\mathsf{uses}(p) \cup \mathsf{uses}(q)) &&(\wedge_p) \\[1em]
 & p \le q \iff \mathsf{uses}(q) \subseteq \mathsf{uses}(p) &&(\le_p)
 \end{aligned}
 ```
@@ -112,7 +112,7 @@ The projection on the run-time multiplicity is sound for the first components of
 
 ```math
 \begin{aligned}
-& \{n_1 \mid (n_1, n_2) \in \mathsf{uses}(p)\} \subseteq \mathsf{uses}(\mathsf{run}(p)) &&(\mathsf{sound}_{\mathsf{run}}) \\
+& \{n_1 \mid (n_1, n_2) \in \mathsf{uses}(p)\} \subseteq \mathsf{uses}(\mathsf{run}(p)) &&(\mathsf{sound}_{\mathsf{run}}) \\[1em]
 & \text{and} &&(\mathsf{inexact}_{\mathsf{run}}) \\
 & \quad 2 \in \mathsf{uses}(\mathsf{run}(\langle \omega, 1 \rangle)) \\
 & \quad 2 \notin \{n_1 \mid (n_1, n_2) \in \mathsf{uses}(\langle \omega, 1 \rangle)\}
@@ -135,22 +135,22 @@ The seven grades form a modality of [Abel, Danielsson and Eriksson](https://doi.
 & \quad \mathbb{0} + p = p \\
 & \quad (p \cdot q) \cdot r = p \cdot (q \cdot r) \\
 & \quad \mathbb{1} \cdot p = p \cdot \mathbb{1} = p \\
-& \quad \mathbb{0} \cdot p = p \cdot \mathbb{0} = \mathbb{0} \\
+& \quad \mathbb{0} \cdot p = p \cdot \mathbb{0} = \mathbb{0} \\[1em]
 & \text{and} &&(\mathsf{meet}_p) \\
 & \quad (p \wedge q) \wedge r = p \wedge (q \wedge r) \\
 & \quad p \wedge q = q \wedge p \\
-& \quad p \wedge p = p \\
+& \quad p \wedge p = p \\[1em]
 & \text{and} &&({\cdot}{+}_p) \\
 & \quad p \cdot (q + r) = (p \cdot q) + (p \cdot r) \\
-& \quad (q + r) \cdot p = (q \cdot p) + (r \cdot p) \\
+& \quad (q + r) \cdot p = (q \cdot p) + (r \cdot p) \\[1em]
 & \text{and} &&({\cdot}{\wedge}_p) \\
 & \quad p \cdot (q \wedge r) = (p \cdot q) \wedge (p \cdot r) \\
-& \quad (q \wedge r) \cdot p = (q \cdot p) \wedge (r \cdot p) \\
+& \quad (q \wedge r) \cdot p = (q \cdot p) \wedge (r \cdot p) \\[1em]
 & \text{and} &&({+}{\wedge}_p) \\
 & \quad p + (q \wedge r) = (p + q) \wedge (p + r) \\
-& \quad (q \wedge r) + p = (q + p) \wedge (r + p) \\
-& p \le q \implies p + r \le q + r &&({+}{\le}_p) \\
-& r \le p \text{ and } r \le q \iff r \le p \wedge q &&({\wedge}{\le}_p) \\
+& \quad (q \wedge r) + p = (q + p) \wedge (r + p) \\[1em]
+& p \le q \implies p + r \le q + r &&({+}{\le}_p) \\[1em]
+& r \le p \text{ and } r \le q \iff r \le p \wedge q &&({\wedge}{\le}_p) \\[1em]
 & \text{and} &&(\mathbb{0}_p) \\
 & \quad \mathbb{0} \ne \mathbb{1} \\
 & \quad p + q = \mathbb{0} \implies p = \mathbb{0} \text{ and } q = \mathbb{0} \\
@@ -175,7 +175,7 @@ For all families $`(p_i)_{i \in I}`$ and $`(q_i)_{i \in I}`$ of grades indexed b
 
 ```math
 \begin{aligned}
-& \textstyle\bigwedge_{i \in I} p_i + \bigwedge_{i \in I} q_i \le \bigwedge_{i \in I} (p_i + q_i) &&(\textstyle\bigwedge{+}_p) \\
+& \textstyle\bigwedge_{i \in I} p_i + \bigwedge_{i \in I} q_i \le \bigwedge_{i \in I} (p_i + q_i) &&(\textstyle\bigwedge{+}_p) \\[1em]
 & r \cdot \textstyle\bigwedge_{i \in I} p_i = \bigwedge_{i \in I} (r \cdot p_i) &&(\textstyle\bigwedge{\cdot}_p)
 \end{aligned}
 ```
@@ -191,7 +191,7 @@ The projection on the run-time multiplicity is a homomorphism of modalities, whi
 & \quad \mathsf{run}(p \cdot q) = \mathsf{run}(p) \cdot \mathsf{run}(q) \\
 & \quad \mathsf{run}(p \wedge q) = \mathsf{run}(p) \wedge \mathsf{run}(q) \\
 & \quad \mathsf{run}(\mathbb{0}) = 0 \\
-& \quad \mathsf{run}(\mathbb{1}) = 1 \\
+& \quad \mathsf{run}(\mathbb{1}) = 1 \\[1em]
 & p \le q \implies \mathsf{run}(p) \le \mathsf{run}(q) &&(\mathsf{run}_{\le})
 \end{aligned}
 ```

@@ -61,7 +61,7 @@ The best multiplicity for a set $`S`$ of numbers of uses allows all of them, and
 & \quad \mathsf{best}(S) = \pi_1 \\
 & \quad \text{and} \\
 & \qquad S \subseteq \mathsf{uses}(\pi_1) \\
-& \qquad \forall \pi_2.\ S \subseteq \mathsf{uses}(\pi_2) \implies \mathsf{uses}(\pi_1) \subseteq \mathsf{uses}(\pi_2) \\
+& \qquad \forall \pi_2.\ S \subseteq \mathsf{uses}(\pi_2) \implies \mathsf{uses}(\pi_1) \subseteq \mathsf{uses}(\pi_2) \\[1em]
 & \mathsf{best}(S) = \pi_1 \text{ and } \mathsf{best}(S) = \pi_2 \implies \pi_1 = \pi_2 &&(\mathsf{unique}_\pi)
 \end{aligned}
 ```
@@ -71,9 +71,9 @@ The operations and the order are those of the numbers of uses:
 
 ```math
 \begin{aligned}
-& \pi_1 + \pi_2 = \mathsf{best}(\{n_1 + n_2 \mid n_1 \in \mathsf{uses}(\pi_1),\ n_2 \in \mathsf{uses}(\pi_2)\}) &&(+_\pi) \\
-& \pi_1 \cdot \pi_2 = \mathsf{best}(\{n_1 \cdot n_2 \mid n_1 \in \mathsf{uses}(\pi_1),\ n_2 \in \mathsf{uses}(\pi_2)\}) &&(\cdot_\pi) \\
-& \pi_1 \wedge \pi_2 = \mathsf{best}(\mathsf{uses}(\pi_1) \cup \mathsf{uses}(\pi_2)) &&(\wedge_\pi) \\
+& \pi_1 + \pi_2 = \mathsf{best}(\{n_1 + n_2 \mid n_1 \in \mathsf{uses}(\pi_1),\ n_2 \in \mathsf{uses}(\pi_2)\}) &&(+_\pi) \\[1em]
+& \pi_1 \cdot \pi_2 = \mathsf{best}(\{n_1 \cdot n_2 \mid n_1 \in \mathsf{uses}(\pi_1),\ n_2 \in \mathsf{uses}(\pi_2)\}) &&(\cdot_\pi) \\[1em]
+& \pi_1 \wedge \pi_2 = \mathsf{best}(\mathsf{uses}(\pi_1) \cup \mathsf{uses}(\pi_2)) &&(\wedge_\pi) \\[1em]
 & \pi_1 \le \pi_2 \iff \mathsf{uses}(\pi_2) \subseteq \mathsf{uses}(\pi_1) &&(\le_\pi)
 \end{aligned}
 ```
@@ -90,22 +90,22 @@ The multiplicities form a modality of [Abel, Danielsson and Eriksson](https://do
 & \quad 0 + \pi = \pi \\
 & \quad (\pi_1 \cdot \pi_2) \cdot \pi_3 = \pi_1 \cdot (\pi_2 \cdot \pi_3) \\
 & \quad 1 \cdot \pi = \pi \cdot 1 = \pi \\
-& \quad 0 \cdot \pi = \pi \cdot 0 = 0 \\
+& \quad 0 \cdot \pi = \pi \cdot 0 = 0 \\[1em]
 & \text{and} &&(\mathsf{meet}_\pi) \\
 & \quad (\pi_1 \wedge \pi_2) \wedge \pi_3 = \pi_1 \wedge (\pi_2 \wedge \pi_3) \\
 & \quad \pi_1 \wedge \pi_2 = \pi_2 \wedge \pi_1 \\
-& \quad \pi \wedge \pi = \pi \\
+& \quad \pi \wedge \pi = \pi \\[1em]
 & \text{and} &&({\cdot}{+}_\pi) \\
 & \quad \pi_1 \cdot (\pi_2 + \pi_3) = (\pi_1 \cdot \pi_2) + (\pi_1 \cdot \pi_3) \\
-& \quad (\pi_2 + \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) + (\pi_3 \cdot \pi_1) \\
+& \quad (\pi_2 + \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) + (\pi_3 \cdot \pi_1) \\[1em]
 & \text{and} &&({\cdot}{\wedge}_\pi) \\
 & \quad \pi_1 \cdot (\pi_2 \wedge \pi_3) = (\pi_1 \cdot \pi_2) \wedge (\pi_1 \cdot \pi_3) \\
-& \quad (\pi_2 \wedge \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) \wedge (\pi_3 \cdot \pi_1) \\
+& \quad (\pi_2 \wedge \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) \wedge (\pi_3 \cdot \pi_1) \\[1em]
 & \text{and} &&({+}{\wedge}_\pi) \\
 & \quad \pi_1 + (\pi_2 \wedge \pi_3) = (\pi_1 + \pi_2) \wedge (\pi_1 + \pi_3) \\
-& \quad (\pi_2 \wedge \pi_3) + \pi_1 = (\pi_2 + \pi_1) \wedge (\pi_3 + \pi_1) \\
-& \pi_1 \le \pi_2 \implies \pi_1 + \pi_3 \le \pi_2 + \pi_3 &&({+}{\le}_\pi) \\
-& \pi_3 \le \pi_1 \text{ and } \pi_3 \le \pi_2 \iff \pi_3 \le \pi_1 \wedge \pi_2 &&({\wedge}{\le}_\pi) \\
+& \quad (\pi_2 \wedge \pi_3) + \pi_1 = (\pi_2 + \pi_1) \wedge (\pi_3 + \pi_1) \\[1em]
+& \pi_1 \le \pi_2 \implies \pi_1 + \pi_3 \le \pi_2 + \pi_3 &&({+}{\le}_\pi) \\[1em]
+& \pi_3 \le \pi_1 \text{ and } \pi_3 \le \pi_2 \iff \pi_3 \le \pi_1 \wedge \pi_2 &&({\wedge}{\le}_\pi) \\[1em]
 & \text{and} &&(0_\pi) \\
 & \quad 0 \ne 1 \\
 & \quad \pi_1 + \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 \\

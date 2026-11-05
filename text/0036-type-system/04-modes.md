@@ -38,7 +38,7 @@ The grades of the three modes are closed under multiplication, so that the grade
 
 ```math
 \begin{aligned}
-& \ulcorner m_1 \cdot^{\mathsf{m}} m_2 \urcorner = \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner &&(\mathsf{closed}_m) \\
+& \ulcorner m_1 \cdot^{\mathsf{m}} m_2 \urcorner = \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner &&(\mathsf{closed}_m) \\[1em]
 & \text{and} &&(\mathsf{erased}_m) \\
 & \quad m_1 \cdot^{\mathsf{m}} m_2 = \mathbb{0}\mathbb{0}^{\mathsf{m}} \text{ if } m_1 = \mathbb{0}\mathbb{0}^{\mathsf{m}} \text{ or } m_2 = \mathbb{0}\mathbb{0}^{\mathsf{m}} \\
 & \quad m_1 \cdot^{\mathsf{m}} m_2 = \mathbb{0}\mathbb{1}^{\mathsf{m}} \text{ if } \mathbb{0}\mathbb{0}^{\mathsf{m}} \notin \{m_1, m_2\} \text{ and } \mathbb{0}\mathbb{1}^{\mathsf{m}} \in \{m_1, m_2\} \\
@@ -59,10 +59,10 @@ The graded type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.114
 \begin{aligned}
 & \text{and} &&(\mathsf{mode}_\pi) \\
 & \quad \llcorner 0 \lrcorner = \mathbb{0}^{\mathsf{m}} \\
-& \quad \llcorner \pi \lrcorner = \mathbb{1}^{\mathsf{m}} \text{ if } \pi \ne 0 \\
+& \quad \llcorner \pi \lrcorner = \mathbb{1}^{\mathsf{m}} \text{ if } \pi \ne 0 \\[1em]
 & \text{and} &&(\mathsf{product}_\pi) \\
 & \quad m_1 \cdot^{\mathsf{m}} m_2 = \llcorner \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \lrcorner \\
-& \quad m \odot \pi = m \cdot^{\mathsf{m}} \llcorner \pi \lrcorner \\
+& \quad m \odot \pi = m \cdot^{\mathsf{m}} \llcorner \pi \lrcorner \\[1em]
 & \ulcorner m_1 \cdot^{\mathsf{m}} m_2 \urcorner = \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner &&(\mathsf{closed}_\pi)
 \end{aligned}
 ```
