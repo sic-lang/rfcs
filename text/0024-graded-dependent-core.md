@@ -351,6 +351,12 @@ A definition is used by its name, instantiated with sorts, levels and grades for
 ```
 
 Its body is closed, so a use of a definition uses no variable, any number of times; the mode $`m'`$ of the use must be allowed by the mode of the definition, which the condition $`m' \cdot^{\mathsf{m}} m = m'`$ states: a specification is used in specifications only, a proof in proofs and specifications, and a program anywhere.
+Two instances of a definition at equal levels are equal, as the [universes](#universes) and the [instances](#instances) of a declaration are, so that the equality of levels that the [levels](#levels) define reaches the entries too:
+
+```math
+\frac{\Sigma \vdash \Gamma \quad c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t \in \Sigma \quad \bar s',\ \bar p' \text{ as long as } \bar s,\ \bar p \quad \bar l_1,\ \bar l_2 \text{ as long as } \bar l \quad \bar l_1 = \bar l_2}{\Sigma;\ \Gamma \vdash c.\{\bar s';\ \bar l_1;\ \bar p'\} \equiv c.\{\bar s';\ \bar l_2;\ \bar p'\} : A[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(c_\equiv)
+```
+
 A definition unfolds to its body, instantiated likewise:
 
 ```math
@@ -368,7 +374,7 @@ A constant is an entry of the same form as a definition, without a body:
 c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A
 ```
 
-It is typed and used by the rules $`(c)`$ and $`(c_{\mathsf{m}})`$ of the definitions, and no rule unfolds it: it is a hypothesis on which the whole signature depends, as every use of it is typed and checked for its usage.
+It is typed, equated at equal levels and used by the rules $`(c)`$, $`(c_\equiv)`$ and $`(c_{\mathsf{m}})`$ of the definitions, and no rule unfolds it: it is a hypothesis on which the whole signature depends, as every use of it is typed and checked for its usage.
 One mechanism covers three needs, told apart by the sort of the type and the mode of the constant:
 
 | Constant | Sort of $`A`$ | Mode $`m`$ | Stands for |
@@ -546,7 +552,7 @@ The rule $`(\mathsf{conv})`$ compares types with the [equality of types](#equali
 | Unfolding, $`\delta`$ | The [definitions](#definitions), $`(\delta)`$ |
 | Extensionality, $`\eta`$ | The types to which their kind gives one |
 | Irrelevance | Two proofs of the same proposition, $`(\mathsf{irr})`$ |
-| Levels | Universes whose levels are equal in Presburger arithmetic, $`(U_\equiv)`$ and $`(\Omega_\equiv)`$, and instances of a declaration, $`(D_\equiv)`$ |
+| Levels | Universes whose levels are equal in Presburger arithmetic, $`(U_\equiv)`$ and $`(\Omega_\equiv)`$, instances of a declaration, $`(D_\equiv)`$, and instances of a definition or of a constant, $`(c_\equiv)`$ |
 | Congruence | Every construct, with the premises of its rules |
 
 Grades are part of terms and types, but no rule equates two different grades: two instances that differ only by a grade are different types, as the types of two functions whose grades differ in ADE.
@@ -688,7 +694,7 @@ A constant has no body to compute: the meaning takes an interpretation $`\iota`$
 ```
 
 The meaning of a signature with constants is thus relative to an interpretation, and so are the properties that depend on it: an axiom is meaningful only if its proposition is true, and a foreign constant only if some term of the core has its type, which the [properties](#consistency-and-canonicity) state as hypotheses.
-The rule $`(\delta)`$ is sound since a definition computes to its body, and the rules $`(c)`$ and $`(\mathsf{const})`$ since a constant computes to its interpretation.
+The rule $`(\delta)`$ is sound since a definition computes to its body, the rules $`(c)`$ and $`(\mathsf{const})`$ since a constant computes to its interpretation, and the rule $`(c_\equiv)`$ since the meaning reads the levels by their values.
 
 #### Meaning of the Universes
 
