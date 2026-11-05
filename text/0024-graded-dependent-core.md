@@ -5,7 +5,7 @@
 ## Summary
 
 This RFC defines the graded dependent core of Sic: the framework in which every type of the language is declared.
-It gives the judgments of typing, equality and usage, the signatures, in which types are declared, terms defined and constants assumed, a predicative hierarchy of universes with prenex universe polymorphism, a sort of strict propositions, the conversion, the erasure, and the properties expected of the whole.
+It gives the judgments of typing, equality and usage, the signatures, in which types are declared, terms defined and constants assumed, a predicative hierarchy of universes with prenex universe polymorphism, a sort of strict propositions, the reduction, the conversion, the erasure, and the properties expected of the whole.
 The core names no concrete type: the types come from kinds of declarations, each of which fulfills a contract stated here, as the [data and codata types](https://github.com/sic-lang/rfcs/pull/34) and the [observational equality](https://github.com/sic-lang/rfcs/pull/35) do.
 Its rules extend the graded dependent type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), whose metatheory is [formalized in Agda](https://github.com/graded-type-theory/graded-type-theory), with the [grades](https://github.com/sic-lang/rfcs/pull/33) of Sic.
 
@@ -18,7 +18,7 @@ This RFC gives the rules of this framework, on which every later RFC of the core
 ## Proposal
 
 The proposal first fixes the notation, the levels, which stratify the sorts, and the judgments of the core, with the signatures in which types are declared, terms defined and constants assumed.
-It then states the contract that a kind of declaration fulfills, defines the universes and the strict propositions, the conversion and the erasure, gives the meaning of the judgments and of the sorts, and ends with the properties of the core.
+It then states the contract that a kind of declaration fulfills, defines the universes and the strict propositions, the reduction, the conversion and the erasure, gives the meaning of the judgments and of the sorts, and ends with the properties of the core.
 
 ### Notation
 
@@ -457,7 +457,7 @@ A kind of declaration adds types to the core by fulfilling the contract below, s
 3. Usage of the instances: the rule of usage of an instance $`T`$, which counts the uses of the variables of its arguments by its body, with the grades of its entries.
 4. Rules of the terms: the introductions, the eliminations, the computations $`\beta`$ and the extensionalities $`\eta`$ of the terms of its types, each with its rule of usage, and each with its conditions on the sorts, as the [strict propositions](#strict-propositions) restrict what a proof may build.
 5. Meaning: the formula $`\Sigma \vDash \mathcal{D}`$, the clauses $`\mathsf{eq}(T)`$ and $`\mathsf{true}(T)`$ that give the equal canonical terms of an instance in a universe and the truth of an instance in a universe of propositions, and the clause that puts the instances in $`\mathsf{eq}(s_n)`$, which the [meaning](#meaning-of-the-universes) of the sorts receives.
-6. Conversion: the head normal forms and the neutral terms of its types, and their reduction, which is deterministic, so that the [conversion](#conversion) of the core decides their equality.
+6. Reduction: the head normal forms and the neutral terms that its terms add to $`(\mathsf{whnf})`$ and $`(\mathsf{neutral})`$, and the rules of the [reduction](#reduction) of its terms, which keep it deterministic, so that the [conversion](#conversion) of the core decides their equality.
 7. Erasure: the clauses of $`t^\bullet`$ and $`t^\circ`$ for its terms, as the [erasure](#erasure) of the core defines them, with the forms they add to the target language.
 8. Obligations: the soundness of each of its rules for its meaning, the preservation of usage by its rules $`\beta`$, and the compatibility of its rules of usage with the [projection](#projection-lemma) of the modes, so that the properties of the core hold with its types.
 
@@ -542,6 +542,42 @@ A proof cannot be analyzed to build a term that is not a proof, since irrelevanc
 A proof exists only in erased positions: every entry whose type is a proposition has a [grade](https://github.com/sic-lang/rfcs/pull/33) without use at run time, as the rule $`(\mathsf{tel}_{\kappa,})`$ of the [telescopes](#telescopes) checks, so that a proof is checked in the mode $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ or $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$.
 The erasure of proofs is then the erasure of the grades without use at run time, with no mechanism of its own.
 
+### Reduction
+
+The reduction $`\Sigma \vdash t \longrightarrow u`$ is the computation of the type theory, one step of weak head reduction, untyped and defined on open terms: the [conversion](#conversion) reduces terms to compare them, the [meaning](#meaning) computes the closed terms, and the [erasure](#erasure-properties) is sound for this computation.
+There is one reduction, deterministic, which the core gives with the rule $`(\delta_\longrightarrow)`$ for the definitions, and to which each kind of declaration adds the steps of its terms, as its [contract](#the-contract-of-a-kind-of-declaration) requires: its computations $`\beta`$, and the steps that reduce the term that an elimination consumes.
+
+```math
+\frac{c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t \in \Sigma \quad \bar s',\ \bar l',\ \bar p' \text{ as long as } \bar s,\ \bar l,\ \bar p}{\Sigma \vdash c.\{\bar s';\ \bar l';\ \bar p'\} \longrightarrow t[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(\delta_\longrightarrow)
+```
+
+A term is neutral when its reduction is stuck on a variable or on a constant, which no rule unfolds, and a head normal form when it is a sort, an instance of a declared type or a neutral term; each kind of declaration adds its own, its introductions as head normal forms and its eliminations of a neutral term as neutral terms:
+
+```math
+\begin{aligned}
+n &\;::=\; x \mid X[\bar t] \mid c.\{\bar s;\ \bar l;\ \bar p\} \text{ for a constant } c \text{ of } \Sigma &&(\mathsf{neutral}) \\
+v &\;::=\; U_l \mid \Omega_l \mid T \mid n &&(\mathsf{whnf})
+\end{aligned}
+```
+
+A head normal form does not reduce, since a constant has no body to unfold.
+Several steps, $`\Sigma \vdash t \longrightarrow^{*} u`$, form the reflexive and transitive closure of the reduction, and a closed term $`t`$ computes to $`v`$, written $`t \Downarrow v`$, when it reduces to the head normal form $`v`$; the [meaning](#meaning-of-the-signatures) computes a closed term once its constants are replaced by their interpretations, so that the head normal form it reaches, stuck on no variable and on no constant, is canonical:
+
+```math
+\frac{}{\Sigma \vdash t \longrightarrow^{*} t}\;(\longrightarrow^{*}_{\mathsf{refl}})
+\qquad
+\frac{\Sigma \vdash t \longrightarrow t' \quad \Sigma \vdash t' \longrightarrow^{*} u}{\Sigma \vdash t \longrightarrow^{*} u}\;(\longrightarrow^{*}_{\mathsf{step}})
+```
+
+```math
+\begin{aligned}
+t \Downarrow v &\iff \Sigma \vdash t \longrightarrow^{*} v \text{ and } v \text{ is a head normal form} &&(\Downarrow)
+\end{aligned}
+```
+
+The meaning explanations evaluate lazily, as Nordström, Petersson and Smith note, and this computation is the one of the type theory, not the evaluation of a program, whose order the RFC of the calling convention fixes.
+The rules of equality $`(\delta)`$ and the computations of the kinds of declarations state the steps of the reduction as equalities, at a type.
+
 ### Conversion
 
 The rule $`(\mathsf{conv})`$ compares types with the [equality of types](#equality), which the core and the kinds of declarations define together, through the equalities of their terms in a sort:
@@ -559,7 +595,7 @@ Grades are part of terms and types, but no rule equates two different grades: tw
 Since typing carries no grade otherwise, the modes and the seven grades play no part in equality: what ADE prove about typing holds whatever their modality.
 
 Checking a type needs a decision procedure for equality, whose framework is the algorithm of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), which the formalization of ADE extends: both terms are reduced to their weak head normal forms, whose heads are compared, and terms are compared by their type, through $`\eta`$, at the types that have it.
-The weak head reduction unfolds the definitions by $`(\delta)`$ and applies the computations of the kinds of declarations, each of which says which of its terms are head normal forms, canonical, and which are neutral, stuck on a variable or on a constant, so that the reduction is deterministic.
+The weak head reduction is the [reduction](#reduction), which unfolds the definitions by $`(\delta_\longrightarrow)`$ and applies the computations of the kinds of declarations, each of which says which of its terms are head normal forms and which are neutral, so that the reduction is deterministic.
 A type that is a proposition is checked first, and two of its terms are then equal without being compared, which keeps irrelevance decidable, as [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316) show; two levels are compared by deciding their formula of Presburger arithmetic.
 The algorithm itself is not part of this RFC: the [properties](#normalization-and-decidability) state that the equality is decidable, and an implementation chooses how.
 
@@ -598,7 +634,7 @@ This section gives the meaning of the judgments, of the levels, of the signature
 #### Meaning of the Judgments
 
 The meaning of a judgment is written with $`\vDash`$ in place of $`\vdash`$.
-A closed term $`t`$ computes to a canonical term $`v`$, written $`t \Downarrow v`$, when its weak head reduction, the one of the [conversion](#conversion), ends on $`v`$, a head normal form: the meaning explanations evaluate lazily, as Nordström, Petersson and Smith note, and this computation is the one of the type theory, not the evaluation of a program.
+A closed term $`t`$ computes to a canonical term $`v`$, written $`t \Downarrow v`$, as the formula $`(\Downarrow)`$ of the [reduction](#reduction) defines.
 A closed canonical type $`A_0`$ is known by its canonical terms and by their equality, a partial equivalence relation $`\mathsf{eq}(A_0)`$, symmetric and transitive, between closed canonical terms, which the sorts and the kinds of declarations give.
 The computation, the relations $`\mathsf{eq}`$ and $`\mathsf{true}`$ and the interpretation $`\iota`$ of the constants, which the [meaning of the signatures](#meaning-of-the-signatures) introduces, all depend on the signature $`\Sigma`$ of the judgment, which their notation omits.
 A closed canonical type is a proposition when it is a term of a universe of propositions, whose relation $`\mathsf{eq}(\Omega_k)`$ the [meaning of the strict propositions](#meaning-of-the-strict-propositions) gives, and a closed type computes to a proposition when its canonical form is one, which the clauses of the equality of terms distinguish:
@@ -772,7 +808,7 @@ The rules are not complete, since a true judgment need not be derivable: a term 
 ### Properties
 
 The properties below are not rules: they follow from the rules of the core and of the kinds of declarations, each a named formula or a named statement, which the formalization of the core has to prove, under the obligations that the [contract](#the-contract-of-a-kind-of-declaration) puts on each kind.
-The reduction $`t \longrightarrow u`$ is the weak head reduction of the [conversion](#conversion), and $`t \longrightarrow_\beta u`$ its steps that are computations $`\beta`$ or unfoldings $`\delta`$, as opposed to the steps that the extensionalities add.
+The reduction $`t \longrightarrow u`$ is the [reduction](#reduction) $`\Sigma \vdash t \longrightarrow u`$, whose signature the formulas omit.
 
 #### Admissible Properties
 
@@ -788,16 +824,16 @@ The following properties are admissible: they are proved by induction on the der
 
 #### Preservation
 
-A term keeps its type when it reduces, and its usage when it reduces by a computation or an unfolding:
+A term keeps its type and its usage when it reduces:
 
 ```math
 \begin{aligned}
 \Sigma;\ \Gamma \vdash t : A \text{ and } t \longrightarrow u &\implies \Sigma;\ \Gamma \vdash u : A \text{ and } \Sigma;\ \Gamma \vdash t \equiv u : A &&(\mathsf{subject}) \\
-\Sigma;\ \gamma \mathrel{▶_m} t \text{ and } t \longrightarrow_\beta u &\implies \Sigma;\ \gamma \mathrel{▶_m} u &&(\mathsf{usage}_\beta)
+\Sigma;\ \gamma \mathrel{▶_m} t \text{ and } t \longrightarrow u &\implies \Sigma;\ \gamma \mathrel{▶_m} u &&(\mathsf{usage}_\beta)
 \end{aligned}
 ```
 
-The evaluation of a closed program uses the computations and the unfoldings only, so that it keeps the usage of the program; the steps that the extensionalities add belong to the conversion, which carries no grade, and need not keep it: an equality by $`\eta`$ may use its variables differently on its two sides, and the usage of a program is checked on the program as written.
+The reduction has the computations and the unfoldings only, so that the evaluation of a closed program keeps its usage; the extensionalities are equalities of the conversion, which carries no grade, and need not keep it: an equality by $`\eta`$ may use its variables differently on its two sides, and the usage of a program is checked on the program as written.
 
 #### Normalization and Decidability
 
