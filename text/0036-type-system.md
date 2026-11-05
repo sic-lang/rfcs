@@ -1,6 +1,6 @@
-# RFC 0000: Type System
+# RFC 0036: Type System
 
-- Pull request: [sic-lang/rfcs#0](https://github.com/sic-lang/rfcs/pull/0)
+- Pull request: [sic-lang/rfcs#36](https://github.com/sic-lang/rfcs/pull/36)
 
 ## Summary
 
@@ -24,7 +24,7 @@ Each annex states one subject, with its definitions, its meaning and its propert
 Its file name starts with a number on two digits, which gives the order of the annexes.
 The examples are in the directory `99-examples` of the annexes, one file per example, named after the number of the annex it illustrates: they are derived from the system, and are not part of it.
 
-- [Notation](0000-type-system/01-notation.md): the letters that name each kind of object, and the conventions shared by all the rules and formulas of the annexes.
+- [Notation](0036-type-system/01-notation.md): the letters that name each kind of object, and the conventions shared by all the rules and formulas of the annexes.
 
 ## Drawbacks
 
