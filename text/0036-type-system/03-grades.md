@@ -62,8 +62,8 @@ A pair of multiplicities stands for the pairs of numbers of uses it allows, at r
 
 ```math
 \begin{aligned}
-& \mathsf{uses}(\langle \pi_1, \pi_2 \rangle) = {} &&(\mathsf{uses}_p) \\
-& \quad \{(n_1, n_2) \mid n_1 \in \mathsf{uses}(\pi_1),\ n_2 \in \mathsf{uses}(\pi_2),\ n_1 \le n_2\}
+& \mathsf{uses}(\langle \pi_1, \pi_2 \rangle) &&(\mathsf{uses}_p) \\
+& \quad = \{(n_1, n_2) \mid n_1 \in \mathsf{uses}(\pi_1),\ n_2 \in \mathsf{uses}(\pi_2),\ n_1 \le n_2\}
 \end{aligned}
 ```
 
@@ -82,14 +82,14 @@ The best grade for a set $`S`$ of pairs of numbers of uses is defined as for the
 
 ```math
 \begin{aligned}
-& \mathsf{best}(S) = p \iff {} &&(\mathsf{best}_p) \\
-& \quad S \subseteq \mathsf{uses}(p) \\
-& \quad \text{and } \forall q.\ S \subseteq \mathsf{uses}(q) \implies \mathsf{uses}(p) \subseteq \mathsf{uses}(q) \\
+& \mathsf{best}(S) = p &&(\mathsf{best}_p) \\
+& \quad \iff S \subseteq \mathsf{uses}(p) \\
+& \qquad \text{and } \forall q.\ S \subseteq \mathsf{uses}(q) \implies \mathsf{uses}(p) \subseteq \mathsf{uses}(q) \\
 & \mathsf{best}(S) = p \text{ and } \mathsf{best}(S) = q \implies p = q &&(\mathsf{unique}_p) \\
-& p + q = \mathsf{best}(\{(n_1 + n_3,\ n_2 + n_4) \mid {} &&(+_p) \\
-& \quad (n_1, n_2) \in \mathsf{uses}(p),\ (n_3, n_4) \in \mathsf{uses}(q)\}) \\
-& p \cdot q = \mathsf{best}(\{(n_1 \cdot n_3,\ n_2 \cdot n_4) \mid {} &&(\cdot_p) \\
-& \quad (n_1, n_2) \in \mathsf{uses}(p),\ (n_3, n_4) \in \mathsf{uses}(q)\}) \\
+& p + q = \mathsf{best}(\{(n_1 + n_3,\ n_2 + n_4) &&(+_p) \\
+& \quad \mid (n_1, n_2) \in \mathsf{uses}(p),\ (n_3, n_4) \in \mathsf{uses}(q)\}) \\
+& p \cdot q = \mathsf{best}(\{(n_1 \cdot n_3,\ n_2 \cdot n_4) &&(\cdot_p) \\
+& \quad \mid (n_1, n_2) \in \mathsf{uses}(p),\ (n_3, n_4) \in \mathsf{uses}(q)\}) \\
 & p \wedge q = \mathsf{best}(\mathsf{uses}(p) \cup \mathsf{uses}(q)) &&(\wedge_p) \\
 & p \le q \iff \mathsf{uses}(q) \subseteq \mathsf{uses}(p) &&(\le_p)
 \end{aligned}

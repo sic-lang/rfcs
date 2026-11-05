@@ -55,9 +55,9 @@ The best multiplicity for a set $`S`$ of numbers of uses allows all of them, and
 
 ```math
 \begin{aligned}
-& \mathsf{best}(S) = \pi_1 \iff {} &&(\mathsf{best}_\pi) \\
-& \quad S \subseteq \mathsf{uses}(\pi_1) \\
-& \quad \text{and } \forall \pi_2.\ S \subseteq \mathsf{uses}(\pi_2) \implies \mathsf{uses}(\pi_1) \subseteq \mathsf{uses}(\pi_2) \\
+& \mathsf{best}(S) = \pi_1 &&(\mathsf{best}_\pi) \\
+& \quad \iff S \subseteq \mathsf{uses}(\pi_1) \\
+& \qquad \text{and } \forall \pi_2.\ S \subseteq \mathsf{uses}(\pi_2) \implies \mathsf{uses}(\pi_1) \subseteq \mathsf{uses}(\pi_2) \\
 & \mathsf{best}(S) = \pi_1 \text{ and } \mathsf{best}(S) = \pi_2 \implies \pi_1 = \pi_2 &&(\mathsf{unique}_\pi)
 \end{aligned}
 ```

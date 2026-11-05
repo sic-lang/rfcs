@@ -53,4 +53,5 @@ A subscript numbers objects of the same kind that come from different premises o
 
 A rule holds for every instance of the variables of its fraction, and a variable left free in a formula is universally quantified, over the kind that its letter names.
 In a rule, the premises are written one per line, and a premise that holds only under a condition, written $`\dots \text{ if } \dots`$, comes after the others.
+A formula too long for one line is broken before an operator, which starts the next line, indented; within a line, the operators stay between their operands.
 A rule or a formula that the system does not define, but which is derived from its rules, is said so where it appears.
