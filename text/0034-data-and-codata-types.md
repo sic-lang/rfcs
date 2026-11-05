@@ -542,11 +542,12 @@ The rules $`(\mathsf{codata})`$, $`(D^{-}_{\mathsf{i}})`$, $`(D^{-}_\pi)`$, $`(D
 #### Fidelity
 
 The rules are sound for this meaning, but not complete, and the meaning is not decidable; the [core](https://github.com/sic-lang/rfcs/pull/24) states the soundness and leaves the witnesses to this RFC, since they need terms that compute.
+The formulas below take as a premise the hypothesis $`(\mathsf{hyp}_\iota)`$ of the core, which interprets the constants of the signature, since a signature without it may have no meaning.
 A term that computes to a term of a type without reaching an ill-typed part is a term of the type in this meaning, but not by the rules: for an instance $`T`$ of a data type with two constructors without fields, a closed term $`t`$ of a closed type $`B`$ and a closed term $`g`$ that no rule types, the recursor on the first constructor computes to $`t`$ without reaching $`g`$:
 
 ```math
 \begin{aligned}
-& T \text{ is a closed instance of a data type of } \Sigma \text{ with two constructors without fields,} &&(\mathsf{incomplete}_{\mathsf{typ}}) \\
+& (\mathsf{hyp}_\iota),\ T \text{ is a closed instance of a data type of } \Sigma \text{ with two constructors without fields,} &&(\mathsf{incomplete}_{\mathsf{typ}}) \\
 & \quad \Sigma;\ \varepsilon \vdash t : B,\ g \text{ is closed, and } \forall \Gamma, C.\ \Sigma;\ \Gamma \nvdash g : C \\
 \implies {}& \Sigma \vDash \mathsf{rec}_r\ T.c_1()\ \mathsf{return}\ (z : T).\, B\ \mathsf{with}\ c_1 \Rightarrow t \mid c_2 \Rightarrow g : B \text{ and} \\
 & \Sigma;\ \varepsilon \nvdash \mathsf{rec}_r\ T.c_1()\ \mathsf{return}\ (z : T).\, B\ \mathsf{with}\ c_1 \Rightarrow t \mid c_2 \Rightarrow g : B
@@ -557,7 +558,7 @@ The truth of a judgment is not decidable, since it asks whether a computation en
 
 ```math
 \begin{aligned}
-& \Sigma \text{ declares a codata type with one destructor, whose argument is a type parameter and whose result is a second-order parameter applied to it} &&(\mathsf{undecidable}_\vDash) \\
+& (\mathsf{hyp}_\iota),\ \vdash \Sigma \text{ and } \Sigma \text{ declares a codata type with one destructor, whose argument is a type parameter and whose result is a second-order parameter applied to it} &&(\mathsf{undecidable}_\vDash) \\
 \implies {}& \{t \mid \Sigma \vDash t : U_1\} \text{ is not decidable}
 \end{aligned}
 ```
@@ -566,11 +567,11 @@ The meaning ignores the grades, which no clause reads, as well as the levels and
 
 ```math
 \begin{aligned}
-& T_1 \text{ and } T_2 \text{ are instances of a data type } D_j \text{ of } \Sigma,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{+}_{D\equiv}) \\
+& (\mathsf{hyp}_\iota),\ T_1 \text{ and } T_2 \text{ are instances of a data type } D_j \text{ of } \Sigma,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{+}_{D\equiv}) \\
 & \kappa[T_1] = \kappa[T_2] \text{ and } \forall i.\ |\Theta_{ji}[T_1]| = |\Theta_{ji}[T_2]| \\
 \implies {}& \Sigma \vDash T_1 \equiv T_2 \text{ and} \\
 & \Sigma;\ \varepsilon \nvdash T_1 \equiv T_2 \text{ if their grades or their levels differ} \\
-& T_1 \text{ and } T_2 \text{ are instances of a codata type } D_j \text{ of } \Sigma,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{-}_{D\equiv}) \\
+& (\mathsf{hyp}_\iota),\ T_1 \text{ and } T_2 \text{ are instances of a codata type } D_j \text{ of } \Sigma,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{-}_{D\equiv}) \\
 & \kappa[T_1] = \kappa[T_2] \text{ and } |\Xi_j[T_1]| = |\Xi_j[T_2]| \\
 \implies {}& \Sigma \vDash T_1 \equiv T_2 \text{ and} \\
 & \Sigma;\ \varepsilon \nvdash T_1 \equiv T_2 \text{ if their grades or their levels differ}
@@ -591,9 +592,9 @@ In $`\mathsf{unfold}_T`$, $`\lceil \cdot \rceil`$ puts $`\mathsf{done}`$ at ever
 
 ```math
 \begin{aligned}
-& \Sigma;\ \Gamma \vdash t : T \text{ and } T \text{ is an instance of a data type} &&(\mathsf{valid}^{+}_\eta) \\
+& (\mathsf{hyp}_\iota),\ \Sigma;\ \Gamma \vdash t : T \text{ and } T \text{ is an instance of a data type} &&(\mathsf{valid}^{+}_\eta) \\
 \implies {}& \Sigma;\ \Gamma \vDash t \equiv \mathsf{rebuild}_T(t) : T \\
-& \Sigma;\ \Gamma \vdash t : T \text{ and } T \text{ is an instance of a codata type} &&(\mathsf{valid}^{-}_\eta) \\
+& (\mathsf{hyp}_\iota),\ \Sigma;\ \Gamma \vdash t : T \text{ and } T \text{ is an instance of a codata type} &&(\mathsf{valid}^{-}_\eta) \\
 \implies {}& \Sigma;\ \Gamma \vDash t \equiv \mathsf{unfold}_T(t) : T
 \end{aligned}
 ```
@@ -602,9 +603,9 @@ The types that have no $`\eta`$ rule lack it for the decidability of the convers
 
 ```math
 \begin{aligned}
-& T \text{ is an instance of a type of a block } \mathcal{D} \text{ of data types of } \Sigma,\ \Sigma;\ \varepsilon \vdash T,\ \kappa[T] \text{ is a universe, and } ((\exists j.\ n_j \ge 2) \text{ or } \mathcal{D} \text{ is recursive}) &&(\mathsf{incomplete}^{+}_\eta) \\
+& (\mathsf{hyp}_\iota),\ T \text{ is an instance of a type of a block } \mathcal{D} \text{ of data types of } \Sigma,\ \Sigma;\ \varepsilon \vdash T,\ \kappa[T] \text{ is a universe, and } ((\exists j.\ n_j \ge 2) \text{ or } \mathcal{D} \text{ is recursive}) &&(\mathsf{incomplete}^{+}_\eta) \\
 \implies {}& \Sigma;\ y : T \vDash y \equiv \mathsf{rebuild}_T(y) : T \text{ and } \Sigma;\ y : T \nvdash y \equiv \mathsf{rebuild}_T(y) : T \\
-& T \text{ is an instance of a type of a block } \mathcal{D} \text{ of codata types of } \Sigma,\ \Sigma;\ \varepsilon \vdash T,\ \kappa[T] \text{ is a universe, and } \mathcal{D} \text{ is recursive} &&(\mathsf{incomplete}^{-}_\eta) \\
+& (\mathsf{hyp}_\iota),\ T \text{ is an instance of a type of a block } \mathcal{D} \text{ of codata types of } \Sigma,\ \Sigma;\ \varepsilon \vdash T,\ \kappa[T] \text{ is a universe, and } \mathcal{D} \text{ is recursive} &&(\mathsf{incomplete}^{-}_\eta) \\
 \implies {}& \Sigma;\ y : T \vDash y \equiv \mathsf{unfold}_T(y) : T \text{ and } \Sigma;\ y : T \nvdash y \equiv \mathsf{unfold}_T(y) : T
 \end{aligned}
 ```
