@@ -339,12 +339,12 @@ The equality completes the [meaning](https://github.com/sic-lang/rfcs/pull/24) o
 
 #### Meaning of the Equality
 
-The equality of two closed terms is a canonical proposition, which reduces on the canonical forms of its type and of its terms; its truth is the equality of the terms in the meaning of the core, for a type of a universe, and the equality of the types with the same grades, for two types:
+The equality of two closed terms is a canonical proposition, which reduces on the canonical forms of its type and of its terms; its truth is the equality of the terms in the meaning of the core, for a type of a universe that computes to no universe $`U_j`$, and the equality of the two types with the same grades, for a type that computes to one; both clauses read the type up to computation, as the clauses of the core do, so that a type that computes to a universe without being written as one falls under the second:
 
 ```math
 \begin{aligned}
-\text{if } \Sigma \vDash A : U_k \text{, then } \mathsf{true}(t \sim_A u) &\iff \Sigma \vDash t \equiv u : A &&(\mathsf{true}_\sim) \\
-\mathsf{true}(A \sim_{U_k} B) &\iff \Sigma \vDash A \equiv B \text{ and } \exists A_0, B_0.\ A \Downarrow A_0,\ B \Downarrow B_0 \text{ and } A_0, B_0 \text{ have the same grades} &&(\mathsf{true}_{\sim\mathsf{type}})
+\text{if } \Sigma \vDash A : U_k \text{ and } A \text{ computes to no universe } U_j \text{, then } \mathsf{true}(t \sim_A u) &\iff \Sigma \vDash t \equiv u : A &&(\mathsf{true}_\sim) \\
+\text{if } A \Downarrow U_j \text{, then } \mathsf{true}(B \sim_A C) &\iff \Sigma \vDash B \equiv C : A \text{ and } \exists B_0, C_0.\ B \Downarrow B_0,\ C \Downarrow C_0 \text{ and } B_0, C_0 \text{ have the same grades} &&(\mathsf{true}_{\sim\mathsf{type}})
 \end{aligned}
 ```
 
