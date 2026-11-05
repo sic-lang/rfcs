@@ -724,16 +724,16 @@ A judgment $`\Sigma;\ \Gamma \vdash \mathcal{J}`$ whose levels use level variabl
 
 #### Meaning of the Signatures
 
-A signature is meaningful when each of its entries is meaningful in the signature before it.
+A signature is meaningful when each of its entries is meaningful in the signature before it, and introduces names that are fresh in it, as the rules of the [signatures](#signatures) require: with two entries of one name, the computation would not be deterministic.
 A declaration is meaningful as its kind defines, for each instantiation of its variables, which gives its sort variables sorts, its level variables natural numbers and its grade variables grades, and computes the joins of sorts by $`(\sqcup_s)`$; a definition is meaningful when its body is a term of its type, instantiated likewise.
 A constant has no body to compute: the meaning takes an interpretation $`\iota`$, which gives each constant without a body a closed term of its type, built from the entries before it, and the computation $`t \Downarrow v`$ replaces each constant $`c`$ by $`\iota(c)`$, instantiated, before it reduces; a constant is thus meaningful when its interpretation is a term of its type:
 
 ```math
 \begin{aligned}
 \vDash \varnothing & &&({\vDash}\mathsf{sig}_\varnothing) \\
-\vDash \Sigma,\ \mathcal{D} &\iff \vDash \Sigma \text{ and } \Sigma \vDash \mathcal{D} &&({\vDash}\mathsf{sig}_{\mathcal{D}}) \\
-\vDash \Sigma,\ c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t &\iff \vDash \Sigma \text{ and } \Sigma \vDash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \text{ for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] &&({\vDash}\mathsf{sig}_{≔}) \\
-\vDash \Sigma,\ c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A &\iff \vDash \Sigma \text{ and } \Sigma \vDash \iota(c)[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \text{ for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] &&({\vDash}\mathsf{sig}_c)
+\vDash \Sigma,\ \mathcal{D} &\iff \vDash \Sigma,\ D \notin \Sigma \text{ for each } D \text{ declared by } \mathcal{D} \text{ and } \Sigma \vDash \mathcal{D} &&({\vDash}\mathsf{sig}_{\mathcal{D}}) \\
+\vDash \Sigma,\ c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A \mathrel{≔} t &\iff \vDash \Sigma,\ c \notin \Sigma \text{ and } \Sigma \vDash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \text{ for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] &&({\vDash}\mathsf{sig}_{≔}) \\
+\vDash \Sigma,\ c.\{\bar s;\ \bar l;\ \bar p\} :_{m} A &\iff \vDash \Sigma,\ c \notin \Sigma \text{ and } \Sigma \vDash \iota(c)[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \text{ for each instance } [\bar s' / \bar s,\ \bar p' / \bar p] &&({\vDash}\mathsf{sig}_c)
 \end{aligned}
 ```
 
