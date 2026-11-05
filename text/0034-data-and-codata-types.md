@@ -44,6 +44,7 @@ This RFC uses the notation and the conventions of the [core](https://github.com/
 A block is written with its types separated by semicolons, each with its constructors or its destructors separated by bars; in the rules, $`n_j`$ is the number of constructors or destructors of $`D_j`$, and $`k`$ the number of types of the block.
 The rules of the data types carry the exponent $`+`$ and those of the codata types the exponent $`-`$, so that two dual rules differ only by their sign; the rules that both kinds share have no sign.
 The index $`\mathsf{rec}`$ names the recursor, and $`\pi`$ names the observation of a codata term by a destructor, as the [core](https://github.com/sic-lang/rfcs/pull/24) names every observation.
+As in the core, a variable left free in a formula is universally quantified over the kind that its letter names, and a rule holds for every instance of its schematic variables; in a section whose opening sentence fixes the block $`\mathcal{D}`$ and its instances, the block, with the types, constructors, destructors, telescopes and grades it declares, and the signature $`\Sigma`$ are the parameters of the rules and of the formulas of the section, which the convention does not quantify.
 
 The types of ADE, its functions, its weak and strong pairs and units, its empty type and its natural numbers with their recursor, are instances of the two kinds, declared as codata and data types; this RFC declares none of them, and gives no example; the three declarations of its [prelude](#prelude) serve the type system, and no program names them.
 
@@ -195,7 +196,7 @@ The dependent map $`\mathsf{map}_G[\bar P,\ \bar f](w)`$ builds a term of the li
 \end{aligned}
 ```
 
-In $`(\mathsf{map}^{-})`$, the corecursor builds a term of $`D'^{\bar P}`$ from the state $`w'`$, and $`\lceil \cdot \rceil`$ puts $`\mathsf{next}\ (w'.d_i(\bar x_i))`$ at the positions of $`D'^{\bar P}`$ that come from the recursive destructors of $`D'`$, so that the map observes $`w'`$ lazily, as the [corecursor](#corecursor) defines.
+In $`(\mathsf{map}^{+})`$ and $`(\mathsf{map}^{-})`$, $`D'`$ is the data type or the codata type whose map is defined, as in $`(\mathsf{lift}^{+})`$ and $`(\mathsf{lift}^{-})`$; in $`(\mathsf{map}^{-})`$, the corecursor builds a term of $`D'^{\bar P}`$ from the state $`w'`$, and $`\lceil \cdot \rceil`$ puts $`\mathsf{next}\ (w'.d_i(\bar x_i))`$ at the positions of $`D'^{\bar P}`$ that come from the recursive destructors of $`D'`$, so that the map observes $`w'`$ lazily, as the [corecursor](#corecursor) defines.
 The liftings and the maps are derived by recursion on the signature: those of a type declared before use those of the types declared before it.
 
 The grades of the positions of $`G`$, written $`\Pi(G)`$, are the grades with which a term of $`G`$ gives access to each position, which the usage of the [recursor](#recursor) reads; a direct position has the grade $`\mathbb{1}`$, and a nested position the product of the grades of the fields or of the destructors on the way to it:
@@ -224,8 +225,8 @@ The usage $`\zeta`$ of the block, which the [formation](#formation) computes, gi
 
 ```math
 \begin{aligned}
-& \Sigma,\ \mathcal{D};\ \gamma_{jil} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}} \odot p_{jil}}} A_{jil} \quad \text{for each } j, i, l &&(\zeta^{+}) \\
-& \zeta_j \bullet q_{ji1} \bullet \dots \bullet q_{jik_{ji}} \le^{\mathsf{c}} p_{ji1} \cdot^{\mathsf{c}} \gamma_{ji1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{jik_{ji}} \cdot^{\mathsf{c}} \gamma_{jik_{ji}} \quad \text{for each } j, i \\
+& \exists (\gamma_{jil})_{j, i, l}.\ (\forall j, i, l.\ \Sigma,\ \mathcal{D};\ \gamma_{jil} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}} \odot p_{jil}}} A_{jil}) \text{ and} &&(\zeta^{+}) \\
+& \quad (\forall j, i.\ \zeta_j \bullet q_{ji1} \bullet \dots \bullet q_{jik_{ji}} \le^{\mathsf{c}} p_{ji1} \cdot^{\mathsf{c}} \gamma_{ji1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{jik_{ji}} \cdot^{\mathsf{c}} \gamma_{jik_{ji}}) \\
 & \text{where an occurrence } T_{j'}[\bar b] \text{ in a field type uses the variables as } \zeta_{j'} \text{ says of its arguments}
 \end{aligned}
 ```
@@ -336,9 +337,9 @@ The grade $`q_{jil}`$ of each argument allows its uses in the types of the argum
 
 ```math
 \begin{aligned}
-& \Sigma,\ \mathcal{D};\ \gamma_{jil} \mathrel{▶_{(\mathbb{1}\mathbb{1}^{\mathsf{m}} \odot p_{ji}) \odot p_{jil}}} A_{jil} \quad \text{for each } j, i, l \quad \Sigma,\ \mathcal{D};\ \beta_{ji} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}} \odot p_{ji}}} B_{ji} \quad \text{for each } j, i &&(\zeta^{-}) \\
-& \varepsilon_{ji} \bullet \ulcorner \llcorner p_{ji} \lrcorner \urcorner \cdot q_{ji1} \bullet \dots \bullet \ulcorner \llcorner p_{ji} \lrcorner \urcorner \cdot q_{jik_{ji}} \le^{\mathsf{c}} p_{ji1} \cdot^{\mathsf{c}} \gamma_{ji1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{jik_{ji}} \cdot^{\mathsf{c}} \gamma_{jik_{ji}} +^{\mathsf{c}} \beta_{ji} \quad \text{for each } j, i \\
-& \zeta_j \bullet q_{j1} \bullet \dots \bullet q_{jn_j} \le^{\mathsf{c}} p_{j1} \cdot^{\mathsf{c}} \varepsilon_{j1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{jn_j} \cdot^{\mathsf{c}} \varepsilon_{jn_j} \quad \text{for each } j \\
+& \exists (\gamma_{jil})_{j, i, l}, (\beta_{ji})_{j, i}, (\varepsilon_{ji})_{j, i}.\ (\forall j, i, l.\ \Sigma,\ \mathcal{D};\ \gamma_{jil} \mathrel{▶_{(\mathbb{1}\mathbb{1}^{\mathsf{m}} \odot p_{ji}) \odot p_{jil}}} A_{jil}),\ (\forall j, i.\ \Sigma,\ \mathcal{D};\ \beta_{ji} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}} \odot p_{ji}}} B_{ji}), &&(\zeta^{-}) \\
+& \quad (\forall j, i.\ \varepsilon_{ji} \bullet \ulcorner \llcorner p_{ji} \lrcorner \urcorner \cdot q_{ji1} \bullet \dots \bullet \ulcorner \llcorner p_{ji} \lrcorner \urcorner \cdot q_{jik_{ji}} \le^{\mathsf{c}} p_{ji1} \cdot^{\mathsf{c}} \gamma_{ji1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{jik_{ji}} \cdot^{\mathsf{c}} \gamma_{jik_{ji}} +^{\mathsf{c}} \beta_{ji}) \\
+& \quad \text{and } (\forall j.\ \zeta_j \bullet q_{j1} \bullet \dots \bullet q_{jn_j} \le^{\mathsf{c}} p_{j1} \cdot^{\mathsf{c}} \varepsilon_{j1} +^{\mathsf{c}} \dots +^{\mathsf{c}} p_{jn_j} \cdot^{\mathsf{c}} \varepsilon_{jn_j}) \\
 & \text{where an occurrence } T_{j'}[\bar b] \text{ in a type uses the variables as } \zeta_{j'} \text{ says of its arguments}
 \end{aligned}
 ```
@@ -461,10 +462,10 @@ A block is meaningful when each of its instantiations is, which gives its variab
 
 ```math
 \begin{aligned}
-\Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta). &&({\vDash}_{\mathsf{data}}) \\
-& \quad \Sigma,\ \mathcal{D} \vDash \Theta_{ji}[\sigma_1] \equiv \Theta_{ji}[\sigma_2] : \kappa \text{ for each } j, i \\
-\Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta). &&({\vDash}_{\mathsf{codata}}) \\
-& \quad \Sigma,\ \mathcal{D} \vDash \Xi_j[\sigma_1] \equiv \Xi_j[\sigma_2] : \kappa \text{ for each } j
+\Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \forall j, i. &&({\vDash}_{\mathsf{data}}) \\
+& \quad \Sigma,\ \mathcal{D} \vDash \Theta_{ji}[\sigma_1] \equiv \Theta_{ji}[\sigma_2] : \kappa \quad \text{if } \mathcal{D} \text{ is a block of data types} \\
+\Sigma \vDash \mathcal{D} \iff {}& \Sigma \vDash \Delta \text{ and } \forall (\sigma_1, \sigma_2) \in \mathsf{eq}(\Delta).\ \forall j. &&({\vDash}_{\mathsf{codata}}) \\
+& \quad \Sigma,\ \mathcal{D} \vDash \Xi_j[\sigma_1] \equiv \Xi_j[\sigma_2] : \kappa \quad \text{if } \mathcal{D} \text{ is a block of codata types}
 \end{aligned}
 ```
 
@@ -485,14 +486,15 @@ The meaning of a recursive block is circular, since its bodies mention its insta
 
 #### Meaning of the Data Types
 
-The canonical terms of an instance $`T_j`$ in a universe are built by its constructors, and two of them are equal when they are built by the same constructor from equal terms for its fields, which a telescope relates as the substitutions of the context it forms; the fields are not computed, since a term in constructor form is canonical, and the instances $`T_1`$ and $`T_2`$ that the constructors carry are any instances of $`D_j`$ with the same non-uniform arguments, since they only determine the type of the term.
+The canonical terms of an instance $`T_j`$ in a universe are built by its constructors, and two of them are equal when they are built by the same constructor from equal terms for its fields, which a telescope relates as the substitutions of the context it forms; the fields are not computed, since a term in constructor form is canonical, and the instances $`T_1`$ and $`T_2`$ that the constructors carry are any instances of $`D_j`$ with the non-uniform arguments of $`T_j`$, since they only determine the type of the term.
+In the clauses, $`T_j`$ is a closed instance of a type $`D_j`$ of a block $`\mathcal{D}`$ of the signature, which the kind named by the clause fixes, and $`T_j[\bar b]`$ ranges over the instances of the types of the block with the sorts, levels, grades and uniform arguments of $`T_j`$.
 The family of the relations $`\mathsf{eq}(T_j[\bar b])`$, over all the types of the block and all their non-uniform arguments, is the least family that satisfies the clause, so that every term is built in finitely many steps, and the truth of a proposition declared as a data type is the least truth that its constructors give, a proposition being true when one of its constructors has terms for its fields:
 
 ```math
 \begin{aligned}
-\mathsf{eq}(T_j) &= \{(T_1.c_{ji}(\bar t),\ T_2.c_{ji}(\bar u)) \mid 1 \le i \le n_j,\ (\bar t,\ \bar u) \in \mathsf{eq}(\Theta_{ji}[T_j])\} &&\text{if } \kappa[T_j] = U_k &&(\mathsf{eq}_{\mathsf{con}}) \\
-\mathsf{true}(T_j) &\iff \mathsf{eq}(\Theta_{ji}[T_j]) \ne \varnothing \text{ for some } i &&\text{if } \kappa[T_j] = \Omega_k &&(\mathsf{true}_{\mathsf{data}}) \\
-\mathsf{eq}(T_j[\bar b]) &\text{ and } \mathsf{true}(T_j[\bar b]) \text{ are the least family such that } (\mathsf{eq}_{\mathsf{con}}) \text{ and } (\mathsf{true}_{\mathsf{data}}) \text{ hold} &&&&(\mathsf{eq}_\mu)
+\mathsf{eq}(T_j) &= \{(T_1.c_{ji}(\bar t),\ T_2.c_{ji}(\bar u)) \mid T_1, T_2 \text{ instances of } D_j \text{ with the non-uniform arguments of } T_j,\ 1 \le i \le n_j,\ (\bar t,\ \bar u) \in \mathsf{eq}(\Theta_{ji}[T_j])\} &&\text{if } \kappa[T_j] \text{ is a universe} &&(\mathsf{eq}_{\mathsf{con}}) \\
+\mathsf{true}(T_j) &\iff \exists i.\ \mathsf{eq}(\Theta_{ji}[T_j]) \ne \varnothing &&\text{if } \kappa[T_j] \text{ is a universe of propositions} &&(\mathsf{true}_{\mathsf{data}}) \\
+(\mathsf{eq}(T_j[\bar b]))_{j, \bar b} &\text{ and } (\mathsf{true}(T_j[\bar b]))_{j, \bar b} \text{ are the least families such that } (\mathsf{eq}_{\mathsf{con}}) \text{ and } (\mathsf{true}_{\mathsf{data}}) \text{ hold} &&&&(\mathsf{eq}_\mu)
 \end{aligned}
 ```
 
@@ -500,8 +502,8 @@ The instances are canonical types of the universes, and two of them are equal wh
 
 ```math
 \begin{aligned}
-(T_1,\ T_2) \in \mathsf{eq}(s_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are instances of } D_j \text{ and } \kappa[T_1] = \kappa[T_2] = s_n, &&(\mathsf{eq}_{\mathsf{data}}) \\
-&\quad \text{and } \Sigma \vDash \Theta_{ji}[T_1] \equiv \Theta_{ji}[T_2] : s_n \text{ for each } i
+(T_1,\ T_2) \in \mathsf{eq}(s_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are closed instances of a data type } D_j \text{ of } \Sigma,\ \kappa[T_1] = \kappa[T_2] = s_n, &&(\mathsf{eq}_{\mathsf{data}}) \\
+&\quad \text{and } \forall i.\ \Sigma \vDash \Theta_{ji}[T_1] \equiv \Theta_{ji}[T_2] : s_n
 \end{aligned}
 ```
 
@@ -517,11 +519,11 @@ A proposition declared as a codata type is true when its destructors have proofs
 
 ```math
 \begin{aligned}
-(v,\ w) \in \mathsf{eq}(T_j) \iff {}& v \text{ and } w \text{ are corecursors of instances of } D_j, \text{ and for each } i &&(\mathsf{eq}_{\mathsf{corec}}) \\
-& \text{and each } (\bar b_1,\ \bar b_2) \in \mathsf{eq}(\Theta_{ji}[T_j][v.\bar d]): \\
-& \quad \Sigma \vDash v.d_{ji}(\bar b_1) \equiv w.d_{ji}(\bar b_2) : B_{ji}[T_j][v.\bar d][\bar b_1 / \Theta_{ji}] \quad \text{if } \kappa[T_j] = U_k \\
-\mathsf{true}(T_j) \iff {}& \mathsf{eq}(\Xi_j[T_j]) \ne \varnothing \quad \text{if } \kappa[T_j] = \Omega_k &&(\mathsf{true}_{\mathsf{codata}}) \\
-\mathsf{eq}(T_j[\bar b]) &\text{ and } \mathsf{true}(T_j[\bar b]) \text{ are the greatest family such that } (\mathsf{eq}_{\mathsf{corec}}) \text{ and } (\mathsf{true}_{\mathsf{codata}}) \text{ hold} &&(\mathsf{eq}_\nu)
+(v,\ w) \in \mathsf{eq}(T_j) \iff {}& v \text{ and } w \text{ are corecursors of instances of } D_j, \text{ and } \forall i. &&(\mathsf{eq}_{\mathsf{corec}}) \\
+& \forall (\bar b_1,\ \bar b_2) \in \mathsf{eq}(\Theta_{ji}[T_j][v.\bar d]). \\
+& \quad \Sigma \vDash v.d_{ji}(\bar b_1) \equiv w.d_{ji}(\bar b_2) : B_{ji}[T_j][v.\bar d][\bar b_1 / \Theta_{ji}] \quad \text{if } \kappa[T_j] \text{ is a universe} \\
+\mathsf{true}(T_j) \iff {}& \mathsf{eq}(\Xi_j[T_j]) \ne \varnothing \quad \text{if } \kappa[T_j] \text{ is a universe of propositions} &&(\mathsf{true}_{\mathsf{codata}}) \\
+(\mathsf{eq}(T_j[\bar b]))_{j, \bar b} &\text{ and } (\mathsf{true}(T_j[\bar b]))_{j, \bar b} \text{ are the greatest families such that } (\mathsf{eq}_{\mathsf{corec}}) \text{ and } (\mathsf{true}_{\mathsf{codata}}) \text{ hold} &&(\mathsf{eq}_\nu)
 \end{aligned}
 ```
 
@@ -529,7 +531,7 @@ The instances are canonical types of the universes, and two of them are equal wh
 
 ```math
 \begin{aligned}
-(T_1,\ T_2) \in \mathsf{eq}(s_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are instances of } D_j \text{ and } \kappa[T_1] = \kappa[T_2] = s_n, &&(\mathsf{eq}_{\mathsf{codata}}) \\
+(T_1,\ T_2) \in \mathsf{eq}(s_n) &\quad \text{if } T_1 \text{ and } T_2 \text{ are closed instances of a codata type } D_j \text{ of } \Sigma,\ \kappa[T_1] = \kappa[T_2] = s_n, &&(\mathsf{eq}_{\mathsf{codata}}) \\
 &\quad \text{and } \Sigma \vDash \Xi_j[T_1] \equiv \Xi_j[T_2] : s_n
 \end{aligned}
 ```
@@ -544,7 +546,8 @@ A term that computes to a term of a type without reaching an ill-typed part is a
 
 ```math
 \begin{aligned}
-& \Sigma;\ \varepsilon \vdash t : B,\ g \text{ is closed, and } \Sigma;\ \Gamma \nvdash g : C \text{ for all } \Gamma \text{ and } C &&(\mathsf{incomplete}_{\mathsf{typ}}) \\
+& T \text{ is a closed instance of a data type of } \Sigma \text{ with two constructors without fields,} &&(\mathsf{incomplete}_{\mathsf{typ}}) \\
+& \quad \Sigma;\ \varepsilon \vdash t : B,\ g \text{ is closed, and } \forall \Gamma, C.\ \Sigma;\ \Gamma \nvdash g : C \\
 \implies {}& \Sigma \vDash \mathsf{rec}_r\ T.c_1()\ \mathsf{return}\ (z : T).\, B\ \mathsf{with}\ c_1 \Rightarrow t \mid c_2 \Rightarrow g : B \text{ and} \\
 & \Sigma;\ \varepsilon \nvdash \mathsf{rec}_r\ T.c_1()\ \mathsf{return}\ (z : T).\, B\ \mathsf{with}\ c_1 \Rightarrow t \mid c_2 \Rightarrow g : B
 \end{aligned}
@@ -554,7 +557,8 @@ The truth of a judgment is not decidable, since it asks whether a computation en
 
 ```math
 \begin{aligned}
-\{t \mid \Sigma \vDash t : U_1\} &\text{ is not decidable, for such a signature } \Sigma &&(\mathsf{undecidable}_\vDash)
+& \Sigma \text{ declares a codata type with one destructor, whose argument is a type parameter and whose result is a second-order parameter applied to it} &&(\mathsf{undecidable}_\vDash) \\
+\implies {}& \{t \mid \Sigma \vDash t : U_1\} \text{ is not decidable}
 \end{aligned}
 ```
 
@@ -562,11 +566,11 @@ The meaning ignores the grades, which no clause reads, as well as the levels and
 
 ```math
 \begin{aligned}
-& T_1 \text{ and } T_2 \text{ are instances of } D_j,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{+}_{D\equiv}) \\
-& \kappa[T_1] = \kappa[T_2] \text{ and } |\Theta_{ji}[T_1]| = |\Theta_{ji}[T_2]| \text{ for each } i \\
+& T_1 \text{ and } T_2 \text{ are instances of a data type } D_j \text{ of } \Sigma,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{+}_{D\equiv}) \\
+& \kappa[T_1] = \kappa[T_2] \text{ and } \forall i.\ |\Theta_{ji}[T_1]| = |\Theta_{ji}[T_2]| \\
 \implies {}& \Sigma \vDash T_1 \equiv T_2 \text{ and} \\
 & \Sigma;\ \varepsilon \nvdash T_1 \equiv T_2 \text{ if their grades or their levels differ} \\
-& T_1 \text{ and } T_2 \text{ are instances of } D_j,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{-}_{D\equiv}) \\
+& T_1 \text{ and } T_2 \text{ are instances of a codata type } D_j \text{ of } \Sigma,\ \Sigma;\ \varepsilon \vdash T_1 \text{ and } \Sigma;\ \varepsilon \vdash T_2, &&(\mathsf{incomplete}^{-}_{D\equiv}) \\
 & \kappa[T_1] = \kappa[T_2] \text{ and } |\Xi_j[T_1]| = |\Xi_j[T_2]| \\
 \implies {}& \Sigma \vDash T_1 \equiv T_2 \text{ and} \\
 & \Sigma;\ \varepsilon \nvdash T_1 \equiv T_2 \text{ if their grades or their levels differ}
@@ -598,9 +602,9 @@ The types that have no $`\eta`$ rule lack it for the decidability of the convers
 
 ```math
 \begin{aligned}
-& \Sigma;\ \varepsilon \vdash T,\ \kappa[T] = U_k \text{ and } (n_j \ge 2 \text{ for some } j \text{ or } \mathcal{D} \text{ is recursive}) &&(\mathsf{incomplete}^{+}_\eta) \\
+& T \text{ is an instance of a type of a block } \mathcal{D} \text{ of data types of } \Sigma,\ \Sigma;\ \varepsilon \vdash T,\ \kappa[T] \text{ is a universe, and } ((\exists j.\ n_j \ge 2) \text{ or } \mathcal{D} \text{ is recursive}) &&(\mathsf{incomplete}^{+}_\eta) \\
 \implies {}& \Sigma;\ y : T \vDash y \equiv \mathsf{rebuild}_T(y) : T \text{ and } \Sigma;\ y : T \nvdash y \equiv \mathsf{rebuild}_T(y) : T \\
-& \Sigma;\ \varepsilon \vdash T,\ \kappa[T] = U_k \text{ and } \mathcal{D} \text{ is recursive} &&(\mathsf{incomplete}^{-}_\eta) \\
+& T \text{ is an instance of a type of a block } \mathcal{D} \text{ of codata types of } \Sigma,\ \Sigma;\ \varepsilon \vdash T,\ \kappa[T] \text{ is a universe, and } \mathcal{D} \text{ is recursive} &&(\mathsf{incomplete}^{-}_\eta) \\
 \implies {}& \Sigma;\ y : T \vDash y \equiv \mathsf{unfold}_T(y) : T \text{ and } \Sigma;\ y : T \nvdash y \equiv \mathsf{unfold}_T(y) : T
 \end{aligned}
 ```
