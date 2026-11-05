@@ -732,20 +732,19 @@ The denotation is exact for the proofs: two closed terms are equal proofs of a p
 
 #### Soundness
 
-The rules are sound for this meaning: every judgment they derive is true, under the interpretation of the constants:
+The rules are sound for this meaning: every judgment they derive is true, under the hypothesis $`(\mathsf{hyp}_\iota)`$ that every constant of the signature is interpreted, which the [properties](#consistency-and-canonicity) define:
 
 ```math
 \begin{aligned}
-\vdash \Sigma &\implies \vDash \Sigma &&(\mathsf{sound}_{\mathsf{sig}}) \\
-\Sigma \vdash \Gamma &\implies \Sigma \vDash \Gamma &&(\mathsf{sound}_{\mathsf{ctx}}) \\
-\Sigma;\ \Gamma \vdash A &\implies \Sigma;\ \Gamma \vDash A &&(\mathsf{sound}_{\mathsf{type}}) \\
-\Sigma;\ \Gamma \vdash A \equiv B &\implies \Sigma;\ \Gamma \vDash A \equiv B &&(\mathsf{sound}_{\mathsf{type}\equiv}) \\
-\Sigma;\ \Gamma \vdash t : A &\implies \Sigma;\ \Gamma \vDash t : A &&(\mathsf{sound}) \\
-\Sigma;\ \Gamma \vdash t \equiv u : A &\implies \Sigma;\ \Gamma \vDash t \equiv u : A &&(\mathsf{sound}_\equiv)
+(\mathsf{hyp}_\iota) \text{ and } \vdash \Sigma &\implies \vDash \Sigma &&(\mathsf{sound}_{\mathsf{sig}}) \\
+(\mathsf{hyp}_\iota) \text{ and } \Sigma \vdash \Gamma &\implies \Sigma \vDash \Gamma &&(\mathsf{sound}_{\mathsf{ctx}}) \\
+(\mathsf{hyp}_\iota) \text{ and } \Sigma;\ \Gamma \vdash A &\implies \Sigma;\ \Gamma \vDash A &&(\mathsf{sound}_{\mathsf{type}}) \\
+(\mathsf{hyp}_\iota) \text{ and } \Sigma;\ \Gamma \vdash A \equiv B &\implies \Sigma;\ \Gamma \vDash A \equiv B &&(\mathsf{sound}_{\mathsf{type}\equiv}) \\
+(\mathsf{hyp}_\iota) \text{ and } \Sigma;\ \Gamma \vdash t : A &\implies \Sigma;\ \Gamma \vDash t : A &&(\mathsf{sound}) \\
+(\mathsf{hyp}_\iota) \text{ and } \Sigma;\ \Gamma \vdash t \equiv u : A &\implies \Sigma;\ \Gamma \vDash t \equiv u : A &&(\mathsf{sound}_\equiv)
 \end{aligned}
 ```
 
-The soundness of a signature holds under the hypothesis that its constants are interpreted, which the [properties](#consistency-and-canonicity) name.
 The rules are not complete, since a true judgment need not be derivable: a term that computes to a term of a type without reaching an ill-typed part is a term of the type in this meaning but not by the rules, and the truth of a judgment is not decidable, since it asks whether a computation ends; both need terms that compute, which the kinds of declarations bring, so the [data and codata types](https://github.com/sic-lang/rfcs/pull/34) state them as formulas.
 
 ### Properties
