@@ -27,7 +27,8 @@ Each letter keeps one kind, as in the other RFCs of the core:
 | $`u, v, w`$ | Multiplicities |
 | $`p, q, r`$ | Grades, $`r`$ being the grade of a term that an elimination consumes |
 | $`m`$ | Modes |
-| $`S`$ | A set of numbers of uses, or of pairs of numbers of uses |
+| $`S`$ | A set of numbers of uses, of pairs of numbers of uses, or of grades |
+| $`I`$ | A set of indices, which indexes a family of grades |
 | $`a, b`$ | Natural numbers, the numbers of uses |
 
 A subscript numbers objects of the same kind that come from different premises, as $`p_1`$ and $`p_2`$: an object alone of its kind has none, and several are all numbered.
@@ -40,6 +41,7 @@ p + q \qquad p \cdot q \qquad p \wedge q \qquad p \le q
 
 They are the addition, the multiplication, the meet and the order; the meet of a non-empty set $`S`$ of grades is written $`\bigwedge S`$.
 The formulas of the meaning and of the properties are named in their last column, as the rules of the other RFCs are named after their fraction; a formula about multiplicities is indexed by $`u`$ and a formula about grades by $`p`$, the letters of their metavariables.
+A variable left free in a formula is universally quantified, over the kind that its letter names.
 
 The rules of ADE know the grades only as a modality, whose notation this RFC keeps where it does not depart from it:
 
@@ -86,9 +88,9 @@ The operations act on each multiplicity, and the seven grades are closed under t
 
 ```math
 \begin{aligned}
-\langle r_1, t_1 \rangle + \langle r_2, t_2 \rangle &= \langle r_1 + r_2,\ t_1 + t_2 \rangle \\
-\langle r_1, t_1 \rangle \cdot \langle r_2, t_2 \rangle &= \langle r_1 \cdot r_2,\ t_1 \cdot t_2 \rangle \\
-\langle r_1, t_1 \rangle \wedge \langle r_2, t_2 \rangle &= \langle r_1 \wedge r_2,\ t_1 \wedge t_2 \rangle
+\langle u_1, v_1 \rangle + \langle u_2, v_2 \rangle &= \langle u_1 + u_2,\ v_1 + v_2 \rangle \\
+\langle u_1, v_1 \rangle \cdot \langle u_2, v_2 \rangle &= \langle u_1 \cdot u_2,\ v_1 \cdot v_2 \rangle \\
+\langle u_1, v_1 \rangle \wedge \langle u_2, v_2 \rangle &= \langle u_1 \wedge u_2,\ v_1 \wedge v_2 \rangle
 \end{aligned}
 ```
 
@@ -115,7 +117,7 @@ On the seven grades, the grades that allow discarding, $`p \le \mathbb{0}`$, are
 The run-time multiplicity of a grade is its projection, which the [erasure](https://github.com/sic-lang/rfcs/pull/24) of the core reads:
 
 ```math
-\mathsf{run}(\langle r, t \rangle) = r \qquad (\mathsf{run}_p)
+\mathsf{run}(\langle u, v \rangle) = u \qquad (\mathsf{run}_p)
 ```
 
 ### Modes
@@ -132,7 +134,7 @@ The core has three modes, named after their grade $`\ulcorner m \urcorner`$, wit
 A term used with the grade $`p`$ is checked in the mode $`\llcorner p \lrcorner`$ of this grade: $`\mathbb{0}\mathbb{0}^{\mathsf{m}}`$ for $`\mathbb{0}`$, $`\mathbb{0}\mathbb{1}^{\mathsf{m}}`$ for the other grades whose run-time multiplicity is $`0`$, those of proofs, specifications and permissions, and $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$ for the grades used at run time; the program itself is checked in $`\mathbb{1}\mathbb{1}^{\mathsf{m}}`$:
 
 ```math
-\llcorner \mathbb{0} \lrcorner = \mathbb{0}\mathbb{0}^{\mathsf{m}} \qquad \llcorner \langle 0, t \rangle \lrcorner = \mathbb{0}\mathbb{1}^{\mathsf{m}} \text{ if } t \ne 0 \qquad \llcorner \langle r, t \rangle \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } r \ne 0
+\llcorner \mathbb{0} \lrcorner = \mathbb{0}\mathbb{0}^{\mathsf{m}} \qquad \llcorner \langle 0, v \rangle \lrcorner = \mathbb{0}\mathbb{1}^{\mathsf{m}} \text{ if } v \ne 0 \qquad \llcorner \langle u, v \rangle \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } u \ne 0
 ```
 
 Modes are never written: they follow from the grades, and the two erased modes appear only inside the program, where a rule checks a subterm used with an erased grade, such as an erased argument, a proof, or the type of a binder.
@@ -180,13 +182,13 @@ For instance, $`1 + 1`$ allows $`2`$ uses, which only $`\omega`$ allows, and $`0
 A grade stands for the pairs of numbers of uses it allows, at run time and in total, the uses at run time being among all the uses:
 
 ```math
-\mathsf{uses}(\langle r, t \rangle) = \{(a, b) \mid a \in \mathsf{uses}(r),\ b \in \mathsf{uses}(t),\ a \le b\} \qquad (\mathsf{uses}_p)
+\mathsf{uses}(\langle u, v \rangle) = \{(a, b) \mid a \in \mathsf{uses}(u),\ b \in \mathsf{uses}(v),\ a \le b\} \qquad (\mathsf{uses}_p)
 ```
 
 Each operation gives the best grade for a non-empty set $`S`$ of pairs of numbers of uses, as for the multiplicities, and the order is again the reverse inclusion:
 
 ```math
-\mathsf{best}(S) = p \iff S \subseteq \mathsf{uses}(p) \text{ and } \forall w.\ S \subseteq \mathsf{uses}(w) \implies \mathsf{uses}(p) \subseteq \mathsf{uses}(w) \qquad (\mathsf{best}_p)
+\mathsf{best}(S) = p \iff S \subseteq \mathsf{uses}(p) \text{ and } \forall q.\ S \subseteq \mathsf{uses}(q) \implies \mathsf{uses}(p) \subseteq \mathsf{uses}(q) \qquad (\mathsf{best}_p)
 ```
 
 ```math
@@ -236,7 +238,7 @@ Every non-empty set of grades has a greatest lower bound, its meet, which the us
 
 ```math
 \begin{aligned}
-& \textstyle\bigwedge S \le p \text{ for each } p \in S, \text{ and } (\forall p \in S.\ r \le p) \implies r \le \textstyle\bigwedge S &&(\bigwedge_{p})
+& (\forall p \in S.\ \textstyle\bigwedge S \le p) \text{ and } ((\forall p \in S.\ r \le p) \implies r \le \textstyle\bigwedge S) &&(\bigwedge_{p})
 \end{aligned}
 ```
 
