@@ -16,7 +16,7 @@ This RFC gives this equality to the core, generic in the declarations, so that e
 
 ## Proposal
 
-The proposal first fixes the notation, then defines the equality, with its primitives, the equality of types, the equality of the terms of the data and codata types, the cast of their terms, the quotients, the conversion and the erasure of its terms.
+The proposal first fixes the notation, then defines the equality, with its primitives, the equality of types, the equality of the terms of the data and codata types, the cast of their terms, the quotients, the reduction, the conversion and the erasure of its terms.
 It then gives the meaning of the equality, as the setoid model, and the properties expected of it.
 
 ### Notation
@@ -325,11 +325,58 @@ This RFC extends the contract of the [core](https://github.com/sic-lang/rfcs/pul
 4. Erasure: the cast of a canonical form of the kind erases to the erasure of the form, so that the [erasure](#erasure) of the cast is the identity.
 5. Obligations: the soundness of the rules above for the [meaning](#meaning) of the equality, and the preservation of usage by the reductions of the cast.
 
+### Reduction
+
+The equality, the cast and the quotients add to the [reduction](https://github.com/sic-lang/rfcs/pull/24) of the core their head normal forms, their neutral terms and their steps, as its contract requires.
+The equality and the cast are eliminations, as in the type theory of [Pujet and Tabareau](https://doi.org/10.1145/3498693): an equality is not a head normal form, and it computes, on the head normal forms of its type and of its terms, until it reaches a proposition of the kinds of declarations, such as $`\top`$, $`\bot`$, a conjunction or a bisimilarity.
+Each rule of this RFC written as an equation, but $`(\sim_{\mathsf{irr}})`$ and $`(\mathsf{cast}_{\mathsf{refl}})`$, is a step from its left side to its right side when its conditions hold, which read the forms of the terms and the sorts of the instances, never a type; the equality of two terms of an instance in a sort of propositions steps to $`\top`$, which $`(\sim_{\mathsf{irr}})`$ states at a type:
+
+```math
+\frac{l \equiv r \text{ is an instance of an equation of this RFC, but } (\sim_{\mathsf{irr}}) \text{ and } (\mathsf{cast}_{\mathsf{refl}}), \text{ whose conditions hold}}{\Sigma \vdash l \longrightarrow r}\;(\equiv_{\longrightarrow})
+\qquad
+\frac{T \text{ is an instance of a declared type} \quad \kappa[T] \text{ is a sort of propositions}}{\Sigma \vdash t \sim_T u \longrightarrow \top}\;(\sim_{\mathsf{irr}\longrightarrow})
+```
+
+An equality reduces its type first, then, at a universe or at an instance in a universe of a data type or of a quotient, whose rules inspect the terms, its first term, then its second; a cast reduces its first type, then its second, then, between two compatible instances in a universe of a data type or of a quotient, its term; a recursor on a quotient reduces its term:
+
+```math
+\frac{\Sigma \vdash A \longrightarrow A'}{\Sigma \vdash t \sim_A u \longrightarrow t \sim_{A'} u}\;(\sim_{\longrightarrow A})
+\qquad
+\frac{A \in \mathcal{I} \quad \Sigma \vdash t \longrightarrow t'}{\Sigma \vdash t \sim_A u \longrightarrow t' \sim_A u}\;(\sim_{\longrightarrow t})
+\qquad
+\frac{A \in \mathcal{I} \quad v \text{ is a head normal form} \quad \Sigma \vdash u \longrightarrow u'}{\Sigma \vdash v \sim_A u \longrightarrow v \sim_A u'}\;(\sim_{\longrightarrow u})
+```
+
+```math
+\frac{\Sigma \vdash A \longrightarrow A'}{\Sigma \vdash \mathsf{cast}(A,\ B,\ e,\ t) \longrightarrow \mathsf{cast}(A',\ B,\ e,\ t)}\;(\mathsf{cast}_{\longrightarrow A})
+\qquad
+\frac{v \text{ is a head normal form} \quad \Sigma \vdash B \longrightarrow B'}{\Sigma \vdash \mathsf{cast}(v,\ B,\ e,\ t) \longrightarrow \mathsf{cast}(v,\ B',\ e,\ t)}\;(\mathsf{cast}_{\longrightarrow B})
+```
+
+```math
+\frac{T_1 \in \mathcal{I} \quad T_1 \text{ and } T_2 \text{ are compatible} \quad \Sigma \vdash t \longrightarrow t'}{\Sigma \vdash \mathsf{cast}(T_1,\ T_2,\ e,\ t) \longrightarrow \mathsf{cast}(T_1,\ T_2,\ e,\ t')}\;(\mathsf{cast}_{\longrightarrow t})
+\qquad
+\frac{\Sigma \vdash t \longrightarrow t'}{\Sigma \vdash \mathsf{rec}_r\ t\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c(x) \Rightarrow u\ \mathsf{by}\ e \longrightarrow \mathsf{rec}_r\ t'\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c(x) \Rightarrow u\ \mathsf{by}\ e}\;(D^{/}_{\mathsf{rec}\longrightarrow})
+```
+
+Here $`\mathcal{I}`$ holds the universes $`U_k`$ and the instances $`T`$ of a data type or of a quotient with $`\kappa[T]`$ a universe, the types at which the rules of the equality inspect the terms.
+The classes are head normal forms, and the equalities and the casts that no step reduces are neutral, with the recursor of a neutral class:
+
+```math
+\begin{aligned}
+n \;::=\; \dots &\mid t \sim_{n} u \mid n \sim_{A} v \mid v \sim_{A} n \text{ for } A \in \mathcal{I} \mid \mathsf{cast}(n,\ v,\ e,\ t) \mid \mathsf{cast}(v,\ n,\ e,\ t) &&(\mathsf{neutral}_\sim) \\
+&\mid \mathsf{cast}(T_1,\ T_2,\ e,\ n) \text{ for compatible } T_1, T_2 \text{ with } T_1 \in \mathcal{I} \mid \mathsf{cast}(v,\ v',\ e,\ t) \text{ for } v \sim_{\kappa} v' \longrightarrow \bot \text{ or } \kappa \text{ a sort of propositions} \\
+&\mid \mathsf{rec}_r\ n\ \mathsf{return}\ (z : T).\, C\ \mathsf{with}\ c(x) \Rightarrow u\ \mathsf{by}\ e \\
+v \;::=\; \dots &\mid T.c(t) &&(\mathsf{whnf}_\sim)
+\end{aligned}
+```
+
+In $`\mathsf{cast}(v,\ v',\ e,\ t)`$, $`\kappa`$ is the sort of the two canonical types $`v`$ and $`v'`$: a cast between two canonical types that no rule relates is stuck on its proof of $`\bot`$, and a cast between two propositions is a proof, which never computes.
+The reduction stays deterministic: the conditions of the equations are exclusive, $`(\sim_{\mathsf{irr}\longrightarrow})`$ applies at the instances in a sort of propositions, where no equation of the terms applies, and each step of a part applies when the parts before it are head normal forms and no equation applies.
+
 ### Conversion
 
-The equality and the cast add to the [conversion](https://github.com/sic-lang/rfcs/pull/24) of the core their computations and one rule of equality.
-An equality of two terms reduces its type to a head normal form, then its terms, and applies the rule of its kind; an equality whose type or terms are neutral is a neutral type, as an equality of two variables.
-A cast reduces its types, then its term, and applies the rule of its kind, or is stuck when the types are canonical and unrelated.
+The equality and the cast add to the [conversion](https://github.com/sic-lang/rfcs/pull/24) of the core the [reduction](#reduction) above and two rules of equality that no step can apply, since they need a type: $`(\mathsf{cast}_{\mathsf{refl}})`$, and $`(\sim_{\mathsf{irr}})`$ at a neutral type, whose sort only the type of the neutral term gives, which the algorithm infers.
 The rule $`(\mathsf{cast}_{\mathsf{refl}})`$ is decided on the head normal forms and the neutral terms: a cast is compared to a term by first comparing its types, and to another cast either by this rule on each side or by the congruence of the casts, which the algorithm tries in turn, as [Pujet, Leray and Tabareau](https://doi.org/10.1145/3719342) describe; the [properties](#properties) state that the equality stays decidable, and an implementation chooses how.
 
 ### Erasure
@@ -353,19 +400,22 @@ The equality completes the [meaning](https://github.com/sic-lang/rfcs/pull/24) o
 
 #### Meaning of the Equality
 
-The equality of two closed terms is a canonical proposition, which reduces on the canonical forms of its type and of its terms; its truth is the equality of the terms in the meaning of the core, for a type of a universe that computes to no universe $`U_j`$, and the equality of the two types with the same grades, for a type that computes to one; both clauses read the type up to computation, as the clauses of the core do, so that a type that computes to a universe without being written as one falls under the second:
+The equality of two closed terms is not a canonical proposition: it computes, by the [reduction](#reduction), to a proposition of the kinds of declarations, whose truth the kinds give.
+The reductions are sound when this truth is the equality of the terms in the meaning of the core, for a type of a universe that computes to no universe $`U_j`$, and the equality of the two types with the same grades, for a type that computes to one, which the formulas below state; both read the type up to computation, as the clauses of the core do, so that a type that computes to a universe without being written as one falls under the second:
 
 ```math
 \begin{aligned}
-\text{if } \Sigma \vDash A : U_k \text{ and } A \text{ computes to no universe } U_j \text{, then } \mathsf{true}(t \sim_A u) &\iff \Sigma \vDash t \equiv u : A &&(\mathsf{true}_\sim) \\
-\text{if } A \Downarrow U_j \text{, then } \mathsf{true}(B \sim_A C) &\iff \Sigma \vDash B \equiv C : A \text{ and } \exists B_0, C_0.\ B \Downarrow B_0,\ C \Downarrow C_0 \text{ and } B_0, C_0 \text{ have the same grades} &&(\mathsf{true}_{\sim\mathsf{type}})
+& \Sigma \vDash A : U_k,\ \Sigma \vDash t : A,\ \Sigma \vDash u : A \text{ and } A \text{ computes to no universe } U_j &&(\mathsf{valid}_\sim) \\
+\implies {}& \exists P_0.\ t \sim_A u \Downarrow P_0,\ P_0 \in \mathsf{wf}(\Omega_k) \text{ and } (\mathsf{true}(P_0) \iff \Sigma \vDash t \equiv u : A) \\
+& A \Downarrow U_j,\ \Sigma \vDash B : A \text{ and } \Sigma \vDash C : A &&(\mathsf{valid}_{\sim\mathsf{type}}) \\
+\implies {}& \exists P_0.\ B \sim_A C \Downarrow P_0,\ P_0 \in \mathsf{wf}(\Omega_{j+1}) \text{ and } (\mathsf{true}(P_0) \iff \Sigma \vDash B \equiv C : A \text{ and } \exists B_0, C_0.\ B \Downarrow B_0,\ C \Downarrow C_0 \text{ and } B_0, C_0 \text{ have the same grades})
 \end{aligned}
 ```
 
 Two canonical types have the same grades when they are instances of one declared type with the same grades $`\bar p`$ and sorts $`\bar s`$, whose bodies, instantiated, have the same grades, or when they are the same sort; this is the only clause of the meaning of the core and of its kinds that reads the grades, which the rule $`(\sim_{D\ne})`$ needs for the instances in a universe $`U_n`$: without it, a cast between two function types that differ only by a grade would be sound in the meaning, and break the usage of its term.
-The grades of two propositions are not read: a sort of propositions computes to no universe $`U_j`$, so that the equality of two propositions falls under $`(\mathsf{true}_\sim)`$, where they are equal when both are true or both are false, by the formula $`(\mathsf{eq}_{\mathsf{prop}})`$ of the [core](https://github.com/sic-lang/rfcs/pull/24), as $`(\sim_{\mathsf{prop}})`$ says.
-The reductions of the equality are then sound: $`(\sim_U)`$, $`(\sim_\Omega)`$ and $`(\sim_{\ne})`$ follow the clauses of the universes, $`(\sim_{\mathsf{prop}})`$ the clause of the propositions, $`(\sim^{+}_D)`$, $`(\sim^{-}_D)`$ and $`(\sim^{/}_{D})`$ the clauses that relate the instances in a universe $`U_n`$, $`(\sim_{D\ne})`$ the least relations of the universes and the grades that $`(\mathsf{true}_{\sim\mathsf{type}})`$ reads, $`(\sim^{+})`$ and $`(\sim^{+}_{\ne})`$ the clause $`(\mathsf{eq}_{\mathsf{con}})`$ of the data types, $`(\sim^{-})`$ the clause $`(\mathsf{eq}_{\mathsf{corec}})`$ of the codata types, whose greatest fixed point the truth of the bisimilarity is by $`(\mathsf{true}_{\mathsf{codata}})`$, and $`(\sim^{/})`$ the clause of the quotients below.
-The rules $`(\sim)`$, $`(\sim_{\mathsf{irr}})`$, $`(\mathsf{refl})`$ and $`(\mathsf{transp})`$ are sound: a term is equal to itself, and a hypothetical judgment holds under equal substitutions, which transports a proof.
+The grades of two propositions are not read: a sort of propositions computes to no universe $`U_j`$, so that the equality of two propositions falls under $`(\mathsf{valid}_\sim)`$, where they are equal when both are true or both are false, by the formula $`(\mathsf{eq}_{\mathsf{prop}})`$ of the [core](https://github.com/sic-lang/rfcs/pull/24), as $`(\sim_{\mathsf{prop}})`$ says.
+The formulas hold by the reductions, which follow the clauses of the meaning: $`(\sim_U)`$, $`(\sim_\Omega)`$ and $`(\sim_{\ne})`$ follow the clauses of the universes, $`(\sim_{\mathsf{prop}})`$ the clause of the propositions, $`(\sim^{+}_D)`$, $`(\sim^{-}_D)`$ and $`(\sim^{/}_{D})`$ the clauses that relate the instances in a universe $`U_n`$, $`(\sim_{D\ne})`$ the least relations of the universes and the grades that $`(\mathsf{valid}_{\sim\mathsf{type}})`$ reads, $`(\sim^{+})`$ and $`(\sim^{+}_{\ne})`$ the clause $`(\mathsf{eq}_{\mathsf{con}})`$ of the data types, $`(\sim^{-})`$ the clause $`(\mathsf{eq}_{\mathsf{corec}})`$ of the codata types, whose greatest fixed point the truth of the bisimilarity is by $`(\mathsf{true}_{\mathsf{codata}})`$, and $`(\sim^{/})`$ the clause of the quotients below.
+The rules $`(\sim)`$, $`(\sim_{\mathsf{irr}})`$, $`(\mathsf{refl})`$ and $`(\mathsf{transp})`$ are then sound, the first by the propositions to which an equality computes, the second since an equality at an instance in a sort of propositions computes to $`\top`$: a term is equal to itself, and a hypothetical judgment holds under equal substitutions, which transports a proof.
 
 #### Meaning of the Cast
 
@@ -414,7 +464,7 @@ The symmetry and the transitivity of the equality, and the eliminator $`J`$ into
 ```math
 \begin{aligned}
 & \text{the rules of the equality, of the cast and of the quotients are sound for the meaning above} &&(\mathsf{sound}_\sim) \\
-& \Sigma;\ \gamma \mathrel{▶_m} t \text{ and } t \longrightarrow u \text{ by } (\mathsf{cast}_U),\ (\mathsf{cast}_\Omega),\ (\mathsf{cast}^{+}),\ (\mathsf{cast}^{-}),\ (\mathsf{cast}^{/}) \text{ or } (D^{/}_{\mathsf{rec}\beta}) \implies \Sigma;\ \gamma \mathrel{▶_m} u &&(\mathsf{usage}_{\mathsf{cast}}) \\
+& \Sigma;\ \gamma \mathrel{▶_m} t \text{ and } t \longrightarrow u \text{ by } (\equiv_{\longrightarrow}) \text{ from } (\mathsf{cast}_U),\ (\mathsf{cast}_\Omega),\ (\mathsf{cast}^{+}),\ (\mathsf{cast}^{-}),\ (\mathsf{cast}^{/}) \text{ or } (D^{/}_{\mathsf{rec}\beta}) \implies \Sigma;\ \gamma \mathrel{▶_m} u &&(\mathsf{usage}_{\mathsf{cast}}) \\
 & \Sigma;\ \Gamma \vdash t \equiv u : A \text{ stays decidable with the rule } (\mathsf{cast}_{\mathsf{refl}}) &&(\mathsf{decidable}_{\mathsf{cast}}) \\
 & (\mathsf{hyp}_\iota) \implies \Sigma;\ \varepsilon \nvdash e : \bot, \text{ hence no closed program reaches a stuck cast} &&(\mathsf{consistent}_\sim) \\
 & (\mathsf{hyp}_\bullet),\ \Sigma;\ \varepsilon \vdash t : A,\ \Sigma;\ \mathbb{0}^{\mathsf{c}} \mathrel{▶_{\mathbb{1}\mathbb{1}^{\mathsf{m}}}} t \text{ and } t \Downarrow v \implies t^\bullet \Downarrow v^\bullet, \text{ with the casts erased to their terms} &&(\mathsf{sound}_{\bullet\mathsf{cast}})
@@ -445,7 +495,7 @@ Each annex derives its formulas from the rules of this RFC, of which they are no
 - The rule $`(\mathsf{cast}_{\mathsf{refl}})`$ is a rule of conversion rather than a rule of reduction, as [Pujet, Leray and Tabareau](https://doi.org/10.1145/3719342) have it: a reduction would have to decide an equality of types inside the reduction, which no framework of normalization supports; a rule of conversion is decided after the reduction, on the head normal forms, as the extensionalities are, and the algorithm tries the two rules that may apply.
   Without it, the recursor of an indexed family, derived by fording, would compute on closed terms only, since the transports along the equalities of the indices would stay in the way on open terms.
 - The equality of two instances of a declared type gives the equality of their bodies, not of their parameters, as in the type theory of Pujet, Leray and Tabareau: the injectivity of the parameters, in the lowest universe, together with the extensionality of propositions, embeds a universe into itself, which is inconsistent; the equality of the bodies is what the cast needs, and the equality of the arguments is proved by hand where it holds.
-- The equality of two instances of a type in a universe reads their grades, and two instances with different grades are unequal, while two propositions are compared by their implications alone: the meaning of the core ignores the grades, so that a function of a linear argument and a function of an unrestricted one are equal types in it, and a cast between them would let a program use a linear resource twice; the clause $`(\mathsf{true}_{\sim\mathsf{type}})`$ is the one place where the meaning reads the grades, and the weakening of a function stays an explicit abstraction.
+- The equality of two instances of a type in a universe reads their grades, and two instances with different grades are unequal, while two propositions are compared by their implications alone: the meaning of the core ignores the grades, so that a function of a linear argument and a function of an unrestricted one are equal types in it, and a cast between them would let a program use a linear resource twice; the formula $`(\mathsf{valid}_{\sim\mathsf{type}})`$ is the one place where the meaning reads the grades, and the weakening of a function stays an explicit abstraction.
 - The equality of two recursive codata terms is their bisimilarity, a coinductive proposition, rather than an equality withheld from the recursive types or decided by unfolding: the bisimilarity gives back as a proposition the extensionality that the conversion withholds, is proved by the corecursor in $`\Omega`$, which the [data and codata types](https://github.com/sic-lang/rfcs/pull/34) allow for the recursive codata in $`\Omega`$, and is what [McBride](https://personal.cis.strath.ac.uk/conor.mcbride/pub/JUnfold/junfold.pdf) adds to observational type theory for the coinductive types.
 - The transport is primitive and the eliminator $`J`$ admissible, as in the type theory of Pujet, Leray and Tabareau: the transport into a proposition needs no computation, since proofs are irrelevant, and the elimination into a type is a cast, which computes on the types; the symmetry and the transitivity are admissible too, and the congruence is an abbreviation of the transport, so that the equality has three primitives and no more.
   The admissible rules are properties, whose witnesses no rule names, rather than derived rules written in this RFC: the rules of the equality are then written with the primitives and the congruence only, which the equality of the arguments of two destructors states from the second to the first, so that the arguments are cast back without a symmetry, where the rule Eq-Π of [Pujet and Tabareau](https://doi.org/10.1145/3498693) casts along the inverse of the proof.
