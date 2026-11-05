@@ -33,6 +33,8 @@ Each letter keeps one kind, in every annex, so that the kind of an object, and w
 | $`c`$ | Constants |
 | $`\rho, \sigma, \tau`$ | Assignments of the level variables, and substitutions |
 
+No digit is double-struck: a constant written with digits, such as a grade or a mode, has plain digits and an exponent that names its kind.
+
 ## Sequences and Subscripts
 
 A bar marks a sequence, as the arguments $`\bar a`$ of an instance or the variables $`\bar x`$ of a telescope.
