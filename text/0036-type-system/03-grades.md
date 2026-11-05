@@ -9,16 +9,16 @@ A grade is a pair $`\langle \pi_1, \pi_2 \rangle`$ of multiplicities, whose firs
 The uses at run time are among all the uses, so a pair whose second multiplicity is $`0`$ has $`0`$ as its first multiplicity too: of the nine pairs, the seven others are the grades.
 A grade is written as its two multiplicities side by side, with the exponent $`\mathsf{g}`$, such as $`{01}^{\mathsf{g}}`$ for $`\langle 0, 1 \rangle`$; a grade whose multiplicities are variables keeps the angle brackets, as $`\langle \pi_1, \pi_2 \rangle`$, since $`\pi_1 \pi_2`$ would read as a product.
 
-Each grade has a name in Sic, made of the names of its two multiplicities: `none`, `linear` and `unrestricted` for $`0`$, $`1`$ and $`\omega`$, except a run-time multiplicity $`\omega`$ under a total multiplicity $`1`$, named `affine` since it counts at most one use:
+Each grade has a name in Sic, made of the names of its two multiplicities: `none`, `linear` and `unrestricted` for $`0`$, $`1`$ and $`\omega`$, except a run-time multiplicity $`\omega`$ under a total multiplicity $`1`$, named `affine` since it counts at most one use, in the order of their multiplicities, $`0`$, $`1`$, then $`\omega`$:
 
 | Name | Grade |
 | --- | --- |
-| `affine / linear` | $`{\omega 1}^{\mathsf{g}}`$ |
+| `none / none` | $`{00}^{\mathsf{g}}`$ |
+| `none / linear` | $`{01}^{\mathsf{g}}`$ |
+| `none / unrestricted` | $`{0\omega}^{\mathsf{g}}`$ |
 | `linear / linear` | $`{11}^{\mathsf{g}}`$ |
 | `linear / unrestricted` | $`{1\omega}^{\mathsf{g}}`$ |
-| `none / linear` | $`{01}^{\mathsf{g}}`$ |
-| `none / none` | $`{00}^{\mathsf{g}}`$ |
-| `none / unrestricted` | $`{0\omega}^{\mathsf{g}}`$ |
+| `affine / linear` | $`{\omega 1}^{\mathsf{g}}`$ |
 | `unrestricted / unrestricted` | $`{\omega\omega}^{\mathsf{g}}`$ |
 
 The operations act on each multiplicity, and the seven grades are closed under them:
