@@ -391,8 +391,8 @@ The symmetry and the transitivity of the equality, and the eliminator $`J`$ into
 & \Sigma;\ \Gamma \vdash e : t \sim_A u \implies \exists e'.\ \Sigma;\ \Gamma \vdash e' : u \sim_A t &&(\mathsf{sym}_\sim) \\
 & \Sigma;\ \Gamma \vdash e_1 : t \sim_A u \text{ and } \Sigma;\ \Gamma \vdash e_2 : u \sim_A v \implies \exists e'.\ \Sigma;\ \Gamma \vdash e' : t \sim_A v &&(\mathsf{trans}_\sim) \\
 & \Sigma;\ \Gamma,\ y : A \vdash C : U_{l'},\ \Sigma;\ \Gamma \vdash e : t \sim_A u \text{ and } \Sigma;\ \Gamma \vdash v : C[t/y] &&(J_\sim) \\
-\implies {}& \exists J_e(v).\ \Sigma;\ \Gamma \vdash J_e(v) : C[u/y] \\
-& \text{the premises of } (J_\sim) \text{ and } \Sigma;\ \Gamma \vdash t \equiv u : A \implies \Sigma;\ \Gamma \vdash J_e(v) \equiv v : C[u/y] &&(J_{\sim\beta})
+\implies {}& \exists J_e(v).\ \Sigma;\ \Gamma \vdash J_e(v) : C[u/y] \text{ and} \\
+& \quad (\Sigma;\ \Gamma \vdash t \equiv u : A \implies \Sigma;\ \Gamma \vdash J_e(v) \equiv v : C[u/y])
 \end{aligned}
 ```
 
