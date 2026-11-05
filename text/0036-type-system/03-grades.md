@@ -25,9 +25,10 @@ The operations act on each multiplicity, and the seven grades are closed under t
 
 ```math
 \begin{aligned}
-& \langle \pi_1, \pi_2 \rangle + \langle \pi_3, \pi_4 \rangle = \langle \pi_1 + \pi_3,\ \pi_2 + \pi_4 \rangle &&(\mathsf{op}_p) \\
-& \langle \pi_1, \pi_2 \rangle \cdot \langle \pi_3, \pi_4 \rangle = \langle \pi_1 \cdot \pi_3,\ \pi_2 \cdot \pi_4 \rangle \\
-& \langle \pi_1, \pi_2 \rangle \wedge \langle \pi_3, \pi_4 \rangle = \langle \pi_1 \wedge \pi_3,\ \pi_2 \wedge \pi_4 \rangle
+& \text{and} &&(\mathsf{op}_p) \\
+& \quad \langle \pi_1, \pi_2 \rangle + \langle \pi_3, \pi_4 \rangle = \langle \pi_1 + \pi_3,\ \pi_2 + \pi_4 \rangle \\
+& \quad \langle \pi_1, \pi_2 \rangle \cdot \langle \pi_3, \pi_4 \rangle = \langle \pi_1 \cdot \pi_3,\ \pi_2 \cdot \pi_4 \rangle \\
+& \quad \langle \pi_1, \pi_2 \rangle \wedge \langle \pi_3, \pi_4 \rangle = \langle \pi_1 \wedge \pi_3,\ \pi_2 \wedge \pi_4 \rangle
 \end{aligned}
 ```
 
@@ -43,8 +44,9 @@ The grades that allow discarding a variable are exactly those that allow duplica
 
 ```math
 \begin{aligned}
-& p \le \mathbb{0} \iff p \le p + p &&(\mathsf{discard}_p) \\
-& p \le \mathbb{0} \iff p \in \{\mathbb{0},\ \langle 0, \omega \rangle,\ \langle \omega, \omega \rangle\}
+& \text{and} &&(\mathsf{discard}_p) \\
+& \quad p \le \mathbb{0} \iff p \le p + p \\
+& \quad p \le \mathbb{0} \iff p \in \{\mathbb{0},\ \langle 0, \omega \rangle,\ \langle \omega, \omega \rangle\}
 \end{aligned}
 ```
 
@@ -72,10 +74,12 @@ This meaning chooses the seven grades among the nine pairs: $`\langle 1, 0 \rang
 
 ```math
 \begin{aligned}
-& \mathsf{uses}(\langle 1, 0 \rangle) = \varnothing &&(\mathsf{excluded}_p) \\
-& \mathsf{uses}(\langle \omega, 0 \rangle) = \mathsf{uses}(\mathbb{0}) \\
-& \mathsf{uses}(p) \ne \varnothing &&(\mathsf{distinct}_p) \\
-& \mathsf{uses}(p) = \mathsf{uses}(q) \implies p = q
+& \text{and} &&(\mathsf{excluded}_p) \\
+& \quad \mathsf{uses}(\langle 1, 0 \rangle) = \varnothing \\
+& \quad \mathsf{uses}(\langle \omega, 0 \rangle) = \mathsf{uses}(\mathbb{0}) \\
+& \text{and} &&(\mathsf{distinct}_p) \\
+& \quad \mathsf{uses}(p) \ne \varnothing \\
+& \quad \mathsf{uses}(p) = \mathsf{uses}(q) \implies p = q
 \end{aligned}
 ```
 
@@ -109,8 +113,9 @@ The projection on the run-time multiplicity is sound for the first components of
 ```math
 \begin{aligned}
 & \{n_1 \mid (n_1, n_2) \in \mathsf{uses}(p)\} \subseteq \mathsf{uses}(\mathsf{run}(p)) &&(\mathsf{sound}_{\mathsf{run}}) \\
-& 2 \in \mathsf{uses}(\mathsf{run}(\langle \omega, 1 \rangle)) &&(\mathsf{inexact}_{\mathsf{run}}) \\
-& 2 \notin \{n_1 \mid (n_1, n_2) \in \mathsf{uses}(\langle \omega, 1 \rangle)\}
+& \text{and} &&(\mathsf{inexact}_{\mathsf{run}}) \\
+& \quad 2 \in \mathsf{uses}(\mathsf{run}(\langle \omega, 1 \rangle)) \\
+& \quad 2 \notin \{n_1 \mid (n_1, n_2) \in \mathsf{uses}(\langle \omega, 1 \rangle)\}
 \end{aligned}
 ```
 
@@ -124,27 +129,33 @@ The seven grades form a modality of [Abel, Danielsson and Eriksson](https://doi.
 
 ```math
 \begin{aligned}
-& (p + q) + r = p + (q + r) &&(\mathsf{semiring}_p) \\
-& p + q = q + p \\
-& \mathbb{0} + p = p \\
-& (p \cdot q) \cdot r = p \cdot (q \cdot r) \\
-& \mathbb{1} \cdot p = p \cdot \mathbb{1} = p \\
-& \mathbb{0} \cdot p = p \cdot \mathbb{0} = \mathbb{0} \\
-& (p \wedge q) \wedge r = p \wedge (q \wedge r) &&(\mathsf{meet}_p) \\
-& p \wedge q = q \wedge p \\
-& p \wedge p = p \\
-& p \cdot (q + r) = (p \cdot q) + (p \cdot r) &&({\cdot}{+}_p) \\
-& (q + r) \cdot p = (q \cdot p) + (r \cdot p) \\
-& p \cdot (q \wedge r) = (p \cdot q) \wedge (p \cdot r) &&({\cdot}{\wedge}_p) \\
-& (q \wedge r) \cdot p = (q \cdot p) \wedge (r \cdot p) \\
-& p + (q \wedge r) = (p + q) \wedge (p + r) &&({+}{\wedge}_p) \\
-& (q \wedge r) + p = (q + p) \wedge (r + p) \\
+& \text{and} &&(\mathsf{semiring}_p) \\
+& \quad (p + q) + r = p + (q + r) \\
+& \quad p + q = q + p \\
+& \quad \mathbb{0} + p = p \\
+& \quad (p \cdot q) \cdot r = p \cdot (q \cdot r) \\
+& \quad \mathbb{1} \cdot p = p \cdot \mathbb{1} = p \\
+& \quad \mathbb{0} \cdot p = p \cdot \mathbb{0} = \mathbb{0} \\
+& \text{and} &&(\mathsf{meet}_p) \\
+& \quad (p \wedge q) \wedge r = p \wedge (q \wedge r) \\
+& \quad p \wedge q = q \wedge p \\
+& \quad p \wedge p = p \\
+& \text{and} &&({\cdot}{+}_p) \\
+& \quad p \cdot (q + r) = (p \cdot q) + (p \cdot r) \\
+& \quad (q + r) \cdot p = (q \cdot p) + (r \cdot p) \\
+& \text{and} &&({\cdot}{\wedge}_p) \\
+& \quad p \cdot (q \wedge r) = (p \cdot q) \wedge (p \cdot r) \\
+& \quad (q \wedge r) \cdot p = (q \cdot p) \wedge (r \cdot p) \\
+& \text{and} &&({+}{\wedge}_p) \\
+& \quad p + (q \wedge r) = (p + q) \wedge (p + r) \\
+& \quad (q \wedge r) + p = (q + p) \wedge (r + p) \\
 & p \le q \implies p + r \le q + r &&({+}{\le}_p) \\
 & r \le p \text{ and } r \le q \iff r \le p \wedge q &&({\wedge}{\le}_p) \\
-& \mathbb{0} \ne \mathbb{1} &&(\mathbb{0}_p) \\
-& p + q = \mathbb{0} \implies p = \mathbb{0} \text{ and } q = \mathbb{0} \\
-& p \wedge q = \mathbb{0} \implies p = \mathbb{0} \text{ and } q = \mathbb{0} \\
-& p \cdot q = \mathbb{0} \implies p = \mathbb{0} \text{ or } q = \mathbb{0}
+& \text{and} &&(\mathbb{0}_p) \\
+& \quad \mathbb{0} \ne \mathbb{1} \\
+& \quad p + q = \mathbb{0} \implies p = \mathbb{0} \text{ and } q = \mathbb{0} \\
+& \quad p \wedge q = \mathbb{0} \implies p = \mathbb{0} \text{ and } q = \mathbb{0} \\
+& \quad p \cdot q = \mathbb{0} \implies p = \mathbb{0} \text{ or } q = \mathbb{0}
 \end{aligned}
 ```
 
@@ -154,8 +165,9 @@ Every non-empty set $`S`$ of grades has a greatest lower bound $`\bigwedge S`$:
 
 ```math
 \begin{aligned}
-& \forall p \in S.\ \textstyle\bigwedge S \le p &&(\textstyle\bigwedge_p) \\
-& (\forall p \in S.\ r \le p) \implies r \le \textstyle\bigwedge S
+& \text{and} &&(\textstyle\bigwedge_p) \\
+& \quad \forall p \in S.\ \textstyle\bigwedge S \le p \\
+& \quad (\forall p \in S.\ r \le p) \implies r \le \textstyle\bigwedge S
 \end{aligned}
 ```
 
@@ -174,11 +186,12 @@ The projection on the run-time multiplicity is a homomorphism of modalities, whi
 
 ```math
 \begin{aligned}
-& \mathsf{run}(p + q) = \mathsf{run}(p) + \mathsf{run}(q) &&(\mathsf{run}_{\mathsf{op}}) \\
-& \mathsf{run}(p \cdot q) = \mathsf{run}(p) \cdot \mathsf{run}(q) \\
-& \mathsf{run}(p \wedge q) = \mathsf{run}(p) \wedge \mathsf{run}(q) \\
-& \mathsf{run}(\mathbb{0}) = 0 \\
-& \mathsf{run}(\mathbb{1}) = 1 \\
+& \text{and} &&(\mathsf{run}_{\mathsf{op}}) \\
+& \quad \mathsf{run}(p + q) = \mathsf{run}(p) + \mathsf{run}(q) \\
+& \quad \mathsf{run}(p \cdot q) = \mathsf{run}(p) \cdot \mathsf{run}(q) \\
+& \quad \mathsf{run}(p \wedge q) = \mathsf{run}(p) \wedge \mathsf{run}(q) \\
+& \quad \mathsf{run}(\mathbb{0}) = 0 \\
+& \quad \mathsf{run}(\mathbb{1}) = 1 \\
 & p \le q \implies \mathsf{run}(p) \le \mathsf{run}(q) &&(\mathsf{run}_{\le})
 \end{aligned}
 ```

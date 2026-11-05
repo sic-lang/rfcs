@@ -17,9 +17,10 @@ A term used with the grade $`p`$ is checked in the mode $`\llcorner p \lrcorner`
 
 ```math
 \begin{aligned}
-& \llcorner \mathbb{0} \lrcorner = \mathbb{0}\mathbb{0}^{\mathsf{m}} &&(\mathsf{mode}_p) \\
-& \llcorner \langle 0, \pi \rangle \lrcorner = \mathbb{0}\mathbb{1}^{\mathsf{m}} \text{ if } \pi \ne 0 \\
-& \llcorner \langle \pi_1, \pi_2 \rangle \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \pi_1 \ne 0
+& \text{and} &&(\mathsf{mode}_p) \\
+& \quad \llcorner \mathbb{0} \lrcorner = \mathbb{0}\mathbb{0}^{\mathsf{m}} \\
+& \quad \llcorner \langle 0, \pi \rangle \lrcorner = \mathbb{0}\mathbb{1}^{\mathsf{m}} \text{ if } \pi \ne 0 \\
+& \quad \llcorner \langle \pi_1, \pi_2 \rangle \lrcorner = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } \pi_1 \ne 0
 \end{aligned}
 ```
 
@@ -27,8 +28,9 @@ The product of two modes is the mode of the product of their grades, and, inside
 
 ```math
 \begin{aligned}
-& m_1 \cdot^{\mathsf{m}} m_2 = \llcorner \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \lrcorner &&(\mathsf{product}_m) \\
-& m \odot p = m \cdot^{\mathsf{m}} \llcorner p \lrcorner
+& \text{and} &&(\mathsf{product}_m) \\
+& \quad m_1 \cdot^{\mathsf{m}} m_2 = \llcorner \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \lrcorner \\
+& \quad m \odot p = m \cdot^{\mathsf{m}} \llcorner p \lrcorner
 \end{aligned}
 ```
 
@@ -37,9 +39,10 @@ The grades of the three modes are closed under multiplication, so that the grade
 ```math
 \begin{aligned}
 & \ulcorner m_1 \cdot^{\mathsf{m}} m_2 \urcorner = \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner &&(\mathsf{closed}_m) \\
-& m_1 \cdot^{\mathsf{m}} m_2 = \mathbb{0}\mathbb{0}^{\mathsf{m}} \text{ if } m_1 = \mathbb{0}\mathbb{0}^{\mathsf{m}} \text{ or } m_2 = \mathbb{0}\mathbb{0}^{\mathsf{m}} &&(\mathsf{erased}_m) \\
-& m_1 \cdot^{\mathsf{m}} m_2 = \mathbb{0}\mathbb{1}^{\mathsf{m}} \text{ if } \mathbb{0}\mathbb{0}^{\mathsf{m}} \notin \{m_1, m_2\} \text{ and } \mathbb{0}\mathbb{1}^{\mathsf{m}} \in \{m_1, m_2\} \\
-& m_1 \cdot^{\mathsf{m}} m_2 = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m_1 = m_2 = \mathbb{1}\mathbb{1}^{\mathsf{m}}
+& \text{and} &&(\mathsf{erased}_m) \\
+& \quad m_1 \cdot^{\mathsf{m}} m_2 = \mathbb{0}\mathbb{0}^{\mathsf{m}} \text{ if } m_1 = \mathbb{0}\mathbb{0}^{\mathsf{m}} \text{ or } m_2 = \mathbb{0}\mathbb{0}^{\mathsf{m}} \\
+& \quad m_1 \cdot^{\mathsf{m}} m_2 = \mathbb{0}\mathbb{1}^{\mathsf{m}} \text{ if } \mathbb{0}\mathbb{0}^{\mathsf{m}} \notin \{m_1, m_2\} \text{ and } \mathbb{0}\mathbb{1}^{\mathsf{m}} \in \{m_1, m_2\} \\
+& \quad m_1 \cdot^{\mathsf{m}} m_2 = \mathbb{1}\mathbb{1}^{\mathsf{m}} \text{ if } m_1 = m_2 = \mathbb{1}\mathbb{1}^{\mathsf{m}}
 \end{aligned}
 ```
 
@@ -54,10 +57,12 @@ The graded type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.114
 
 ```math
 \begin{aligned}
-& \llcorner 0 \lrcorner = \mathbb{0}^{\mathsf{m}} &&(\mathsf{mode}_\pi) \\
-& \llcorner \pi \lrcorner = \mathbb{1}^{\mathsf{m}} \text{ if } \pi \ne 0 \\
-& m_1 \cdot^{\mathsf{m}} m_2 = \llcorner \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \lrcorner &&(\mathsf{product}_\pi) \\
-& m \odot \pi = m \cdot^{\mathsf{m}} \llcorner \pi \lrcorner \\
+& \text{and} &&(\mathsf{mode}_\pi) \\
+& \quad \llcorner 0 \lrcorner = \mathbb{0}^{\mathsf{m}} \\
+& \quad \llcorner \pi \lrcorner = \mathbb{1}^{\mathsf{m}} \text{ if } \pi \ne 0 \\
+& \text{and} &&(\mathsf{product}_\pi) \\
+& \quad m_1 \cdot^{\mathsf{m}} m_2 = \llcorner \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \lrcorner \\
+& \quad m \odot \pi = m \cdot^{\mathsf{m}} \llcorner \pi \lrcorner \\
 & \ulcorner m_1 \cdot^{\mathsf{m}} m_2 \urcorner = \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner &&(\mathsf{closed}_\pi)
 \end{aligned}
 ```
@@ -66,9 +71,10 @@ The three modes project on these two as the grades project on their run-time mul
 
 ```math
 \begin{aligned}
-& \mathsf{run}(\mathbb{0}\mathbb{0}^{\mathsf{m}}) = \mathbb{0}^{\mathsf{m}} &&(\mathsf{run}_m) \\
-& \mathsf{run}(\mathbb{0}\mathbb{1}^{\mathsf{m}}) = \mathbb{0}^{\mathsf{m}} \\
-& \mathsf{run}(\mathbb{1}\mathbb{1}^{\mathsf{m}}) = \mathbb{1}^{\mathsf{m}}
+& \text{and} &&(\mathsf{run}_m) \\
+& \quad \mathsf{run}(\mathbb{0}\mathbb{0}^{\mathsf{m}}) = \mathbb{0}^{\mathsf{m}} \\
+& \quad \mathsf{run}(\mathbb{0}\mathbb{1}^{\mathsf{m}}) = \mathbb{0}^{\mathsf{m}} \\
+& \quad \mathsf{run}(\mathbb{1}\mathbb{1}^{\mathsf{m}}) = \mathbb{1}^{\mathsf{m}}
 \end{aligned}
 ```
 
@@ -78,16 +84,17 @@ The three modes form a mode structure of the [formalization](https://github.com/
 
 ```math
 \begin{aligned}
-& (m_1 \cdot^{\mathsf{m}} m_2) \cdot^{\mathsf{m}} m_3 = m_1 \cdot^{\mathsf{m}} (m_2 \cdot^{\mathsf{m}} m_3) &&(\mathsf{structure}_m) \\
-& m_1 \cdot^{\mathsf{m}} m_2 = m_2 \cdot^{\mathsf{m}} m_1 \\
-& m \cdot^{\mathsf{m}} m = m \\
-& \mathbb{1}\mathbb{1}^{\mathsf{m}} \cdot^{\mathsf{m}} m = m \\
-& \mathbb{0}\mathbb{0}^{\mathsf{m}} \cdot^{\mathsf{m}} m = \mathbb{0}\mathbb{0}^{\mathsf{m}} \\
-& \ulcorner \mathbb{0}\mathbb{0}^{\mathsf{m}} \urcorner = \mathbb{0} \\
-& \llcorner \ulcorner m \urcorner \lrcorner = m \\
-& \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner q \lrcorner = \llcorner p \cdot q \lrcorner \\
-& p \cdot \ulcorner \llcorner p \lrcorner \urcorner = \ulcorner \llcorner p \lrcorner \urcorner \cdot p = p \\
-& p \le q \text{ and } q \le \ulcorner m \urcorner \cdot q \implies p \le \ulcorner m \urcorner \cdot p
+& \text{and} &&(\mathsf{structure}_m) \\
+& \quad (m_1 \cdot^{\mathsf{m}} m_2) \cdot^{\mathsf{m}} m_3 = m_1 \cdot^{\mathsf{m}} (m_2 \cdot^{\mathsf{m}} m_3) \\
+& \quad m_1 \cdot^{\mathsf{m}} m_2 = m_2 \cdot^{\mathsf{m}} m_1 \\
+& \quad m \cdot^{\mathsf{m}} m = m \\
+& \quad \mathbb{1}\mathbb{1}^{\mathsf{m}} \cdot^{\mathsf{m}} m = m \\
+& \quad \mathbb{0}\mathbb{0}^{\mathsf{m}} \cdot^{\mathsf{m}} m = \mathbb{0}\mathbb{0}^{\mathsf{m}} \\
+& \quad \ulcorner \mathbb{0}\mathbb{0}^{\mathsf{m}} \urcorner = \mathbb{0} \\
+& \quad \llcorner \ulcorner m \urcorner \lrcorner = m \\
+& \quad \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner q \lrcorner = \llcorner p \cdot q \lrcorner \\
+& \quad p \cdot \ulcorner \llcorner p \lrcorner \urcorner = \ulcorner \llcorner p \lrcorner \urcorner \cdot p = p \\
+& \quad p \le q \text{ and } q \le \ulcorner m \urcorner \cdot q \implies p \le \ulcorner m \urcorner \cdot p
 \end{aligned}
 ```
 
@@ -95,8 +102,9 @@ The projection is a homomorphism of mode structures: it commutes with the mode o
 
 ```math
 \begin{aligned}
-& \mathsf{run}(\llcorner p \lrcorner) = \llcorner \mathsf{run}(p) \lrcorner &&(\mathsf{run}_{\odot}) \\
-& \ulcorner \mathsf{run}(m) \urcorner = \mathsf{run}(\ulcorner m \urcorner) \\
-& \mathsf{run}(m \odot p) = \mathsf{run}(m) \odot \mathsf{run}(p)
+& \text{and} &&(\mathsf{run}_{\odot}) \\
+& \quad \mathsf{run}(\llcorner p \lrcorner) = \llcorner \mathsf{run}(p) \lrcorner \\
+& \quad \ulcorner \mathsf{run}(m) \urcorner = \mathsf{run}(\ulcorner m \urcorner) \\
+& \quad \mathsf{run}(m \odot p) = \mathsf{run}(m) \odot \mathsf{run}(p)
 \end{aligned}
 ```

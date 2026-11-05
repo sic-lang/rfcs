@@ -31,10 +31,11 @@ A variable of multiplicity $`\omega`$ may then be used where any multiplicity is
 
 ```math
 \begin{aligned}
-& \omega \le 0 &&(\mathsf{order}_\pi) \\
-& \omega \le 1 \\
-& 0 \not\le 1 \\
-& 1 \not\le 0
+& \text{and} &&(\mathsf{order}_\pi) \\
+& \quad \omega \le 0 \\
+& \quad \omega \le 1 \\
+& \quad 0 \not\le 1 \\
+& \quad 1 \not\le 0
 \end{aligned}
 ```
 
@@ -45,9 +46,10 @@ The order is the reverse inclusion, so that a lower multiplicity allows more num
 
 ```math
 \begin{aligned}
-& \mathsf{uses}(0) = \{0\} &&(\mathsf{uses}_\pi) \\
-& \mathsf{uses}(1) = \{1\} \\
-& \mathsf{uses}(\omega) = \mathbb{N}
+& \text{and} &&(\mathsf{uses}_\pi) \\
+& \quad \mathsf{uses}(0) = \{0\} \\
+& \quad \mathsf{uses}(1) = \{1\} \\
+& \quad \mathsf{uses}(\omega) = \mathbb{N}
 \end{aligned}
 ```
 
@@ -82,26 +84,32 @@ The multiplicities form a modality of [Abel, Danielsson and Eriksson](https://do
 
 ```math
 \begin{aligned}
-& (\pi_1 + \pi_2) + \pi_3 = \pi_1 + (\pi_2 + \pi_3) &&(\mathsf{semiring}_\pi) \\
-& \pi_1 + \pi_2 = \pi_2 + \pi_1 \\
-& 0 + \pi = \pi \\
-& (\pi_1 \cdot \pi_2) \cdot \pi_3 = \pi_1 \cdot (\pi_2 \cdot \pi_3) \\
-& 1 \cdot \pi = \pi \cdot 1 = \pi \\
-& 0 \cdot \pi = \pi \cdot 0 = 0 \\
-& (\pi_1 \wedge \pi_2) \wedge \pi_3 = \pi_1 \wedge (\pi_2 \wedge \pi_3) &&(\mathsf{meet}_\pi) \\
-& \pi_1 \wedge \pi_2 = \pi_2 \wedge \pi_1 \\
-& \pi \wedge \pi = \pi \\
-& \pi_1 \cdot (\pi_2 + \pi_3) = (\pi_1 \cdot \pi_2) + (\pi_1 \cdot \pi_3) &&({\cdot}{+}_\pi) \\
-& (\pi_2 + \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) + (\pi_3 \cdot \pi_1) \\
-& \pi_1 \cdot (\pi_2 \wedge \pi_3) = (\pi_1 \cdot \pi_2) \wedge (\pi_1 \cdot \pi_3) &&({\cdot}{\wedge}_\pi) \\
-& (\pi_2 \wedge \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) \wedge (\pi_3 \cdot \pi_1) \\
-& \pi_1 + (\pi_2 \wedge \pi_3) = (\pi_1 + \pi_2) \wedge (\pi_1 + \pi_3) &&({+}{\wedge}_\pi) \\
-& (\pi_2 \wedge \pi_3) + \pi_1 = (\pi_2 + \pi_1) \wedge (\pi_3 + \pi_1) \\
+& \text{and} &&(\mathsf{semiring}_\pi) \\
+& \quad (\pi_1 + \pi_2) + \pi_3 = \pi_1 + (\pi_2 + \pi_3) \\
+& \quad \pi_1 + \pi_2 = \pi_2 + \pi_1 \\
+& \quad 0 + \pi = \pi \\
+& \quad (\pi_1 \cdot \pi_2) \cdot \pi_3 = \pi_1 \cdot (\pi_2 \cdot \pi_3) \\
+& \quad 1 \cdot \pi = \pi \cdot 1 = \pi \\
+& \quad 0 \cdot \pi = \pi \cdot 0 = 0 \\
+& \text{and} &&(\mathsf{meet}_\pi) \\
+& \quad (\pi_1 \wedge \pi_2) \wedge \pi_3 = \pi_1 \wedge (\pi_2 \wedge \pi_3) \\
+& \quad \pi_1 \wedge \pi_2 = \pi_2 \wedge \pi_1 \\
+& \quad \pi \wedge \pi = \pi \\
+& \text{and} &&({\cdot}{+}_\pi) \\
+& \quad \pi_1 \cdot (\pi_2 + \pi_3) = (\pi_1 \cdot \pi_2) + (\pi_1 \cdot \pi_3) \\
+& \quad (\pi_2 + \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) + (\pi_3 \cdot \pi_1) \\
+& \text{and} &&({\cdot}{\wedge}_\pi) \\
+& \quad \pi_1 \cdot (\pi_2 \wedge \pi_3) = (\pi_1 \cdot \pi_2) \wedge (\pi_1 \cdot \pi_3) \\
+& \quad (\pi_2 \wedge \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) \wedge (\pi_3 \cdot \pi_1) \\
+& \text{and} &&({+}{\wedge}_\pi) \\
+& \quad \pi_1 + (\pi_2 \wedge \pi_3) = (\pi_1 + \pi_2) \wedge (\pi_1 + \pi_3) \\
+& \quad (\pi_2 \wedge \pi_3) + \pi_1 = (\pi_2 + \pi_1) \wedge (\pi_3 + \pi_1) \\
 & \pi_1 \le \pi_2 \implies \pi_1 + \pi_3 \le \pi_2 + \pi_3 &&({+}{\le}_\pi) \\
 & \pi_3 \le \pi_1 \text{ and } \pi_3 \le \pi_2 \iff \pi_3 \le \pi_1 \wedge \pi_2 &&({\wedge}{\le}_\pi) \\
-& 0 \ne 1 &&(0_\pi) \\
-& \pi_1 + \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 \\
-& \pi_1 \wedge \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 \\
-& \pi_1 \cdot \pi_2 = 0 \implies \pi_1 = 0 \text{ or } \pi_2 = 0
+& \text{and} &&(0_\pi) \\
+& \quad 0 \ne 1 \\
+& \quad \pi_1 + \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 \\
+& \quad \pi_1 \wedge \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 \\
+& \quad \pi_1 \cdot \pi_2 = 0 \implies \pi_1 = 0 \text{ or } \pi_2 = 0
 \end{aligned}
 ```
