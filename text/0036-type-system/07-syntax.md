@@ -56,6 +56,7 @@ An entry is one of:
 The names that an entry introduces are $`D_1, \dots, D_n`$ for a declaration, and $`c`$ for a definition or a constant.
 A signature is either empty, written $`\varnothing`$, or a signature $`\Sigma`$ extended by an entry $`e`$, written $`\Sigma,\ e`$.
 A signature has an entry $`c.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, written $`c.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma`$, when one of its entries is a definition or a constant with the name $`c`$, these variables, the mode $`m`$ and the type $`A`$, which the rules of the definitions and of the constants share.
+A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa`$, written $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma`$, when one of its entries is a declaration that declares $`D`$, with these variables, the parameters $`\Delta`$ and the sort $`\kappa`$, which the rules of the declared types share.
 The names of a signature are distinct when each of its entries introduces names that no entry before it introduces.
 
 ## Properties
