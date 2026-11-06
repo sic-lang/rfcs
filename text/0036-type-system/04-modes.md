@@ -9,16 +9,16 @@ The type system has three modes, each named after its grade $`\ulcorner m \urcor
 
 | Mode | Grade | Counts |
 | --- | --- | --- |
-| $`{00}^{\mathsf{m}}`$ | $`{00}^{\mathsf{g}}`$ | no use |
-| $`{01}^{\mathsf{m}}`$ | $`{01}^{\mathsf{g}}`$ | all the uses, none at run time |
-| $`{11}^{\mathsf{m}}`$ | $`{11}^{\mathsf{g}}`$ | all the uses and the uses at run time |
+| $`{00}^{\mathsf{m}}`$ | $`{00}^{\mathsf{p}}`$ | no use |
+| $`{01}^{\mathsf{m}}`$ | $`{01}^{\mathsf{p}}`$ | all the uses, none at run time |
+| $`{11}^{\mathsf{m}}`$ | $`{11}^{\mathsf{p}}`$ | all the uses and the uses at run time |
 
 A term used with the grade $`p`$ is checked in the mode $`\llcorner p \lrcorner`$ of this grade:
 
 ```math
 \begin{aligned}
 & \text{and} &&(\mathsf{mode}_p) \\
-& \quad \llcorner {00}^{\mathsf{g}} \lrcorner = {00}^{\mathsf{m}} \\
+& \quad \llcorner {00}^{\mathsf{p}} \lrcorner = {00}^{\mathsf{m}} \\
 & \quad \llcorner \langle 0, \pi \rangle \lrcorner = {01}^{\mathsf{m}} \text{ if } \pi \ne 0 \\
 & \quad \llcorner \langle \pi_1, \pi_2 \rangle \lrcorner = {11}^{\mathsf{m}} \text{ if } \pi_1 \ne 0
 \end{aligned}
@@ -58,7 +58,7 @@ The three modes form a mode structure of the [formalization](https://github.com/
 & \quad m \cdot^{\mathsf{m}} m = m \\
 & \quad {11}^{\mathsf{m}} \cdot^{\mathsf{m}} m = m \\
 & \quad {00}^{\mathsf{m}} \cdot^{\mathsf{m}} m = {00}^{\mathsf{m}} \\
-& \quad \ulcorner {00}^{\mathsf{m}} \urcorner = {00}^{\mathsf{g}} \\
+& \quad \ulcorner {00}^{\mathsf{m}} \urcorner = {00}^{\mathsf{p}} \\
 & \quad \llcorner \ulcorner m \urcorner \lrcorner = m \\
 & \quad \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner q \lrcorner = \llcorner p \cdot q \lrcorner \\
 & \quad p \cdot \ulcorner \llcorner p \lrcorner \urcorner = \ulcorner \llcorner p \lrcorner \urcorner \cdot p = p \\

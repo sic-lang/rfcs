@@ -35,7 +35,7 @@ Each letter keeps one kind, in every annex, so that the kind of an object, and w
 | $`\rho, \sigma, \tau`$ | Assignments of the level variables, and substitutions of the first order |
 | $`\theta`$ | Substitutions of the second order |
 
-No digit is double-struck: a constant written with digits, such as a grade or a mode, has plain digits and an exponent that names its kind.
+No digit is double-struck: a constant written with digits, such as a grade or a mode, has plain digits and, as an exponent, the letter of its kind, upright: $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode.
 
 ## Sequences and Subscripts
 
