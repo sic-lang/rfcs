@@ -21,11 +21,11 @@ A term in a scope is one of:
 
 - A variable $`x`$ of the scope applied to arguments $`\bar t`$ in the scope, one for each entry of its telescope, written $`x[\bar t]`$, and $`x`$ alone when its telescope is empty.
 - A sort $`\kappa`$.
-- An instance $`c.\{\bar s;\ \bar l;\ \bar p\}`$ of the definition or of the constant $`c`$, in which $`\bar s`$ are qualities, $`\bar l`$ levels and $`\bar p`$ grades, one for each variable of each kind of the entry.
-- An instance $`D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$ of the declared type $`D`$, whose arguments $`\bar a`$ are in the scope, one for each parameter of its declaration.
+- An instance $`f.\{\bar s;\ \bar l;\ \bar p\}`$ of the constant $`f`$, defined or declared, in which $`\bar s`$ are qualities, $`\bar l`$ levels and $`\bar p`$ grades, one for each variable of each kind of the entry.
+- An instance $`D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$ of the declared type $`D`$, whose arguments $`\bar a`$ are in the scope, one for each parameter of its type declaration.
 
 The levels of a term use only the level variables of the entry of the signature in which it appears, and none when it appears in no entry.
-The terms that build and use the declared types are given by the kinds of declarations, in their annexes.
+The terms that build and use the declared types are given by the kinds of type declarations, in their annexes.
 
 The arguments $`\bar t`$ of a telescope are a term for each of its entries, the first one first: they are either empty, written $`()`$, or an argument $`t`$ followed by arguments $`\bar t`$, written $`(t,\ \bar t)`$.
 
@@ -49,14 +49,14 @@ The level variables are part of the terms, since an entry is checked once with t
 
 An entry is one of:
 
-- A definition $`c.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t`$, which has a name $`c`$, sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
-- A constant $`c.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, an entry of the same form without a body, whose mode $`m`$ is the mode of its uses.
-- A declaration $`\mathsf{kind}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots`$, a block of types declared together, of which the system knows the header only: the names $`D_1, \dots, D_n`$, the sort, level and grade variables, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, and the sort $`\kappa`$ of the declared types; the bodies of the declared types are given by the kind of the declaration, in its annex.
+- A constant definition $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
+- A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses.
+- A type declaration $`\mathsf{kind}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots`$, a block of types declared together, of which the system knows the header only: the names $`D_1, \dots, D_n`$, the sort, level and grade variables, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, and the sort $`\kappa`$ of the declared types; the bodies of the declared types are given by the kind of the type declaration, in its annex.
 
-The names that an entry introduces are $`D_1, \dots, D_n`$ for a declaration, and $`c`$ for a definition or a constant.
+The names that an entry introduces are $`D_1, \dots, D_n`$ for a type declaration, and $`f`$ for a constant definition or declaration.
 A signature is either empty, written $`\varnothing`$, or a signature $`\Sigma`$ extended by an entry $`e`$, written $`\Sigma,\ e`$.
-A signature has an entry $`c.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, written $`c.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma`$, when one of its entries is a definition or a constant with the name $`c`$, these variables, the mode $`m`$ and the type $`A`$, which the rules of the definitions and of the constants share.
-A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa`$, written $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma`$, when one of its entries is a declaration that declares $`D`$, with these variables, the parameters $`\Delta`$ and the sort $`\kappa`$, which the rules of the declared types share.
+A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, written $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$ and the type $`A`$, which the rules of the defined and of the declared constants share.
+A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa`$, written $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma`$, when one of its entries is a type declaration that declares $`D`$, with these variables, the parameters $`\Delta`$ and the sort $`\kappa`$, which the rules of the declared types share.
 The names of a signature are distinct when each of its entries introduces names that no entry before it introduces.
 
 ## Properties

@@ -31,16 +31,16 @@ The theory of Abel, Danielsson and Eriksson has only the first and the last; the
 ### Levels and Sorts
 
 The types live in [sorts](0036-type-system/06-sorts.md), the universes $`U_l`$, whose elements are types, and the universes of propositions $`\Omega_l`$, whose elements are propositions, both indexed by a [level](0036-type-system/05-levels.md).
-A level is built from $`0`$, the successor, the larger of two levels and level variables, which stand for any natural numbers, so that a definition is checked once with its level variables and used at any levels, as in [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/).
+A level is built from $`0`$, the successor, the larger of two levels and level variables, which stand for any natural numbers, so that an entry of the signature is checked once with its level variables and used at any levels, as in [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/).
 Two levels are equal or ordered when their values are, whatever numbers their variables take: the values are the meaning of the levels, and the equality and the order are exact for it by construction.
 
-The quality of a sort, $`U`$ or $`\Omega`$, may be a sort variable, as the sort qualities of [Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), so that one declaration serves for the types and for the propositions.
+The quality of a sort, $`U`$ or $`\Omega`$, may be a sort variable, as the sort qualities of [Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), so that one entry of the signature serves for the types and for the propositions.
 A sort bounds another when its level is above and it holds propositions only if the other does, and the join of two qualities gives the least sort that bounds two sorts at the same level.
 
 ### Syntax and Substitution
 
-The [syntax](0036-type-system/07-syntax.md) has few terms: variables applied to arguments, sorts, instances of the definitions and of the constants of the signature, and instances of the declared types, so that every type other than a sort comes from a declaration, whose kind adds the terms that build and use its types.
-A parameter of a declaration may be a second-order variable, which stands for a term under the variables of a telescope, as the type of the result of a function depends on its argument.
+The [syntax](0036-type-system/07-syntax.md) has few terms: variables applied to arguments, sorts, instances of the constants of the signature, defined or declared, and instances of the declared types, so that every type other than a sort comes from a type declaration, whose kind adds the terms that build and use its types.
+A parameter of a type declaration may be a second-order variable, which stands for a term under the variables of a telescope, as the type of the result of a function depends on its argument.
 The [substitution](0036-type-system/08-substitution.md) of the first order gives terms to the variables, and the substitution of the second order gives abstractions to the variables, as the arguments of an instance do to its parameters.
 
 ### Annexes
@@ -90,17 +90,17 @@ The grades are settled by the following choices:
 The levels and the sorts are settled by the following choices:
 
 - The levels are not terms: they appear only as the indices of the sorts, and their equality is defined by their values rather than by rules of equality, unlike the formalization of Abel, Danielsson and Eriksson, whose levels are terms of a type of levels since [Danielsson, Favier and Kubánek](https://doi.org/10.1145/3776645); no term computes a level, so that no rule is needed to compare two of them, and their equality is decidable.
-- The sort of a declaration may be the join of two qualities, as its level may be the join of two levels, so that a pair holds two fields of independent sorts; the sort constraints of the [bounded sort polymorphism](https://doi.org/10.1145/3776732) of Rocq would be one mechanism more, for this need only.
+- The sort of a type declaration may be the join of two qualities, as its level may be the join of two levels, so that a pair holds two fields of independent sorts; the sort constraints of the [bounded sort polymorphism](https://doi.org/10.1145/3776732) of Rocq would be one mechanism more, for this need only.
 - Conscious exclusion of the quantification over levels: no type quantifies over levels, so that no universe is needed beyond the two hierarchies, as the $`\mathsf{Set}\omega`$ of [Agda](https://agda.readthedocs.io/en/latest/language/universe-levels.html) is; the level variables give the polymorphism that programs need, and a quantification could be added later with a universe above the hierarchies.
 
 The syntax and the substitution are settled by the following choices:
 
 - The variables are named, as in the paper of Abel, Danielsson and Eriksson, rather than numbered by the de Bruijn indices of its formalization: an index is a way to represent the bound variables, which the system does not need to fix.
 - The sort and grade variables of an entry are not part of the terms: an entry stands for its instances, as a rule for the instances of its fraction, so that no judgment meets a grade variable, whose order with the other grades would be unknown; the level variables are part of the terms, since an entry is checked once with them and used at any levels.
-- The parameters that depend on variables are second-order variables, as the contextual types of Nanevski, Pfenning and Pientka, rather than parameters of a type of functions: the type of functions is itself declared, and its declaration cannot take a function as a parameter.
+- The parameters that depend on variables are second-order variables, as the contextual types of Nanevski, Pfenning and Pientka, rather than parameters of a type of functions: the type of functions is itself declared, and its type declaration cannot take a function as a parameter.
 - The substitutions of the first and of the second order are defined apart, as in the theory of Nanevski, Pfenning and Pientka: the second one substitutes the arguments of an application in the abstraction it gives, which is not a part of the term it substitutes, and the first one does it.
 
-The type system was first split into four RFCs, the grades, the core, the data and codata types, and the observational equality, linked by a contract that each kind of declaration fulfills.
+The type system was first split into four RFCs, the grades, the core, the data and codata types, and the observational equality, linked by a contract that each kind of type declaration fulfills.
 The split did not hold: the data and codata types kept deferring to the equality what they needed, the indexed families, the extensionality of the recursive types, and the liftings through some nested types, while the equality is defined on the data and codata types.
 One RFC with short annexes keeps the definitions readable, one subject at a time, without a cycle between documents.
 

@@ -19,7 +19,7 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & \quad x[\sigma] = \sigma(x) \text{ if the telescope of } x \text{ is empty} \\
 & \quad x[\bar t][\sigma] = x[\bar t[\sigma]] \text{ if the telescope of } x \text{ is not empty} \\
 & \quad \kappa[\sigma] = \kappa \\
-& \quad c.\{\bar s;\ \bar l;\ \bar p\}[\sigma] = c.\{\bar s;\ \bar l;\ \bar p\} \\
+& \quad f.\{\bar s;\ \bar l;\ \bar p\}[\sigma] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & \quad (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\sigma] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma] \\
 & \quad ()[\sigma] = () \\
 & \quad (t,\ \bar t)[\sigma] = (t[\sigma],\ \bar t[\sigma]) \\
@@ -49,7 +49,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & \text{and} &&(\mathsf{subst}_\theta) \\
 & \quad x[\bar t][\theta] = B[\bar t[\theta] / \bar x] \text{ if } \theta(x) = \bar x.\, B \\
 & \quad \kappa[\theta] = \kappa \\
-& \quad c.\{\bar s;\ \bar l;\ \bar p\}[\theta] = c.\{\bar s;\ \bar l;\ \bar p\} \\
+& \quad f.\{\bar s;\ \bar l;\ \bar p\}[\theta] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & \quad (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\theta] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta] \\
 & \quad ()[\theta] = () \\
 & \quad (t,\ \bar t)[\theta] = (t[\theta],\ \bar t[\theta]) \\
@@ -61,7 +61,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 
 Under the variables $`\bar x`$ that it binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty.
 The identity gives each variable $`x`$ the abstraction $`\bar x.\, x[\bar x]`$.
-The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the parameters $`\Delta`$ of its declaration is of the second order: $`[(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A))]`$ gives the abstraction $`\bar x.\, B`$ to $`X`$, and to each parameter of $`\Delta`$ what $`[\bar a / \Delta]`$ gives it, and likewise when the last parameter is a variable $`x : A`$, whose abstraction is a term.
+The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the parameters $`\Delta`$ of its type declaration is of the second order: $`[(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A))]`$ gives the abstraction $`\bar x.\, B`$ to $`X`$, and to each parameter of $`\Delta`$ what $`[\bar a / \Delta]`$ gives it, and likewise when the last parameter is a variable $`x : A`$, whose abstraction is a term.
 
 A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`\Gamma,\ \Theta`$, is extended by a variable for each entry of $`\Theta`$, whose grades it drops:
 

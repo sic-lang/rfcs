@@ -26,16 +26,16 @@ Each letter keeps one kind, in every annex, so that the kind of an object, and w
 | $`A, B`$ | Types |
 | $`\Gamma`$ | Contexts |
 | $`\Theta`$ | Telescopes |
-| $`\Delta`$ | Parameters of a declaration |
+| $`\Delta`$ | Parameters of a type declaration |
 | $`\Sigma`$ | Signatures |
 | $`e`$ | Entries of a signature |
-| $`\mathcal{D}`$ | Declarations, blocks of types declared together |
+| $`\mathcal{D}`$ | Type declarations, blocks of types declared together |
 | $`D, T`$ | Names of declared types, and their instances |
-| $`c`$ | Constants |
+| $`f`$ | Constants, defined or declared |
 | $`\rho, \sigma, \tau`$ | Assignments of the level variables, and substitutions of the first order |
 | $`\theta`$ | Substitutions of the second order |
 
-No digit is double-struck: a constant written with digits, such as a grade or a mode, has plain digits and, as an exponent, the letter of its kind, upright: $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode.
+No digit is double-struck: a grade or a mode written with digits has plain digits and, as an exponent, the letter of its kind, upright: $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode.
 
 ## Sequences and Subscripts
 
