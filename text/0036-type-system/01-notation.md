@@ -18,7 +18,7 @@ Each letter keeps one kind, in every annex, so that the kind of an object, and w
 | $`\gamma, \delta`$ | Vectors of grades, one grade per variable of a context |
 | $`l`$ | Levels |
 | $`\kappa`$ | Sorts |
-| $`s`$ | Sort variables |
+| $`s`$ | Qualities of the sorts, $`U`$ and $`\Omega`$, and the sort variables that stand for them |
 | $`x, y`$ | Variables |
 | $`X`$ | Second-order variables, which bind variables |
 | $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$, and $`a`$ a term substituted for a variable |
@@ -47,7 +47,7 @@ A subscript numbers objects of the same kind that come from different premises o
 - A rule that extends a context, a telescope or a signature by one kind of entry is indexed by a comma.
 - A rule with one case per kind of entry is indexed by the letter of the entry: $`x`$ for a variable, $`X`$ for a second-order variable.
 - A formula is named in its last column.
-- The name of a formula about multiplicities is indexed by $`\pi`$, and that of a formula about grades by $`p`$.
+- The name of a formula is indexed by the letter of the kind of objects it is about: $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities and $`\kappa`$ for the sorts.
 - The name of a formula of a meaning has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, and $`\mathsf{eq}`$ for a clause of the equality of a canonical type.
 - Every name designates one rule or one formula in all the annexes.
 
