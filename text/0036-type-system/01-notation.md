@@ -30,6 +30,7 @@ Each letter keeps one kind, in every annex, so that the kind of an object, and w
 | $`\Sigma`$ | Signatures |
 | $`e`$ | Entries of a signature |
 | $`\mathcal{D}`$ | Type declarations, blocks of types declared together |
+| $`\mathcal{K}`$ | Kinds of type declarations |
 | $`D, T`$ | Names of declared types, and their instances |
 | $`f`$ | Constants, defined or declared |
 | $`\rho, \sigma, \tau`$ | Assignments of the level variables, and substitutions of the first order |
