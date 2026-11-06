@@ -37,6 +37,12 @@ Two levels are equal or ordered when their values are, whatever numbers their va
 The quality of a sort, $`U`$ or $`\Omega`$, may be a sort variable, as the sort qualities of [Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), so that one declaration serves for the types and for the propositions.
 A sort bounds another when its level is above and it holds propositions only if the other does, and the join of two qualities gives the least sort that bounds two sorts at the same level.
 
+### Syntax and Substitution
+
+The [syntax](0036-type-system/07-syntax.md) has few terms: variables applied to arguments, sorts, instances of the definitions and of the constants of the signature, and instances of the declared types, so that every type other than a sort comes from a declaration, whose kind adds the terms that build and use its types.
+A parameter of a declaration may be a second-order variable, which stands for a term under the variables of a telescope, as the type of the result of a function depends on its argument.
+The [substitution](0036-type-system/08-substitution.md) of the first order gives terms to the variables, and the substitution of the second order gives abstractions to the variables, as the arguments of an instance do to its parameters.
+
 ### Annexes
 
 Each annex states one subject, with its definitions, its meaning and its properties, and only them; it names the annexes it builds on, and an annex never builds on a later one.
@@ -49,6 +55,8 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Modes](0036-type-system/04-modes.md): the three settings in which the usage of a term is checked, and their structure on the grades.
 - [Levels](0036-type-system/05-levels.md): the indices of the sorts, their values, their equality, their order and their properties.
 - [Sorts](0036-type-system/06-sorts.md): the universes of types and of propositions, their qualities, the join of the qualities and the relation by which a sort bounds another.
+- [Syntax](0036-type-system/07-syntax.md): the terms, their arguments, the telescopes, the contexts and the signatures, with the variables they bind.
+- [Substitution](0036-type-system/08-substitution.md): the substitutions of the first and of the second order, the closed substitutions, the instantiation of the level variables and their properties.
 
 ## Drawbacks
 
@@ -85,6 +93,13 @@ The levels and the sorts are settled by the following choices:
 - The sort of a declaration may be the join of two qualities, as its level may be the join of two levels, so that a pair holds two fields of independent sorts; the sort constraints of the [bounded sort polymorphism](https://doi.org/10.1145/3776732) of Rocq would be one mechanism more, for this need only.
 - Conscious exclusion of the quantification over levels: no type quantifies over levels, so that no universe is needed beyond the two hierarchies, as the $`\mathsf{Set}\omega`$ of [Agda](https://agda.readthedocs.io/en/latest/language/universe-levels.html) is; the level variables give the polymorphism that programs need, and a quantification could be added later with a universe above the hierarchies.
 
+The syntax and the substitution are settled by the following choices:
+
+- The variables are named, as in the paper of Abel, Danielsson and Eriksson, rather than numbered by the de Bruijn indices of its formalization: an index is a way to represent the bound variables, which the system does not need to fix.
+- The sort and grade variables of an entry are not part of the terms: an entry stands for its instances, as a rule for the instances of its fraction, so that no judgment meets a grade variable, whose order with the other grades would be unknown; the level variables are part of the terms, since an entry is checked once with them and used at any levels.
+- The parameters that depend on variables are second-order variables, as the contextual types of Nanevski, Pfenning and Pientka, rather than parameters of a type of functions: the type of functions is itself declared, and its declaration cannot take a function as a parameter.
+- The substitutions of the first and of the second order are defined apart, as in the theory of Nanevski, Pfenning and Pientka: the second one substitutes the arguments of an application in the abstraction it gives, which is not a part of the term it substitutes, and the first one does it.
+
 The type system was first split into four RFCs, the grades, the core, the data and codata types, and the observational equality, linked by a contract that each kind of declaration fulfills.
 The split did not hold: the data and codata types kept deferring to the equality what they needed, the indexed families, the extensionality of the recursive types, and the liftings through some nested types, while the equality is defined on the data and codata types.
 One RFC with short annexes keeps the definitions readable, one subject at a time, without a cycle between documents.
@@ -96,6 +111,7 @@ One RFC with short annexes keeps the definitions readable, one subject at a time
 - The graded dependent type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), extended in their [journal version](https://arxiv.org/abs/2603.29716) and [formalized in Agda](https://github.com/graded-type-theory/graded-type-theory), on which the rules of the type system are built: it parametrizes its rules by a modality and a mode structure, which the grades and the modes instantiate, and [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) add the well-behaved greatest lower bounds that the usage of recursion needs.
 - The [graded modal dependent type theory](https://arxiv.org/abs/2010.13163) of Moon, Eades and Orchard carries grades in typing, and [Granule](https://doi.org/10.1145/3341714) is a language built on graded modal types, whose semirings include exact counts.
 - The levels follow those of [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/), built from zero, the successor, the maximum and prenex variables, and the sort variables the [sort polymorphism of Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), whose theory [Bounded Sort Polymorphism with Elimination Constraints](https://doi.org/10.1145/3776732) gives.
+- The second-order variables follow the contextual types of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), whose metavariables stand for terms under the variables of a context, and whose substitution of the metavariables is defined apart from that of the variables.
 - [Verus](https://doi.org/10.1145/3586037) separates the code that runs from the specifications and proofs by [modes of variables](https://verus-lang.github.io/verus/guide/reference-var-modes.html), and tracks ghost resources linearly, which the grades `none / linear` and `linear / unrestricted` express in Sic.
 
 ## Unresolved Questions
