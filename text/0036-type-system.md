@@ -28,6 +28,15 @@ Their meaning is an abstract interpretation of the numbers of uses: each grade s
 The usage of a term is checked in one of three [modes](0036-type-system/04-modes.md): no use, all the uses but none at run time, and all the uses.
 The theory of Abel, Danielsson and Eriksson has only the first and the last; the mode in between is added so that an erased term, such as a proof, still counts all its uses, and cannot drop or duplicate a permission that may be used once.
 
+### Levels and Sorts
+
+The types live in [sorts](0036-type-system/06-sorts.md), the universes $`U_l`$, whose elements are types, and the universes of propositions $`\Omega_l`$, whose elements are propositions, both indexed by a [level](0036-type-system/05-levels.md).
+A level is built from $`0`$, the successor, the larger of two levels and level variables, which stand for any natural numbers, so that a definition is checked once with its level variables and used at any levels, as in [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/).
+Two levels are equal or ordered when their values are, whatever numbers their variables take: the values are the meaning of the levels, and the equality and the order are exact for it by construction.
+
+The quality of a sort, $`U`$ or $`\Omega`$, may be a sort variable, as the sort qualities of [Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), so that one declaration serves for the types and for the propositions.
+A sort bounds another when its level is above and it holds propositions only if the other does, and the join of two qualities gives the least sort that bounds two sorts at the same level.
+
 ### Annexes
 
 Each annex states one subject, with its definitions, its meaning and its properties, and only them; it names the annexes it builds on, and an annex never builds on a later one.
@@ -38,6 +47,8 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Multiplicities](0036-type-system/02-multiplicities.md): the numbers of uses $`0`$, $`1`$ and $`\omega`$, their operations, their order and their meaning.
 - [Grades](0036-type-system/03-grades.md): the pairs of multiplicities that count the uses at run time and in total, their meaning, their properties and their projection on the run-time multiplicity.
 - [Modes](0036-type-system/04-modes.md): the three settings in which the usage of a term is checked, and their structure on the grades.
+- [Levels](0036-type-system/05-levels.md): the indices of the sorts, their values, their equality, their order and their properties.
+- [Sorts](0036-type-system/06-sorts.md): the universes of types and of propositions, their qualities, the join of the qualities and the relation by which a sort bounds another.
 
 ## Drawbacks
 
@@ -69,6 +80,12 @@ The grades are settled by the following choices:
   - Exact counts above one, such as a grade for exactly two uses: a resource used twice is unrestricted; the pairs of multiplicities would extend to pairs of larger modalities, as the [exact usage](https://doi.org/10.1145/3341714) of Granule, at the cost of larger tables and of the finiteness of the grades.
   - A greatest grade that allows no number of uses, the best abstraction of the empty set: no operation needs it, and no multiplicity can be added above $`0`$, $`1`$ and $`\omega`$ without breaking the distributivity, since $`(0 \wedge 1) \cdot \varnothing = (0 \cdot \varnothing) \wedge (1 \cdot \varnothing)`$ would give $`\omega \cdot \varnothing = 0`$, hence $`\varnothing + \varnothing = 0`$ since $`\omega = 1 + 1`$, and $`\varnothing = 0`$ by the monotonicity of the addition.
 
+The levels and the sorts are settled by the following choices:
+
+- The levels are not terms: they appear only as the indices of the sorts, and their equality is defined by their values rather than by rules of equality, unlike the formalization of Abel, Danielsson and Eriksson, whose levels are terms of a type of levels since [Danielsson, Favier and Kubánek](https://doi.org/10.1145/3776645); no term computes a level, so that no rule is needed to compare two of them, and their equality is decidable.
+- The sort of a declaration may be the join of two qualities, as its level may be the join of two levels, so that a pair holds two fields of independent sorts; the sort constraints of the [bounded sort polymorphism](https://doi.org/10.1145/3776732) of Rocq would be one mechanism more, for this need only.
+- Conscious exclusion of the quantification over levels: no type quantifies over levels, so that no universe is needed beyond the two hierarchies, as the $`\mathsf{Set}\omega`$ of [Agda](https://agda.readthedocs.io/en/latest/language/universe-levels.html) is; the level variables give the polymorphism that programs need, and a quantification could be added later with a universe above the hierarchies.
+
 The type system was first split into four RFCs, the grades, the core, the data and codata types, and the observational equality, linked by a contract that each kind of declaration fulfills.
 The split did not hold: the data and codata types kept deferring to the equality what they needed, the indexed families, the extensionality of the recursive types, and the liftings through some nested types, while the equality is defined on the data and codata types.
 One RFC with short annexes keeps the definitions readable, one subject at a time, without a cycle between documents.
@@ -79,6 +96,7 @@ One RFC with short annexes keeps the definitions readable, one subject at a time
 - Grades on binders come from [McBride](https://doi.org/10.1007/978-3-319-30936-1_12) and the quantitative type theory of [Atkey](https://doi.org/10.1145/3209108.3209189), which [Idris 2](https://arxiv.org/abs/2104.00480) implements with the multiplicities $`0`$, $`1`$ and $`\omega`$, and [Linear Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html) with $`1`$ and $`\omega`$.
 - The graded dependent type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), extended in their [journal version](https://arxiv.org/abs/2603.29716) and [formalized in Agda](https://github.com/graded-type-theory/graded-type-theory), on which the rules of the type system are built: it parametrizes its rules by a modality and a mode structure, which the grades and the modes instantiate, and [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) add the well-behaved greatest lower bounds that the usage of recursion needs.
 - The [graded modal dependent type theory](https://arxiv.org/abs/2010.13163) of Moon, Eades and Orchard carries grades in typing, and [Granule](https://doi.org/10.1145/3341714) is a language built on graded modal types, whose semirings include exact counts.
+- The levels follow those of [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/), built from zero, the successor, the maximum and prenex variables, and the sort variables the [sort polymorphism of Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), whose theory [Bounded Sort Polymorphism with Elimination Constraints](https://doi.org/10.1145/3776732) gives.
 - [Verus](https://doi.org/10.1145/3586037) separates the code that runs from the specifications and proofs by [modes of variables](https://verus-lang.github.io/verus/guide/reference-var-modes.html), and tracks ghost resources linearly, which the grades `none / linear` and `linear / unrestricted` express in Sic.
 
 ## Unresolved Questions
