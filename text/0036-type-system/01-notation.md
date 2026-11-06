@@ -38,7 +38,8 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\gamma, \delta`$ | Vectors of grades, one grade per variable of a context |
 | $`v, w`$ | Canonical terms |
 
-No digit is double-struck: a grade or a mode written with digits has plain digits and, as an exponent, the letter of its kind, upright: $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode.
+No digit is double-struck: a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, and $`\gamma`$ for a vector of grades.
+An operation on the modes or on the vectors of grades carries the same exponent, as $`\cdot^{\mathsf{m}}`$ and $`+^{\gamma}`$, so that it is told apart from the operation of the grades.
 
 ## Sequences and Subscripts
 
