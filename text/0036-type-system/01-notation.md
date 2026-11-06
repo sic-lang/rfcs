@@ -5,36 +5,38 @@ It builds on no other annex.
 
 ## Letters
 
-Each letter keeps one kind, in every annex, so that the kind of an object, and whether it is one object or a sequence, is read from its letter:
+Each letter keeps one kind, in every annex, so that the kind of an object, and whether it is one object or a sequence, is read from its letter.
+The letters follow the order of the annexes that define their objects, and, within an annex, the order of its definitions; the letters of the objects of later annexes come last, in the order of these annexes:
 
 | Letters | Denote |
 | --- | --- |
 | $`n, k`$ | Natural numbers, such as numbers of uses and values of levels |
 | $`\pi`$ | Multiplicities |
-| $`p, q, r`$ | Grades |
-| $`m`$ | Modes |
 | $`S`$ | Sets of numbers of uses, of pairs of numbers of uses, or of grades |
+| $`p, q, r`$ | Grades |
 | $`I`$ | Sets of indices, which index a family of grades |
-| $`\gamma, \delta`$ | Vectors of grades, one grade per variable of a context |
+| $`m`$ | Modes |
 | $`l`$ | Levels |
-| $`\kappa`$ | Sorts |
+| $`\rho`$ | Assignments of the level variables |
 | $`s`$ | Qualities of the sorts, $`U`$ and $`\Omega`$, and the sort variables that stand for them |
+| $`\kappa`$ | Sorts |
 | $`x, y`$ | Variables |
 | $`X`$ | Second-order variables, which bind variables |
 | $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$, and $`a`$ a term substituted for a variable |
-| $`v, w`$ | Canonical terms |
 | $`A, B`$ | Types |
-| $`\Gamma`$ | Contexts |
 | $`\Theta`$ | Telescopes |
-| $`\Delta`$ | Parameters of a type declaration |
-| $`\Sigma`$ | Signatures |
+| $`\Gamma`$ | Contexts |
 | $`e`$ | Entries of a signature |
+| $`\Delta`$ | Parameters of a type declaration |
 | $`\mathcal{D}`$ | Type declarations, blocks of types declared together |
 | $`\mathcal{K}`$ | Kinds of type declarations |
 | $`D, T`$ | Names of declared types, and their instances |
 | $`f`$ | Constants, defined or declared |
-| $`\rho, \sigma, \tau`$ | Assignments of the level variables, and substitutions of the first order |
+| $`\Sigma`$ | Signatures |
+| $`\sigma, \tau`$ | Substitutions of the first order |
 | $`\theta`$ | Substitutions of the second order |
+| $`\gamma, \delta`$ | Vectors of grades, one grade per variable of a context |
+| $`v, w`$ | Canonical terms |
 
 No digit is double-struck: a grade or a mode written with digits has plain digits and, as an exponent, the letter of its kind, upright: $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode.
 
