@@ -28,10 +28,12 @@ Each letter keeps one kind, in every annex, so that the kind of an object, and w
 | $`\Theta`$ | Telescopes |
 | $`\Delta`$ | Parameters of a declaration |
 | $`\Sigma`$ | Signatures |
+| $`e`$ | Entries of a signature |
 | $`\mathcal{D}`$ | Declarations, blocks of types declared together |
 | $`D, T`$ | Names of declared types, and their instances |
 | $`c`$ | Constants |
-| $`\rho, \sigma, \tau`$ | Assignments of the level variables, and substitutions |
+| $`\rho, \sigma, \tau`$ | Assignments of the level variables, and substitutions of the first order |
+| $`\theta`$ | Substitutions of the second order |
 
 No digit is double-struck: a constant written with digits, such as a grade or a mode, has plain digits and an exponent that names its kind.
 
@@ -47,7 +49,7 @@ A subscript numbers objects of the same kind that come from different premises o
 - A rule that extends a context, a telescope or a signature by one kind of entry is indexed by a comma.
 - A rule with one case per kind of entry is indexed by the letter of the entry: $`x`$ for a variable, $`X`$ for a second-order variable.
 - A formula is named in its last column.
-- The name of a formula is indexed by the letter of the kind of objects it is about: $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities and $`\kappa`$ for the sorts.
+- The name of a formula is indexed by the letter of the kind of objects it is about: $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\Sigma`$ for the signatures, and $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order.
 - The name of a formula of a meaning has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, and $`\mathsf{eq}`$ for a clause of the equality of a canonical type.
 - Every name designates one rule or one formula in all the annexes.
 
