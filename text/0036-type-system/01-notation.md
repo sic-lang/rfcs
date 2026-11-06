@@ -35,7 +35,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\Sigma`$ | Signatures |
 | $`\sigma, \tau`$ | Substitutions of the first order |
 | $`\theta`$ | Substitutions of the second order |
-| $`\gamma, \delta`$ | Vectors of grades, one grade per variable of a context |
+| $`\gamma, \delta`$ | Vectors of grades, one grade per variable of a scope |
 | $`v, w`$ | Canonical terms |
 
 No digit is double-struck: a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, and $`\gamma`$ for a vector of grades.
