@@ -1,7 +1,7 @@
 # Syntax
 
 This annex defines the terms of the type system, their arguments, the telescopes, the contexts and the signatures, with the variables that each of them binds.
-It builds on the [grades](03-grades.md), the [modes](04-modes.md) and the [sorts](06-sorts.md).
+It builds on the [grades](03-grades.md), the [modes](04-modes.md), the [levels](05-levels.md) and the [sorts](06-sorts.md).
 
 ## Definitions
 
