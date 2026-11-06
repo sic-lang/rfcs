@@ -43,6 +43,18 @@ The [syntax](0036-type-system/07-syntax.md) has few terms: variables applied to 
 A parameter of a type declaration may be a second-order variable, which stands for a term under the variables of a telescope, as the type of the result of a function depends on its argument.
 The [substitution](0036-type-system/08-substitution.md) of the first order gives terms to the variables, and the substitution of the second order gives abstractions to the variables, as the arguments of an instance do to its parameters.
 
+### Judgments and Usage
+
+The [typing](0036-type-system/11-typing.md) has the judgments of Martin-Löf type theory, a type, two equal types, a term of a type and two equal terms, in a signature and a context, and carries no grade; the [usage](0036-type-system/10-usage.md) is a judgment of its own, which checks in a mode how a term uses each variable of its scope, as a [vector of grades](0036-type-system/09-grade-vectors.md) allows, as in the theory of Abel, Danielsson and Eriksson.
+A program is a term both well typed and well used: its typing tells what it computes, and its usage how it uses its resources.
+
+The signature lists the constant definitions, the constant declarations and the type declarations, in order, each checked against the entries before it, once with its level variables and for each instance of its sort and grade variables.
+A constant has a mode, which says where it may be used: a constant of the mode $`{11}^{\mathsf{m}}`$ is a program, used anywhere, one of the mode $`{01}^{\mathsf{m}}`$ a proof or a ghost term, used in proofs and specifications, and one of the mode $`{00}^{\mathsf{m}}`$ a specification, used in specifications only.
+A constant definition is transparent: it unfolds to its body.
+A constant declaration has no body, and covers three needs, told apart by the sort of its type and its mode: an axiom, a proposition assumed true, of the mode $`{01}^{\mathsf{m}}`$; a ghost constant, a value or a type that the specifications and the proofs use, of the mode $`{00}^{\mathsf{m}}`$ or $`{01}^{\mathsf{m}}`$; and a foreign constant, a type, a value or a function that the running program gets from outside, of the mode $`{11}^{\mathsf{m}}`$.
+
+The universes of propositions $`\Omega_l`$ hold strict propositions: two proofs of a proposition are equal, and an entry of a telescope whose type is a proposition has a grade without use at run time, so that the proofs are erased.
+
 ### Annexes
 
 Each annex states one subject, with its definitions, its meaning and its properties, and only them; it names the annexes it builds on, and an annex never builds on a later one.
@@ -57,11 +69,17 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Sorts](0036-type-system/06-sorts.md): the universes of types and of propositions, their qualities, the join of the qualities and the relation by which a sort bounds another.
 - [Syntax](0036-type-system/07-syntax.md): the terms, their arguments, the telescopes, the contexts and the signatures, with the variables they bind.
 - [Substitution](0036-type-system/08-substitution.md): the substitutions of the first and of the second order, the closed substitutions, the instantiation of the level variables and their properties.
+- [Grade vectors](0036-type-system/09-grade-vectors.md): the grades of the variables of a scope, their operations, their order and their properties.
+- [Usage](0036-type-system/10-usage.md): the judgment that checks, in a mode, how a term uses the variables of its scope.
+- [Typing](0036-type-system/11-typing.md): the judgments of the signatures, of the contexts, of the types, of the terms and of their arguments, their rules and their properties.
 
 ## Drawbacks
 
 - One RFC for the whole type system is a large document to review, even with the definitions in the annexes; its parts are accepted together, since none of them stands alone.
 - Seven grades, among which a programmer chooses on every binder, are many: the surface language has to infer most of them, which no RFC designs yet.
+- Without cumulativity, a program polymorphic in its universes writes its levels and their joins, as in Agda and in Lean.
+- Without impredicative propositions, the encodings that quantify a proposition over all propositions, which Lean and Rocq accept, are not available.
+- The constant definitions are transparent: a library cannot hide the body of a definition from the equality, until the modules of a later RFC give a way to hide it.
 - The meaning of the grades counts the uses that a term makes, not those that a program makes when it runs, which depend on the evaluation order; the run-time multiplicities $`1`$ and $`\omega`$ wait for the RFC of the calling convention to mean a number of uses.
 
 ## Rationale and Alternatives
@@ -100,6 +118,21 @@ The syntax and the substitution are settled by the following choices:
 - The parameters that depend on variables are second-order variables, as the contextual types of Nanevski, Pfenning and Pientka, rather than parameters of a type of functions: the type of functions is itself declared, and its type declaration cannot take a function as a parameter.
 - The substitutions of the first and of the second order are defined apart, as in the theory of Nanevski, Pfenning and Pientka: the second one substitutes the arguments of an application in the abstraction it gives, which is not a part of the term it substitutes, and the first one does it.
 
+The judgments and the usage are settled by the following choices:
+
+- Typing and equality carry no grade, as in the theory of Abel, Danielsson and Eriksson, rather than carrying them in the typing judgment, as the [graded modal dependent type theory](https://arxiv.org/abs/2010.13163) of Moon, Eades and Orchard does: the latter checks every subterm as if it ran, even in an erased position, so that a specification cannot return an erased field; a usage indexed by a mode checks an erased subterm in a mode of its own, and the equality compares values, not uses, which removes no guarantee, since the usage of every term is checked.
+- The judgments are the four of Martin-Löf type theory, as in the theory of Abel, Danielsson and Eriksson and in [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), rather than those of a [pure type system](https://en.wikipedia.org/wiki/Pure_type_system), in which a type is a term of a sort and two types are equal only as terms of a sort, so that two equalities of types in different sorts compose only once the two sorts are shown equal; a type is still a term of a sort, as the only rules that conclude that a term is a type say.
+- The signature is explicit in every judgment, as the global environment of [Rocq](https://rocq-prover.org/doc/master/refman/language/cic.html), rather than ambient: a rule says which entries it reads.
+- A constant definition is an entry of the signature with a mode, rather than a binding in a term or a text to inline: it is checked once, with its sort, level and grade variables, and used in the modes it allows, as the modes of [Verus](https://doi.org/10.1145/3586037) separate the specifications, the proofs and the code that runs; inlining would check each use again, and lose the polymorphism of its variables.
+- The constant definitions are transparent: an opaque definition would hide a body from the equality, which the strict propositions already do for the proofs, and which the modules of a later RFC may do for the other terms.
+- One entry, the constant declaration, covers the axioms, the ghost constants and the foreign constants, told apart by their sort and their mode, rather than three entries, or primitive types with rules of their own, as the [primitive integers and arrays](https://rocq-prover.org/doc/master/refman/language/core/primitive.html) of Rocq: a foreign type is a constant whose representation the implementation chooses.
+  A constant uses no variable, so that a foreign function that creates a resource to be used once, such as a handle, must consume a resource to do so, a capability that the program holds with a linear grade, as the world token of [Idris 2](https://arxiv.org/abs/2104.00480) threads its effects.
+- The propositions are strict, as the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html), from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316): a proof carries no information but its existence, so that two proofs of a proposition are equal by definition, and a proof is never needed at run time.
+- Conscious exclusions, each with what is lost, what remains, and whether it can be added later:
+  - Impredicative propositions: a proposition cannot quantify over all propositions; the levels give the quantifications over the propositions of a lower level, which cover the usual encodings, and the sort variables give one entry for the types and the propositions.
+    With definitional proof irrelevance, impredicativity makes the equality of types undecidable, as [Abel and Coquand](https://doi.org/10.23638/LMCS-16(2:14)2020) show, so it is excluded rather than deferred.
+  - Cumulativity: a type of $`U_l`$ is not a type of $`U_{l + 1}`$; it is deferred, since adding it later only accepts more programs, at the cost of a subtyping in place of the equality of types.
+
 The type system was first split into four RFCs, the grades, the core, the data and codata types, and the observational equality, linked by a contract that each kind of type declaration fulfills.
 The split did not hold: the data and codata types kept deferring to the equality what they needed, the indexed families, the extensionality of the recursive types, and the liftings through some nested types, while the equality is defined on the data and codata types.
 One RFC with short annexes keeps the definitions readable, one subject at a time, without a cycle between documents.
@@ -107,16 +140,19 @@ One RFC with short annexes keeps the definitions readable, one subject at a time
 ## Prior Art
 
 - The abstract interpretation of [Cousot and Cousot](https://doi.org/10.1145/512950.512973) and its [best abstractions](https://doi.org/10.1145/567752.567778) give the meaning of the multiplicities and of the grades.
-- Grades on binders come from [McBride](https://doi.org/10.1007/978-3-319-30936-1_12) and the quantitative type theory of [Atkey](https://doi.org/10.1145/3209108.3209189), which [Idris 2](https://arxiv.org/abs/2104.00480) implements with the multiplicities $`0`$, $`1`$ and $`\omega`$, and [Linear Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html) with $`1`$ and $`\omega`$.
+- Grades on binders come from [McBride](https://doi.org/10.1007/978-3-319-30936-1_12) and the quantitative type theory of [Atkey](https://doi.org/10.1145/3209108.3209189), which [Idris 2](https://arxiv.org/abs/2104.00480) implements with the multiplicities $`0`$, $`1`$ and $`\omega`$, and threads its effects through a linear world token, and [Linear Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html) with $`1`$ and $`\omega`$.
 - The graded dependent type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), extended in their [journal version](https://arxiv.org/abs/2603.29716) and [formalized in Agda](https://github.com/graded-type-theory/graded-type-theory), on which the rules of the type system are built: it parametrizes its rules by a modality and a mode structure, which the grades and the modes instantiate, and [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) add the well-behaved greatest lower bounds that the usage of recursion needs.
 - The [graded modal dependent type theory](https://arxiv.org/abs/2010.13163) of Moon, Eades and Orchard carries grades in typing, and [Granule](https://doi.org/10.1145/3341714) is a language built on graded modal types, whose semirings include exact counts.
 - The levels follow those of [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/), built from zero, the successor, the maximum and prenex variables, and the sort variables the [sort polymorphism of Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), whose theory [Bounded Sort Polymorphism with Elimination Constraints](https://doi.org/10.1145/3776732) gives.
 - The second-order variables follow the contextual types of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), whose metavariables stand for terms under the variables of a context, and whose substitution of the metavariables is defined apart from that of the variables.
-- [Verus](https://doi.org/10.1145/3586037) separates the code that runs from the specifications and proofs by [modes of variables](https://verus-lang.github.io/verus/guide/reference-var-modes.html), and tracks ghost resources linearly, which the grades `none / linear` and `linear / unrestricted` express in Sic.
+- The judgments are those of Martin-Löf type theory, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, and the signature follows the global environment of [Rocq](https://rocq-prover.org/doc/master/refman/language/cic.html), an ordered list of declarations, definitions and assumptions.
+- The strict propositions follow the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html) and the `SProp` of Rocq, both from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316).
+- [Verus](https://doi.org/10.1145/3586037) separates the code that runs from the specifications and proofs by [modes of variables](https://verus-lang.github.io/verus/guide/reference-var-modes.html), as the modes of the constants of Sic, and tracks ghost resources linearly, which the grades `none / linear` and `linear / unrestricted` express in Sic.
 
 ## Unresolved Questions
 
 - The annexes are written as the system is settled, subject by subject, so that the list above grows with them.
+- Which word names the strict propositions in the language, given that `Prop` is impredicative in Lean and Rocq?
 - What do the run-time multiplicities $`1`$ and $`\omega`$ mean for a program that runs?
   The meaning of the grades counts the uses that a term makes, and the uses made when it runs depend on the evaluation order, which the RFC of the calling convention fixes.
 - Does the type system embrace duality all the way, and which statements would show it?
