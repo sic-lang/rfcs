@@ -73,7 +73,7 @@ The pull requests follow three rules:
 
 The proposal has four drawbacks:
 
-- An implementation may be lost when the review of its iteration rejects the design it follows; small iterations, and the prototypes of Plan and Design, limit that loss.
+- A design is reviewed only once it is implemented, later than an RFC written first would be; small iterations keep that delay short, and what the review of a rejected design shows goes to Adjust.
 - The pull requests of an iteration stay open until its Record is written, so they may conflict with `main` for longer.
 - Without rewriting, `main` keeps every commit of a review, including those that fix earlier ones, and only the merge commits are known to pass the checks.
 - Nothing forces a pull request to be opened as a draft: the rule relies on its submitter.
