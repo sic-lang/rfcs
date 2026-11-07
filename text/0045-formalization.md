@@ -61,10 +61,10 @@ The choices of this RFC are weighed against the following alternatives.
 
 ### The Language
 
-Lean is the language of the formalization since the same language can then write the compilers of Sic and prove them, with no gap between what is proved and what runs, and since its proof irrelevance, definitional for the propositions, and its automation suit the proofs on derivations; its [reference](https://lean-lang.org/doc/reference/latest/) describes both.
+Lean is the language of the formalization since it is also a programming language, which writes the programs of the formalization, such as the one that extracts the correspondence, and since its proof irrelevance, definitional for the propositions, and its automation suit the proofs on derivations; its [reference](https://lean-lang.org/doc/reference/latest/) describes all three.
 The alternatives were considered as follows:
 
-- [Agda](https://wiki.portal.chalmers.se/agda/), in which the [formalization of Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory) of a graded type theory is written, has the induction-recursion that their logical relation uses, which Lean lacks; but it is less suited to writing a compiler, and the formalization of Sic follows [Pujet](https://github.com/loic-p/logrel-mltt/tree/ef332527cb2203216ffe9d59b82e98ff13b2db3d) in encoding the logical relation as a predicate indexed by its interpretation, which needs no induction-recursion.
+- [Agda](https://wiki.portal.chalmers.se/agda/), in which the [formalization of Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory) of a graded type theory is written, has the induction-recursion that their logical relation uses, which Lean lacks; but the formalization of Sic follows [Pujet](https://github.com/loic-p/logrel-mltt/tree/ef332527cb2203216ffe9d59b82e98ff13b2db3d) in encoding the logical relation as a predicate indexed by its interpretation, which needs no induction-recursion.
 - [Rocq](https://rocq-prover.org/), in which [Martin-Löf à la Coq](https://doi.org/10.1145/3636501.3636951) is written, is more stable and has cumulative universes, which ease a logical relation over a hierarchy of universes, but extracts its programs to another language to run them.
 - [Isabelle](https://isabelle.in.tum.de/) proves in a classical higher-order logic without dependent types, in which the syntax and the derivations of a dependent type theory are less direct to define.
 
@@ -84,12 +84,10 @@ The formalization follows practices of the following projects:
 - The [formalization of Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory), which proves the metatheory of a graded type theory, including the erasure, and which the metatheory of Sic follows for most of its proofs.
 - [logrel-coq](https://github.com/CoqHott/logrel-coq) and [Pujet's logrel-mltt](https://github.com/loic-p/logrel-mltt/tree/ef332527cb2203216ffe9d59b82e98ff13b2db3d), which formalize logical relations without induction-recursion.
 - [Cedar](https://doi.org/10.1145/3663529.3663854), whose [specification in Lean](https://github.com/cedar-policy/cedar-spec) separates the definitions, which a reader checks against the intent, from the theorems about them, whose proofs Lean checks.
-- [CompCert](https://doi.org/10.1145/1538788.1538814) and [CakeML](https://doi.org/10.1145/2535838.2535841), which prove compilers in the proof assistant that writes them.
 - [Lean4Lean](https://github.com/digama0/lean4lean), which checks the declarations of Lean again with a kernel written in Lean, as `leanchecker` does with the kernel of Lean.
 
 ## Unresolved Questions
 
-The following questions are left to later RFCs, once implemented:
+The following question is left to a later RFC, once implemented:
 
 - How each definition is validated against the examples of its RFC and of the literature, and against its meaning, and where these examples live in the formalization.
-- Which stages of the compilers are proved, and how.
