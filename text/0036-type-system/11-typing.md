@@ -32,7 +32,7 @@ Typing and equality carry no grade: the usage of a term is checked by the judgme
 Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](05-levels.md), and for sequences of levels holds on each component.
 
 A context has a variable $`x : A`$, written $`x : A \in \Gamma`$, when one of its entries is this variable, and a second-order variable $`X : (\Theta \vdash A)`$, written $`X : (\Theta \vdash A) \in \Gamma`$, likewise; $`x \notin \Gamma`$ means that no entry of $`\Gamma`$ is a variable named $`x`$.
-The instance of an entry with the sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$, as many as the variables of each kind, gives its type, its body, its parameters and its sort at the instance $`\bar s'`$, $`\bar p'`$, in which it [instantiates](08-substitution.md) the level variables $`[\bar l' / \bar l]`$; the rules write it $`A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]`$, as if the instance were substituted.
+The instance of an entry with the sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$, as many as the variables of each kind, gives its type, its body, its parameters and its sort at the instance $`\bar s'`$, $`\bar p'`$, in which it [instantiates](08-substitution.md) the level variables $`[\bar l' / \bar l]`$; the rules write it $`A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]`$, as if the instance were substituted, and $`A[\bar s' / \bar s,\ \bar p' / \bar p]`$ when it keeps the level variables.
 
 ### Signatures and Entries
 
@@ -49,12 +49,12 @@ A signature is empty, or a signature extended by an entry that is well formed in
 The type declarations enter a signature by the rules of their kinds, in their annexes.
 
 An entry is checked in the empty context, once with its level variables, and for each instance of its sort and grade variables, which are finitely many, so that its rules hold whatever instantiates them.
-The type of a constant definition or declaration is a type of some sort, at each instance, and the body of a constant definition is a term of its type that uses no variable, in the mode of the definition:
+At each instance of its sort and grade variables, the type of a constant definition or declaration is a type of some sort, which may depend on the instance, and the body of a constant definition is a term of its type that uses no variable, in the mode of the definition:
 
 ```math
 \begin{gathered}
-\frac{\begin{gathered}{}\Sigma;\ \varepsilon \vdash A : \kappa \\ \Sigma;\ \varepsilon \vdash t : A \\ \Sigma;\ {00}^{\gamma} \mathrel{▶_m} t \\ \text{for each instance of } \bar s \text{ and } \bar p, \text{ with a sort } \kappa \text{ for each}\end{gathered}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t}\;(\mathsf{def}) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \varepsilon \vdash A : \kappa \\ \text{for each instance of } \bar s \text{ and } \bar p, \text{ with a sort } \kappa \text{ for each}\end{gathered}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A}\;(\mathsf{const})
+\frac{\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa. \\ & \quad \text{and} \\ & \qquad \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \\ & \qquad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \Sigma;\ {00}^{\gamma} \mathrel{▶_m} t[\bar s' / \bar s,\ \bar p' / \bar p]\end{aligned}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t}\;(\mathsf{def}) \\[1em]
+\frac{\forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa.\ \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A}\;(\mathsf{const})
 \end{gathered}
 ```
 
