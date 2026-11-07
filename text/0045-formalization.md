@@ -44,7 +44,7 @@ The definitions and the statements follow the RFCs so closely that a reader comp
 - Every definition, formula and rule of an RFC has a name, written in the last column of its formula or after the fraction of its rule; a check of the RFCs makes sure that every name has this form, from which it is extracted, and that it designates nothing else.
 - A declaration of the formalization gives, with an attribute, the names of the definitions, formulas and rules that it formalizes, written exactly as the RFC writes them; a formula that the representation of the variables makes needless, such as a condition that a name is fresh, is given to the declaration of this representation.
 - A program of the formalization extracts the names of the RFCs, at a commit that the flake of `sic` pins, and those of the declarations, and fails when a declaration gives a name that no RFC has, so that renaming a formula of an RFC cannot leave the correspondence behind.
-- The same program writes the pages of the correspondence, one per file of the RFCs, which list each name with its section and the declarations that formalize it, and which the site of `sic` publishes with the documentation of the formalization.
+- The same program writes the pages of the correspondence, one per file of the RFCs, which give each name with its section and its formula or rule, as the RFC writes it, then the source of each declaration that formalizes it, as its file writes it, without the proof of a theorem, so that a reader compares them on one page; the site of `sic` publishes them with the documentation of the formalization.
 
 A name that no declaration gives shows as not yet formalized, so that the pages show what is left, and what is formalized, without a list kept by hand.
 
