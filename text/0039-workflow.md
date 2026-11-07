@@ -71,9 +71,8 @@ The pull requests follow three rules:
 
 ## Drawbacks
 
-The proposal has four drawbacks:
+The proposal has three drawbacks:
 
-- A design is reviewed only once it is implemented, later than an RFC written first would be; small iterations keep that delay short, and what the review of a rejected design shows goes to Adjust.
 - The pull requests of an iteration stay open until its Record is written, so they may conflict with `main` for longer.
 - Without rewriting, `main` keeps every commit of a review, including those that fix earlier ones, and only the merge commits are known to pass the checks.
 - Nothing forces a pull request to be opened as a draft: the rule relies on its submitter.
@@ -86,6 +85,7 @@ Each part of the proposal answers one of the problems of the motivation, and the
 
 The common alternative writes the RFC first, and implements it once accepted.
 It lets a design be rejected before any work on its implementation, but the RFC then records what was expected, and every case the implementation finds changes an accepted text.
+A design can still be reviewed before its implementation, as the free steps organize it.
 Implementing first makes the RFC record what an implementation confirmed, whether code, a proof or a configuration, and keeps the RFC short, since it records one iteration only.
 
 ### Free and Constrained Steps
