@@ -1,6 +1,6 @@
-# RFC 0000: Workflow
+# RFC 0039: Workflow
 
-- Pull request: [sic-lang/rfcs#0](https://github.com/sic-lang/rfcs/pull/0)
+- Pull request: [sic-lang/rfcs#39](https://github.com/sic-lang/rfcs/pull/39)
 
 ## Summary
 
