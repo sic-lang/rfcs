@@ -53,7 +53,7 @@ At each instance of its sort and grade variables, the type of a constant definit
 
 ```math
 \begin{gathered}
-\frac{\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa. \\ & \quad \text{and} \\ & \qquad \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \\ & \qquad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \Sigma;\ {00}^{\gamma} \mathrel{▶_m} t[\bar s' / \bar s,\ \bar p' / \bar p]\end{aligned}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t}\;(\mathsf{def}) \\[1em]
+\frac{\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa. \\ & \quad \text{and} \\ & \qquad \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \\ & \qquad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \Sigma;\ {00}^{\gamma} \mathrel{▶^m} t[\bar s' / \bar s,\ \bar p' / \bar p]\end{aligned}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t}\;(\mathsf{def}) \\[1em]
 \frac{\forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa.\ \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A}\;(\mathsf{decl})
 \end{gathered}
 ```
