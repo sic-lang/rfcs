@@ -1,6 +1,6 @@
 # RFC 0000: Title
 
-- Pull request: [sic-lang/rfcs#0](https://github.com/sic-lang/rfcs/pull/0)
+Pull request: [sic-lang/rfcs#0](https://github.com/sic-lang/rfcs/pull/0)
 
 ## Summary
 
