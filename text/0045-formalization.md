@@ -26,7 +26,6 @@ The proposal states what the formalization holds, what its checks trust, and how
 
 The formalization holds everything that the RFCs state about the type system: its definitions, the meaning of its judgments, and its properties, with their proofs.
 The RFCs state these without any proof and without mentioning the formalization, so that each RFC stands on its own; the formalization cites the RFCs, and never the reverse.
-A definition is formalized before the RFC that records it is written, in small steps that alternate between the two, so that the RFC only records what the formalization confirmed, as the [workflow](0039-workflow.md) asks.
 
 ### What the Checks Trust
 
