@@ -42,6 +42,8 @@ block-beta
   Record --> Integrate
 ```
 
+Each step has its own purpose:
+
 - Plan takes an overall view of the subject: its scope, its risks and their countermeasures, its decisive problems and their possible solutions.
 - Design does the same for one iteration, sized to be easy to review, with the aim of deciding rather than exploring what is possible.
 - Implement changes one or more repositories, with one pull request per repository, but no RFC.
@@ -60,12 +62,16 @@ Only an integrator decides to integrate a pull request, never an AI or a tool, w
 
 ### Pull Requests
 
+The pull requests follow three rules:
+
 - Every pull request is opened as a draft and stays one until Integrate, when the submitter marks it ready for review and asks an integrator to review and merge it.
 - The history of a pull request is never rewritten once pushed: every change, including those asked by the review, is a new commit, meaningful on its own.
 - A merge queue merges a pull request with a merge commit once its merge with `main` passes the checks, so a pull request needs no update from `main`.
   When it conflicts with `main`, its submitter merges `main` into it and resolves the conflict in that merge commit.
 
 ## Drawbacks
+
+The proposal has four drawbacks:
 
 - An implementation may be lost when the review of its iteration rejects the design it follows; small iterations, and the prototypes of Plan and Design, limit that loss.
 - The pull requests of an iteration stay open until its Record is written, so they may conflict with `main` for longer.
