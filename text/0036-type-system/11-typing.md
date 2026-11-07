@@ -151,8 +151,8 @@ The arguments of a telescope are typed by its entries, each argument instantiati
 \begin{gathered}
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () : \varepsilon}\;(\mathsf{tel}_\varepsilon) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash t : A \\ \Sigma;\ \Gamma \vdash \bar t : \Theta[t / x]\end{gathered}}{\Sigma;\ \Gamma \vdash (t,\ \bar t) : (x :^{q}_{p} A,\ \Theta)}\;(\mathsf{tel}_{,}) \\[1em]
-\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{tel}_{\equiv\varepsilon}) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash t \equiv u : A \\ \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta[t / x]\end{gathered}}{\Sigma;\ \Gamma \vdash (t,\ \bar t) \equiv (u,\ \bar u) : (x :^{q}_{p} A,\ \Theta)}\;(\mathsf{tel}_{\equiv,})
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{tel}_{\varepsilon\equiv}) \\[1em]
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash t \equiv u : A \\ \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta[t / x]\end{gathered}}{\Sigma;\ \Gamma \vdash (t,\ \bar t) \equiv (u,\ \bar u) : (x :^{q}_{p} A,\ \Theta)}\;(\mathsf{tel}_{,\equiv})
 \end{gathered}
 ```
 
@@ -163,9 +163,9 @@ The arguments of an instance are typed by the parameters of its type declaration
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () : \varepsilon}\;(\mathsf{arg}_\varepsilon) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash \bar a : \Delta \\ \Sigma;\ \Gamma \vdash a : A[\bar a / \Delta]\end{gathered}}{\Sigma;\ \Gamma \vdash (\bar a,\ a) : (\Delta,\ x : A)}\;(\mathsf{arg}_x) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash \bar a : \Delta \\ \Sigma;\ \Gamma,\ \Theta[\bar a / \Delta] \vdash B : A[\bar a / \Delta]\end{gathered}}{\Sigma;\ \Gamma \vdash (\bar a,\ \bar x.\, B) : (\Delta,\ X : (\Theta \vdash A))}\;(\mathsf{arg}_X) \\[1em]
-\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{arg}_{\equiv\varepsilon}) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\ \Sigma;\ \Gamma \vdash a_1 \equiv a_2 : A[\bar a_1 / \Delta]\end{gathered}}{\Sigma;\ \Gamma \vdash (\bar a_1,\ a_1) \equiv (\bar a_2,\ a_2) : (\Delta,\ x : A)}\;(\mathsf{arg}_{\equiv x}) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\ \Sigma;\ \Gamma,\ \Theta[\bar a_1 / \Delta] \vdash B_1 \equiv B_2 : A[\bar a_1 / \Delta]\end{gathered}}{\Sigma;\ \Gamma \vdash (\bar a_1,\ \bar x.\, B_1) \equiv (\bar a_2,\ \bar x.\, B_2) : (\Delta,\ X : (\Theta \vdash A))}\;(\mathsf{arg}_{\equiv X})
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{arg}_{\varepsilon\equiv}) \\[1em]
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\ \Sigma;\ \Gamma \vdash a_1 \equiv a_2 : A[\bar a_1 / \Delta]\end{gathered}}{\Sigma;\ \Gamma \vdash (\bar a_1,\ a_1) \equiv (\bar a_2,\ a_2) : (\Delta,\ x : A)}\;(\mathsf{arg}_{x\equiv}) \\[1em]
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\ \Sigma;\ \Gamma,\ \Theta[\bar a_1 / \Delta] \vdash B_1 \equiv B_2 : A[\bar a_1 / \Delta]\end{gathered}}{\Sigma;\ \Gamma \vdash (\bar a_1,\ \bar x.\, B_1) \equiv (\bar a_2,\ \bar x.\, B_2) : (\Delta,\ X : (\Theta \vdash A))}\;(\mathsf{arg}_{X\equiv})
 \end{gathered}
 ```
 

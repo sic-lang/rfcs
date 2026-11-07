@@ -50,6 +50,7 @@ A subscript numbers objects of the same kind that come from different premises o
 
 - A rule is named after its fraction, in parentheses.
 - A rule of usage is named after the rule of typing of the same construct, with the index $`\mathsf{m}`$.
+- A rule of equality that goes with a rule of typing of the same construct is named after it, with the index $`\equiv`$ last.
 - A rule that extends a context, a telescope or a signature by one kind of entry is indexed by a comma.
 - A rule with one case per kind of entry is indexed by the letter of the entry: $`x`$ for a variable, $`X`$ for a second-order variable.
 - A formula is named in its last column.
