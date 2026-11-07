@@ -29,22 +29,23 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 Work on a subject goes from a plan to its integration, through iterations that each design, implement, record and adjust a part of it: Plan, then Design, Implement, Record and Adjust, as many times as needed, then Integrate.
 
 ```mermaid
-flowchart LR
-  subgraph outside [Outside the repositories, free]
-    Plan
-    Design
-    Adjust
-  end
-  subgraph inside [In the repositories, constrained]
-    Implement
-    Record
-    Integrate
-  end
-  Plan --> Design --> Implement --> Record --> Adjust
-  Adjust -->|next iteration| Design
-  Adjust -->|iterations do not fit| Plan
-  Adjust -->|ready| Integrate
-  Integrate -->|changes asked| Plan
+block-beta
+  columns 3
+  space Plan space
+  space:3
+  space Design space
+  space:3
+  Adjust space Implement
+  space:3
+  space Record space
+  space:3
+  space Integrate space
+  Plan --> Design
+  Design --> Implement
+  Implement --> Record
+  Record --> Adjust
+  Adjust --> Design
+  Record --> Integrate
 ```
 
 The steps outside the repositories are free, and those inside them are constrained:
