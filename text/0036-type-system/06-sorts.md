@@ -6,7 +6,14 @@ It builds on the [levels](05-levels.md).
 ## Definitions
 
 A sort $`\kappa`$ has a quality and a level: it is a universe $`U_l`$, whose elements are types, or a universe of propositions $`\Omega_l`$, whose elements are propositions.
-The quality of a sort is $`U`$ or $`\Omega`$, as the sort qualities of [Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), and a sort variable $`s`$ stands for a quality, so that $`s_l`$ stands for $`U_l`$ or $`\Omega_l`$.
+The quality of a sort is $`U`$ or $`\Omega`$, as the sort qualities of [Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), and a sort variable $`s`$ stands for a quality, so that $`s_l`$ stands for $`U_l`$ or $`\Omega_l`$:
+
+```math
+\begin{aligned}
+& s \mathrel{::=} U \mid \Omega &&(\mathsf{syntax}_s) \\[1em]
+& \kappa \mathrel{::=} s_l &&(\mathsf{syntax}_\kappa)
+\end{aligned}
+```
 
 The qualities are ordered by the propositions they hold, $`\Omega`$ below $`U`$, and the join of two qualities is $`\Omega`$ when both are, and $`U`$ otherwise:
 
