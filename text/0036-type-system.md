@@ -152,7 +152,6 @@ One RFC with short annexes keeps the definitions readable, one subject at a time
 ## Unresolved Questions
 
 - The annexes are written as the system is settled, subject by subject, so that the list above grows with them.
-- Which word names the strict propositions in the language, given that `Prop` is impredicative in Lean and Rocq?
 - What do the run-time multiplicities $`1`$ and $`\omega`$ mean for a program that runs?
   The meaning of the grades counts the uses that a term makes, and the uses made when it runs depend on the evaluation order, which the RFC of the calling convention fixes.
 - Does the type system embrace duality all the way, and which statements would show it?
