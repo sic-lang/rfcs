@@ -46,11 +46,10 @@ The product of two modes is the mode of the product of their grades, and, inside
 \end{aligned}
 ```
 
-The grades of the three modes are closed under multiplication, so that the grade of a product is the product of the grades, and the product of two modes is the more erased of the two:
+The product of two modes is the more erased of the two:
 
 ```math
 \begin{aligned}
-& \ulcorner m_1 \cdot^{\mathsf{m}} m_2 \urcorner = \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner &&(\mathsf{closed}_m) \\[1em]
 & \text{and} &&(\mathsf{erased}_m) \\
 & \quad m_1 \cdot^{\mathsf{m}} m_2 = {00}^{\mathsf{m}} \text{ if } m_1 = {00}^{\mathsf{m}} \text{ or } m_2 = {00}^{\mathsf{m}} \\
 & \quad m_1 \cdot^{\mathsf{m}} m_2 = {01}^{\mathsf{m}} \text{ if } {00}^{\mathsf{m}} \notin \{m_1, m_2\} \text{ and } {01}^{\mathsf{m}} \in \{m_1, m_2\} \\
@@ -60,7 +59,7 @@ The grades of the three modes are closed under multiplication, so that the grade
 
 ## Properties
 
-The three modes form a mode structure of the [formalization](https://github.com/graded-type-theory/graded-type-theory) of Abel, Danielsson and Eriksson over the grades:
+The three modes form a mode structure of the [formalization](https://github.com/graded-type-theory/graded-type-theory) of Abel, Danielsson and Eriksson over the grades, in which the grade of a product of modes is the product of their grades, and the mode of a sum or of a meet of grades is no more erased than the mode of each of them:
 
 ```math
 \begin{aligned}
@@ -72,8 +71,11 @@ The three modes form a mode structure of the [formalization](https://github.com/
 & \quad {00}^{\mathsf{m}} \cdot^{\mathsf{m}} m = {00}^{\mathsf{m}} \\
 & \quad \ulcorner {00}^{\mathsf{m}} \urcorner = {00}^{\mathsf{p}} \\
 & \quad \llcorner \ulcorner m \urcorner \lrcorner = m \\
+& \quad \ulcorner m_1 \cdot^{\mathsf{m}} m_2 \urcorner = \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \\
 & \quad \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner q \lrcorner = \llcorner p \cdot q \lrcorner \\
 & \quad p \cdot \ulcorner \llcorner p \lrcorner \urcorner = \ulcorner \llcorner p \lrcorner \urcorner \cdot p = p \\
-& \quad p \le q \text{ and } q \le \ulcorner m \urcorner \cdot q \implies p \le \ulcorner m \urcorner \cdot p
+& \quad p \le q \text{ and } q \le \ulcorner m \urcorner \cdot q \implies p \le \ulcorner m \urcorner \cdot p \\
+& \quad \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner p + q \lrcorner = \llcorner p \lrcorner \\
+& \quad \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner p \wedge q \lrcorner = \llcorner p \lrcorner
 \end{aligned}
 ```
