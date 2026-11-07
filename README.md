@@ -5,6 +5,8 @@ An RFC (request for comments) proposes a substantial change to the language, its
 
 ## Process
 
+An RFC records what an implementation confirmed, as the [workflow](CONTRIBUTING.md#workflow) describes: except to fix an RFC, its implementation comes first.
+
 1. Copy [`0000-template.md`](0000-template.md) to `text/0000-short-name.md` and fill it in.
 2. Open a pull request: the RFC is discussed in it.
 3. Rename the file after the number of the pull request, on four digits (`text/0042-short-name.md`), and link the pull request in its header.

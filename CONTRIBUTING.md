@@ -24,6 +24,27 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 - Sort alphabetically the lists whose order has no meaning.
 - Start the README with one short sentence saying what the repository is, and copy it verbatim as the description of the repository on GitHub.
 
+## Workflow
+
+Work on a subject goes from a plan to its integration, through iterations that each design, implement, record and adjust a part of it: Plan, then Design, Implement, RFC and Adjust, as many times as needed, then Integrate.
+The steps outside the repositories are free, and those inside them are constrained:
+
+- Plan, Design and Adjust happen outside the repositories, in whatever way suits the contributors, alone or in a group, with or without tools.
+  - Plan gives an overall view of the subject: its scope, its risks and their countermeasures, its decisive problems and their possible solutions.
+    It draws on the academic literature, the practice of other projects, experiments and prototypes, and is written down rather than kept in mind.
+  - Design does the same for one iteration, sized to be easy to review, but decides instead of exploring what is possible.
+  - Adjust revises the plan from the results, the problems and the solutions of the iteration.
+    When the iterations do not fit together, go back to Plan.
+- Implement, RFC and Integrate happen in the repositories, through pull requests that follow this guide and pass the checks.
+  - Implement changes one or more repositories, with one pull request per repository, but no RFC.
+  - RFC records in an RFC what the implementation of the iteration confirmed, and only that iteration.
+    Except to fix an RFC, implement first.
+  - Integrate starts when the submitter judges a pull request ready, and only then: they ask an integrator to merge it.
+    When the integrator asks for changes, go back to Plan; when they judge the pull request not relevant to the project, it is closed.
+
+Contributors may use AI or any other tool to prepare their pull requests, and bear full responsibility for what they submit, whatever tools they used.
+Only an integrator decides to integrate a pull request, never an AI or a tool, which may assist them and perform the merge they decided; the integrator bears full responsibility for accepting or rejecting it.
+
 ## Pull Requests
 
 - The merge queue merges a pull request with a merge commit once its merge with `main` passes the checks, and the commits it brings are exactly the ones that were reviewed.
