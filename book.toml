@@ -1,0 +1,19 @@
+# The RFC book: nix run .#build-book writes its src/ and builds it into book/, which GitHub Pages
+# serves.
+[book]
+title = "The Sic RFC Book"
+
+[output.html]
+# Centers the diagrams, which mdBook aligns to the left like any pre block.
+additional-css = ["mermaid.css"]
+# The files of mdbook-mermaid, which build-book writes where its install command does.
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
+git-repository-url = "https://github.com/sic-lang/rfcs"
+# The RFCs are numbered by their file names, which the chapter numbers of mdBook would contradict.
+no-section-label = true
+# GitHub Pages serves the book under /rfcs/, and its 404 page at any missing path, from which the
+# files of the page are only found through this URL.
+site-url = "/rfcs/"
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"

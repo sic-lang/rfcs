@@ -2,5 +2,7 @@
   "config": {
     // Lines are not wrapped at a fixed length.
     "MD013": false
-  }
+  },
+  // The files that git ignores, such as those that nix run .#build-book writes, are not linted.
+  "gitignore": true
 }

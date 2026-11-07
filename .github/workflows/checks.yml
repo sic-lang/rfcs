@@ -19,6 +19,7 @@ jobs:
         # The commands check-<name> of the flake.
         check:
           - actionlint
+          - book
           - commits
           - editorconfig
           - flake
