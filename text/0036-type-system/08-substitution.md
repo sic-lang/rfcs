@@ -33,7 +33,7 @@ The identity gives each variable with an empty telescope itself, and the substit
 
 ```math
 \begin{aligned}
-& \mathsf{id}(x) = x &&(\mathsf{id}_\sigma) \\[1em]
+& \mathsf{id}(x) = x &&(\mathsf{identity}_\sigma) \\[1em]
 & \text{and} &&(\mathsf{single}_\sigma) \\
 & \quad [t / x](x) = t \\
 & \quad [t / x](y) = y \text{ if } y \ne x
@@ -74,7 +74,7 @@ The identity gives each variable $`x`$ the abstraction $`\bar x.\, x[\bar x]`$:
 
 ```math
 \begin{aligned}
-& \mathsf{id}(x) = \bar x.\, x[\bar x] &&(\mathsf{id}_\theta)
+& \mathsf{id}(x) = \bar x.\, x[\bar x] &&(\mathsf{identity}_\theta)
 \end{aligned}
 ```
 
@@ -106,7 +106,7 @@ A substitution of the second order is closed when the abstractions it gives are 
 
 ```math
 \begin{aligned}
-& \theta \text{ is closed} \iff \forall x.\ \exists \bar x,\ B.\ \theta(x) = \bar x.\, B \text{ and } B \text{ is in the scope } \bar x &&(\mathsf{closed}_\theta)
+& \theta \text{ is closed} \iff \forall x.\ \exists \bar x,\ B.\ \theta(x) = \bar x.\, B \text{ and } B \text{ is in the scope } \bar x &&(\mathsf{closedness}_\theta)
 \end{aligned}
 ```
 

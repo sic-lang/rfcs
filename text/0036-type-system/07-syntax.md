@@ -149,7 +149,7 @@ The names of a signature are distinct when each of its entries introduces names 
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{distinct}_\Sigma) \\
+& \text{and} &&(\mathsf{names}_\Sigma) \\
 & \quad \text{the names of } \varnothing \text{ are distinct} \\
 & \quad \text{⟺} \\
 & \qquad \text{the names of } \Sigma,\ e \text{ are distinct} \\
