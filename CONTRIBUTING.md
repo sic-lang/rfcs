@@ -91,6 +91,7 @@ An RFC is created in four steps:
 An RFC follows these rules, in addition to the [style](#style) of every text:
 
 - Give every notation a single meaning: a notation shared by several definitions hides the cases where one of them is missing.
+- Name every definition, formula and rule, so that its formalization can be related to it.
 - List in the pull request the decisions of the RFC to review, as a checklist whose boxes are ticked as soon as they are approved, and link each to the section of the RFC that gives its rationale.
 
 ### Changing an Accepted RFC
