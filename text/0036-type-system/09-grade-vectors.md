@@ -5,7 +5,14 @@ It builds on the [grades](03-grades.md) and the [syntax](07-syntax.md).
 
 ## Definitions
 
-A vector of grades $`\gamma`$ over a scope gives a grade $`\gamma(x)`$ to each variable $`x`$ of the scope, whatever its telescope, and two vectors over a scope are equal when they give each variable the same grade.
+A vector of grades $`\gamma`$ over a scope gives a grade $`\gamma(x)`$ to each variable $`x`$ of the scope, whatever its telescope, and two vectors over a scope are equal when they give each variable the same grade:
+
+```math
+\begin{aligned}
+& \gamma_1 = \gamma_2 \iff \forall x.\ \gamma_1(x) = \gamma_2(x) &&(\mathsf{equal}_\gamma)
+\end{aligned}
+```
+
 The vector $`{00}^{\gamma}`$ gives each variable the grade $`{00}^{\mathsf{p}}`$, and the operations of the grades act on each variable:
 
 ```math
