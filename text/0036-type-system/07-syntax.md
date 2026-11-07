@@ -17,7 +17,15 @@ A term uses only the variables of its scope, each applied to an argument for eac
 
 ### Terms
 
-A term in a scope is one of:
+A term in a scope is one of four cases:
+
+```math
+\begin{aligned}
+& t \mathrel{::=} x[\bar t] \mid \kappa \mid f.\{\bar s;\ \bar l;\ \bar p\} \mid D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a &&(\mathsf{syntax}_t)
+\end{aligned}
+```
+
+The cases are:
 
 - A variable $`x`$ of the scope applied to arguments $`\bar t`$ in the scope, one for each entry of its telescope, written $`x[\bar t]`$, and $`x`$ alone when its telescope is empty.
 - A sort $`\kappa`$.
@@ -27,17 +35,44 @@ A term in a scope is one of:
 The levels of a term use only the level variables of the entry of the signature in which it appears, and none when it appears in no entry.
 The terms that build and use the declared types are given by the kinds of type declarations, in their annexes.
 
-The arguments $`\bar t`$ of a telescope are a term for each of its entries, the first one first: they are either empty, written $`()`$, or an argument $`t`$ followed by arguments $`\bar t`$, written $`(t,\ \bar t)`$.
+The arguments $`\bar t`$ of a telescope are a term for each of its entries, the first one first: they are either empty, written $`()`$, or an argument $`t`$ followed by arguments $`\bar t`$, written $`(t,\ \bar t)`$:
 
-The arguments $`\bar a`$ of an instance are an abstraction for each parameter, the last one last: they are either empty, written $`()`$, or arguments $`\bar a`$ followed by an abstraction $`\bar x.\, B`$, written $`(\bar a,\ \bar x.\, B)`$.
+```math
+\begin{aligned}
+& \bar t \mathrel{::=} () \mid (t,\ \bar t) &&(\mathsf{syntax}_{\bar t})
+\end{aligned}
+```
+
+The arguments $`\bar a`$ of an instance are an abstraction for each parameter, the last one last: they are either empty, written $`()`$, or arguments $`\bar a`$ followed by an abstraction $`\bar x.\, B`$, written $`(\bar a,\ \bar x.\, B)`$:
+
+```math
+\begin{aligned}
+& \bar a \mathrel{::=} () \mid (\bar a,\ \bar x.\, B) &&(\mathsf{syntax}_{\bar a})
+\end{aligned}
+```
+
 The abstraction for a parameter binds the variables $`\bar x`$, one for each entry of the telescope of the parameter, each with an empty telescope, and its term $`B`$ is in the scope extended by them; for a parameter with an empty telescope, $`\bar x`$ is empty and the abstraction is the term $`B`$.
 
 ### Telescopes and Contexts
 
-A telescope in a scope is either empty, written $`\varepsilon`$, or an entry followed by a telescope, written $`(x :^{q}_{p} A,\ \Theta)`$, in which $`A`$ is a term in the scope and $`\Theta`$ a telescope in the scope extended by $`x`$, with an empty telescope.
+A telescope in a scope is either empty, written $`\varepsilon`$, or an entry followed by a telescope, written $`(x :^{q}_{p} A,\ \Theta)`$, in which $`A`$ is a term in the scope and $`\Theta`$ a telescope in the scope extended by $`x`$, with an empty telescope:
+
+```math
+\begin{aligned}
+& \Theta \mathrel{::=} \varepsilon \mid (x :^{q}_{p} A,\ \Theta) &&(\mathsf{syntax}_\Theta)
+\end{aligned}
+```
+
 The entry $`x :^{q}_{p} A`$ is used with the grade $`p`$, and its variable is used with the grade $`q`$ by the types after it; the grades of a telescope are the grades $`p`$ of its entries, in order.
 
-A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ extended by a variable, written $`\Gamma,\ x : A`$, or by a second-order variable, written $`\Gamma,\ X : (\Theta \vdash A)`$, in which $`A`$ and $`\Theta`$ are in the scope of $`\Gamma`$, and in $`X : (\Theta \vdash A)`$, $`A`$ is in the scope of $`\Gamma`$ extended by the variables of $`\Theta`$.
+A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ extended by a variable, written $`\Gamma,\ x : A`$, or by a second-order variable, written $`\Gamma,\ X : (\Theta \vdash A)`$, in which $`A`$ and $`\Theta`$ are in the scope of $`\Gamma`$, and in $`X : (\Theta \vdash A)`$, $`A`$ is in the scope of $`\Gamma`$ extended by the variables of $`\Theta`$:
+
+```math
+\begin{aligned}
+& \Gamma \mathrel{::=} \varepsilon \mid \Gamma,\ x : A \mid \Gamma,\ X : (\Theta \vdash A) &&(\mathsf{syntax}_\Gamma)
+\end{aligned}
+```
+
 The scope of a context is its variables, the last one last, each with the grades of its telescope.
 A variable $`x : A`$ and a second-order variable $`X : (\varepsilon \vdash A)`$ both have an empty telescope, and only their entries in the context tell them apart.
 
@@ -47,17 +82,82 @@ An entry of a signature has sort variables, level variables and grade variables,
 The sort and grade variables are not part of the terms: since an entry is checked for each instance of them, its type, its body, its parameters and its sort are given for each instance, written with the variables as a rule is written with the variables of its fraction, so that the terms carry qualities and grades only.
 The level variables are part of the terms, since an entry is checked once with them.
 
-An entry is one of:
+An entry is one of three cases:
+
+```math
+\begin{aligned}
+& {\mathrel{::=}} &&(\mathsf{syntax}_e) \\
+& \quad e \\
+& \quad {\mid} \\
+& \qquad f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t \\
+& \qquad f.\{\bar s;\ \bar l;\ \bar p\} :_m A \\
+& \qquad \mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots
+\end{aligned}
+```
+
+The cases are:
 
 - A constant definition $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
 - A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses.
 - A type declaration $`\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots`$, a block of types declared together, of the kind $`\mathcal{K}`$, of which the system knows the header only: the names $`D_1, \dots, D_n`$, the sort, level and grade variables, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, and the sort $`\kappa`$ of the declared types; the bodies of the declared types are given by $`\mathcal{K}`$, in its annex.
 
-The names that an entry introduces are $`D_1, \dots, D_n`$ for a type declaration, and $`f`$ for a constant definition or declaration.
-A signature is either empty, written $`\varnothing`$, or a signature $`\Sigma`$ extended by an entry $`e`$, written $`\Sigma,\ e`$.
-A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, written $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$ and the type $`A`$, which the rules of the defined and of the declared constants share.
-A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa`$, written $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma`$, when one of its entries is a type declaration that declares $`D`$, with these variables, the parameters $`\Delta`$ and the sort $`\kappa`$, which the rules of the declared types share.
-The names of a signature are distinct when each of its entries introduces names that no entry before it introduces.
+The names that an entry introduces are $`D_1, \dots, D_n`$ for a type declaration, and $`f`$ for a constant definition or declaration:
+
+```math
+\begin{aligned}
+& \text{and} &&(\mathsf{names}_e) \\
+& \quad \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t) = \{f\} \\
+& \quad \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} :_m A) = \{f\} \\
+& \quad \mathsf{names}(\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots) = \{D_1, \dots, D_n\}
+\end{aligned}
+```
+
+A signature is either empty, written $`\varnothing`$, or a signature $`\Sigma`$ extended by an entry $`e`$, written $`\Sigma,\ e`$, and has the entries $`e \in \Sigma`$ that extend it:
+
+```math
+\begin{aligned}
+& \Sigma \mathrel{::=} \varnothing \mid \Sigma,\ e &&(\mathsf{syntax}_\Sigma) \\[1em]
+& \text{and} &&(\in_\Sigma) \\
+& \quad e \notin \varnothing \\
+& \quad e_1 \in (\Sigma,\ e_2) \iff e_1 = e_2 \text{ or } e_1 \in \Sigma
+\end{aligned}
+```
+
+A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, written $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$ and the type $`A`$, which the rules of the defined and of the declared constants share:
+
+```math
+\begin{aligned}
+& \text{⟺} &&(\in_f) \\
+& \quad f.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma \\
+& \quad \text{or} \\
+& \qquad \exists t.\ (f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t) \in \Sigma \\
+& \qquad (f.\{\bar s;\ \bar l;\ \bar p\} :_m A) \in \Sigma
+\end{aligned}
+```
+
+A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa`$, written $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma`$, when one of its entries is a type declaration that declares $`D`$, with these variables, the parameters $`\Delta`$ and the sort $`\kappa`$, which the rules of the declared types share:
+
+```math
+\begin{aligned}
+& \text{⟺} &&(\in_D) \\
+& \quad D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma \\
+& \quad \exists \mathcal{K}.\ (\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{≔} \dots;\ \dots) \in \Sigma
+\end{aligned}
+```
+
+The names of a signature are distinct when each of its entries introduces names that no entry before it introduces:
+
+```math
+\begin{aligned}
+& \text{and} &&(\mathsf{distinct}_\Sigma) \\
+& \quad \text{the names of } \varnothing \text{ are distinct} \\
+& \quad \text{⟺} \\
+& \qquad \text{the names of } \Sigma,\ e \text{ are distinct} \\
+& \qquad \text{and} \\
+& \qquad\quad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad\quad \forall e' \in \Sigma.\ \mathsf{names}(e) \cap \mathsf{names}(e') = \varnothing
+\end{aligned}
+```
 
 ## Properties
 
