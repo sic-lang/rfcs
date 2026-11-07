@@ -4,6 +4,8 @@
 title = "The Sic RFC Book"
 
 [output.html]
+# Centers the diagrams, as GitHub does.
+additional-css = ["mermaid.css"]
 # The files of mdbook-mermaid, which build-book writes where its install command does.
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
 git-repository-url = "https://github.com/sic-lang/rfcs"
