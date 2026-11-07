@@ -63,7 +63,7 @@ The steps outside the repositories are free, and those inside them are constrain
 - Implement, Record and Integrate happen in the repositories, through pull requests that follow this guide and pass the checks.
   Every pull request is opened as a draft and stays one until Integrate.
   - Implement changes one or more repositories, with one pull request per repository, but no RFC.
-  - Record writes in an RFC what the implementation of the iteration confirmed, and only that iteration.
+  - Record writes in an [RFC](#rfcs) what the implementation of the iteration confirmed, and only that iteration.
     Except to fix an RFC, implement first.
     An iteration may have nothing to record, which is fine: the point is to ask whether it has.
   - Integrate starts when the submitter judges a pull request ready, and only then: they mark it ready for review and ask an integrator to review and merge it.
@@ -71,6 +71,24 @@ The steps outside the repositories are free, and those inside them are constrain
 
 Contributors may use AI or any other tool to prepare their pull requests, and bear full responsibility for what they submit, whatever tools they used.
 Only an integrator decides to integrate a pull request, never an AI or a tool, which may assist them and perform the merge they decided; the integrator bears full responsibility for accepting or rejecting it.
+
+## RFCs
+
+An RFC records what an iteration confirmed, at its Record step, and is created and changed by these rules.
+
+### Creating an RFC
+
+An RFC is created in four steps:
+
+1. Copy [`0000-template.md`](0000-template.md) to `text/0000-short-name.md` and fill it in.
+2. Open a pull request: the RFC is discussed in it.
+3. Rename the file after the number of the pull request, on four digits (`text/0042-short-name.md`), and link the pull request in its header.
+4. The pull request is merged if the RFC is accepted, and closed if it is rejected.
+
+### Changing an Accepted RFC
+
+An accepted RFC is never deleted nor renumbered, and only receives very minor amendments, such as fixing a typo.
+A substantial change is a new RFC, which supersedes the old one: a note is added at the top of the old RFC, linking to the new one.
 
 ## Pull Requests
 
