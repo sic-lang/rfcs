@@ -1,6 +1,6 @@
 # RFC 0036: Type System
 
-- Pull request: [sic-lang/rfcs#36](https://github.com/sic-lang/rfcs/pull/36)
+Pull request: [sic-lang/rfcs#36](https://github.com/sic-lang/rfcs/pull/36)
 
 ## Summary
 
@@ -75,6 +75,8 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 
 ## Drawbacks
 
+The type system has these drawbacks:
+
 - One RFC for the whole type system is a large document to review, even with the definitions in the annexes; its parts are accepted together, since none of them stands alone.
 - Seven grades, among which a programmer chooses on every binder, are many: the surface language has to infer most of them, which no RFC designs yet.
 - Without cumulativity, a program polymorphic in its universes writes its levels and their joins, as in Agda and in Lean.
@@ -139,6 +141,8 @@ One RFC with short annexes keeps the definitions readable, one subject at a time
 
 ## Prior Art
 
+The type system builds on the following work:
+
 - The abstract interpretation of [Cousot and Cousot](https://doi.org/10.1145/512950.512973) and its [best abstractions](https://doi.org/10.1145/567752.567778) give the meaning of the multiplicities and of the grades.
 - Grades on binders come from [McBride](https://doi.org/10.1007/978-3-319-30936-1_12) and the quantitative type theory of [Atkey](https://doi.org/10.1145/3209108.3209189), which [Idris 2](https://arxiv.org/abs/2104.00480) implements with the multiplicities $`0`$, $`1`$ and $`\omega`$, and threads its effects through a linear world token, and [Linear Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html) with $`1`$ and $`\omega`$.
 - The graded dependent type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), extended in their [journal version](https://arxiv.org/abs/2603.29716) and [formalized in Agda](https://github.com/graded-type-theory/graded-type-theory), on which the rules of the type system are built: it parametrizes its rules by a modality and a mode structure, which the grades and the modes instantiate, and [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) add the well-behaved greatest lower bounds that the usage of recursion needs.
@@ -150,6 +154,8 @@ One RFC with short annexes keeps the definitions readable, one subject at a time
 - [Verus](https://doi.org/10.1145/3586037) separates the code that runs from the specifications and proofs by [modes of variables](https://verus-lang.github.io/verus/guide/reference-var-modes.html), as the modes of the constants of Sic, and tracks ghost resources linearly, which the grades `none / linear` and `linear / unrestricted` express in Sic.
 
 ## Unresolved Questions
+
+These questions remain open:
 
 - The annexes are written as the system is settled, subject by subject, so that the list above grows with them.
 - What do the run-time multiplicities $`1`$ and $`\omega`$ mean for a program that runs?

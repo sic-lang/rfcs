@@ -48,6 +48,8 @@ A subscript numbers objects of the same kind that come from different premises o
 
 ## Names of Rules and Formulas
 
+Rules and formulas are named as follows:
+
 - A rule is named after its fraction, in parentheses.
 - A rule of usage is named after the rule of typing of the same construct, with the index $`\mathsf{m}`$.
 - A rule of equality that goes with a rule of typing of the same construct is named after it, with the index $`\equiv`$ last.
