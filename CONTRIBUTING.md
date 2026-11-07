@@ -26,7 +26,7 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 
 ## Workflow
 
-Work on a subject goes from a plan to its integration, through iterations that each design, implement, record and adjust a part of it: Plan, then Design, Implement, RFC and Adjust, as many times as needed, then Integrate.
+Work on a subject goes from a plan to its integration, through iterations that each design, implement, record and adjust a part of it: Plan, then Design, Implement, Record and Adjust, as many times as needed, then Integrate.
 The steps outside the repositories are free, and those inside them are constrained:
 
 - Plan, Design and Adjust happen outside the repositories, in whatever way suits the contributors, alone or in a group, with or without tools.
@@ -35,9 +35,9 @@ The steps outside the repositories are free, and those inside them are constrain
   - Design does the same for one iteration, sized to be easy to review, but decides instead of exploring what is possible.
   - Adjust revises the plan from the results, the problems and the solutions of the iteration.
     When the iterations do not fit together, go back to Plan.
-- Implement, RFC and Integrate happen in the repositories, through pull requests that follow this guide and pass the checks.
+- Implement, Record and Integrate happen in the repositories, through pull requests that follow this guide and pass the checks.
   - Implement changes one or more repositories, with one pull request per repository, but no RFC.
-  - RFC records in an RFC what the implementation of the iteration confirmed, and only that iteration.
+  - Record writes in an RFC what the implementation of the iteration confirmed, and only that iteration.
     Except to fix an RFC, implement first.
   - Integrate starts when the submitter judges a pull request ready, and only then: they ask an integrator to merge it.
     When the integrator asks for changes, go back to Plan; when they judge the pull request not relevant to the project, it is closed.
