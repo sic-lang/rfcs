@@ -59,6 +59,7 @@ The steps outside the repositories are free, and those inside them are constrain
   - Implement changes one or more repositories, with one pull request per repository, but no RFC.
   - Record writes in an RFC what the implementation of the iteration confirmed, and only that iteration.
     Except to fix an RFC, implement first.
+    An iteration may have nothing to record, which is fine: the point is to ask whether it has.
   - Integrate starts when the submitter judges a pull request ready, and only then: they ask an integrator to merge it.
     When the integrator asks for changes, the submitter adds them to the pull request; when the integrator judges it not relevant to the project, it is closed.
 
