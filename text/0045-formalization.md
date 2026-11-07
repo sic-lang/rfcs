@@ -88,6 +88,4 @@ The formalization follows practices of the following projects:
 
 ## Unresolved Questions
 
-The following question is left to a later RFC, once implemented:
-
-- How each definition is validated against the examples of its RFC and of the literature, and against its meaning, and where these examples live in the formalization.
+None.
