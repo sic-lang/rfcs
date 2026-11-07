@@ -8,8 +8,8 @@ on:
 permissions:
   contents: read
 
-# One deployment at a time, without canceling the one in progress, as in the starter workflows of
-# GitHub Pages.
+# One deployment at a time, so that an older one never replaces a newer one, and the one in
+# progress is left to finish.
 concurrency:
   group: pages
   cancel-in-progress: false

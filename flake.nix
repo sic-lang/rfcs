@@ -99,9 +99,9 @@
               command = "yamllint --strict .";
             };
           };
-          # Builds the RFC book into book/, as generate-book.py of rust-lang/rfcs does: src/ links the
-          # README as the introduction and every entry of text/, and its SUMMARY.md lists the RFCs in
-          # the order of their file names, that is of their numbers.
+          # Builds the RFC book into book/: src/ links the README as the introduction and every entry
+          # of text/, and its SUMMARY.md lists the RFCs in the order of their file names, that is of
+          # their numbers, which never change: an accepted RFC is never renumbered.
           buildBook = command {
             name = "build-book";
             runtimeInputs = [
