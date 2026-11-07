@@ -42,7 +42,7 @@ The definitions and the statements follow the RFCs so closely that a reader comp
 
 - Every definition of an RFC has a definition of the formalization with the same structure and the same cases, and every named formula or rule a theorem or a rule; the formalization only adds what its representation of the variables needs, such as de Bruijn indices, and says so in a comment.
 - Every definition, formula and rule of an RFC has a name, written in the last column of its formula or after the fraction of its rule; a check of the RFCs makes sure that every name has this form, from which it is extracted, and that it designates nothing else.
-- A declaration of the formalization gives, with an attribute, the names of the definitions, formulas and rules that it formalizes, written exactly as the RFC writes them; a formula that the representation of the variables makes needless, such as a condition that a name is fresh, is given to the declaration of this representation.
+- A declaration of the formalization gives, on a line of its doc string, the names of the definitions, formulas and rules that it formalizes, written exactly as the RFC writes them; a formula that the representation of the variables makes needless, such as a condition that a name is fresh, is given to the declaration of this representation.
 - A program of the formalization extracts the names of the RFCs, at a commit that the flake of `sic` pins, and those of the declarations, and fails when a declaration gives a name that no RFC has, so that renaming a formula of an RFC cannot leave the correspondence behind.
 - The same program writes the pages of the correspondence, one per file of the RFCs, which give each name with its section and its formula or rule, as the RFC writes it, then the source of each declaration that formalizes it, as its file writes it, without the proof of a theorem, so that a reader compares them on one page; the site of `sic` publishes them with the documentation of the formalization.
 
@@ -51,7 +51,7 @@ A name that no declaration gives shows as not yet formalized, so that the pages 
 ## Drawbacks
 
 The correspondence relates names, not meanings: it shows that a declaration claims to formalize a formula, while only a reader checks that it does.
-The attribute of the correspondence is itself defined in Lean, in a library apart from the formalization, since the attributes of Lean depend on `Classical.choice`.
+A doc string gives its names in a text that Lean does not check, so that a name written wrongly shows as not yet formalized, until a reader notices it.
 Without Mathlib, the formalization proves itself the general facts it needs, on lists, sets and orders, which Mathlib already has.
 Lean changes between versions more than older proof assistants do, so that updating it may break proofs.
 
@@ -71,11 +71,17 @@ The alternatives were considered as follows:
 ### Names Rather Than a Manual Correspondence
 
 The correspondence could be a table kept by hand, as the README of `sic` once had, but such a table goes out of date as soon as a formula is renamed or a declaration added, which nothing detects.
-Extracting the names from both sides removes this cause, at the cost of a convention on where the RFCs write their names and of an attribute on the declarations.
+Extracting the names from both sides removes this cause, at the cost of a convention on where the RFCs write their names and of a line in the doc strings of the declarations.
+
+### Doc Strings Rather Than an Attribute
+
+The names could be given by an attribute, as [Mathlib](https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Tactic/CrossRefAttribute.lean) relates its declarations to external references such as the tags of the Stacks project, which Lean would parse and keep with the declaration.
+But the attributes of Lean depend on `Classical.choice`, so that the attribute would need a library apart from the formalization, and Lean allows no attribute on a constructor, so that a rule formalized as a constructor would get its name away from it.
+A doc string is kept with its declaration as well, constructors included, and the check of the names does not depend on Lean parsing them, since it is the extraction that compares them with the RFCs.
 
 ### The Exact Names
 
-The attribute gives the name as the RFC writes it in LaTeX, rather than an identifier of its own: a name of the RFC needs no second spelling, which would have to be kept consistent with the first, at the cost of names less pleasant to read in the formalization.
+The doc string gives the name as the RFC writes it in LaTeX, rather than an identifier of its own: a name of the RFC needs no second spelling, which would have to be kept consistent with the first, at the cost of names less pleasant to read in the formalization.
 
 ## Prior Art
 
