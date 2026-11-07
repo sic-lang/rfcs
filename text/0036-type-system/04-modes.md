@@ -7,6 +7,18 @@ It builds on the [grades](03-grades.md).
 
 The type system has three modes, each named after its grade $`\ulcorner m \urcorner`$, with which a variable checked in the mode $`m`$ uses itself:
 
+```math
+\begin{aligned}
+& m \mathrel{::=} {00}^{\mathsf{m}} \mid {01}^{\mathsf{m}} \mid {11}^{\mathsf{m}} &&(\mathsf{syntax}_m) \\[1em]
+& \text{and} &&(\mathsf{grade}_m) \\
+& \quad \ulcorner {00}^{\mathsf{m}} \urcorner = {00}^{\mathsf{p}} \\
+& \quad \ulcorner {01}^{\mathsf{m}} \urcorner = {01}^{\mathsf{p}} \\
+& \quad \ulcorner {11}^{\mathsf{m}} \urcorner = {11}^{\mathsf{p}}
+\end{aligned}
+```
+
+Each mode counts the uses as follows:
+
 | Mode | Grade | Counts |
 | --- | --- | --- |
 | $`{00}^{\mathsf{m}}`$ | $`{00}^{\mathsf{p}}`$ | no use |
