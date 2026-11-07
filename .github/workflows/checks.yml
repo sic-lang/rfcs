@@ -24,6 +24,7 @@ jobs:
           - editorconfig
           - flake
           - markdownlint
+          - names
           - nixfmt
           - reuse
           - shellcheck
