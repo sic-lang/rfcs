@@ -30,6 +30,26 @@ The multiplicities are added, multiplied and met by cases, $`0`$ being neutral f
 \end{aligned}
 ```
 
+The same operations as tables, whose rows give the left operand:
+
+| $`+`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| --- | --- | --- | --- |
+| $`0`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| $`1`$ | $`1`$ | $`\omega`$ | $`\omega`$ |
+| $`\omega`$ | $`\omega`$ | $`\omega`$ | $`\omega`$ |
+
+| $`\cdot`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| --- | --- | --- | --- |
+| $`0`$ | $`0`$ | $`0`$ | $`0`$ |
+| $`1`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| $`\omega`$ | $`0`$ | $`\omega`$ | $`\omega`$ |
+
+| $`\wedge`$ | $`0`$ | $`1`$ | $`\omega`$ |
+| --- | --- | --- | --- |
+| $`0`$ | $`0`$ | $`\omega`$ | $`\omega`$ |
+| $`1`$ | $`\omega`$ | $`1`$ | $`\omega`$ |
+| $`\omega`$ | $`\omega`$ | $`\omega`$ | $`\omega`$ |
+
 The multiplicities are ordered by their meet:
 
 ```math

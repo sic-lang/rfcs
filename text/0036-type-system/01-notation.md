@@ -56,6 +56,7 @@ Rules and formulas are named as follows:
 - A rule that extends a context, a telescope or a signature by one kind of entry is indexed by a comma.
 - A rule with one case per kind of entry is indexed by the letter of the entry: $`x`$ for a variable, $`X`$ for a second-order variable.
 - A formula is named in its last column.
+- A formula that defines an object is named after what it defines: $`\mathsf{syntax}`$ for its grammar, $`\mathsf{op}`$ for its operations and $`\mathsf{order}`$ for its order.
 - The name of a formula is indexed by the letter of the kind of objects it is about: $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\Sigma`$ for the signatures, and $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order.
 - The name of a formula of a meaning has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, and $`\mathsf{eq}`$ for a clause of the equality of a canonical type.
 - Every name designates one rule or one formula in all the annexes.
@@ -66,4 +67,6 @@ A rule holds for every instance of the variables of its fraction, and a variable
 In a rule, the premises are written one per line, and a premise that holds only under a condition, written $`\dots \text{ if } \dots`$, comes after the others.
 A formula too long for one line is written in prefix form: its operator alone on a line, then each of its operands on the lines below, indented, and written the same way when it is itself too long for one line; the argument of an application too long for one line goes on the lines below its opening parenthesis, indented, broken after a comma; a formula made of several statements is their conjunction, written in prefix form under $`\text{and}`$; a formula on one line keeps its operators between their operands.
 Two formulas that follow each other are separated by an empty line.
+A grammar is written in the [Backus–Naur form](https://doi.org/10.1145/366193.366201) of the report on ALGOL 60: $`\pi \mathrel{::=} 0 \mid 1 \mid \omega`$ reads: a multiplicity is $`0`$, $`1`$ or $`\omega`$, and each alternative, separated by $`\mid`$, is a case of the definition.
+An operation defined by cases is a conjunction of equations, one per case, a case that holds only under a condition being written $`\dots \text{ if } \dots`$; the cases agree where they overlap.
 A rule or a formula that the system does not define, but which is derived from its rules, is said so where it appears.
