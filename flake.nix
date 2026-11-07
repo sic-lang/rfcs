@@ -57,6 +57,11 @@
               tools = [ ];
               command = "nix flake check --quiet";
             };
+            # Checks the names of the formulas and of the rules of the RFCs (CONTRIBUTING.md).
+            names = {
+              tools = [ ];
+              command = lib.getExe checkNames.run;
+            };
             markdownlint = {
               tools = [ pkgs.markdownlint-cli2 ];
               command = "markdownlint-cli2 '**/*.md'";
@@ -134,6 +139,41 @@
               RUST_LOG=warn mdbook-mermaid install "$mermaid"
               cp "$mermaid"/*.js .
               mdbook build
+            '';
+          };
+          # Checks that a formula is named in its last column and a rule after its fraction, as the
+          # names are extracted, and that every name designates one formula or rule of the RFCs.
+          checkNames = command {
+            name = "check-names";
+            runtimeInputs = [
+              pkgs.coreutils
+              pkgs.git
+              pkgs.gnugrep
+            ];
+            text = ''
+              cd "$(git rev-parse --show-toplevel)"
+              mapfile -d "" files < <(git ls-files -z 'text/*.md')
+              if [ ''${#files[@]} -eq 0 ]; then
+                exit 0
+              fi
+              # A name, then the end of its line, which may break the formula with \\ or \\[1em].
+              name='\([^()]*\)(?=\s*(\\\\(\[1em\])?)?\s*$)'
+              status=0
+              if grep -nP '&&' "''${files[@]}" | grep -vP "&&$name"; then
+                echo 'A column && of a formula must end its line with the name of the formula, as &&(\mathsf{op}_p).' >&2
+                status=1
+              fi
+              if grep -nP '^\s*\\frac' "''${files[@]}" | grep -vP "\\\;$name"; then
+                echo 'A rule must end its line with its name after its fraction, as \frac{…}{…}\;(\mathsf{def}).' >&2
+                status=1
+              fi
+              duplicates=$({ grep -hoP "(&&|\\\;)\K$name" "''${files[@]}" || true; } | sort | uniq -d)
+              if [ -n "$duplicates" ]; then
+                printf '%s\n' "$duplicates"
+                echo 'Each of these names designates several formulas or rules: give each its own name.' >&2
+                status=1
+              fi
+              exit "$status"
             '';
           };
           # Checks the commits after a base, origin/main by default: each one is signed off by its
