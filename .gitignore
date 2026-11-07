@@ -3,3 +3,9 @@
 
 # Written by nix run .#setup-vscode, then personal.
 /.vscode/
+
+# Written by nix run .#build-book.
+/book/
+/mermaid-init.js
+/mermaid.min.js
+/src/
