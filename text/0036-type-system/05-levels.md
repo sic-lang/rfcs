@@ -5,7 +5,14 @@ It builds on the [notation](01-notation.md).
 
 ## Definitions
 
-A level is $`0`$, a successor $`l + 1`$, the larger $`l_1 \sqcup l_2`$ of two levels, or a level variable, which stands for any natural number.
+A level is $`0`$, a successor $`l + 1`$, the larger $`l_1 \sqcup l_2`$ of two levels, or a level variable, which stands for any natural number:
+
+```math
+\begin{aligned}
+& l \mathrel{::=} 0 \mid l + 1 \mid l \sqcup l \mid \text{a level variable} &&(\mathsf{syntax}_l)
+\end{aligned}
+```
+
 A level is not a term: it uses no variable of a context, and appears only as the index of a sort.
 
 ## Meaning
