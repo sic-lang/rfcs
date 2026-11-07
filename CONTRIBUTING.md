@@ -30,11 +30,11 @@ Work on a subject goes from a plan to its integration, through iterations that e
 The steps outside the repositories are free, and those inside them are constrained:
 
 - Plan, Design and Adjust happen outside the repositories, in whatever way suits the contributors, alone or in a group, with or without tools.
-  - Plan gives an overall view of the subject: its scope, its risks and their countermeasures, its decisive problems and their possible solutions.
-    It draws on the academic literature, the practice of other projects, experiments and prototypes, and is written down rather than kept in mind.
-  - Design does the same for one iteration, sized to be easy to review, but decides instead of exploring what is possible.
-  - Adjust revises the plan from the results, the problems and the solutions of the iteration.
-    When the iterations do not fit together, go back to Plan.
+  - Plan is a good time to get an overall view of the subject: its scope, its risks and their countermeasures, its decisive problems and their possible solutions.
+    The academic literature, the practice of other projects, experiments and prototypes can help, and writing them down helps more than keeping them in mind.
+  - Design can do the same for one iteration, sized to be easy to review, with the aim of deciding rather than exploring what is possible.
+  - Adjust is the moment to revise the plan, from the results, the problems and the solutions of the iteration.
+    When the iterations do not fit together, going back to Plan is often the way out.
 - Implement, Record and Integrate happen in the repositories, through pull requests that follow this guide and pass the checks.
   - Implement changes one or more repositories, with one pull request per repository, but no RFC.
   - Record writes in an RFC what the implementation of the iteration confirmed, and only that iteration.
