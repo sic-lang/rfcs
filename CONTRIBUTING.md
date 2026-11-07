@@ -63,6 +63,7 @@ The steps outside the repositories are free, and those inside them are constrain
 - Implement, Record and Integrate happen in the repositories, through pull requests that follow this guide and pass the checks.
   Every pull request is opened as a draft and stays one until Integrate.
   - Implement changes one or more repositories, with one pull request per repository, but no RFC.
+    When it reveals a gap in an RFC, such as a missing case or a definition the implementation needs and the RFC lacks, raise it at once in the pull request, rather than working around it or changing the RFC silently to fit the implementation.
   - Record writes in an [RFC](#rfcs) what the implementation of the iteration confirmed, and only that iteration.
     Except to fix an RFC, implement first.
     An iteration may have nothing to record, which is fine: the point is to ask whether it has.
@@ -74,7 +75,7 @@ Only an integrator decides to integrate a pull request, never an AI or a tool, w
 
 ## RFCs
 
-An RFC records what an iteration confirmed, at its Record step, and is created and changed by these rules.
+An RFC records what an iteration confirmed, at its Record step, and is created, written and changed by these rules.
 
 ### Creating an RFC
 
@@ -84,6 +85,13 @@ An RFC is created in four steps:
 2. Open a pull request: the RFC is discussed in it.
 3. Rename the file after the number of the pull request, on four digits (`text/0042-short-name.md`), and link the pull request in its header.
 4. The pull request is merged if the RFC is accepted, and closed if it is rejected.
+
+### Writing an RFC
+
+An RFC follows these rules, in addition to the [style](#style) of every text:
+
+- Give every notation a single meaning: a notation shared by several definitions hides the cases where one of them is missing.
+- List in the pull request the decisions of the RFC to review, as a checklist whose boxes are ticked as soon as they are approved, and link each to the section of the RFC that gives its rationale.
 
 ### Changing an Accepted RFC
 
