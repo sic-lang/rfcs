@@ -5,33 +5,44 @@ It builds on the [notation](01-notation.md).
 
 ## Definitions
 
-A multiplicity is $`0`$, $`1`$ or $`\omega`$, where $`\omega`$ stands for any number of uses, none included, as in the linear modality of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862).
-The multiplicities are added, multiplied and met by the following tables, whose rows give the left operand:
+A multiplicity is $`0`$, $`1`$ or $`\omega`$, where $`\omega`$ stands for any number of uses, none included, as in the linear modality of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862):
 
-| $`+`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| --- | --- | --- | --- |
-| $`0`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| $`1`$ | $`1`$ | $`\omega`$ | $`\omega`$ |
-| $`\omega`$ | $`\omega`$ | $`\omega`$ | $`\omega`$ |
+```math
+\begin{aligned}
+& \pi \mathrel{::=} 0 \mid 1 \mid \omega &&(\mathsf{syntax}_\pi)
+\end{aligned}
+```
 
-| $`\cdot`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| --- | --- | --- | --- |
-| $`0`$ | $`0`$ | $`0`$ | $`0`$ |
-| $`1`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| $`\omega`$ | $`0`$ | $`\omega`$ | $`\omega`$ |
+The multiplicities are added, multiplied and met by cases, $`0`$ being neutral for the addition and absorbing for the multiplication, $`1`$ neutral for the multiplication, and $`\omega`$ the result of every other case:
 
-| $`\wedge`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| --- | --- | --- | --- |
-| $`0`$ | $`0`$ | $`\omega`$ | $`\omega`$ |
-| $`1`$ | $`\omega`$ | $`1`$ | $`\omega`$ |
-| $`\omega`$ | $`\omega`$ | $`\omega`$ | $`\omega`$ |
+```math
+\begin{aligned}
+& \text{and} &&(\mathsf{op}_\pi) \\
+& \quad 0 + \pi = \pi \\
+& \quad \pi + 0 = \pi \\
+& \quad \pi_1 + \pi_2 = \omega \text{ if } \pi_1 \ne 0 \text{ and } \pi_2 \ne 0 \\
+& \quad 0 \cdot \pi = \pi \cdot 0 = 0 \\
+& \quad 1 \cdot \pi = \pi \cdot 1 = \pi \\
+& \quad \omega \cdot \omega = \omega \\
+& \quad 0 \wedge 0 = 0 \\
+& \quad 1 \wedge 1 = 1 \\
+& \quad \pi_1 \wedge \pi_2 = \omega \text{ if } \pi_1 \ne \pi_2 \text{ or } \pi_1 = \omega
+\end{aligned}
+```
 
-The multiplicities are ordered by their meet: $`\pi_1 \le \pi_2`$ when $`\pi_1 = \pi_1 \wedge \pi_2`$.
+The multiplicities are ordered by their meet:
+
+```math
+\begin{aligned}
+& \pi_1 \le \pi_2 \iff \pi_1 = \pi_1 \wedge \pi_2 &&(\mathsf{order}_\pi)
+\end{aligned}
+```
+
 A variable of multiplicity $`\omega`$ may then be used where any multiplicity is expected, while $`0`$ and $`1`$ are not comparable:
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{order}_\pi) \\
+& \text{and} &&(\mathsf{compare}_\pi) \\
 & \quad \omega \le 0 \\
 & \quad \omega \le 1 \\
 & \quad 0 \not\le 1 \\
