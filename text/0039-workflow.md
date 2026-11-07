@@ -85,7 +85,7 @@ Each part of the proposal answers one of the problems of the motivation, and the
 
 The common alternative writes the RFC first, and implements it once accepted.
 It lets a design be rejected before any work on its implementation, but the RFC then records what was expected, and every case the implementation finds changes an accepted text.
-A design can still be reviewed before its implementation, as the free steps organize it.
+A design can still be reviewed before its implementation, when the free steps organize such a review.
 Implementing first makes the RFC record what an implementation confirmed, whether code, a proof or a configuration, and keeps the RFC short, since it records one iteration only.
 
 ### Free and Constrained Steps
