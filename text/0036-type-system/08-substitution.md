@@ -29,7 +29,17 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 \end{aligned}
 ```
 
-The identity gives each variable with an empty telescope itself, and the substitution $`[t / x]`$ gives the term $`t`$ to the variable $`x`$ and each other variable itself.
+The identity gives each variable with an empty telescope itself, and the substitution $`[t / x]`$ gives the term $`t`$ to the variable $`x`$ and each other variable itself:
+
+```math
+\begin{aligned}
+& \mathsf{id}(x) = x &&(\mathsf{id}_\sigma) \\[1em]
+& \text{and} &&(\mathsf{single}_\sigma) \\
+& \quad [t / x](x) = t \\
+& \quad [t / x](y) = y \text{ if } y \ne x
+\end{aligned}
+```
+
 The substitution $`B[\bar t / \bar x]`$ of arguments $`\bar t`$ for variables $`\bar x`$ with empty telescopes substitutes the first argument for the first variable, then the others, and is written $`B[\bar t / \Theta]`$ when $`\bar x`$ are the variables of the telescope $`\Theta`$:
 
 ```math
@@ -60,8 +70,25 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 ```
 
 Under the variables $`\bar x`$ that it binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty.
-The identity gives each variable $`x`$ the abstraction $`\bar x.\, x[\bar x]`$.
-The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the parameters $`\Delta`$ of its type declaration is of the second order: $`[(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A))]`$ gives the abstraction $`\bar x.\, B`$ to $`X`$, and to each parameter of $`\Delta`$ what $`[\bar a / \Delta]`$ gives it, and likewise when the last parameter is a variable $`x : A`$, whose abstraction is a term.
+The identity gives each variable $`x`$ the abstraction $`\bar x.\, x[\bar x]`$:
+
+```math
+\begin{aligned}
+& \mathsf{id}(x) = \bar x.\, x[\bar x] &&(\mathsf{id}_\theta)
+\end{aligned}
+```
+
+The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the parameters $`\Delta`$ of its type declaration is of the second order: $`[(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A))]`$ gives the abstraction $`\bar x.\, B`$ to $`X`$, and to each parameter of $`\Delta`$ what $`[\bar a / \Delta]`$ gives it, and likewise when the last parameter is a variable $`x : A`$, whose abstraction is a term:
+
+```math
+\begin{aligned}
+& \text{and} &&(\mathsf{params}_\theta) \\
+& \quad [(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A))](X) = \bar x.\, B \\
+& \quad [(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A))](y) = [\bar a / \Delta](y) \text{ if } y \ne X \\
+& \quad [(\bar a,\ B) / (\Delta,\ x : A)](x) = B \\
+& \quad [(\bar a,\ B) / (\Delta,\ x : A)](y) = [\bar a / \Delta](y) \text{ if } y \ne x
+\end{aligned}
+```
 
 A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`\Gamma,\ \Theta`$, is extended by a variable for each entry of $`\Theta`$, whose grades it drops:
 
@@ -75,9 +102,33 @@ A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`
 
 ### Closed Substitutions
 
-A substitution of the second order is closed when the abstractions it gives are in the empty scope extended by their variables.
-The closed substitution $`(\theta_1,\ \theta_2)`$ of the scope of $`\Gamma`$ extended by variables $`\bar x`$ with empty telescopes gives each variable of $`\Gamma`$ what the closed substitution $`\theta_1`$ gives it, and each variable of $`\bar x`$ what the closed substitution $`\theta_2`$ of $`\bar x`$ gives it.
-The closed substitution of closed arguments $`\bar t`$ for variables $`\bar x`$ with empty telescopes gives the first argument to the first variable, then the others: $`(t,\ \bar t)`$ gives $`t`$ to $`x`$, and to $`\bar x`$ what $`\bar t`$ gives them.
+A substitution of the second order is closed when the abstractions it gives are in the empty scope extended by their variables:
+
+```math
+\begin{aligned}
+& \theta \text{ is closed} \iff \forall x.\ \exists \bar x,\ B.\ \theta(x) = \bar x.\, B \text{ and } B \text{ is in the scope } \bar x &&(\mathsf{closed}_\theta)
+\end{aligned}
+```
+
+The closed substitution $`(\theta_1,\ \theta_2)`$ of the scope of $`\Gamma`$ extended by variables $`\bar x`$ with empty telescopes gives each variable of $`\Gamma`$ what the closed substitution $`\theta_1`$ gives it, and each variable of $`\bar x`$ what the closed substitution $`\theta_2`$ of $`\bar x`$ gives it:
+
+```math
+\begin{aligned}
+& \text{and} &&(\mathsf{pair}_\theta) \\
+& \quad (\theta_1,\ \theta_2)(y) = \theta_1(y) \text{ if } y \text{ is a variable of } \Gamma \\
+& \quad (\theta_1,\ \theta_2)(y) = \theta_2(y) \text{ if } y \text{ is a variable of } \bar x
+\end{aligned}
+```
+
+The closed substitution of closed arguments $`\bar t`$ for variables $`\bar x`$ with empty telescopes gives the first argument to the first variable, then the others: $`(t,\ \bar t)`$ gives $`t`$ to $`x`$, and to $`\bar x`$ what $`\bar t`$ gives them:
+
+```math
+\begin{aligned}
+& \text{and} &&(\mathsf{args}_\theta) \\
+& \quad (t,\ \bar t)(x) = t \\
+& \quad (t,\ \bar t)(y) = \bar t(y) \text{ if } y \text{ is a variable of } \bar x
+\end{aligned}
+```
 
 ### Instantiation of the Level Variables
 
@@ -93,7 +144,24 @@ The instantiation $`[\bar l' / \bar l]`$ of the level variables $`\bar l`$ by th
 \end{aligned}
 ```
 
-It instantiates the level of a sort, $`(s_l)[\bar l' / \bar l] = s_{l[\bar l' / \bar l]}`$, and the levels of every term, argument, telescope and context, which it leaves the same otherwise.
+It instantiates the level of a sort, and the levels of every term, argument, telescope and context, which it leaves the same otherwise:
+
+```math
+\begin{aligned}
+& \text{and} &&(\mathsf{inst}_l) \\
+& \quad (s_l)[\bar l' / \bar l] = s_{l[\bar l' / \bar l]} \\
+& \quad x[\bar t][\bar l' / \bar l] = x[\bar t[\bar l' / \bar l]] \\
+& \quad f.\{\bar s;\ \bar l_1;\ \bar p\}[\bar l' / \bar l] = f.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\} \\
+& \quad (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)[\bar l' / \bar l] = D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l] \\
+& \quad ()[\bar l' / \bar l] = () \\
+& \quad (t,\ \bar t)[\bar l' / \bar l] = (t[\bar l' / \bar l],\ \bar t[\bar l' / \bar l]) \\
+& \quad (\bar a,\ \bar x.\, B)[\bar l' / \bar l] = (\bar a[\bar l' / \bar l],\ \bar x.\, B[\bar l' / \bar l]) \\
+& \quad \varepsilon[\bar l' / \bar l] = \varepsilon \\
+& \quad (x :^{q}_{p} A,\ \Theta)[\bar l' / \bar l] = (x :^{q}_{p} A[\bar l' / \bar l],\ \Theta[\bar l' / \bar l]) \\
+& \quad (\Gamma,\ x : A)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ x : A[\bar l' / \bar l] \\
+& \quad (\Gamma,\ X : (\Theta \vdash A))[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ X : (\Theta[\bar l' / \bar l] \vdash A[\bar l' / \bar l])
+\end{aligned}
+```
 
 ## Properties
 
