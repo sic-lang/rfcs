@@ -1,6 +1,6 @@
-# RFC 0000: Formalization
+# RFC 0045: Formalization
 
-Pull request: [sic-lang/rfcs#0](https://github.com/sic-lang/rfcs/pull/0)
+Pull request: [sic-lang/rfcs#45](https://github.com/sic-lang/rfcs/pull/45)
 
 ## Summary
 
