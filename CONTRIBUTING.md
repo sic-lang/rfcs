@@ -105,6 +105,8 @@ Install [Nix](https://nixos.org/), with flakes enabled, on Linux (x86_64 or aarc
 `nix develop` provides every tool the checks use, at the versions of the nixpkgs commit pinned by `flake.lock`.
 With [direnv](https://direnv.net/), `.envrc` loads it when entering the repository, once allowed with `direnv allow` after reading it.
 
+`nix run '.#build-book'` builds into `book/` the book published by GitHub Pages, to read it as it will be published, from `book/index.html`.
+
 For VS Code, `nix run '.#setup-vscode'` writes the recommended extensions and settings to `.vscode/`, which git ignores: the files are then yours to customize.
 
 ## Checks

@@ -1,0 +1,18 @@
+# The RFC book, as rust-lang/rfcs publishes it: nix run .#build-book writes its src/ and builds it
+# into book/, which GitHub Pages serves.
+[book]
+title = "The Sic RFC Book"
+
+[output.html]
+# The files of mdbook-mermaid, which build-book writes where its install command does.
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
+git-repository-url = "https://github.com/sic-lang/rfcs"
+no-section-label = true
+site-url = "/rfcs/"
+smart-punctuation = true
+
+[output.html.search]
+heading-split-level = 0
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"

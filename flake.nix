@@ -40,6 +40,14 @@
               tools = [ pkgs.actionlint ];
               command = "actionlint";
             };
+            # Builds the book, which GitHub Pages serves.
+            book = {
+              tools = [
+                pkgs.mdbook
+                pkgs.mdbook-mermaid
+              ];
+              command = lib.getExe buildBook.run;
+            };
             editorconfig = {
               tools = [ pkgs.editorconfig-checker ];
               command = "editorconfig-checker";
@@ -90,6 +98,43 @@
               tools = [ pkgs.yamllint ];
               command = "yamllint --strict .";
             };
+          };
+          # Builds the RFC book into book/, as generate-book.py of rust-lang/rfcs does: src/ links the
+          # README as the introduction and every entry of text/, and its SUMMARY.md lists the RFCs in
+          # the order of their file names, that is of their numbers.
+          buildBook = command {
+            name = "build-book";
+            runtimeInputs = [
+              pkgs.coreutils
+              pkgs.git
+              pkgs.mdbook
+              pkgs.mdbook-mermaid
+            ];
+            text = ''
+              cd "$(git rev-parse --show-toplevel)"
+              rm -rf src
+              mkdir src
+              ln -s ../README.md src/introduction.md
+              ln -s ../LICENSES src/LICENSES
+              for entry in text/*; do
+                ln -s "../$entry" "src/''${entry#text/}"
+              done
+              {
+                printf '[Introduction](introduction.md)\n\n'
+                for file in text/*.md; do
+                  name=''${file#text/}
+                  printf -- '- [%s](%s)\n' "''${name%.md}" "$name"
+                done
+              } >src/SUMMARY.md
+              # The JavaScript files of mdbook-mermaid, which its install command writes next to the
+              # book.toml it rewrites: a temporary one, which keeps that of the repository as it is.
+              mermaid=$(mktemp -d)
+              trap 'rm -rf "$mermaid"' EXIT
+              touch "$mermaid/book.toml"
+              RUST_LOG=warn mdbook-mermaid install "$mermaid"
+              cp "$mermaid"/*.js .
+              mdbook build
+            '';
           };
           # Checks the commits after a base, origin/main by default: each one is signed off by its
           # author (CONTRIBUTING.md), and a merge commit only merges the base, to resolve a conflict.
@@ -236,6 +281,7 @@
               name: command: lib.nameValuePair "check-${name}" (app command "Run the ${name} check")
             ) checkCommands
             // {
+              build-book = app buildBook "Build the RFC book into book/";
               check = app checkAll "Run every check";
               setup-vscode = app setupVscode "Write the recommended VS Code configuration to .vscode/";
             };
@@ -244,6 +290,7 @@
           checks =
             lib.mapAttrs' (name: command: lib.nameValuePair "check-${name}" command.checked) checkCommands
             // {
+              build-book = buildBook.checked;
               check = checkAll.checked;
               setup-vscode = setupVscode.checked;
             };
