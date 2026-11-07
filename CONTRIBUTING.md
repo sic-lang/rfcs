@@ -27,6 +27,26 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 ## Workflow
 
 Work on a subject goes from a plan to its integration, through iterations that each design, implement, record and adjust a part of it: Plan, then Design, Implement, Record and Adjust, as many times as needed, then Integrate.
+
+```mermaid
+flowchart LR
+  subgraph outside [Outside the repositories, free]
+    Plan
+    Design
+    Adjust
+  end
+  subgraph inside [In the repositories, constrained]
+    Implement
+    Record
+    Integrate
+  end
+  Plan --> Design --> Implement --> Record --> Adjust
+  Adjust -->|next iteration| Design
+  Adjust -->|iterations do not fit| Plan
+  Adjust -->|ready| Integrate
+  Integrate -->|changes asked| Plan
+```
+
 The steps outside the repositories are free, and those inside them are constrained:
 
 - Plan, Design and Adjust happen outside the repositories, in whatever way suits the contributors, alone or in a group, with or without tools.
