@@ -56,7 +56,7 @@ Rules and formulas are named as follows:
 - A rule that extends a context, a telescope or a signature by one kind of entry is indexed by a comma.
 - A rule with one case per kind of entry is indexed by the letter of the entry: $`x`$ for a variable, $`X`$ for a second-order variable.
 - A formula is named in its last column.
-- A formula that defines an object is named after what it defines: $`\mathsf{syntax}`$ for its grammar, $`\mathsf{op}`$ for its operations and $`\mathsf{order}`$ for its order.
+- A formula that defines an object is named after what it defines: $`\mathsf{syntax}`$ for the objects themselves, given by a grammar or by a condition, $`\mathsf{op}`$ for its operations and $`\mathsf{order}`$ for its order.
 - The name of a formula is indexed by the letter of the kind of objects it is about: $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\Sigma`$ for the signatures, and $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order.
 - The name of a formula of a meaning has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, and $`\mathsf{eq}`$ for a clause of the equality of a canonical type.
 - Every name designates one rule or one formula in all the annexes.

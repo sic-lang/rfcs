@@ -6,7 +6,14 @@ It builds on the [multiplicities](02-multiplicities.md).
 ## Definitions
 
 A grade is a pair $`\langle \pi_1, \pi_2 \rangle`$ of multiplicities, whose first multiplicity counts the uses at run time and the second all the uses, erased or not.
-The uses at run time are among all the uses, so a pair whose second multiplicity is $`0`$ has $`0`$ as its first multiplicity too: of the nine pairs, the seven others are the grades.
+The uses at run time are among all the uses, so a pair whose second multiplicity is $`0`$ has $`0`$ as its first multiplicity too: of the nine pairs, the seven others are the grades:
+
+```math
+\begin{aligned}
+& \langle \pi_1, \pi_2 \rangle \text{ is a grade} \iff (\pi_2 = 0 \implies \pi_1 = 0) &&(\mathsf{syntax}_p)
+\end{aligned}
+```
+
 A grade is written as its two multiplicities side by side, with the exponent $`\mathsf{p}`$, such as $`{01}^{\mathsf{p}}`$ for $`\langle 0, 1 \rangle`$; a grade whose multiplicities are variables keeps the angle brackets, as $`\langle \pi_1, \pi_2 \rangle`$, since $`\pi_1 \pi_2`$ would read as a product.
 
 Each grade has a name in Sic, made of the names of its two multiplicities: `none`, `linear` and `unrestricted` for $`0`$, $`1`$ and $`\omega`$, except a run-time multiplicity $`\omega`$ under a total multiplicity $`1`$, named `affine` since it counts at most one use, in the order of their multiplicities, $`0`$, $`1`$, then $`\omega`$:
@@ -32,11 +39,19 @@ The operations act on each multiplicity, and the seven grades are closed under t
 \end{aligned}
 ```
 
-The grades are ordered by their meet, $`p \le q`$ when $`p = p \wedge q`$, which means that a variable of grade $`p`$ may be used where the grade $`q`$ is expected; it is the order of the multiplicities on each component:
+The grades are ordered by their meet, which means that a variable of grade $`p`$ may be used where the grade $`q`$ is expected:
 
 ```math
 \begin{aligned}
-& \langle \pi_1, \pi_2 \rangle \le \langle \pi_3, \pi_4 \rangle \iff \pi_1 \le \pi_3 \text{ and } \pi_2 \le \pi_4 &&(\mathsf{order}_p)
+& p \le q \iff p = p \wedge q &&(\mathsf{order}_p)
+\end{aligned}
+```
+
+It is the order of the multiplicities on each component:
+
+```math
+\begin{aligned}
+& \langle \pi_1, \pi_2 \rangle \le \langle \pi_3, \pi_4 \rangle \iff \pi_1 \le \pi_3 \text{ and } \pi_2 \le \pi_4 &&(\mathsf{componentwise}_p)
 \end{aligned}
 ```
 
