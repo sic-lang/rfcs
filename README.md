@@ -10,6 +10,9 @@ An RFC (request for comments) proposes a substantial change to the language, its
 3. Rename the file after the number of the pull request, on four digits (`text/0042-short-name.md`), and link the pull request in its header.
 4. The pull request is merged if the RFC is accepted, and closed if it is rejected.
 
+Files that an RFC needs besides its text, such as diagrams or prototypes, go in a directory named after it (`text/0042-short-name/`).
+They are frozen with the RFC, and the checks do not build them.
+
 ## Changing an Accepted RFC
 
 An accepted RFC is never deleted nor renumbered, and only receives very minor amendments, such as fixing a typo.
