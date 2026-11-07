@@ -26,7 +26,7 @@ AI agents also follow [`AGENTS.md`](AGENTS.md).
 
 ## Workflow
 
-Work on a subject goes from a plan to its integration, through iterations that each design, implement, record and adjust a part of it: Plan, then Design, Implement, Record and Adjust, as many times as needed, then Integrate.
+Work on a subject starts with Plan, then goes through iterations that each design, implement, record and adjust a part of it, and Integrate takes what an iteration records.
 
 ```mermaid
 block-beta
@@ -54,14 +54,13 @@ The steps outside the repositories are free, and those inside them are constrain
   - Plan is a good time to get an overall view of the subject: its scope, its risks and their countermeasures, its decisive problems and their possible solutions.
     The academic literature, the practice of other projects, experiments and prototypes can help, and writing them down helps more than keeping them in mind.
   - Design can do the same for one iteration, sized to be easy to review, with the aim of deciding rather than exploring what is possible.
-  - Adjust is the moment to revise the plan, from the results, the problems and the solutions of the iteration.
-    When the iterations do not fit together, going back to Plan is often the way out.
+  - Adjust is the moment to revise the plan, from the results, the problems and the solutions of the iteration, and to rethink it when the iterations do not fit together.
 - Implement, Record and Integrate happen in the repositories, through pull requests that follow this guide and pass the checks.
   - Implement changes one or more repositories, with one pull request per repository, but no RFC.
   - Record writes in an RFC what the implementation of the iteration confirmed, and only that iteration.
     Except to fix an RFC, implement first.
   - Integrate starts when the submitter judges a pull request ready, and only then: they ask an integrator to merge it.
-    When the integrator asks for changes, go back to Plan; when they judge the pull request not relevant to the project, it is closed.
+    When the integrator asks for changes, the submitter adds them to the pull request; when the integrator judges it not relevant to the project, it is closed.
 
 Contributors may use AI or any other tool to prepare their pull requests, and bear full responsibility for what they submit, whatever tools they used.
 Only an integrator decides to integrate a pull request, never an AI or a tool, which may assist them and perform the merge they decided; the integrator bears full responsibility for accepting or rejecting it.
