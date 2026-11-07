@@ -3,7 +3,7 @@
 RFCs for the Sic programming language.
 An RFC (request for comments) proposes a substantial change to the language, its tools or the project, and records the decision with its rationale.
 
-## Process
+## Creating an RFC
 
 1. Copy [`0000-template.md`](0000-template.md) to `text/0000-short-name.md` and fill it in.
 2. Open a pull request: the RFC is discussed in it.
