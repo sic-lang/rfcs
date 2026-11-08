@@ -25,7 +25,7 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar a) \\
 & (\bar a,\ \bar x.\, B)[\sigma] = (\bar a[\sigma],\ \bar x.\, B[\sigma]) \\[1em]
 & \varepsilon[\sigma] = \varepsilon &&(\mathsf{subst}_\sigma.\Theta) \\
-& (x : A \mathrel{▶} p;\ q,\ \Theta)[\sigma] = (x : A[\sigma] \mathrel{▶} p;\ q,\ \Theta[\sigma])
+& (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\sigma] = (x : A[\sigma] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\sigma])
 \end{aligned}
 ```
 
@@ -63,7 +63,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar a) \\
 & (\bar a,\ \bar x.\, B)[\theta] = (\bar a[\theta],\ \bar x.\, B[\theta]) \\[1em]
 & \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\Theta) \\
-& (x : A \mathrel{▶} p;\ q,\ \Theta)[\theta] = (x : A[\theta] \mathrel{▶} p;\ q,\ \Theta[\theta])
+& (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\theta] = (x : A[\theta] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\theta])
 \end{aligned}
 ```
 
@@ -76,23 +76,23 @@ The identity gives each variable $`x`$ the abstraction $`\bar x.\, x[\bar x]`$:
 \end{aligned}
 ```
 
-The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the parameters $`\Delta`$ of its type declaration is of the second order: $`[(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A))]`$ gives the abstraction $`\bar x.\, B`$ to $`X`$, and to each parameter of $`\Delta`$ what $`[\bar a / \Delta]`$ gives it, and likewise when the last parameter is a variable $`x : A`$, whose abstraction is a term:
+The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the parameters $`\Delta`$ of its type declaration is of the second order: $`[(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))]`$ gives the abstraction $`\bar x.\, B`$ to $`X`$, and to each parameter of $`\Delta`$ what $`[\bar a / \Delta]`$ gives it, and likewise when the last parameter is a variable $`x : A`$, whose abstraction is a term:
 
 ```math
 \begin{aligned}
-& [(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A))](X) = \bar x.\, B &&(\mathsf{params}_\theta) \\
-& [(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A))](y) = [\bar a / \Delta](y) \text{ if } y \ne X \\
+& [(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))](X) = \bar x.\, B &&(\mathsf{params}_\theta) \\
+& [(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))](y) = [\bar a / \Delta](y) \text{ if } y \ne X \\
 & [(\bar a,\ B) / (\Delta,\ x : A)](x) = B \\
 & [(\bar a,\ B) / (\Delta,\ x : A)](y) = [\bar a / \Delta](y) \text{ if } y \ne x
 \end{aligned}
 ```
 
-A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`\Gamma,\ \Theta`$, is extended by a variable for each entry of $`\Theta`$, whose grades it drops:
+A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`\Gamma,\ \Theta`$, is extended by a variable for each entry of $`\Theta`$, whose grades and requirements it drops:
 
 ```math
 \begin{aligned}
 & \Gamma,\ \varepsilon = \Gamma &&(\mathsf{append}_\Gamma) \\
-& \Gamma,\ (x : A \mathrel{▶} p;\ q,\ \Theta) = (\Gamma,\ x : A),\ \Theta
+& \Gamma,\ (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) = (\Gamma,\ x : A),\ \Theta
 \end{aligned}
 ```
 
@@ -150,10 +150,10 @@ It instantiates the level of a sort, and the levels of every term, argument, tel
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar a) \\
 & (\bar a,\ \bar x.\, B)[\bar l' / \bar l] = (\bar a[\bar l' / \bar l],\ \bar x.\, B[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Theta) \\
-& (x : A \mathrel{▶} p;\ q,\ \Theta)[\bar l' / \bar l] = (x : A[\bar l' / \bar l] \mathrel{▶} p;\ q,\ \Theta[\bar l' / \bar l]) \\[1em]
+& (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\bar l' / \bar l] = (x : A[\bar l' / \bar l] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Gamma) \\
 & (\Gamma,\ x : A)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ x : A[\bar l' / \bar l] \\
-& (\Gamma,\ X : (\Theta \vdash A))[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ X : (\Theta[\bar l' / \bar l] \vdash A[\bar l' / \bar l])
+& (\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi))[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ X : (\Theta[\bar l' / \bar l] \vdash A[\bar l' / \bar l] \mathrel{◀} \psi)
 \end{aligned}
 ```
 

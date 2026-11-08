@@ -26,7 +26,7 @@ A sort uses no variable:
 
 ```math
 \begin{gathered}
-\frac{\begin{gathered}{}f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m_2 \in \Sigma \\ m_1 \cdot^{\mathsf{m}} m_2 = m_1\end{gathered}}{\Sigma;\ {00}^{\gamma} \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \mathrel{▶} m_1}\;(f_{\mathsf{m}}) \\[1em]
+\frac{\begin{gathered}{}f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m_2 \mathrel{◀} p \in \Sigma \\ m_1 \cdot^{\mathsf{m}} m_2 = m_1\end{gathered}}{\Sigma;\ {00}^{\gamma} \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \mathrel{▶} m_1}\;(f_{\mathsf{m}}) \\[1em]
 \frac{}{\Sigma;\ {00}^{\gamma} \vdash \kappa \mathrel{▶} m}\;(\kappa_{\mathsf{m}})
 \end{gathered}
 ```

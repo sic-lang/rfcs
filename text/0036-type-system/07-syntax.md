@@ -10,10 +10,10 @@ This section defines the objects in the order in which they build on each other:
 ### Variables
 
 A variable is named, and an object that binds variables is the same object whatever names its bound variables take, as long as they stay distinct from the names it uses free.
-A variable has a telescope, whose entries say how many arguments the variable is applied to: a variable $`x : A`$ of a context has an empty one, and a second-order variable $`X : (\Theta \vdash A)`$ has $`\Theta`$, so that it stands for a term of type $`A`$ under the variables of $`\Theta`$, as the contextual types of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591) do for their metavariables.
+A variable has a telescope, whose entries say how many arguments the variable is applied to: a variable $`x : A`$ of a context has an empty one, and a second-order variable $`X : (\Theta \vdash A \mathrel{◀} \psi)`$ has $`\Theta`$, so that it stands for a term of type $`A`$ under the variables of $`\Theta`$, as the contextual types of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591) do for their metavariables.
 
-The scope of a term is the sequence of the variables it may use, each with the grades $`p_1, \dots, p_k`$ of the entries of its telescope, with which the usage of an application of the variable reads the uses of its arguments.
-A term uses only the variables of its scope, each applied to an argument for each of these grades.
+The scope of a term is the sequence of the variables it may use, each with its signature: the grades $`p_1, \dots, p_k`$ and the requirements $`r_1, \dots, r_k`$ of the entries of its telescope, and the ownership $`\psi`$ of its result, with which the usage and the ownership of an application of the variable read its arguments.
+A term uses only the variables of its scope, each applied to an argument for each entry of its telescope.
 
 ### Terms
 
@@ -55,26 +55,36 @@ The abstraction for a parameter binds the variables $`\bar x`$, one for each ent
 
 ### Telescopes and Contexts
 
-A telescope in a scope is either empty, written $`\varepsilon`$, or an entry followed by a telescope, written $`(x : A \mathrel{▶} p;\ q,\ \Theta)`$, in which $`A`$ is a term in the scope and $`\Theta`$ a telescope in the scope extended by $`x`$, with an empty telescope:
+A telescope in a scope is either empty, written $`\varepsilon`$, or an entry followed by a telescope, written $`(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)`$, in which $`A`$ is a term in the scope and $`\Theta`$ a telescope in the scope extended by $`x`$, with an empty telescope:
 
 ```math
 \begin{aligned}
-& \Theta \mathrel{::=} \varepsilon \mid (x : A \mathrel{▶} p;\ q,\ \Theta) &&(\mathsf{syntax}_\Theta)
+& \Theta \mathrel{::=} \varepsilon \mid (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) &&(\mathsf{syntax}_\Theta)
 \end{aligned}
 ```
 
-The entry $`x : A \mathrel{▶} p;\ q`$ is used with the grade $`p`$, and its variable is used with the grade $`q`$ by the types after it; the grades of a telescope are the grades $`p`$ of its entries, in order.
+The entry $`x : A \mathrel{▶} p;\ q \mathrel{◀} r`$ is used with the grade $`p`$, requires of its argument the ownership $`r`$, and its variable is used with the grade $`q`$ by the types after it; the grades of a telescope are the grades $`p`$ of its entries, in order, and its requirements their ownerships $`r`$.
 
-A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ extended by a variable, written $`\Gamma,\ x : A`$, or by a second-order variable, written $`\Gamma,\ X : (\Theta \vdash A)`$, in which $`A`$ and $`\Theta`$ are in the scope of $`\Gamma`$, and in $`X : (\Theta \vdash A)`$, $`A`$ is in the scope of $`\Gamma`$ extended by the variables of $`\Theta`$:
+A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ extended by a variable, written $`\Gamma,\ x : A`$, or by a second-order variable, written $`\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi)`$, in which $`A`$ and $`\Theta`$ are in the scope of $`\Gamma`$, and in $`X : (\Theta \vdash A \mathrel{◀} \psi)`$, $`A`$ is in the scope of $`\Gamma`$ extended by the variables of $`\Theta`$:
 
 ```math
 \begin{aligned}
-& \Gamma \mathrel{::=} \varepsilon \mid \Gamma,\ x : A \mid \Gamma,\ X : (\Theta \vdash A) &&(\mathsf{syntax}_\Gamma)
+& \Gamma \mathrel{::=} \varepsilon \mid \Gamma,\ x : A \mid \Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi) &&(\mathsf{syntax}_\Gamma)
 \end{aligned}
 ```
 
-The scope of a context is its variables, the last one last, each with the grades of its telescope.
-A variable $`x : A`$ and a second-order variable $`X : (\varepsilon \vdash A)`$ both have an empty telescope, and only their entries in the context tell them apart.
+The ownership $`\psi`$ of the result of $`X : (\Theta \vdash A \mathrel{◀} \psi)`$ is the meet of a grade $`\chi_0`$, its constant, and of terms $`x_j \cdot \chi_j`$, each scaling a variable $`x_j`$ of $`\Theta`$ by its coefficient $`\chi_j`$; the constant and each term are optional, each variable has one term at most, in the order of $`\Theta`$, and the term $`x_j \cdot {11}^{\mathsf{p}}`$ is written $`x_j`$:
+
+```math
+\begin{aligned}
+& \psi \mathrel{::=} \chi_0 \wedge x_{j_1} \cdot \chi_{j_1} \wedge \dots \wedge x_{j_n} \cdot \chi_{j_n} \mid x_{j_1} \cdot \chi_{j_1} \wedge \dots \wedge x_{j_n} \cdot \chi_{j_n} \text{ if } j_1 < \dots < j_n &&(\mathsf{syntax}_\psi)
+\end{aligned}
+```
+
+The variables $`x_j`$ stand for the ownerships of the arguments of $`X`$, and $`\psi`$ for the ownership of its result: $`X`$ stands for a term whose value, given arguments of these ownerships, has the ownership $`\psi`$.
+
+The scope of a context is its variables, the last one last, each with its signature.
+A variable $`x : A`$ and a second-order variable $`X : (\varepsilon \vdash A \mathrel{◀} \psi)`$ both have an empty telescope, and only their entries in the context tell them apart.
 
 ### Entries and Signatures
 
@@ -89,24 +99,24 @@ An entry is one of three cases:
 & {\mathrel{::=}} &&(\mathsf{syntax}_e) \\
 & \quad e \\
 & \quad {\mid} \\
-& \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t \\
-& \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \\
+& \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t \\
+& \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\
 & \qquad \mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots
 \end{aligned}
 ```
 
 The cases are:
 
-- A constant definition $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
-- A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses.
+- A constant definition $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, the ownership $`p`$ of its value, which its body must have, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
+- A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses, and whose ownership $`p`$, which no body checks, is the one of the value it stands for.
 - A type declaration $`\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots`$, a block of types declared together, of the kind $`\mathcal{K}`$, of which the system knows the header only: the names $`D_1, \dots, D_n`$, the sort, level and grade variables, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, and the sort $`\kappa`$ of the declared types; the bodies of the declared types are given by $`\mathcal{K}`$, in its annex.
 
 The names that an entry introduces are $`D_1, \dots, D_n`$ for a type declaration, and $`f`$ for a constant definition or declaration:
 
 ```math
 \begin{aligned}
-& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
-& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m) = \{f\} \\
+& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
+& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) = \{f\} \\
 & \mathsf{names}(\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots) = \{D_1, \dots, D_n\}
 \end{aligned}
 ```
@@ -128,15 +138,15 @@ A signature has the entries $`e \in \Sigma`$ that extend it, its last entry and 
 \end{gathered}
 ```
 
-A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m`$, written $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \in \Sigma`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$ and the type $`A`$, which the rules of the defined and of the declared constants share:
+A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p`$, written $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$, the ownership $`p`$ and the type $`A`$, which the rules of the defined and of the declared constants share:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&(\in_f) \\
-& \quad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \in \Sigma \\
+& \quad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma \\
 & \quad \text{or} \\
-& \qquad \exists t.\ (f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t) \in \Sigma \\
-& \qquad (f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m) \in \Sigma
+& \qquad \exists t.\ (f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) \in \Sigma \\
+& \qquad (f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) \in \Sigma
 \end{aligned}
 ```
 
