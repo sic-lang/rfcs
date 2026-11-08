@@ -74,6 +74,16 @@ The set of the grades that a mode does not count gives, for the mode of run time
 A variable whose grade is in the set is absent from the erasure of a term whose usage is checked in a mode that counts no use of the set, so that the usage states what the erasure removes; the erasure follows the grades alone, and depends on no evaluation order.
 A constant keeps the grades of its instance, and the target language has one copy of it for each instance of its grades, so that no grade remains at run time.
 
+### Meaning
+
+The [meaning](0036-type-system/15-meaning.md) of the judgments follows the meaning explanations of Martin-Löf type theory: a closed judgment is true when its terms compute as it says, a judgment in a context when it is true under every pair of equal closed substitutions of the context, and a judgment with level variables when it is true at every value of its level variables.
+Every judgment of the typing has a meaning, with the same objects, from the signatures to the arguments of an instance, and the meaning ignores the grades, the modes and the ownerships, as the typing does.
+A closed canonical type is known by the equality of its canonical terms, which the sorts give: a universe $`U_n`$ relates types, each with the equality of its terms, and a universe of propositions $`\Omega_n`$ relates propositions, each with its truth, the closed terms of a true proposition being all equal proofs of it.
+A constant declaration has no body to compute: the meaning takes an interpretation, which gives each constant declaration a term, and computes in the signature where the declarations become definitions with these terms.
+The typing is sound: under an interpretation that gives each constant declaration a term of its type, every judgment that the rules derive is true, so that the axioms and the foreign constants of a program are the hypotheses of its guarantees.
+
+What the usage and the ownership of a term guarantee of its erasure when it runs, and the soundness of the erasure, are not stated yet: every closed term of the core computes to a sort, whose erasure is $`\text{↯}`$, so that they need the terms that the kinds of type declarations bring, and the evaluation order that the RFC of the calling convention fixes.
+
 ### Annexes
 
 Each annex states one subject, with its definitions, its meaning and its properties, and only them; it names the annexes it builds on, and an annex never builds on a later one.
