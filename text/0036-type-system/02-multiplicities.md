@@ -35,23 +35,28 @@ The multiplicities are added, multiplied and met by cases, $`0`$ being neutral f
 
 The same operations as tables, whose rows give the left operand:
 
-| $`+`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| --- | --- | --- | --- |
-| $`0`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| $`1`$ | $`1`$ | $`\omega`$ | $`\omega`$ |
-| $`\omega`$ | $`\omega`$ | $`\omega`$ | $`\omega`$ |
-
-| $`\cdot`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| --- | --- | --- | --- |
-| $`0`$ | $`0`$ | $`0`$ | $`0`$ |
-| $`1`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| $`\omega`$ | $`0`$ | $`\omega`$ | $`\omega`$ |
-
-| $`\wedge`$ | $`0`$ | $`1`$ | $`\omega`$ |
-| --- | --- | --- | --- |
-| $`0`$ | $`0`$ | $`\omega`$ | $`\omega`$ |
-| $`1`$ | $`\omega`$ | $`1`$ | $`\omega`$ |
-| $`\omega`$ | $`\omega`$ | $`\omega`$ | $`\omega`$ |
+```math
+\begin{aligned}
+& \begin{array}{c|ccc}
+  + & 0 & 1 & \omega \\ \hline
+  0 & 0 & 1 & \omega \\
+  1 & 1 & \omega & \omega \\
+  \omega & \omega & \omega & \omega
+\end{array} &&(\mathsf{table}_\pi.{+}) \\[1em]
+& \begin{array}{c|ccc}
+  \cdot & 0 & 1 & \omega \\ \hline
+  0 & 0 & 0 & 0 \\
+  1 & 0 & 1 & \omega \\
+  \omega & 0 & \omega & \omega
+\end{array} &&(\mathsf{table}_\pi.{\cdot}) \\[1em]
+& \begin{array}{c|ccc}
+  \wedge & 0 & 1 & \omega \\ \hline
+  0 & 0 & \omega & \omega \\
+  1 & \omega & 1 & \omega \\
+  \omega & \omega & \omega & \omega
+\end{array} &&(\mathsf{table}_\pi.{\wedge})
+\end{aligned}
+```
 
 The multiplicities are ordered by their meet:
 

@@ -18,15 +18,20 @@ A grade is written as its two multiplicities side by side, with the exponent $`\
 
 Each grade has a name in Sic, made of the names of its two multiplicities: `none`, `linear` and `unrestricted` for $`0`$, $`1`$ and $`\omega`$, except a run-time multiplicity $`\omega`$ under a total multiplicity $`1`$, named `affine` since it counts at most one use, in the order of their multiplicities, $`0`$, $`1`$, then $`\omega`$:
 
-| Name | Grade |
-| --- | --- |
-| `none / none` | $`{00}^{\mathsf{p}}`$ |
-| `none / linear` | $`{01}^{\mathsf{p}}`$ |
-| `none / unrestricted` | $`{0\omega}^{\mathsf{p}}`$ |
-| `linear / linear` | $`{11}^{\mathsf{p}}`$ |
-| `linear / unrestricted` | $`{1\omega}^{\mathsf{p}}`$ |
-| `affine / linear` | $`{\omega 1}^{\mathsf{p}}`$ |
-| `unrestricted / unrestricted` | $`{\omega\omega}^{\mathsf{p}}`$ |
+```math
+\begin{aligned}
+& \begin{array}{l|l}
+  \text{Name} & \text{Grade} \\ \hline
+  \texttt{none / none} & {00}^{\mathsf{p}} \\
+  \texttt{none / linear} & {01}^{\mathsf{p}} \\
+  \texttt{none / unrestricted} & {0\omega}^{\mathsf{p}} \\
+  \texttt{linear / linear} & {11}^{\mathsf{p}} \\
+  \texttt{linear / unrestricted} & {1\omega}^{\mathsf{p}} \\
+  \texttt{affine / linear} & {\omega 1}^{\mathsf{p}} \\
+  \texttt{unrestricted / unrestricted} & {\omega\omega}^{\mathsf{p}}
+\end{array} &&(\mathsf{names}_p)
+\end{aligned}
+```
 
 The operations act on each multiplicity, and the seven grades are closed under them:
 
