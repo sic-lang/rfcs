@@ -1,7 +1,7 @@
 # Reduction
 
 This annex defines the weak head reduction, its head normal forms and the computation of the closed terms, and their properties.
-It builds on the [syntax](07-syntax.md) and on the instances of the entries, which the [typing](12-typing.md) defines.
+It builds on the [syntax](08-syntax.md) and on the instances of the entries, which the [typing](13-typing.md) defines.
 
 ## Definitions
 
@@ -51,7 +51,7 @@ The judgment $`\Sigma \vdash t \Downarrow v`$ reads: the closed term $`t`$ compu
 
 ## Properties
 
-In a signature whose names are [distinct](07-syntax.md), as those of a well-formed signature are by $`(\mathsf{distinct}_\Sigma)`$, a head normal form does not reduce, since a declared constant has no body, and the reduction, its steps and the computation are deterministic, since a constant has one entry:
+In a signature whose names are [distinct](08-syntax.md), as those of a well-formed signature are by $`(\mathsf{distinct}_\Sigma)`$, a head normal form does not reduce, since a declared constant has no body, and the reduction, its steps and the computation are deterministic, since a constant has one entry:
 
 ```math
 \begin{aligned}

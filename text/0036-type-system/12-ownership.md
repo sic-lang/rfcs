@@ -1,7 +1,7 @@
 # Ownership
 
 This annex defines the judgment of ownership, which checks the ownership of the value of a term, in a mode.
-It builds on the [grades](03-grades.md), the [modes](04-modes.md) and the [syntax](07-syntax.md).
+It builds on the [grades](04-grades.md), the [modes](05-modes.md) and the [syntax](08-syntax.md).
 
 ## Definitions
 

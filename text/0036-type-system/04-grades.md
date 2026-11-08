@@ -1,7 +1,7 @@
 # Grades
 
 This annex defines the grades, which count uses at run time and in total, with their operations, their order, their projection on the run-time multiplicity, their meaning and their properties.
-It builds on the [multiplicities](02-multiplicities.md).
+It builds on the [multiplicities](03-multiplicities.md).
 
 ## Definitions
 

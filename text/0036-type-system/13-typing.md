@@ -1,7 +1,7 @@
 # Typing
 
 This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, and of the entries of the signatures, and their properties.
-It builds on the [sorts](06-sorts.md), the [substitution](08-substitution.md), the [usage](10-usage.md) and the [ownership](11-ownership.md).
+It builds on the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [usage](11-usage.md) and the [ownership](12-ownership.md).
 
 ## Definitions
 
@@ -28,8 +28,8 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash \Theta : \kappa`$ | The telescope $`\Theta`$ lives in the sort $`\kappa`$ |
 
 The judgments are defined together, except the last one, which builds on the others.
-Typing and equality carry no grade: the usage and the ownership of a term are checked by the judgments of [usage](10-usage.md) and of [ownership](11-ownership.md), which the rule of the constant definitions reads.
-Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](05-levels.md), and for sequences of levels holds on each component.
+Typing and equality carry no grade: the usage and the ownership of a term are checked by the judgments of [usage](11-usage.md) and of [ownership](12-ownership.md), which the rule of the constant definitions reads.
+Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](06-levels.md), and for sequences of levels holds on each component.
 
 A context has a variable $`x : A`$, written $`x : A \in \Gamma`$, when one of its entries is this variable, and a second-order variable $`X : (\Theta \vdash A \mathrel{◀} \psi)`$, written $`X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma`$, likewise, by its last entry or by the entries before it; $`x \notin \Gamma`$ means that no entry of $`\Gamma`$ is a variable named $`x`$:
 
@@ -52,7 +52,7 @@ A context has a variable $`x : A`$, written $`x : A \in \Gamma`$, when one of it
 \end{aligned}
 ```
 
-The instance of an entry with the sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$, as many as the variables of each kind, gives its type, its body, its parameters and its sort at the instance $`\bar s'`$, $`\bar p'`$, in which it [instantiates](08-substitution.md) the level variables $`[\bar l' / \bar l]`$; the rules write it $`A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]`$, as if the instance were substituted, and $`A[\bar s' / \bar s,\ \bar p' / \bar p]`$ when it keeps the level variables:
+The instance of an entry with the sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$, as many as the variables of each kind, gives its type, its body, its parameters and its sort at the instance $`\bar s'`$, $`\bar p'`$, in which it [instantiates](09-substitution.md) the level variables $`[\bar l' / \bar l]`$; the rules write it $`A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]`$, as if the instance were substituted, and $`A[\bar s' / \bar s,\ \bar p' / \bar p]`$ when it keeps the level variables:
 
 ```math
 \begin{aligned}
@@ -197,7 +197,7 @@ The arguments of an instance are typed by the parameters of its type declaration
 
 ### Telescopes in a Sort
 
-A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort that $`\kappa`$ [bounds](06-sorts.md), and an entry whose type is a proposition has a grade without use at run time:
+A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort that $`\kappa`$ [bounds](07-sorts.md), and an entry whose type is a proposition has a grade without use at run time:
 
 ```math
 \begin{gathered}
@@ -227,7 +227,7 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 \end{aligned}
 ```
 
-The names of a well-formed signature are [distinct](07-syntax.md):
+The names of a well-formed signature are [distinct](08-syntax.md):
 
 ```math
 \begin{aligned}

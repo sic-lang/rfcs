@@ -1,7 +1,7 @@
 # Meaning
 
 This annex defines the meaning of the judgments of the typing, with the interpretation of the constant declarations and the equality of the canonical terms of the sorts, and its properties.
-It builds on the [levels](05-levels.md), the [sorts](06-sorts.md), the [substitution](08-substitution.md), the [typing](12-typing.md) and the [reduction](13-reduction.md).
+It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [typing](13-typing.md) and the [reduction](14-reduction.md).
 
 The judgments mean what the meaning explanations of Martin-Löf type theory say of them, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them: a judgment is true when its terms compute as it says.
 The meaning ignores the grades, the modes and the ownerships, as the typing does outside the judgments of usage and of ownership that the rule of the constant definitions reads.
@@ -15,7 +15,7 @@ The meaning of a judgment is written with $`\vDash`$ in place of $`\vdash`$.
 ### Levels Without Variables
 
 A closed term has no level variable, and an assignment $`\rho`$ of natural numbers to the level variables gives a closed instance of an object with level variables.
-The level $`\underline{n}`$ is the level without variables whose value is the natural number $`n`$, and the instantiation $`[\rho]`$ of a term, of arguments, of a telescope, of a context or of a sort [instantiates](08-substitution.md) each of its level variables $`l`$ by the level whose value is $`\rho(l)`$:
+The level $`\underline{n}`$ is the level without variables whose value is the natural number $`n`$, and the instantiation $`[\rho]`$ of a term, of arguments, of a telescope, of a context or of a sort [instantiates](09-substitution.md) each of its level variables $`l`$ by the level whose value is $`\rho(l)`$:
 
 ```math
 \begin{aligned}
@@ -38,13 +38,13 @@ The signature $`\iota(\Sigma)`$ is $`\Sigma`$ in which each constant declaration
 \end{aligned}
 ```
 
-In the meaning, a closed term $`t`$ computes to $`v`$, written $`t \Downarrow v`$, when $`\iota(\Sigma) \vdash t \Downarrow v`$, as the formula $`(\Downarrow)`$ of the [reduction](13-reduction.md) defines it, so that the meaning has the single reduction of the typing.
+In the meaning, a closed term $`t`$ computes to $`v`$, written $`t \Downarrow v`$, when $`\iota(\Sigma) \vdash t \Downarrow v`$, as the formula $`(\Downarrow)`$ of the [reduction](14-reduction.md) defines it, so that the meaning has the single reduction of the typing.
 The computation, the equality $`\mathsf{eq}`$ and the meaning of the judgments all depend on the signature $`\Sigma`$ and on the interpretation $`\iota`$, which their notation omits.
 
 ### Equality of the Canonical Terms
 
 A closed canonical type $`v`$ is known by its canonical terms and by their equality $`\mathsf{eq}(v)`$, a relation between closed terms, which the sorts and the kinds of type declarations give.
-The value $`[\![l]\!]`$ of a level $`l`$ without variables is its [value](05-levels.md) under any assignment.
+The value $`[\![l]\!]`$ of a level $`l`$ without variables is its [value](06-levels.md) under any assignment.
 
 The universe of propositions $`\Omega_n`$ relates propositions, each with its truth $`b`$, written $`(A,\ B) \in \mathsf{eq}(\Omega_n) \text{ with } b`$, and $`\mathsf{eq}(\Omega_n)`$ is the least relation with the clauses that the kinds of type declarations add for their instances in $`\Omega_n`$, which relate two propositions when they have the same truth; the core gives it no clause.
 
@@ -108,7 +108,7 @@ Two closed types are equal when they compute to canonical types with the same eq
 
 ### Signatures and Entries
 
-A signature is meaningful when each of its entries is meaningful in the signature before it, and introduces a name that no entry before it introduces, as the rules of the [signatures](12-typing.md) require:
+A signature is meaningful when each of its entries is meaningful in the signature before it, and introduces a name that no entry before it introduces, as the rules of the [signatures](13-typing.md) require:
 
 ```math
 \begin{aligned}
@@ -262,7 +262,7 @@ The equality of the terms of a closed canonical type is a partial equivalence re
 \end{aligned}
 ```
 
-A meaningful signature has [distinct](07-syntax.md) names, as a well-formed one does, so that the computation is deterministic, by $`(\mathsf{det}_{\Downarrow})`$; and the meaning is exact for the proofs: two closed terms are equal proofs of a proposition exactly when each of them is a proof of it, as the rule $`(\mathsf{irr})`$ says:
+A meaningful signature has [distinct](08-syntax.md) names, as a well-formed one does, so that the computation is deterministic, by $`(\mathsf{det}_{\Downarrow})`$; and the meaning is exact for the proofs: two closed terms are equal proofs of a proposition exactly when each of them is a proof of it, as the rule $`(\mathsf{irr})`$ says:
 
 ```math
 \begin{aligned}

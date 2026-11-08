@@ -21,16 +21,16 @@ This document lists the pieces of the system and the reasons for each of them, a
 ### Grades
 
 The type system counts uses, a use being an access to a value through a variable, along the two axes of the [grades](https://github.com/sic-lang/rfcs/pull/16) of Sic: the uses at run time, and all the uses, erased or not.
-A [multiplicity](0036-type-system/02-multiplicities.md) counts the uses on one axis, as the multiplicities $`0`$, $`1`$ and $`\omega`$ of [Idris 2](https://arxiv.org/abs/2104.00480) and of [Linear Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html) do, and a [grade](0036-type-system/03-grades.md) is a pair of multiplicities, one per axis.
+A [multiplicity](0036-type-system/03-multiplicities.md) counts the uses on one axis, as the multiplicities $`0`$, $`1`$ and $`\omega`$ of [Idris 2](https://arxiv.org/abs/2104.00480) and of [Linear Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html) do, and a [grade](0036-type-system/04-grades.md) is a pair of multiplicities, one per axis.
 The grades form a modality of the graded type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), whose rules only know a modality by its laws, so that the rules of the type system follow theirs.
 Their meaning is an abstract interpretation of the numbers of uses: each grade stands for the numbers of uses it allows, and its operations and its order are derived from those of the numbers rather than chosen.
 
-The usage and the ownership of a term are checked in one of three [modes](0036-type-system/04-modes.md): no use, all the uses but none at run time, and all the uses.
+The usage and the ownership of a term are checked in one of three [modes](0036-type-system/05-modes.md): no use, all the uses but none at run time, and all the uses.
 The theory of Abel, Danielsson and Eriksson has only the first and the last; the mode in between is added so that an erased term, such as a proof, still counts all its uses, and cannot drop or duplicate a permission that may be used once.
 
 ### Levels and Sorts
 
-The types live in [sorts](0036-type-system/06-sorts.md), the universes $`U_l`$, whose elements are types, and the universes of propositions $`\Omega_l`$, whose elements are propositions, both indexed by a [level](0036-type-system/05-levels.md).
+The types live in [sorts](0036-type-system/07-sorts.md), the universes $`U_l`$, whose elements are types, and the universes of propositions $`\Omega_l`$, whose elements are propositions, both indexed by a [level](0036-type-system/06-levels.md).
 A level is built from $`0`$, the successor, the larger of two levels and level variables, which stand for any natural numbers, so that an entry of the signature is checked once with its level variables and used at any levels, as in [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/).
 Two levels are equal or ordered when their values are, whatever numbers their variables take: the values are the meaning of the levels, and the equality and the order are exact for it by construction.
 
@@ -39,14 +39,14 @@ A sort bounds another when its level is above and it holds propositions only if 
 
 ### Syntax and Substitution
 
-The [syntax](0036-type-system/07-syntax.md) has few terms: variables applied to arguments, sorts, instances of the constants of the signature, defined or declared, and instances of the declared types, so that every type other than a sort comes from a type declaration, whose kind adds the terms that build and use its types.
+The [syntax](0036-type-system/08-syntax.md) has few terms: variables applied to arguments, sorts, instances of the constants of the signature, defined or declared, and instances of the declared types, so that every type other than a sort comes from a type declaration, whose kind adds the terms that build and use its types.
 A parameter of a type declaration may be a second-order variable, which stands for a term under the variables of a telescope, as the type of the result of a function depends on its argument.
-The [substitution](0036-type-system/08-substitution.md) of the first order gives terms to the variables, and the substitution of the second order gives abstractions to the variables, as the arguments of an instance do to its parameters.
+The [substitution](0036-type-system/09-substitution.md) of the first order gives terms to the variables, and the substitution of the second order gives abstractions to the variables, as the arguments of an instance do to its parameters.
 
 ### Judgments, Usage and Ownership
 
-The [typing](0036-type-system/12-typing.md) has the judgments of Martin-Löf type theory, a type, two equal types, a term of a type and two equal terms, in a signature and a context, and carries no grade; the [usage](0036-type-system/10-usage.md) is a judgment of its own, which checks in a mode how a term uses each variable of its scope, as a [vector of grades](0036-type-system/09-grade-vectors.md) allows, as in the theory of Abel, Danielsson and Eriksson.
-The [ownership](0036-type-system/11-ownership.md) is a third judgment, which checks in a mode the ownership of the value of a term: a grade that counts the uses of this value during a whole run, through all the variables that lead to it.
+The [typing](0036-type-system/13-typing.md) has the judgments of Martin-Löf type theory, a type, two equal types, a term of a type and two equal terms, in a signature and a context, and carries no grade; the [usage](0036-type-system/11-usage.md) is a judgment of its own, which checks in a mode how a term uses each variable of its scope, as a [vector of grades](0036-type-system/10-grade-vectors.md) allows, as in the theory of Abel, Danielsson and Eriksson.
+The [ownership](0036-type-system/12-ownership.md) is a third judgment, which checks in a mode the ownership of the value of a term: a grade that counts the uses of this value during a whole run, through all the variables that lead to it.
 Where the usage of a variable comes from the term that uses it, its ownership comes from the argument that its binder receives: each entry of a telescope requires an ownership of its argument, and a second-order variable states the ownership of its result from those of its arguments, as the meet of a constant and of factors, each scaling the ownership of one argument, so that a result may be a fresh value, an alias of an argument, or either.
 
 A program is a term well typed, well used and well owned.
@@ -66,17 +66,17 @@ The universes of propositions $`\Omega_l`$ hold strict propositions: two proofs 
 
 ### Reduction and Erasure
 
-The [reduction](0036-type-system/13-reduction.md) is the computation of the type theory: one step of weak head reduction, untyped and defined on the terms of every scope, which unfolds a constant definition to its body at its instance and applies the computations that the kinds of type declarations give to their terms.
+The [reduction](0036-type-system/14-reduction.md) is the computation of the type theory: one step of weak head reduction, untyped and defined on the terms of every scope, which unfolds a constant definition to its body at its instance and applies the computations that the kinds of type declarations give to their terms.
 A closed term computes to a head normal form and stops there, without reducing its parts: the computation is lazy, as the meaning explanations of Martin-Löf type theory that [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present, and tells what a term is, not how a program runs, whose evaluation order the RFC of the calling convention fixes.
 
-The [erasure](0036-type-system/14-erasure.md) compiles a term to an untyped target language, and replaces with a value $`\text{↯}`$ the parts whose grade is in a set of grades.
+The [erasure](0036-type-system/15-erasure.md) compiles a term to an untyped target language, and replaces with a value $`\text{↯}`$ the parts whose grade is in a set of grades.
 The set of the grades that a mode does not count gives, for the mode of run time, the program that runs, without its proofs and its specifications, as the extraction of Abel, Danielsson and Eriksson, and, for the mode of the proofs, the program that the proofs see, with its ghost code.
 A variable whose grade is in the set is absent from the erasure of a term whose usage is checked in a mode that counts no use of the set, so that the usage states what the erasure removes; the erasure follows the grades alone, and depends on no evaluation order.
 A constant keeps the grades of its instance, and the target language has one copy of it for each instance of its grades, so that no grade remains at run time.
 
 ### Meaning
 
-The [meaning](0036-type-system/15-meaning.md) of the judgments follows the meaning explanations of Martin-Löf type theory: a closed judgment is true when its terms compute as it says, a judgment in a context when it is true under every pair of equal closed substitutions of the context, and a judgment with level variables when it is true at every value of its level variables.
+The [meaning](0036-type-system/16-meaning.md) of the judgments follows the meaning explanations of Martin-Löf type theory: a closed judgment is true when its terms compute as it says, a judgment in a context when it is true under every pair of equal closed substitutions of the context, and a judgment with level variables when it is true at every value of its level variables.
 Every judgment of the typing has a meaning, with the same objects, from the signatures to the arguments of an instance, and the meaning ignores the grades, the modes and the ownerships, as the typing does.
 A closed canonical type is known by the equality of its canonical terms, which the sorts give: a universe $`U_n`$ relates types, each with the equality of its terms, and a universe of propositions $`\Omega_n`$ relates propositions, each with its truth, the closed terms of a true proposition being all equal proofs of it.
 A constant declaration has no body to compute: the meaning takes an interpretation, which gives each constant declaration a term, and computes in the signature where the declarations become definitions with these terms.
@@ -91,20 +91,20 @@ Its file name starts with a number on two digits, which gives the order of the a
 The examples are in the directory `99-examples` of the annexes, one file per example, named after the number of the annex it illustrates: they are derived from the system, and are not part of it.
 
 - [Notation](0036-type-system/01-notation.md): the letters that name each kind of object, and the conventions shared by all the rules and formulas of the annexes.
-- [Multiplicities](0036-type-system/02-multiplicities.md): the numbers of uses $`0`$, $`1`$ and $`\omega`$, their operations, their order and their meaning.
-- [Grades](0036-type-system/03-grades.md): the pairs of multiplicities that count the uses at run time and in total, their meaning, their properties and their projection on the run-time multiplicity.
-- [Modes](0036-type-system/04-modes.md): the three settings in which the usage of a term is checked, and their structure on the grades.
-- [Levels](0036-type-system/05-levels.md): the indices of the sorts, their values, their equality, their order and their properties.
-- [Sorts](0036-type-system/06-sorts.md): the universes of types and of propositions, their qualities, the join of the qualities and the relation by which a sort bounds another.
-- [Syntax](0036-type-system/07-syntax.md): the terms, their arguments, the telescopes, the contexts and the signatures, with the variables they bind.
-- [Substitution](0036-type-system/08-substitution.md): the substitutions of the first and of the second order, the closed substitutions, the instantiation of the level variables and their properties.
-- [Grade vectors](0036-type-system/09-grade-vectors.md): the grades of the variables of a scope, their operations, their order and their properties.
-- [Usage](0036-type-system/10-usage.md): the judgment that checks, in a mode, how a term uses the variables of its scope.
-- [Ownership](0036-type-system/11-ownership.md): the judgment that checks, in a mode, the ownership of the value of a term.
-- [Typing](0036-type-system/12-typing.md): the judgments of the signatures, of the contexts, of the types, of the terms and of their arguments, their rules and their properties.
-- [Reduction](0036-type-system/13-reduction.md): the weak head reduction, its head normal forms, the computation of the closed terms and their determinism.
-- [Erasure](0036-type-system/14-erasure.md): the translation to an untyped target language that replaces with a value the parts of a term whose grade is in a set, the sets of grades that the modes do not count, and the absence of the erased variables.
-- [Meaning](0036-type-system/15-meaning.md): the meaning of the judgments of the typing, the interpretation of the constant declarations, the equality of the canonical terms of the sorts, the exactness of the meaning for the proofs, and the soundness of the typing under an interpretation of the constant declarations.
+- [Multiplicities](0036-type-system/03-multiplicities.md): the numbers of uses $`0`$, $`1`$ and $`\omega`$, their operations, their order and their meaning.
+- [Grades](0036-type-system/04-grades.md): the pairs of multiplicities that count the uses at run time and in total, their meaning, their properties and their projection on the run-time multiplicity.
+- [Modes](0036-type-system/05-modes.md): the three settings in which the usage of a term is checked, and their structure on the grades.
+- [Levels](0036-type-system/06-levels.md): the indices of the sorts, their values, their equality, their order and their properties.
+- [Sorts](0036-type-system/07-sorts.md): the universes of types and of propositions, their qualities, the join of the qualities and the relation by which a sort bounds another.
+- [Syntax](0036-type-system/08-syntax.md): the terms, their arguments, the telescopes, the contexts and the signatures, with the variables they bind.
+- [Substitution](0036-type-system/09-substitution.md): the substitutions of the first and of the second order, the closed substitutions, the instantiation of the level variables and their properties.
+- [Grade vectors](0036-type-system/10-grade-vectors.md): the grades of the variables of a scope, their operations, their order and their properties.
+- [Usage](0036-type-system/11-usage.md): the judgment that checks, in a mode, how a term uses the variables of its scope.
+- [Ownership](0036-type-system/12-ownership.md): the judgment that checks, in a mode, the ownership of the value of a term.
+- [Typing](0036-type-system/13-typing.md): the judgments of the signatures, of the contexts, of the types, of the terms and of their arguments, their rules and their properties.
+- [Reduction](0036-type-system/14-reduction.md): the weak head reduction, its head normal forms, the computation of the closed terms and their determinism.
+- [Erasure](0036-type-system/15-erasure.md): the translation to an untyped target language that replaces with a value the parts of a term whose grade is in a set, the sets of grades that the modes do not count, and the absence of the erased variables.
+- [Meaning](0036-type-system/16-meaning.md): the meaning of the judgments of the typing, the interpretation of the constant declarations, the equality of the canonical terms of the sorts, the exactness of the meaning for the proofs, and the soundness of the typing under an interpretation of the constant declarations.
 
 ## Drawbacks
 

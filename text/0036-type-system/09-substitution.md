@@ -1,7 +1,7 @@
 # Substitution
 
 This annex defines the substitutions of the first order, which give terms to variables, the substitutions of the second order, which give abstractions to variables, the closed substitutions, the instantiation of the level variables, and their properties.
-It builds on the [syntax](07-syntax.md).
+It builds on the [syntax](08-syntax.md).
 
 ## Definitions
 

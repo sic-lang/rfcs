@@ -1,7 +1,7 @@
 # Sorts
 
 This annex defines the sorts, the universes whose elements are types or propositions, with their qualities, the join of their qualities, the relation by which a sort bounds another, and their properties.
-It builds on the [levels](05-levels.md).
+It builds on the [levels](06-levels.md).
 
 ## Definitions
 

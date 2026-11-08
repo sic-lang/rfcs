@@ -1,7 +1,7 @@
 # Usage
 
 This annex defines the judgment of usage, which checks how a term uses the variables of its scope, in a mode.
-It builds on the [modes](04-modes.md), the [syntax](07-syntax.md) and the [grade vectors](09-grade-vectors.md).
+It builds on the [modes](05-modes.md), the [syntax](08-syntax.md) and the [grade vectors](10-grade-vectors.md).
 
 ## Definitions
 

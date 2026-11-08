@@ -1,7 +1,7 @@
 # Erasure
 
 This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, the sets of grades that the modes do not count, and their properties.
-It builds on the [grades](03-grades.md), the [modes](04-modes.md), the [syntax](07-syntax.md) and the [usage](10-usage.md).
+It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md) and the [usage](11-usage.md).
 
 ## Definitions
 

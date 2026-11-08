@@ -1,7 +1,7 @@
 # Modes
 
 This annex defines the modes, the settings in which the usage of a term is checked, with their structure on the grades.
-It builds on the [grades](03-grades.md).
+It builds on the [grades](04-grades.md).
 
 ## Definitions
 

@@ -1,7 +1,7 @@
 # Grade Vectors
 
 This annex defines the vectors of grades, which give a grade to each variable of a scope, with their operations, their order and their properties.
-It builds on the [grades](03-grades.md) and the [syntax](07-syntax.md).
+It builds on the [grades](04-grades.md) and the [syntax](08-syntax.md).
 
 ## Definitions
 
@@ -45,7 +45,7 @@ The vector $`\gamma \bullet p`$ over the scope extended by a variable $`x`$ give
 
 ## Properties
 
-The vectors satisfy on each variable the laws of the [grades](03-grades.md), as the vectors of the [formalization](https://github.com/graded-type-theory/graded-type-theory) of Abel, Danielsson and Eriksson do: the addition and the multiplication by a grade make them a module over the grades, and the operations are monotone:
+The vectors satisfy on each variable the laws of the [grades](04-grades.md), as the vectors of the [formalization](https://github.com/graded-type-theory/graded-type-theory) of Abel, Danielsson and Eriksson do: the addition and the multiplication by a grade make them a module over the grades, and the operations are monotone:
 
 ```math
 \begin{aligned}
