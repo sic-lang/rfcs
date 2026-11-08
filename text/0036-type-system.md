@@ -90,7 +90,7 @@ The type system has these drawbacks:
 - One RFC for the whole type system is a large document to review, even with the definitions in the annexes; its parts are accepted together, since none of them stands alone.
 - Seven grades, among which a programmer chooses on every binder, are many: the surface language has to infer most of them, which no RFC designs yet.
 - The ownership adds a requirement to every entry of a telescope and an ownership to every second-order variable and constant, which the surface language has to infer as well.
-- The ownership ignores the order of the uses: a program that uses a value through another variable before a use that requires it alone is rejected, although no use is shared.
+- The ownership ignores the order of the uses: a value used before a use that requires it alone is rejected, although the earlier use is over.
 - Without cumulativity, a program polymorphic in its universes writes its levels and their joins, as in Agda and in Lean.
 - Without impredicative propositions, the encodings that quantify a proposition over all propositions, which Lean and Rocq accept, are not available.
 - The constant definitions are transparent: a library cannot hide the body of a definition from the equality, until the modules of a later RFC give a way to hide it.
@@ -164,7 +164,7 @@ The judgments, the usage and the ownership are settled by the following choices:
   - Impredicative propositions: a proposition cannot quantify over all propositions; the levels give the quantifications over the propositions of a lower level, which cover the usual encodings, and the sort variables give one entry for the types and the propositions.
     With definitional proof irrelevance, impredicativity makes the equality of types undecidable, as [Abel and Coquand](https://doi.org/10.23638/LMCS-16(2:14)2020) show, so it is excluded rather than deferred.
   - Cumulativity: a type of $`U_l`$ is not a type of $`U_{l + 1}`$; it is deferred, since adding it later only accepts more programs, at the cost of a subtyping in place of the equality of types.
-  - The order of the uses in the ownership: a value used through another variable before a use that requires it alone is rejected, although no use is shared; the program passes the value from one use to the next instead, and an ownership that follows the order of the uses could be added later, at the cost of an order of evaluation in the judgment.
+  - The order of the uses in the ownership: a value used before a use that requires it alone is rejected, although the earlier use is over; the program passes the value from one use to the next instead, and an ownership that follows the order of the uses could be added later, at the cost of an order of evaluation in the judgment.
   - Fractions of ownership: several uses of a value at once followed by a use that requires it alone, which the [fractional uniqueness](https://doi.org/10.1145/3649848) of Marshall and Orchard accepts, are rejected, since the sum $`1 + 1 = \omega`$ of the multiplicities cannot be undone; the sequential case passes the value from one use to the next, and fractions could be added later, at the cost of a larger modality.
 
 ### One RFC
