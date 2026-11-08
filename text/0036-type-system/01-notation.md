@@ -53,6 +53,7 @@ An operation on the modes or on the vectors of grades carries the same exponent,
 
 ## Types, Usage and Ownership
 
+A judgment holds when its rules derive it: $`\vdash`$ separates what it assumes, the signature and the context, the grades or the ownerships of the variables, from what it states, and $`\nvdash`$ in its place states that the rules do not derive it.
 After a term or a variable, the colon gives its type, $`\mathrel{▶}`$ its usage and $`\mathrel{◀}`$ its ownership, in this order, each followed by what it states, and the mode in which it is checked comes last, after a semicolon, as $`x : A \mathrel{▶} p;\ q \mathrel{◀} r`$ for an entry of a telescope and $`\Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m`$ for the usage of arguments.
 The three symbols carry no index nor exponent, so that what each states is read in the same place in the entries and in the judgments.
 
