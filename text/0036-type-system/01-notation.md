@@ -35,12 +35,15 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`D, T`$ | Names of declared types, and their instances |
 | $`f`$ | Constants, defined or declared |
 | $`\Sigma`$ | Signatures |
+| $`\iota`$ | Interpretations of the constant declarations |
 | $`\sigma, \tau`$ | Substitutions of the first order |
 | $`\theta`$ | Substitutions of the second order |
 | $`\gamma, \delta`$ | Vectors of grades, one grade per variable of a scope |
 | $`\varphi`$ | Ownerships of the variables of a scope, one grade per variable whose telescope is empty |
 | $`o`$ | Ownerships of the arguments of a second-order variable |
 | $`v, w`$ | Canonical terms |
+| $`R`$ | Relations between closed terms, the equalities of the terms of the closed canonical types |
+| $`b`$ | Truth values of the propositions |
 | $`M, N`$ | Terms of the target language of the erasure |
 
 No digit is double-struck: a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, and $`\gamma`$ for a vector of grades.
