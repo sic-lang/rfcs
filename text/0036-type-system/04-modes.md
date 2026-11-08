@@ -10,10 +10,9 @@ The type system has three modes, each named after its grade $`\ulcorner m \urcor
 ```math
 \begin{aligned}
 & m \mathrel{::=} {00}^{\mathsf{m}} \mid {01}^{\mathsf{m}} \mid {11}^{\mathsf{m}} &&(\mathsf{syntax}_m) \\[1em]
-& \text{and} &&(\mathsf{grade}_m) \\
-& \quad \ulcorner {00}^{\mathsf{m}} \urcorner = {00}^{\mathsf{p}} \\
-& \quad \ulcorner {01}^{\mathsf{m}} \urcorner = {01}^{\mathsf{p}} \\
-& \quad \ulcorner {11}^{\mathsf{m}} \urcorner = {11}^{\mathsf{p}}
+& \ulcorner {00}^{\mathsf{m}} \urcorner = {00}^{\mathsf{p}} &&(\mathsf{grade}_m) \\
+& \ulcorner {01}^{\mathsf{m}} \urcorner = {01}^{\mathsf{p}} \\
+& \ulcorner {11}^{\mathsf{m}} \urcorner = {11}^{\mathsf{p}}
 \end{aligned}
 ```
 
@@ -29,10 +28,9 @@ A term used with the grade $`p`$ is checked in the mode $`\llcorner p \lrcorner`
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{mode}_p) \\
-& \quad \llcorner {00}^{\mathsf{p}} \lrcorner = {00}^{\mathsf{m}} \\
-& \quad \llcorner \langle 0, \pi \rangle \lrcorner = {01}^{\mathsf{m}} \text{ if } \pi \ne 0 \\
-& \quad \llcorner \langle \pi_1, \pi_2 \rangle \lrcorner = {11}^{\mathsf{m}} \text{ if } \pi_1 \ne 0
+& \llcorner {00}^{\mathsf{p}} \lrcorner = {00}^{\mathsf{m}} &&(\mathsf{mode}_p) \\
+& \llcorner \langle 0, \pi \rangle \lrcorner = {01}^{\mathsf{m}} \\
+& \llcorner p \lrcorner = {11}^{\mathsf{m}} \text{ otherwise}
 \end{aligned}
 ```
 
@@ -40,9 +38,8 @@ The product of two modes is the mode of the product of their grades, and, inside
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{product}_m) \\
-& \quad m_1 \cdot^{\mathsf{m}} m_2 = \llcorner \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \lrcorner \\
-& \quad m \odot p = m \cdot^{\mathsf{m}} \llcorner p \lrcorner
+& m_1 \cdot^{\mathsf{m}} m_2 = \llcorner \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \lrcorner &&(\mathsf{product}_m.{\cdot}) \\[1em]
+& m \odot p = m \cdot^{\mathsf{m}} \llcorner p \lrcorner &&(\mathsf{product}_m.{\odot})
 \end{aligned}
 ```
 

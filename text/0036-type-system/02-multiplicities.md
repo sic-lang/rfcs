@@ -19,16 +19,17 @@ The multiplicities are added, multiplied and met by cases, $`0`$ being neutral f
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{op}_\pi) \\
-& \quad 0 + \pi = \pi \\
-& \quad \pi + 0 = \pi \\
-& \quad \pi_1 + \pi_2 = \omega \text{ if } \pi_1 \ne 0 \text{ and } \pi_2 \ne 0 \\
-& \quad 0 \cdot \pi = \pi \cdot 0 = 0 \\
-& \quad 1 \cdot \pi = \pi \cdot 1 = \pi \\
-& \quad \omega \cdot \omega = \omega \\
-& \quad 0 \wedge 0 = 0 \\
-& \quad 1 \wedge 1 = 1 \\
-& \quad \pi_1 \wedge \pi_2 = \omega \text{ if } \pi_1 \ne \pi_2 \text{ or } \pi_1 = \omega
+& 0 + \pi = \pi &&(\mathsf{op}_\pi.{+}) \\
+& \pi + 0 = \pi \\
+& \pi_1 + \pi_2 = \omega \text{ otherwise} \\[1em]
+& 0 \cdot \pi = 0 &&(\mathsf{op}_\pi.{\cdot}) \\
+& \pi \cdot 0 = 0 \\
+& 1 \cdot \pi = \pi \\
+& \pi \cdot 1 = \pi \\
+& \omega \cdot \omega = \omega \\[1em]
+& 0 \wedge 0 = 0 &&(\mathsf{op}_\pi.{\wedge}) \\
+& 1 \wedge 1 = 1 \\
+& \pi_1 \wedge \pi_2 = \omega \text{ otherwise}
 \end{aligned}
 ```
 
@@ -79,10 +80,9 @@ The order is the reverse inclusion, so that a lower multiplicity allows more num
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{uses}_\pi) \\
-& \quad \mathsf{uses}(0) = \{0\} \\
-& \quad \mathsf{uses}(1) = \{1\} \\
-& \quad \mathsf{uses}(\omega) = \mathbb{N}
+& \mathsf{uses}(0) = \{0\} &&(\mathsf{uses}_\pi) \\
+& \mathsf{uses}(1) = \{1\} \\
+& \mathsf{uses}(\omega) = \mathbb{N}
 \end{aligned}
 ```
 

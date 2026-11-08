@@ -17,11 +17,10 @@ The vector $`{00}^{\gamma}`$ gives each variable the grade $`{00}^{\mathsf{p}}`$
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{op}_\gamma) \\
-& \quad {00}^{\gamma}(x) = {00}^{\mathsf{p}} \\
-& \quad (\gamma_1 +^{\gamma} \gamma_2)(x) = \gamma_1(x) + \gamma_2(x) \\
-& \quad (p \cdot^{\gamma} \gamma)(x) = p \cdot \gamma(x) \\
-& \quad (\gamma_1 \wedge^{\gamma} \gamma_2)(x) = \gamma_1(x) \wedge \gamma_2(x)
+& {00}^{\gamma}(x) = {00}^{\mathsf{p}} &&(\mathsf{op}_\gamma.{00}) \\[1em]
+& (\gamma_1 +^{\gamma} \gamma_2)(x) = \gamma_1(x) + \gamma_2(x) &&(\mathsf{op}_\gamma.{+}) \\[1em]
+& (p \cdot^{\gamma} \gamma)(x) = p \cdot \gamma(x) &&(\mathsf{op}_\gamma.{\cdot}) \\[1em]
+& (\gamma_1 \wedge^{\gamma} \gamma_2)(x) = \gamma_1(x) \wedge \gamma_2(x) &&(\mathsf{op}_\gamma.{\wedge})
 \end{aligned}
 ```
 
@@ -37,12 +36,10 @@ The vector $`\gamma \bullet p`$ over the scope extended by a variable $`x`$ give
 
 ```math
 \begin{aligned}
-& \text{and} &&(\bullet_\gamma) \\
-& \quad (\gamma \bullet p)(x) = p \text{ if } x \text{ is the variable that extends the scope} \\
-& \quad (\gamma \bullet p)(y) = \gamma(y) \text{ if } y \text{ is a variable of the scope of } \gamma \\[1em]
-& \text{and} &&(\mathsf{update}_\gamma) \\
-& \quad (\gamma,\ x \mathrel{≔} p)(x) = p \\
-& \quad (\gamma,\ x \mathrel{≔} p)(y) = \gamma(y) \text{ if } y \ne x
+& (\gamma \bullet p)(x) = p \text{ if } x \text{ is the variable that extends the scope} &&(\bullet_\gamma) \\
+& (\gamma \bullet p)(y) = \gamma(y) \text{ if } y \text{ is a variable of the scope of } \gamma \\[1em]
+& (\gamma,\ x \mathrel{≔} p)(x) = p &&(\mathsf{update}_\gamma) \\
+& (\gamma,\ x \mathrel{≔} p)(y) = \gamma(y) \text{ if } y \ne x
 \end{aligned}
 ```
 
@@ -85,8 +82,7 @@ The equality and the order of two vectors are decidable, since a scope has finit
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{decidable}_\gamma) \\
-& \quad \gamma_1 = \gamma_2 \text{ is decidable} \\
-& \quad \gamma_1 \le^{\gamma} \gamma_2 \text{ is decidable}
+& \gamma_1 = \gamma_2 \text{ is decidable} &&(\mathsf{decidable}_\gamma.{=}) \\[1em]
+& \gamma_1 \le^{\gamma} \gamma_2 \text{ is decidable} &&(\mathsf{decidable}_\gamma.{\le})
 \end{aligned}
 ```

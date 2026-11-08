@@ -21,11 +21,10 @@ An assignment $`\rho`$ gives a natural number $`\rho(l)`$ to each level variable
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{value}_l) \\
-& \quad [\![0]\!]_\rho = 0 \\
-& \quad [\![l + 1]\!]_\rho = [\![l]\!]_\rho + 1 \\
-& \quad [\![l_1 \sqcup l_2]\!]_\rho = \max([\![l_1]\!]_\rho,\ [\![l_2]\!]_\rho) \\
-& \quad [\![l]\!]_\rho = \rho(l) \text{ if } l \text{ is a level variable}
+& [\![0]\!]_\rho = 0 &&(\mathsf{value}_l) \\
+& [\![l + 1]\!]_\rho = [\![l]\!]_\rho + 1 \\
+& [\![l_1 \sqcup l_2]\!]_\rho = \max([\![l_1]\!]_\rho,\ [\![l_2]\!]_\rho) \\
+& [\![l]\!]_\rho = \rho(l) \text{ if } l \text{ is a level variable}
 \end{aligned}
 ```
 
@@ -46,10 +45,9 @@ The equality is an equivalence, and the order a preorder, whose equivalence is t
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{equiv}_l) \\
-& \quad l = l \\
-& \quad l_1 = l_2 \implies l_2 = l_1 \\
-& \quad l_1 = l_2 \text{ and } l_2 = l_3 \implies l_1 = l_3 \\[1em]
+& l = l &&(\mathsf{equiv}_l.\mathsf{refl}) \\[1em]
+& l_1 = l_2 \implies l_2 = l_1 &&(\mathsf{equiv}_l.\mathsf{symm}) \\[1em]
+& l_1 = l_2 \text{ and } l_2 = l_3 \implies l_1 = l_3 &&(\mathsf{equiv}_l.\mathsf{trans}) \\[1em]
 & l \le l &&(\mathsf{preorder}_l.\mathsf{refl}) \\[1em]
 & l_1 \le l_2 \text{ and } l_2 \le l_3 \implies l_1 \le l_3 &&(\mathsf{preorder}_l.\mathsf{trans}) \\[1em]
 & l_1 = l_2 \iff l_1 \le l_2 \text{ and } l_2 \le l_1 &&(\mathsf{antisymmetry}_l) \\[1em]
@@ -61,8 +59,7 @@ The equality and the order of two levels are decidable, though each quantifies o
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{decidable}_l) \\
-& \quad l_1 = l_2 \text{ is decidable} \\
-& \quad l_1 \le l_2 \text{ is decidable}
+& l_1 = l_2 \text{ is decidable} &&(\mathsf{decidable}_l.{=}) \\[1em]
+& l_1 \le l_2 \text{ is decidable} &&(\mathsf{decidable}_l.{\le})
 \end{aligned}
 ```

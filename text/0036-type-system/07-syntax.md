@@ -105,22 +105,27 @@ The names that an entry introduces are $`D_1, \dots, D_n`$ for a type declaratio
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{names}_e) \\
-& \quad \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t) = \{f\} \\
-& \quad \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} :_m A) = \{f\} \\
-& \quad \mathsf{names}(\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots) = \{D_1, \dots, D_n\}
+& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
+& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} :_m A) = \{f\} \\
+& \mathsf{names}(\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots) = \{D_1, \dots, D_n\}
 \end{aligned}
 ```
 
-A signature is either empty, written $`\varnothing`$, or a signature $`\Sigma`$ extended by an entry $`e`$, written $`\Sigma,\ e`$, and has the entries $`e \in \Sigma`$ that extend it:
+A signature is either empty, written $`\varnothing`$, or a signature $`\Sigma`$ extended by an entry $`e`$, written $`\Sigma,\ e`$:
 
 ```math
 \begin{aligned}
-& \Sigma \mathrel{::=} \varnothing \mid \Sigma,\ e &&(\mathsf{syntax}_\Sigma) \\[1em]
-& \text{and} &&(\in_\Sigma) \\
-& \quad e \notin \varnothing \\
-& \quad e_1 \in (\Sigma,\ e_2) \iff e_1 = e_2 \text{ or } e_1 \in \Sigma
+& \Sigma \mathrel{::=} \varnothing \mid \Sigma,\ e &&(\mathsf{syntax}_\Sigma)
 \end{aligned}
+```
+
+A signature has the entries $`e \in \Sigma`$ that extend it, its last entry and those of the signature it extends:
+
+```math
+\begin{gathered}
+\frac{}{e \in (\Sigma,\ e)}\;(\in_\Sigma.\mathsf{last}) \\[1em]
+\frac{e_1 \in \Sigma}{e_1 \in (\Sigma,\ e_2)}\;(\in_\Sigma.e)
+\end{gathered}
 ```
 
 A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, written $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$ and the type $`A`$, which the rules of the defined and of the declared constants share:
@@ -149,13 +154,12 @@ The names of a signature are distinct when each of its entries introduces names 
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{names}_\Sigma) \\
-& \quad \text{the names of } \varnothing \text{ are distinct} \\
-& \quad \text{⟺} \\
-& \qquad \text{the names of } \Sigma,\ e \text{ are distinct} \\
-& \qquad \text{and} \\
-& \qquad\quad \text{the names of } \Sigma \text{ are distinct} \\
-& \qquad\quad \forall e' \in \Sigma.\ \mathsf{names}(e) \cap \mathsf{names}(e') = \varnothing
+& \text{the names of } \varnothing \text{ are distinct} &&(\mathsf{names}_\Sigma) \\
+& \text{⟺} \\
+& \quad \text{the names of } \Sigma,\ e \text{ are distinct} \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \forall e' \in \Sigma.\ \mathsf{names}(e) \cap \mathsf{names}(e') = \varnothing
 \end{aligned}
 ```
 

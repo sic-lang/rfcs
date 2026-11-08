@@ -31,23 +31,24 @@ The judgments are defined together, except the last one, which builds on the oth
 Typing and equality carry no grade: the usage of a term is checked by the judgment of [usage](10-usage.md), which the rule of the constant definitions reads.
 Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](05-levels.md), and for sequences of levels holds on each component.
 
-A context has a variable $`x : A`$, written $`x : A \in \Gamma`$, when one of its entries is this variable, and a second-order variable $`X : (\Theta \vdash A)`$, written $`X : (\Theta \vdash A) \in \Gamma`$, likewise; $`x \notin \Gamma`$ means that no entry of $`\Gamma`$ is a variable named $`x`$:
+A context has a variable $`x : A`$, written $`x : A \in \Gamma`$, when one of its entries is this variable, and a second-order variable $`X : (\Theta \vdash A)`$, written $`X : (\Theta \vdash A) \in \Gamma`$, likewise, by its last entry or by the entries before it; $`x \notin \Gamma`$ means that no entry of $`\Gamma`$ is a variable named $`x`$:
+
+```math
+\begin{gathered}
+\frac{}{x : A \in (\Gamma,\ x : A)}\;(\in_\Gamma.x) \\[1em]
+\frac{x : A \in \Gamma}{x : A \in (\Gamma,\ y : B)}\;(\in_\Gamma.x,y) \\[1em]
+\frac{x : A \in \Gamma}{x : A \in (\Gamma,\ Y : (\Theta \vdash B))}\;(\in_\Gamma.x,Y) \\[1em]
+\frac{}{X : (\Theta \vdash A) \in (\Gamma,\ X : (\Theta \vdash A))}\;(\in_\Gamma.X) \\[1em]
+\frac{X : (\Theta \vdash A) \in \Gamma}{X : (\Theta \vdash A) \in (\Gamma,\ y : B)}\;(\in_\Gamma.X,y) \\[1em]
+\frac{X : (\Theta_1 \vdash A) \in \Gamma}{X : (\Theta_1 \vdash A) \in (\Gamma,\ Y : (\Theta_2 \vdash B))}\;(\in_\Gamma.X,Y)
+\end{gathered}
+```
 
 ```math
 \begin{aligned}
-& \text{and} &&(\in_\Gamma) \\
-& \quad x : A \notin \varepsilon \\
-& \quad x : A \in (\Gamma,\ y : B) \iff (x = y \text{ and } A = B) \text{ or } x : A \in \Gamma \\
-& \quad x : A \in (\Gamma,\ Y : (\Theta \vdash B)) \iff x : A \in \Gamma \\
-& \quad X : (\Theta \vdash A) \notin \varepsilon \\
-& \quad X : (\Theta \vdash A) \in (\Gamma,\ y : B) \iff X : (\Theta \vdash A) \in \Gamma \\
-& \quad {\iff} \\
-& \qquad X : (\Theta_1 \vdash A) \in (\Gamma,\ Y : (\Theta_2 \vdash B)) \\
-& \qquad (X = Y \text{ and } \Theta_1 = \Theta_2 \text{ and } A = B) \text{ or } X : (\Theta_1 \vdash A) \in \Gamma \\[1em]
-& \text{and} &&(\notin_\Gamma) \\
-& \quad x \notin \varepsilon \\
-& \quad x \notin (\Gamma,\ y : B) \iff x \ne y \text{ and } x \notin \Gamma \\
-& \quad x \notin (\Gamma,\ Y : (\Theta \vdash B)) \iff x \ne Y \text{ and } x \notin \Gamma
+& x \notin \varepsilon &&(\notin_\Gamma) \\
+& x \notin (\Gamma,\ y : B) \iff x \ne y \text{ and } x \notin \Gamma \\
+& x \notin (\Gamma,\ Y : (\Theta \vdash B)) \iff x \ne Y \text{ and } x \notin \Gamma
 \end{aligned}
 ```
 

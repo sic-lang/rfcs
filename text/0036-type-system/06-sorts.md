@@ -20,9 +20,9 @@ The qualities are ordered by the propositions they hold, $`\Omega`$ below $`U`$,
 ```math
 \begin{aligned}
 & s_1 \le s_2 \iff (s_2 = \Omega \implies s_1 = \Omega) &&(\le_s) \\[1em]
-& \text{and} &&(\sqcup_s) \\
-& \quad \Omega \sqcup \Omega = \Omega \\
-& \quad U \sqcup s = s \sqcup U = U
+& \Omega \sqcup \Omega = \Omega &&(\sqcup_s) \\
+& U \sqcup s = U \\
+& s \sqcup U = U
 \end{aligned}
 ```
 
