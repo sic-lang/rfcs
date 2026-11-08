@@ -117,6 +117,7 @@ The type system has these drawbacks:
 - Without impredicative propositions, the encodings that quantify a proposition over all propositions, which Lean and Rocq accept, are not available.
 - The constant definitions are transparent: a library cannot hide the body of a definition from the equality, until the modules of a later RFC give a way to hide it.
 - A constant whose body checks a position with a grade variable is compiled once for each instance of its grades that a program uses, which enlarges the program, as the monomorphization of Rust does.
+- The soundness holds under an interpretation of the constant declarations: a signature whose axioms contradict each other has none, so that its programs get no guarantee, and the type system does not check that the axioms of a program have an interpretation.
 - The meaning of the grades counts the uses that a term makes, not those that a program makes when it runs, which depend on the evaluation order; the run-time multiplicities $`1`$ and $`\omega`$ wait for the RFC of the calling convention to mean a number of uses.
 
 ## Rationale and Alternatives
@@ -201,6 +202,16 @@ The reduction and the erasure are settled by the following choices:
 - The erasures by two sets are compared by an order on the target language, in which a term is less defined than another when it has $`\text{↯}`$ in place of some of its parts, rather than by erasing an erased term again, which would need grades in the target language.
 - A constant keeps the grades of its instance, rather than having one copy that receives its erased parts at run time: the parts of its body that the erasure removes depend on these grades, so that each instance has a program of its own, with nothing left of the grades.
 
+### Choices on the Meaning
+
+The meaning is settled by the following choices:
+
+- The meaning is given by the computation of the terms, as in the meaning explanations of Martin-Löf type theory, rather than by a model in another theory, such as sets: a judgment says what its terms compute by the reduction of the typing, so that what it guarantees is about the terms of Sic themselves.
+- The constant declarations are interpreted, rather than given a meaning of their own: an axiom or a foreign constant has no body to compute, and the soundness holds under every interpretation that gives each of them a term of its type, so that a program depends on its declarations as on hypotheses.
+- Every judgment of the typing has a meaning, the telescopes in a sort and the arguments of an instance included, rather than the closed equality alone, so that the soundness is stated for each judgment that the rules derive, and the application of a second-order variable has the meaning of its arguments.
+- The terms of a proposition need not compute: the equality of a proposition relates the terms themselves, all when it is true and none when it is false, so that a proof, which the erasure removes, is never computed, and the meaning is exact for the rule of the irrelevance of the proofs.
+- What the usage and the ownership guarantee at run time, and the soundness of the erasure, wait for the kinds of type declarations, rather than being stated in the core: every closed term of the core computes to a sort, whose erasure is $`\text{↯}`$, so that these statements would hold of no program that runs.
+
 ### One RFC
 
 The type system was first split into four RFCs, the grades, the core, the data and codata types, and the observational equality, linked by a contract that each kind of type declaration fulfills.
@@ -217,7 +228,7 @@ The type system builds on the following work:
 - The [graded modal dependent type theory](https://arxiv.org/abs/2010.13163) of Moon, Eades and Orchard carries grades in typing, and [Granule](https://doi.org/10.1145/3341714) is a language built on graded modal types, whose semirings include exact counts.
 - The levels follow those of [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/), built from zero, the successor, the maximum and prenex variables, and the sort variables the [sort polymorphism of Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), whose theory [Bounded Sort Polymorphism with Elimination Constraints](https://doi.org/10.1145/3776732) gives.
 - The second-order variables follow the contextual types of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), whose metavariables stand for terms under the variables of a context, and whose substitution of the metavariables is defined apart from that of the variables.
-- The judgments are those of Martin-Löf type theory, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, and the signature follows the global environment of [Rocq](https://rocq-prover.org/doc/master/refman/language/cic.html), an ordered list of declarations, definitions and assumptions.
+- The judgments are those of Martin-Löf type theory, and their meaning follows its meaning explanations, in which a judgment is true when its terms compute as it says, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, and the signature follows the global environment of [Rocq](https://rocq-prover.org/doc/master/refman/language/cic.html), an ordered list of declarations, definitions and assumptions.
 - The uniqueness types of [Clean](https://doi.org/10.1017/S0960129500070109), from Barendsen and Smetsers, guarantee that a value has no other reference, so that it can be updated in place; [Marshall, Vollmer and Orchard](https://doi.org/10.1007/978-3-030-99336-8_13) relate uniqueness, a guarantee on the past uses, to linearity, a restriction of the future ones, [Marshall and Orchard](https://doi.org/10.1145/3649848) add fractions to share a unique value for a while, and [Lorenzen, White, Dolan, Eisenberg and Lindley](https://doi.org/10.1145/3674642) give OCaml a uniqueness mode on its types; all of them check uniqueness in the typing, where Sic checks the ownership by a judgment of its own, after the usage of Abel, Danielsson and Eriksson, which they check apart from the typing, and with the grades of the usage.
 - The strict propositions follow the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html) and the `SProp` of Rocq, both from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316).
 - The weak head reduction follows the decision procedure for the equality of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), and the erasure the extraction of Abel, Danielsson and Eriksson, which it extends with a set of erased grades; the order between erasures follows the approximants of the Böhm trees of [Kerinec, Manzonetto and Pagani](https://doi.org/10.23638/LMCS-16(3:6)2020), below which the undefined value lies.
@@ -230,6 +241,8 @@ These questions remain open:
 - The annexes are written as the system is settled, subject by subject, so that the list above grows with them.
 - What do the run-time multiplicities $`1`$ and $`\omega`$ mean for a program that runs?
   The meaning of the grades counts the uses that a term makes, and the uses made when it runs depend on the evaluation order, which the RFC of the calling convention fixes.
+- What do the usage and the ownership of a term guarantee of its erasure when it runs, and is the erasure sound for the meaning?
+  Every closed term of the core computes to a sort, whose erasure is $`\text{↯}`$: the statements need the terms that the kinds of type declarations bring, and the evaluation order that the RFC of the calling convention fixes.
 - Does the type system embrace duality all the way, and which statements would show it?
   Three statements together would answer, once the annexes define the data and codata types:
   - The rules are closed under an involution that exchanges each construct with its dual, the data and the codata types, their introductions and their eliminations, the recursor and the corecursor: the dual of every rule is a rule of the system.
