@@ -211,19 +211,19 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{presup}_\Sigma) \\
-& \quad \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t \implies \vdash \Sigma \\
-& \quad \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \implies \vdash \Sigma \\
-& \quad \Sigma \vdash \Gamma \implies \vdash \Sigma \\
-& \quad \Sigma;\ \Gamma \vdash A \implies \vdash \Sigma \\
-& \quad \Sigma;\ \Gamma \vdash A \equiv B \implies \vdash \Sigma \\
-& \quad \Sigma;\ \Gamma \vdash t : A \implies \vdash \Sigma \\
-& \quad \Sigma;\ \Gamma \vdash t \equiv u : A \implies \vdash \Sigma \\
-& \quad \Sigma;\ \Gamma \vdash \bar t : \Theta \implies \vdash \Sigma \\
-& \quad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \implies \vdash \Sigma \\
-& \quad \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \vdash \Sigma \\
-& \quad \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \vdash \Sigma \\
-& \quad {\vdash \Sigma,\ e} \implies \vdash \Sigma
+& &&(\mathsf{presup}_\Sigma) \\
+& \quad \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{def}) \\
+& \quad \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{decl}) \\
+& \quad \Sigma \vdash \Gamma \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Gamma) \\
+& \quad \Sigma;\ \Gamma \vdash A \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.A) \\
+& \quad \Sigma;\ \Gamma \vdash A \equiv B \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.A_\equiv) \\
+& \quad \Sigma;\ \Gamma \vdash t : A \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.t) \\
+& \quad \Sigma;\ \Gamma \vdash t \equiv u : A \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.t_\equiv) \\
+& \quad \Sigma;\ \Gamma \vdash \bar t : \Theta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar t) \\
+& \quad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar t_\equiv) \\
+& \quad \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a) \\
+& \quad \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a_\equiv) \\
+& \quad {\vdash \Sigma,\ e} \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.e)
 \end{aligned}
 ```
 
