@@ -43,15 +43,24 @@ The [syntax](0036-type-system/07-syntax.md) has few terms: variables applied to 
 A parameter of a type declaration may be a second-order variable, which stands for a term under the variables of a telescope, as the type of the result of a function depends on its argument.
 The [substitution](0036-type-system/08-substitution.md) of the first order gives terms to the variables, and the substitution of the second order gives abstractions to the variables, as the arguments of an instance do to its parameters.
 
-### Judgments and Usage
+### Judgments, Usage and Ownership
 
 The [typing](0036-type-system/12-typing.md) has the judgments of Martin-Löf type theory, a type, two equal types, a term of a type and two equal terms, in a signature and a context, and carries no grade; the [usage](0036-type-system/10-usage.md) is a judgment of its own, which checks in a mode how a term uses each variable of its scope, as a [vector of grades](0036-type-system/09-grade-vectors.md) allows, as in the theory of Abel, Danielsson and Eriksson.
-A program is a term both well typed and well used: its typing tells what it computes, and its usage how it uses its resources.
+The [ownership](0036-type-system/11-ownership.md) is a third judgment, which checks in a mode the ownership of the value of a term: a grade that counts the uses of this value during a whole run, through all the variables that lead to it.
+Where the usage of a variable comes from the term that uses it, its ownership comes from the argument that its binder receives: each entry of a telescope requires an ownership of its argument, and a second-order variable states the ownership of its result from those of its arguments, as the meet of a constant and of factors, each scaling the ownership of one argument, so that a result may be a fresh value, an alias of an argument, or either.
+
+A program is a term well typed, well used and well owned.
+Its typing tells what it computes.
+Its usage tells how it uses its resources, so that it states which resources it consumes, which proofs and specifications it erases, and which permissions it passes on exactly once.
+Its ownership tells how its values are shared, so that it states which values no other variable reaches.
+The three judgments are independent conditions, none derived from another; the ownership only reads the grades of the telescopes, which give the mode in which each argument is checked, as for the usage.
 
 The signature lists the constant definitions, the constant declarations and the type declarations, in order, each checked against the entries before it, once with its level variables and for each instance of its sort and grade variables.
 A constant has a mode, which says where it may be used: a constant of the mode $`{11}^{\mathsf{m}}`$ is a program, used anywhere, one of the mode $`{01}^{\mathsf{m}}`$ a proof or a ghost term, used in proofs and specifications, and one of the mode $`{00}^{\mathsf{m}}`$ a specification, used in specifications only.
-A constant definition is transparent: it unfolds to its body.
+A constant also has the ownership of its value, in every mode.
+A constant definition is transparent: it unfolds to its body, whose ownership is checked against the one of the definition.
 A constant declaration has no body, and covers three needs, told apart by the sort of its type and its mode: an axiom, a proposition assumed true, of the mode $`{01}^{\mathsf{m}}`$; a ghost constant, a value or a type that the specifications and the proofs use, of the mode $`{00}^{\mathsf{m}}`$ or $`{01}^{\mathsf{m}}`$; and a foreign constant, a type, a value or a function that the running program gets from outside, of the mode $`{11}^{\mathsf{m}}`$.
+Its ownership is trusted, as its type is, so that a foreign constant states whether its value may be shared.
 
 The universes of propositions $`\Omega_l`$ hold strict propositions: two proofs of a proposition are equal, and an entry of a telescope whose type is a proposition has a grade without use at run time, so that the proofs are erased.
 
@@ -80,6 +89,8 @@ The type system has these drawbacks:
 
 - One RFC for the whole type system is a large document to review, even with the definitions in the annexes; its parts are accepted together, since none of them stands alone.
 - Seven grades, among which a programmer chooses on every binder, are many: the surface language has to infer most of them, which no RFC designs yet.
+- The ownership adds a requirement to every entry of a telescope and an ownership to every second-order variable and constant, which the surface language has to infer as well.
+- The ownership ignores the order of the uses: a program that uses a value through another variable before a use that requires it alone is rejected, although no use is shared.
 - Without cumulativity, a program polymorphic in its universes writes its levels and their joins, as in Agda and in Lean.
 - Without impredicative propositions, the encodings that quantify a proposition over all propositions, which Lean and Rocq accept, are not available.
 - The constant definitions are transparent: a library cannot hide the body of a definition from the equality, until the modules of a later RFC give a way to hide it.
@@ -131,9 +142,9 @@ The syntax and the substitution are settled by the following choices:
 - The parameters that depend on variables are second-order variables, as the contextual types of Nanevski, Pfenning and Pientka, rather than parameters of a type of functions: the type of functions is itself declared, and its type declaration cannot take a function as a parameter.
 - The substitutions of the first and of the second order are defined apart, as in the theory of Nanevski, Pfenning and Pientka: the second one substitutes the arguments of an application in the abstraction it gives, which is not a part of the term it substitutes, and the first one does it.
 
-### Choices on the Judgments and Usage
+### Choices on the Judgments, Usage and Ownership
 
-The judgments and the usage are settled by the following choices:
+The judgments, the usage and the ownership are settled by the following choices:
 
 - Typing and equality carry no grade, as in the theory of Abel, Danielsson and Eriksson, rather than carrying them in the typing judgment, as the [graded modal dependent type theory](https://arxiv.org/abs/2010.13163) of Moon, Eades and Orchard does: the latter checks every subterm as if it ran, even in an erased position, so that a specification cannot return an erased field; a usage indexed by a mode checks an erased subterm in a mode of its own, and the equality compares values, not uses, which removes no guarantee, since the usage of every term is checked.
 - The judgments are the four of Martin-Löf type theory, as in the theory of Abel, Danielsson and Eriksson and in [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), rather than those of a [pure type system](https://en.wikipedia.org/wiki/Pure_type_system), in which a type is a term of a sort and two types are equal only as terms of a sort, so that two equalities of types in different sorts compose only once the two sorts are shown equal; a type is still a term of a sort, as the only rules that conclude that a term is a type say.
@@ -143,10 +154,18 @@ The judgments and the usage are settled by the following choices:
 - One entry, the constant declaration, covers the axioms, the ghost constants and the foreign constants, told apart by their sort and their mode, rather than three entries, or primitive types with rules of their own, as the [primitive integers and arrays](https://rocq-prover.org/doc/master/refman/language/core/primitive.html) of Rocq: a foreign type is a constant whose representation the implementation chooses.
   A constant uses no variable, so that a foreign function that creates a resource to be used once, such as a handle, must consume a resource to do so, a capability that the program holds with a linear grade, as the world token of [Idris 2](https://arxiv.org/abs/2104.00480) threads its effects.
 - The propositions are strict, as the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html), from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316): a proof carries no information but its existence, so that two proofs of a proposition are equal by definition, and a proof is never needed at run time.
+- The ownership is a judgment of its own, rather than an attribute of the types, as the unique types of [Marshall, Vollmer and Orchard](https://doi.org/10.1007/978-3-030-99336-8_13) and the uniqueness mode of [Lorenzen, White, Dolan, Eisenberg and Lindley](https://doi.org/10.1145/3674642): the typing and the equality carry no grade, as for the usage, and the ownership counts with the grades of the usage, so that it adds no structure on the grades.
+- The ownership counts the uses of a value during a whole run, rather than its past uses only, as uniqueness does, or its future uses only, as linearity does, which Marshall, Vollmer and Orchard tell apart: one grade states both, and the judgment follows no order of the uses.
+- The ownership of the variables is the same in every premise of a rule, as the context of the typing, rather than computed by each premise and added, as the vector of the usage: the ownership of a variable comes from the argument that its binder receives, while its usage comes from the term that uses it.
+- Each entry of a telescope has a requirement of its own, rather than the telescope one relation on the ownerships of all its arguments, so that each argument is checked alone, as the usage checks it with the grade of its entry.
+- The ownership of the result of a second-order variable is a meet of an optional constant and of optional factors, rather than one grade or one argument whose ownership it takes: a result may be an alias of an argument in one branch and a fresh value in another, and the coefficient of a factor scales the ownership of the argument, as for an alias that a proof also mentions.
+- The ownership of a constant declaration is trusted, as its type is, rather than left out: a foreign constant has no body to check, and its ownership says whether its value may be shared, which no other piece states.
 - Conscious exclusions, each with what is lost, what remains, and whether it can be added later:
   - Impredicative propositions: a proposition cannot quantify over all propositions; the levels give the quantifications over the propositions of a lower level, which cover the usual encodings, and the sort variables give one entry for the types and the propositions.
     With definitional proof irrelevance, impredicativity makes the equality of types undecidable, as [Abel and Coquand](https://doi.org/10.23638/LMCS-16(2:14)2020) show, so it is excluded rather than deferred.
   - Cumulativity: a type of $`U_l`$ is not a type of $`U_{l + 1}`$; it is deferred, since adding it later only accepts more programs, at the cost of a subtyping in place of the equality of types.
+  - The order of the uses in the ownership: a value used through another variable before a use that requires it alone is rejected, although no use is shared; the program passes the value from one use to the next instead, and an ownership that follows the order of the uses could be added later, at the cost of an order of evaluation in the judgment.
+  - Fractions of ownership: several uses of a value at once followed by a use that requires it alone, which the [fractional uniqueness](https://doi.org/10.1145/3649848) of Marshall and Orchard accepts, are rejected, since the sum $`1 + 1 = \omega`$ of the multiplicities cannot be undone; the sequential case passes the value from one use to the next, and fractions could be added later, at the cost of a larger modality.
 
 ### One RFC
 
@@ -165,6 +184,7 @@ The type system builds on the following work:
 - The levels follow those of [Lean](https://lean-lang.org/doc/reference/latest/The-Type-System/Universes/), built from zero, the successor, the maximum and prenex variables, and the sort variables the [sort polymorphism of Rocq](https://rocq-prover.org/doc/master/refman/addendum/universe-polymorphism.html), whose theory [Bounded Sort Polymorphism with Elimination Constraints](https://doi.org/10.1145/3776732) gives.
 - The second-order variables follow the contextual types of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), whose metavariables stand for terms under the variables of a context, and whose substitution of the metavariables is defined apart from that of the variables.
 - The judgments are those of Martin-Löf type theory, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, and the signature follows the global environment of [Rocq](https://rocq-prover.org/doc/master/refman/language/cic.html), an ordered list of declarations, definitions and assumptions.
+- The uniqueness types of [Clean](https://doi.org/10.1017/S0960129500070109), from Barendsen and Smetsers, guarantee that a value has no other reference, so that it can be updated in place; [Marshall, Vollmer and Orchard](https://doi.org/10.1007/978-3-030-99336-8_13) relate uniqueness, a guarantee on the past uses, to linearity, a restriction of the future ones, [Marshall and Orchard](https://doi.org/10.1145/3649848) add fractions to share a unique value for a while, and [Lorenzen, White, Dolan, Eisenberg and Lindley](https://doi.org/10.1145/3674642) give OCaml a uniqueness mode on its types; all of them check uniqueness in the typing, where Sic checks the ownership by a judgment of its own, with the grades of the usage.
 - The strict propositions follow the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html) and the `SProp` of Rocq, both from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316).
 - [Verus](https://doi.org/10.1145/3586037) separates the code that runs from the specifications and proofs by [modes of variables](https://verus-lang.github.io/verus/guide/reference-var-modes.html), as the modes of the constants of Sic, and tracks ghost resources linearly, which the grades `none / linear` and `linear / unrestricted` express in Sic.
 
