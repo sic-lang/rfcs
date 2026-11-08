@@ -53,7 +53,7 @@ A program is a term well typed, well used and well owned.
 Its typing tells what it computes.
 Its usage tells how it uses its resources, so that it states which resources it consumes, which proofs and specifications it erases, and which permissions it passes on exactly once.
 Its ownership tells how its values are shared, so that it states which values no other variable reaches.
-The three judgments are independent conditions, none derived from another; the ownership only reads the grades of the telescopes, which give the mode in which each argument is checked, as for the usage.
+The three judgments are independent conditions, none derived from another, as three terms show, each passing two of them and failing the [third](0036-type-system/13-typing.md#properties); the ownership only reads the grades of the telescopes, which give the mode in which each argument is checked, as for the usage.
 
 The signature lists the constant definitions, the constant declarations and the type declarations, in order, each checked against the entries before it, once with its level variables and for each instance of its sort and grade variables.
 A constant has a mode, which says where it may be used: a constant of the mode $`{11}^{\mathsf{m}}`$ is a program, used anywhere, one of the mode $`{01}^{\mathsf{m}}`$ a proof or a ghost term, used in proofs and specifications, and one of the mode $`{00}^{\mathsf{m}}`$ a specification, used in specifications only.

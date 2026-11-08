@@ -234,3 +234,24 @@ The names of a well-formed signature are [distinct](08-syntax.md):
 & \vdash \Sigma \implies \text{the names of } \Sigma \text{ are distinct} &&(\mathsf{distinct}_\Sigma)
 \end{aligned}
 ```
+
+The typing, the usage and the ownership are independent: for each of them, a term passes the two others and fails it, its variables being declared with their types, grades and ownerships, so that none of the three judgments follows from the two others.
+The terms are in the empty signature, in the contexts $`\Gamma_1 = x : U_0,\ X : (\Theta_1 \vdash U_0 \mathrel{◀} {\omega\omega}^{\mathsf{p}})`$ and $`\Gamma_2 = x : U_0,\ X : (\Theta_2 \vdash U_0 \mathrel{◀} {\omega\omega}^{\mathsf{p}})`$, where $`\Theta_1 = (y : U_0 \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}},\ z : U_0 \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}})`$ has two entries used once, which require nothing of their arguments, and $`\Theta_2 = (y : U_0 \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}})`$ one entry used once, which requires its argument to be owned alone, with the vector of grades $`\gamma`$ that gives $`{11}^{\mathsf{p}}`$ to $`x`$ and to $`X`$, the ownerships $`\varphi_1`$, which gives $`x`$ the ownership $`{11}^{\mathsf{p}}`$, and $`\varphi_2`$, which gives it $`{\omega\omega}^{\mathsf{p}}`$, and the ownerships $`\varphi_3`$ of the empty scope, which has no variable.
+$`X[x, x]`$ uses $`x`$ twice, which its grade does not allow; $`X[x]`$ passes the shared $`x`$ to an entry that requires its argument to be owned alone; $`U_0`$ is not a term of $`U_0`$, since the sorts are not cumulative:
+
+```math
+\begin{aligned}
+& \text{and} &&(\mathsf{independent}.{▶}) \\
+& \quad \varnothing;\ \Gamma_1 \vdash X[x, x] : U_0 \\
+& \quad \varnothing;\ \varphi_1 \vdash X[x, x] \mathrel{◀} {\omega\omega}^{\mathsf{p}};\ {11}^{\mathsf{m}} \\
+& \quad \varnothing;\ \gamma \nvdash X[x, x] \mathrel{▶} {11}^{\mathsf{m}} \\[1em]
+& \text{and} &&(\mathsf{independent}.{◀}) \\
+& \quad \varnothing;\ \Gamma_2 \vdash X[x] : U_0 \\
+& \quad \varnothing;\ \gamma \vdash X[x] \mathrel{▶} {11}^{\mathsf{m}} \\
+& \quad \forall p.\ \varnothing;\ \varphi_2 \nvdash X[x] \mathrel{◀} p;\ {11}^{\mathsf{m}} \\[1em]
+& \text{and} &&(\mathsf{independent}.{:}) \\
+& \quad \varnothing;\ {00}^{\gamma} \vdash U_0 \mathrel{▶} {11}^{\mathsf{m}} \\
+& \quad \varnothing;\ \varphi_3 \vdash U_0 \mathrel{◀} {\omega\omega}^{\mathsf{p}};\ {11}^{\mathsf{m}} \\
+& \quad \varnothing;\ \varepsilon \nvdash U_0 : U_0
+\end{aligned}
+```
