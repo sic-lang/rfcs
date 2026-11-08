@@ -44,6 +44,7 @@
             book = {
               tools = [
                 pkgs.mdbook
+                pkgs.mdbook-katex
                 pkgs.mdbook-mermaid
               ];
               command = lib.getExe buildBook.run;
@@ -56,6 +57,11 @@
             flake = {
               tools = [ ];
               command = "nix flake check --quiet";
+            };
+            # Checks the names of the formulas and of the rules of the RFCs (CONTRIBUTING.md).
+            names = {
+              tools = [ ];
+              command = lib.getExe checkNames.run;
             };
             markdownlint = {
               tools = [ pkgs.markdownlint-cli2 ];
@@ -101,13 +107,16 @@
           };
           # Builds the RFC book into book/: src/ links the README as the introduction and every entry
           # of text/, and its SUMMARY.md lists the RFCs in the order of their file names, that is of
-          # their numbers, which never change: an accepted RFC is never renumbered.
+          # their numbers, which never change: an accepted RFC is never renumbered. The annexes of an
+          # RFC, in the directory named after it, are its subchapters, in the order of their file
+          # names, which start with their numbers.
           buildBook = command {
             name = "build-book";
             runtimeInputs = [
               pkgs.coreutils
               pkgs.git
               pkgs.mdbook
+              pkgs.mdbook-katex
               pkgs.mdbook-mermaid
             ];
             text = ''
@@ -119,11 +128,18 @@
               for entry in text/*; do
                 ln -s "../$entry" "src/''${entry#text/}"
               done
+              # An RFC without annexes has no directory, whose pattern then matches nothing.
+              shopt -s nullglob
               {
                 printf '[Introduction](introduction.md)\n\n'
                 for file in text/*.md; do
                   name=''${file#text/}
                   printf -- '- [%s](%s)\n' "''${name%.md}" "$name"
+                  for annex in "''${file%.md}"/*.md; do
+                    annexName=''${annex#text/}
+                    annexTitle=''${annexName##*/}
+                    printf -- '  - [%s](%s)\n' "''${annexTitle%.md}" "$annexName"
+                  done
                 done
               } >src/SUMMARY.md
               # The JavaScript files of mdbook-mermaid, which its install command writes next to the
@@ -136,8 +152,44 @@
               mdbook build
             '';
           };
-          # Checks the commits after a base, origin/main by default: each one is signed off by its
-          # author (CONTRIBUTING.md), and a merge commit only merges the base, to resolve a conflict.
+          # Checks that a formula is named in its last column and a rule after its fraction, as the
+          # names are extracted, and that every name designates one formula or rule of the RFCs.
+          checkNames = command {
+            name = "check-names";
+            runtimeInputs = [
+              pkgs.coreutils
+              pkgs.git
+              pkgs.gnugrep
+            ];
+            text = ''
+              cd "$(git rev-parse --show-toplevel)"
+              mapfile -d "" files < <(git ls-files -z 'text/*.md')
+              if [ ''${#files[@]} -eq 0 ]; then
+                exit 0
+              fi
+              # A name, then the end of its line, which may break the formula with \\ or \\[1em].
+              name='\([^()]*\)(?=\s*(\\\\(\[1em\])?)?\s*$)'
+              status=0
+              if grep -nP '&&' "''${files[@]}" | grep -vP "&&$name"; then
+                echo 'A column && of a formula must end its line with the name of the formula, as &&(\mathsf{op}_p).' >&2
+                status=1
+              fi
+              if grep -nP '^\s*\\frac' "''${files[@]}" | grep -vP "\\\;$name"; then
+                echo 'A rule must end its line with its name after its fraction, as \frac{…}{…}\;(\mathsf{def}).' >&2
+                status=1
+              fi
+              duplicates=$({ grep -hoP "(&&|\\\;)\K$name" "''${files[@]}" || true; } | sort | uniq -d)
+              if [ -n "$duplicates" ]; then
+                printf '%s\n' "$duplicates"
+                echo 'Each of these names designates several formulas or rules: give each its own name.' >&2
+                status=1
+              fi
+              exit "$status"
+            '';
+          };
+          # Checks the commits after a base, origin/main by default, up to a head, HEAD by default: each
+          # one is signed off by its author (CONTRIBUTING.md), and a merge commit only merges the base,
+          # to resolve a conflict.
           checkCommits = command {
             name = "check-commits";
             runtimeInputs = [
@@ -147,8 +199,9 @@
             ];
             text = ''
               base=''${1:-origin/main}
+              head=''${2:-HEAD}
               status=0
-              for commit in $(git rev-list --merges "$base..HEAD"); do
+              for commit in $(git rev-list --merges "$base..$head"); do
                 for parent in $(git log -1 --format='%P' "$commit" | cut -d ' ' -f 2-); do
                   if ! git merge-base --is-ancestor "$parent" "$base"; then
                     echo "$(git log -1 --format='%h %s' "$commit"): merges another branch than $base" >&2
@@ -156,7 +209,7 @@
                   fi
                 done
               done
-              for commit in $(git rev-list "$base..HEAD"); do
+              for commit in $(git rev-list "$base..$head"); do
                 author=$(git log -1 --format='%an <%ae>' "$commit")
                 if ! git log -1 --format='%(trailers:key=Signed-off-by,valueonly)' "$commit" |
                   grep -qxF "$author"; then

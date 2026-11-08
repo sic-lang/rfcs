@@ -17,3 +17,10 @@ site-url = "/rfcs/"
 
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
+
+# Renders the mathematics in the syntax of GitHub, in which the RFCs are written, so that they read
+# the same on GitHub and in the book.
+[preprocessor.katex]
+after = ["links"]
+block-delimiter = { left = "```math\n", right = "\n```" }
+inline-delimiter = { left = "$`", right = "`$" }
