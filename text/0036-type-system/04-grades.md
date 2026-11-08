@@ -43,14 +43,7 @@ The operations act on each multiplicity, and the seven grades are closed under t
 \end{aligned}
 ```
 
-The grades are ordered by their meet, so that a lower grade allows more pairs of numbers of uses, and so states less about them, as their meaning shows:
-
-```math
-\begin{aligned}
-& p \le q \iff p = p \wedge q &&(\mathsf{order}_p)
-\end{aligned}
-```
-
+The grades are ordered by their meet, as the modality that they form, $`(\mathsf{order}_\xi)`$, so that a lower grade allows more pairs of numbers of uses, and so states less about them, as their meaning shows.
 It is the order of the multiplicities on each component:
 
 ```math
@@ -144,33 +137,11 @@ The properties of the grades are those of a modality and of its greatest lower b
 
 ### Modality
 
-The seven grades form a modality of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), as the multiplicities do:
+The seven grades form a [modality](02-modalities.md), as the multiplicities do, whose laws and properties they have:
 
 ```math
 \begin{aligned}
-& (p + q) + r = p + (q + r) &&(\mathsf{semiring}_p.\mathsf{assoc}_{+}) \\[1em]
-& p + q = q + p &&(\mathsf{semiring}_p.\mathsf{comm}_{+}) \\[1em]
-& {00}^{\mathsf{p}} + p = p &&(\mathsf{semiring}_p.\mathsf{unit}_{+}) \\[1em]
-& (p \cdot q) \cdot r = p \cdot (q \cdot r) &&(\mathsf{semiring}_p.\mathsf{assoc}_{\cdot}) \\[1em]
-& {11}^{\mathsf{p}} \cdot p = p &&(\mathsf{semiring}_p.\mathsf{lunit}_{\cdot}) \\[1em]
-& p \cdot {11}^{\mathsf{p}} = p &&(\mathsf{semiring}_p.\mathsf{runit}_{\cdot}) \\[1em]
-& {00}^{\mathsf{p}} \cdot p = {00}^{\mathsf{p}} &&(\mathsf{semiring}_p.\mathsf{lzero}_{\cdot}) \\[1em]
-& p \cdot {00}^{\mathsf{p}} = {00}^{\mathsf{p}} &&(\mathsf{semiring}_p.\mathsf{rzero}_{\cdot}) \\[1em]
-& (p \wedge q) \wedge r = p \wedge (q \wedge r) &&(\mathsf{meet}_p.\mathsf{assoc}) \\[1em]
-& p \wedge q = q \wedge p &&(\mathsf{meet}_p.\mathsf{comm}) \\[1em]
-& p \wedge p = p &&(\mathsf{meet}_p.\mathsf{idem}) \\[1em]
-& p \cdot (q + r) = (p \cdot q) + (p \cdot r) &&({\cdot}{+}_p.\mathsf{left}) \\[1em]
-& (q + r) \cdot p = (q \cdot p) + (r \cdot p) &&({\cdot}{+}_p.\mathsf{right}) \\[1em]
-& p \cdot (q \wedge r) = (p \cdot q) \wedge (p \cdot r) &&({\cdot}{\wedge}_p.\mathsf{left}) \\[1em]
-& (q \wedge r) \cdot p = (q \cdot p) \wedge (r \cdot p) &&({\cdot}{\wedge}_p.\mathsf{right}) \\[1em]
-& p + (q \wedge r) = (p + q) \wedge (p + r) &&({+}{\wedge}_p.\mathsf{left}) \\[1em]
-& (q \wedge r) + p = (q + p) \wedge (r + p) &&({+}{\wedge}_p.\mathsf{right}) \\[1em]
-& p \le q \implies p + r \le q + r &&({+}{\le}_p) \\[1em]
-& r \le p \text{ and } r \le q \iff r \le p \wedge q &&({\wedge}{\le}_p) \\[1em]
-& {00}^{\mathsf{p}} \ne {11}^{\mathsf{p}} &&(0_p.1) \\[1em]
-& p + q = {00}^{\mathsf{p}} \implies p = {00}^{\mathsf{p}} \text{ and } q = {00}^{\mathsf{p}} &&(0_p.{+}) \\[1em]
-& p \wedge q = {00}^{\mathsf{p}} \implies p = {00}^{\mathsf{p}} \text{ and } q = {00}^{\mathsf{p}} &&(0_p.{\wedge}) \\[1em]
-& p \cdot q = {00}^{\mathsf{p}} \implies p = {00}^{\mathsf{p}} \text{ or } q = {00}^{\mathsf{p}} &&(0_p.{\cdot})
+& \text{the grades, with } {00}^{\mathsf{p}},\ {11}^{\mathsf{p}},\ +,\ \cdot,\ \wedge, \text{ form a modality} &&(\mathsf{modality}_p)
 \end{aligned}
 ```
 

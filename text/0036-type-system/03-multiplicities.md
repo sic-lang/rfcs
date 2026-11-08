@@ -1,7 +1,7 @@
 # Multiplicities
 
 This annex defines the multiplicities, which count uses, with their operations, their order, their meaning and their properties.
-It builds on the [notation](01-notation.md).
+It builds on the [modalities](02-modalities.md).
 
 ## Definitions
 
@@ -58,14 +58,7 @@ The same operations as tables, whose rows give the left operand:
 \end{aligned}
 ```
 
-The multiplicities are ordered by their meet:
-
-```math
-\begin{aligned}
-& \pi_1 \le \pi_2 \iff \pi_1 = \pi_1 \wedge \pi_2 &&(\mathsf{order}_\pi)
-\end{aligned}
-```
-
+The multiplicities are ordered by their meet, as the modality that they form, $`(\mathsf{order}_\xi)`$.
 A lower multiplicity allows more numbers of uses, and so states less about them, as their meaning shows: $`\omega`$ is below every multiplicity, while $`0`$ and $`1`$ are not comparable:
 
 ```math
@@ -118,32 +111,10 @@ The operations and the order are those of the numbers of uses:
 
 ## Properties
 
-The multiplicities form a modality of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862): a semiring whose addition and multiplication distribute over its meet, ordered by its meet, with a well-behaved zero.
+The multiplicities form a [modality](02-modalities.md), whose laws and properties they have:
 
 ```math
 \begin{aligned}
-& (\pi_1 + \pi_2) + \pi_3 = \pi_1 + (\pi_2 + \pi_3) &&(\mathsf{semiring}_\pi.\mathsf{assoc}_{+}) \\[1em]
-& \pi_1 + \pi_2 = \pi_2 + \pi_1 &&(\mathsf{semiring}_\pi.\mathsf{comm}_{+}) \\[1em]
-& 0 + \pi = \pi &&(\mathsf{semiring}_\pi.\mathsf{unit}_{+}) \\[1em]
-& (\pi_1 \cdot \pi_2) \cdot \pi_3 = \pi_1 \cdot (\pi_2 \cdot \pi_3) &&(\mathsf{semiring}_\pi.\mathsf{assoc}_{\cdot}) \\[1em]
-& 1 \cdot \pi = \pi &&(\mathsf{semiring}_\pi.\mathsf{lunit}_{\cdot}) \\[1em]
-& \pi \cdot 1 = \pi &&(\mathsf{semiring}_\pi.\mathsf{runit}_{\cdot}) \\[1em]
-& 0 \cdot \pi = 0 &&(\mathsf{semiring}_\pi.\mathsf{lzero}_{\cdot}) \\[1em]
-& \pi \cdot 0 = 0 &&(\mathsf{semiring}_\pi.\mathsf{rzero}_{\cdot}) \\[1em]
-& (\pi_1 \wedge \pi_2) \wedge \pi_3 = \pi_1 \wedge (\pi_2 \wedge \pi_3) &&(\mathsf{meet}_\pi.\mathsf{assoc}) \\[1em]
-& \pi_1 \wedge \pi_2 = \pi_2 \wedge \pi_1 &&(\mathsf{meet}_\pi.\mathsf{comm}) \\[1em]
-& \pi \wedge \pi = \pi &&(\mathsf{meet}_\pi.\mathsf{idem}) \\[1em]
-& \pi_1 \cdot (\pi_2 + \pi_3) = (\pi_1 \cdot \pi_2) + (\pi_1 \cdot \pi_3) &&({\cdot}{+}_\pi.\mathsf{left}) \\[1em]
-& (\pi_2 + \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) + (\pi_3 \cdot \pi_1) &&({\cdot}{+}_\pi.\mathsf{right}) \\[1em]
-& \pi_1 \cdot (\pi_2 \wedge \pi_3) = (\pi_1 \cdot \pi_2) \wedge (\pi_1 \cdot \pi_3) &&({\cdot}{\wedge}_\pi.\mathsf{left}) \\[1em]
-& (\pi_2 \wedge \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) \wedge (\pi_3 \cdot \pi_1) &&({\cdot}{\wedge}_\pi.\mathsf{right}) \\[1em]
-& \pi_1 + (\pi_2 \wedge \pi_3) = (\pi_1 + \pi_2) \wedge (\pi_1 + \pi_3) &&({+}{\wedge}_\pi.\mathsf{left}) \\[1em]
-& (\pi_2 \wedge \pi_3) + \pi_1 = (\pi_2 + \pi_1) \wedge (\pi_3 + \pi_1) &&({+}{\wedge}_\pi.\mathsf{right}) \\[1em]
-& \pi_1 \le \pi_2 \implies \pi_1 + \pi_3 \le \pi_2 + \pi_3 &&({+}{\le}_\pi) \\[1em]
-& \pi_3 \le \pi_1 \text{ and } \pi_3 \le \pi_2 \iff \pi_3 \le \pi_1 \wedge \pi_2 &&({\wedge}{\le}_\pi) \\[1em]
-& 0 \ne 1 &&(0_\pi.1) \\[1em]
-& \pi_1 + \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 &&(0_\pi.{+}) \\[1em]
-& \pi_1 \wedge \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 &&(0_\pi.{\wedge}) \\[1em]
-& \pi_1 \cdot \pi_2 = 0 \implies \pi_1 = 0 \text{ or } \pi_2 = 0 &&(0_\pi.{\cdot})
+& \text{the multiplicities, with } 0,\ 1,\ +,\ \cdot,\ \wedge, \text{ form a modality} &&(\mathsf{modality}_\pi)
 \end{aligned}
 ```

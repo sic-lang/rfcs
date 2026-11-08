@@ -22,7 +22,7 @@ This document lists the pieces of the system and the reasons for each of them, a
 
 The type system counts uses, a use being an access to a value through a variable, along the two axes of the [grades](https://github.com/sic-lang/rfcs/pull/16) of Sic: the uses at run time, and all the uses, erased or not.
 A [multiplicity](0036-type-system/03-multiplicities.md) counts the uses on one axis, as the multiplicities $`0`$, $`1`$ and $`\omega`$ of [Idris 2](https://arxiv.org/abs/2104.00480) and of [Linear Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html) do, and a [grade](0036-type-system/04-grades.md) is a pair of multiplicities, one per axis.
-The grades form a modality of the graded type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), whose rules only know a modality by its laws, so that the rules of the type system follow theirs.
+The multiplicities and the grades each form a [modality](0036-type-system/02-modalities.md) of the graded type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), whose rules only know a modality by its laws, so that the rules of the type system follow theirs.
 Their meaning is an abstract interpretation of the numbers of uses: each grade stands for the numbers of uses it allows, and its operations and its order are derived from those of the numbers rather than chosen.
 
 The usage and the ownership of a term are checked in one of three [modes](0036-type-system/05-modes.md): no use, all the uses but none at run time, and all the uses.
@@ -91,6 +91,7 @@ Its file name starts with a number on two digits, which gives the order of the a
 The examples are in the directory `99-examples` of the annexes, one file per example, named after the number of the annex it illustrates: they are derived from the system, and are not part of it.
 
 - [Notation](0036-type-system/01-notation.md): the letters that name each kind of object, and the conventions shared by all the rules and formulas of the annexes.
+- [Modalities](0036-type-system/02-modalities.md): the laws that the multiplicities and the grades share, the order by the meet, and the properties that follow from them.
 - [Multiplicities](0036-type-system/03-multiplicities.md): the numbers of uses $`0`$, $`1`$ and $`\omega`$, their operations, their order and their meaning.
 - [Grades](0036-type-system/04-grades.md): the pairs of multiplicities that count the uses at run time and in total, their meaning, their properties and their projection on the run-time multiplicity.
 - [Modes](0036-type-system/05-modes.md): the three settings in which the usage of a term is checked, and their structure on the grades.
