@@ -15,9 +15,9 @@ An application $`x[\bar t]`$ uses $`x`$ with the grade of the mode, and each arg
 
 ```math
 \begin{gathered}
-\frac{\begin{gathered}{}x \text{ has the grades } \bar p \text{ in the scope of } x[\bar t] \\ \Sigma;\ \delta \vdash \bar t \mathrel{▶} \bar p;\ m\end{gathered}}{\Sigma;\ ({00}^{\gamma},\ x \mathrel{≔} \ulcorner m \urcorner) +^{\gamma} \delta \vdash x[\bar t] \mathrel{▶} m}\;(\mathsf{var}_{X\mathsf{m}}) \\[1em]
-\frac{}{\Sigma;\ {00}^{\gamma} \vdash () \mathrel{▶} ();\ m}\;(\mathsf{tel}_{\varepsilon\mathsf{m}}) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \gamma \vdash t \mathrel{▶} m \odot p \\ \Sigma;\ \delta \vdash \bar t \mathrel{▶} \bar p;\ m\end{gathered}}{\Sigma;\ (p \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash (t,\ \bar t) \mathrel{▶} (p,\ \bar p);\ m}\;(\mathsf{tel}_{,\mathsf{m}})
+\frac{\begin{gathered}{}x \text{ has the grades } \bar p \text{ in the scope of } x[\bar t] \\ \Sigma;\ \delta \vdash \bar t \mathrel{▶} \bar p;\ m\end{gathered}}{\Sigma;\ ({00}^{\gamma},\ x \mathrel{≔} \ulcorner m \urcorner) +^{\gamma} \delta \vdash x[\bar t] \mathrel{▶} m}\;(\mathsf{var}_{X▶}) \\[1em]
+\frac{}{\Sigma;\ {00}^{\gamma} \vdash () \mathrel{▶} ();\ m}\;(\mathsf{tel}_{\varepsilon▶}) \\[1em]
+\frac{\begin{gathered}{}\Sigma;\ \gamma \vdash t \mathrel{▶} m \odot p \\ \Sigma;\ \delta \vdash \bar t \mathrel{▶} \bar p;\ m\end{gathered}}{\Sigma;\ (p \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash (t,\ \bar t) \mathrel{▶} (p,\ \bar p);\ m}\;(\mathsf{tel}_{,▶})
 \end{gathered}
 ```
 
@@ -26,13 +26,13 @@ A sort uses no variable:
 
 ```math
 \begin{gathered}
-\frac{\begin{gathered}{}f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m_2 \mathrel{◀} p \in \Sigma \\ m_1 \cdot^{\mathsf{m}} m_2 = m_1\end{gathered}}{\Sigma;\ {00}^{\gamma} \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \mathrel{▶} m_1}\;(f_{\mathsf{m}}) \\[1em]
-\frac{}{\Sigma;\ {00}^{\gamma} \vdash \kappa \mathrel{▶} m}\;(\kappa_{\mathsf{m}})
+\frac{\begin{gathered}{}f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m_2 \mathrel{◀} p \in \Sigma \\ m_1 \cdot^{\mathsf{m}} m_2 = m_1\end{gathered}}{\Sigma;\ {00}^{\gamma} \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \mathrel{▶} m_1}\;(f_{▶}) \\[1em]
+\frac{}{\Sigma;\ {00}^{\gamma} \vdash \kappa \mathrel{▶} m}\;(\kappa_{▶})
 \end{gathered}
 ```
 
 A term may be given grades lower than its uses:
 
 ```math
-\frac{\begin{gathered}{}\Sigma;\ \gamma \vdash t \mathrel{▶} m \\ \delta \le^{\gamma} \gamma\end{gathered}}{\Sigma;\ \delta \vdash t \mathrel{▶} m}\;(\mathsf{sub})
+\frac{\begin{gathered}{}\Sigma;\ \gamma \vdash t \mathrel{▶} m \\ \delta \le^{\gamma} \gamma\end{gathered}}{\Sigma;\ \delta \vdash t \mathrel{▶} m}\;(\mathsf{sub}_{▶})
 ```

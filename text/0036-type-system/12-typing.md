@@ -1,7 +1,7 @@
 # Typing
 
 This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, and of the entries of the signatures, and their properties.
-It builds on the [sorts](06-sorts.md), the [substitution](08-substitution.md) and the [usage](10-usage.md).
+It builds on the [sorts](06-sorts.md), the [substitution](08-substitution.md), the [usage](10-usage.md) and the [ownership](11-ownership.md).
 
 ## Definitions
 
@@ -75,11 +75,11 @@ A signature is empty, or a signature extended by an entry that is well formed in
 The type declarations enter a signature by the rules of their kinds, in their annexes.
 
 An entry is checked in the empty context, once with its level variables, and for each instance of its sort and grade variables, which are finitely many, so that its rules hold whatever instantiates them.
-At each instance of its sort and grade variables, the type of a constant definition or declaration is a type of some sort, which may depend on the instance, and the body of a constant definition is a term of its type that uses no variable, in the mode of the definition:
+At each instance of its sort and grade variables, the type of a constant definition or declaration is a type of some sort, which may depend on the instance, and the body of a constant definition is a term of its type that uses no variable and has the ownership of the definition, in the mode of the definition:
 
 ```math
 \begin{gathered}
-\frac{\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa. \\ & \quad \text{and} \\ & \qquad \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \\ & \qquad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \Sigma;\ {00}^{\gamma} \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} m\end{aligned}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t}\;(\mathsf{def}) \\[1em]
+\frac{\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa. \\ & \quad \text{and} \\ & \qquad \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \\ & \qquad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \Sigma;\ {00}^{\gamma} \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} m \\ & \qquad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{◀} p;\ m\end{aligned}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t}\;(\mathsf{def}) \\[1em]
 \frac{\forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa.\ \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p}\;(\mathsf{decl})
 \end{gathered}
 ```

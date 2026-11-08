@@ -60,14 +60,14 @@ A subscript numbers objects of the same kind that come from different premises o
 Rules and formulas are named as follows:
 
 - A rule is named after its fraction, in parentheses.
-- A rule of usage is named after the rule of typing of the same construct, with the index $`\mathsf{m}`$.
+- A rule of usage or of ownership is named after the rule of typing of the same construct, with the symbol of its judgment as index, $`▶`$ or $`◀`$, as $`(\mathsf{var}_{X▶})`$ and $`(\mathsf{var}_{X◀})`$.
 - A rule of equality that goes with a rule of typing of the same construct is named after it, with the index $`\equiv`$ last.
 - A rule that extends a context, a telescope or a signature by one kind of entry is indexed by a comma.
 - A rule with one case per kind of entry is indexed by the letter of the entry: $`x`$ for a variable, $`X`$ for a second-order variable.
 - A formula is named in its last column.
 - The laws of a group, such as the laws of a semiring or the presuppositions of the judgments, and the parts of a definition made of several, such as the operations of the multiplicities or the substitution in each kind of object, are formulas or rules of their own, each named after the group or the definition, then after the law or the part, separated by a dot, as $`(\mathsf{semiring}_\pi.\mathsf{assoc}_{+})`$ and $`(\mathsf{op}_\pi.{+})`$.
 - A formula that defines an object is named after what it defines: $`\mathsf{syntax}`$ for the objects themselves, given by a grammar or by a condition, $`\mathsf{op}`$ for its operations and $`\mathsf{order}`$ for its order.
-- The name of a formula is indexed by the letter of the kind of objects it is about: $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`t`$ for the terms, $`\bar t`$ and $`\bar a`$ for the arguments of the telescopes and of the instances, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`e`$ for the entries of the signatures, $`f`$ for the constants, $`D`$ for the declared types, $`\Sigma`$ for the signatures, $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order, and $`\gamma`$ for the vectors of grades.
+- The name of a formula is indexed by the letter of the kind of objects it is about: $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`t`$ for the terms, $`\bar t`$ and $`\bar a`$ for the arguments of the telescopes and of the instances, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\psi`$ for the ownerships of the results of the second-order variables, $`e`$ for the entries of the signatures, $`f`$ for the constants, $`D`$ for the declared types, $`\Sigma`$ for the signatures, $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order, and $`\gamma`$ for the vectors of grades.
 - The name of a formula of a meaning has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, and $`\mathsf{eq}`$ for a clause of the equality of a canonical type.
 - Every name designates one rule or one formula in all the annexes.
 

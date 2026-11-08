@@ -45,7 +45,7 @@ The [substitution](0036-type-system/08-substitution.md) of the first order gives
 
 ### Judgments and Usage
 
-The [typing](0036-type-system/11-typing.md) has the judgments of Martin-Löf type theory, a type, two equal types, a term of a type and two equal terms, in a signature and a context, and carries no grade; the [usage](0036-type-system/10-usage.md) is a judgment of its own, which checks in a mode how a term uses each variable of its scope, as a [vector of grades](0036-type-system/09-grade-vectors.md) allows, as in the theory of Abel, Danielsson and Eriksson.
+The [typing](0036-type-system/12-typing.md) has the judgments of Martin-Löf type theory, a type, two equal types, a term of a type and two equal terms, in a signature and a context, and carries no grade; the [usage](0036-type-system/10-usage.md) is a judgment of its own, which checks in a mode how a term uses each variable of its scope, as a [vector of grades](0036-type-system/09-grade-vectors.md) allows, as in the theory of Abel, Danielsson and Eriksson.
 A program is a term both well typed and well used: its typing tells what it computes, and its usage how it uses its resources.
 
 The signature lists the constant definitions, the constant declarations and the type declarations, in order, each checked against the entries before it, once with its level variables and for each instance of its sort and grade variables.
@@ -71,7 +71,8 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Substitution](0036-type-system/08-substitution.md): the substitutions of the first and of the second order, the closed substitutions, the instantiation of the level variables and their properties.
 - [Grade vectors](0036-type-system/09-grade-vectors.md): the grades of the variables of a scope, their operations, their order and their properties.
 - [Usage](0036-type-system/10-usage.md): the judgment that checks, in a mode, how a term uses the variables of its scope.
-- [Typing](0036-type-system/11-typing.md): the judgments of the signatures, of the contexts, of the types, of the terms and of their arguments, their rules and their properties.
+- [Ownership](0036-type-system/11-ownership.md): the judgment that checks, in a mode, the ownership of the value of a term.
+- [Typing](0036-type-system/12-typing.md): the judgments of the signatures, of the contexts, of the types, of the terms and of their arguments, their rules and their properties.
 
 ## Drawbacks
 
