@@ -12,13 +12,13 @@ Ownership is defined on the term and the signature alone, without a context, as 
 Unlike the vector of the usage, which each premise computes and the conclusion adds, $`\varphi`$ is the same in every premise, as the context of the typing is.
 The ownership of the instances of the declared types, and of the terms that build and use them, is given by the kinds of type declarations, in their annexes.
 
-The value of the ownership $`\psi`$ of the result of a second-order variable, given the ownerships $`\bar o`$ of its arguments, written $`\psi[\bar o / \bar x]`$ where $`\bar x`$ are the variables of its telescope, is the meet of its constant and of its terms, each variable taking the ownership of its argument.
-The constant and the terms being optional, the value may be undefined: a meet with an undefined operand is its other operand, and an absent constant is undefined.
-The variables are read in order, and $`\psi'`$ is $`\psi`$ without its term in $`x`$:
+The value of the ownership $`\psi`$ of the result of a second-order variable, given the ownerships $`\bar o`$ of its arguments, written $`\psi[\bar o / \bar x]`$ where $`\bar x`$ are the variables of its telescope, is the meet of its constant and of its factors, each variable taking the ownership of its argument.
+The constant and the factors being optional, the value may be undefined: a meet with an undefined operand is its other operand, and an absent constant is undefined.
+The variables are read in order, and $`\psi'`$ is $`\psi`$ without the factor of $`x`$:
 
 ```math
 \begin{aligned}
-& \psi[(o,\ \bar o) / (x,\ \bar x)] = o \cdot \chi \wedge \psi'[\bar o / \bar x] \text{ if } \psi \text{ has the term } x \cdot \chi &&(\mathsf{value}_\psi) \\
+& \psi[(o,\ \bar o) / (x,\ \bar x)] = o \cdot \chi \wedge \psi'[\bar o / \bar x] \text{ if } x \text{ has the coefficient } \chi \text{ in } \psi &&(\mathsf{value}_\psi) \\
 & \psi[(o,\ \bar o) / (x,\ \bar x)] = \psi[\bar o / \bar x] \\
 & \psi[\bar o / \bar x] = \chi_0 \text{ otherwise}
 \end{aligned}

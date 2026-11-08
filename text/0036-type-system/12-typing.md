@@ -28,7 +28,7 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash \Theta : \kappa`$ | The telescope $`\Theta`$ lives in the sort $`\kappa`$ |
 
 The judgments are defined together, except the last one, which builds on the others.
-Typing and equality carry no grade: the usage of a term is checked by the judgment of [usage](10-usage.md), which the rule of the constant definitions reads.
+Typing and equality carry no grade: the usage and the ownership of a term are checked by the judgments of [usage](10-usage.md) and of [ownership](11-ownership.md), which the rule of the constant definitions reads.
 Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](05-levels.md), and for sequences of levels holds on each component.
 
 A context has a variable $`x : A`$, written $`x : A \in \Gamma`$, when one of its entries is this variable, and a second-order variable $`X : (\Theta \vdash A \mathrel{◀} \psi)`$, written $`X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma`$, likewise, by its last entry or by the entries before it; $`x \notin \Gamma`$ means that no entry of $`\Gamma`$ is a variable named $`x`$:
@@ -86,13 +86,13 @@ At each instance of its sort and grade variables, the type of a constant definit
 
 ### Contexts
 
-A context is empty, in a well-formed signature, or a context extended by a variable whose type is a type in it, or by a second-order variable whose type is a type in it extended by its telescope, and the ownership of whose result has a constant or a term, since the grades have no greatest element that an empty meet would be, with a name that the context does not have:
+A context is empty, in a well-formed signature, or a context extended by a variable whose type is a type in it, or by a second-order variable whose type is a type in it extended by its telescope, and the ownership of whose result has a constant or a factor, since the grades have no greatest element that an empty meet would be, with a name that the context does not have:
 
 ```math
 \begin{gathered}
 \frac{\vdash \Sigma}{\Sigma \vdash \varepsilon}\;(\mathsf{ctx}_\varepsilon) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A \\ x \notin \Gamma\end{gathered}}{\Sigma \vdash \Gamma,\ x : A}\;(\mathsf{ctx}_x) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ \Theta \vdash A \\ X \notin \Gamma \\ \psi \text{ has a constant or a term}\end{gathered}}{\Sigma \vdash \Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi)}\;(\mathsf{ctx}_X)
+\frac{\begin{gathered}{}\Sigma;\ \Gamma,\ \Theta \vdash A \\ X \notin \Gamma \\ \psi \text{ has a constant or a factor}\end{gathered}}{\Sigma \vdash \Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi)}\;(\mathsf{ctx}_X)
 \end{gathered}
 ```
 

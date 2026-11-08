@@ -73,7 +73,7 @@ A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ exte
 \end{aligned}
 ```
 
-The ownership $`\psi`$ of the result of $`X : (\Theta \vdash A \mathrel{◀} \psi)`$ is the meet of a grade $`\chi_0`$, its constant, and of terms $`x_j \cdot \chi_j`$, each scaling a variable $`x_j`$ of $`\Theta`$ by its coefficient $`\chi_j`$; the constant and each term are optional, each variable has one term at most, in the order of $`\Theta`$, and the term $`x_j \cdot {11}^{\mathsf{p}}`$ is written $`x_j`$:
+The ownership $`\psi`$ of the result of $`X : (\Theta \vdash A \mathrel{◀} \psi)`$ is the meet of a grade $`\chi_0`$, its constant, and of factors $`x_j \cdot \chi_j`$, each scaling a variable $`x_j`$ of $`\Theta`$ by its coefficient $`\chi_j`$; the constant and each factor are optional, each variable has one factor at most, in the order of $`\Theta`$, and the factor $`x_j \cdot {11}^{\mathsf{p}}`$ is written $`x_j`$:
 
 ```math
 \begin{aligned}
