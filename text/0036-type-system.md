@@ -83,6 +83,7 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Ownership](0036-type-system/11-ownership.md): the judgment that checks, in a mode, the ownership of the value of a term.
 - [Typing](0036-type-system/12-typing.md): the judgments of the signatures, of the contexts, of the types, of the terms and of their arguments, their rules and their properties.
 - [Reduction](0036-type-system/13-reduction.md): the weak head reduction, its head normal forms, the computation of the closed terms and their determinism.
+- [Erasure](0036-type-system/14-erasure.md): the translation to an untyped target language that replaces with a value the parts of a term whose grade is in a set, the sets of grades that the modes do not count, and the absence of the erased variables.
 
 ## Drawbacks
 
