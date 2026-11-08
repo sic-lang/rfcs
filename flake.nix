@@ -40,15 +40,6 @@
               tools = [ pkgs.actionlint ];
               command = "actionlint";
             };
-            # Builds the book, which GitHub Pages serves.
-            book = {
-              tools = [
-                pkgs.mdbook
-                pkgs.mdbook-katex
-                pkgs.mdbook-mermaid
-              ];
-              command = lib.getExe buildBook.run;
-            };
             editorconfig = {
               tools = [ pkgs.editorconfig-checker ];
               command = "editorconfig-checker";
@@ -92,6 +83,15 @@
               ];
               command = "git ls-files -z .envrc '*.sh' | xargs -0 shfmt --diff";
             };
+            # Builds the site, which GitHub Pages serves.
+            site = {
+              tools = [
+                pkgs.mdbook
+                pkgs.mdbook-katex
+                pkgs.mdbook-mermaid
+              ];
+              command = lib.getExe buildSite.run;
+            };
             taplo = {
               tools = [ pkgs.taplo ];
               command = "taplo fmt --check";
@@ -110,8 +110,8 @@
           # their numbers, which never change: an accepted RFC is never renumbered. The annexes of an
           # RFC, in the directory named after it, are its subchapters, in the order of their file
           # names, which start with their numbers.
-          buildBook = command {
-            name = "build-book";
+          buildSite = command {
+            name = "build-site";
             runtimeInputs = [
               pkgs.coreutils
               pkgs.git
@@ -334,7 +334,7 @@
               name: command: lib.nameValuePair "check-${name}" (app command "Run the ${name} check")
             ) checkCommands
             // {
-              build-book = app buildBook "Build the RFC book into book/";
+              build-site = app buildSite "Build the site that GitHub Pages serves into book/";
               check = app checkAll "Run every check";
               setup-vscode = app setupVscode "Write the recommended VS Code configuration to .vscode/";
             };
@@ -343,7 +343,7 @@
           checks =
             lib.mapAttrs' (name: command: lib.nameValuePair "check-${name}" command.checked) checkCommands
             // {
-              build-book = buildBook.checked;
+              build-site = buildSite.checked;
               check = checkAll.checked;
               setup-vscode = setupVscode.checked;
             };

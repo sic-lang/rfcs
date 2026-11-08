@@ -19,7 +19,6 @@ jobs:
         # The commands check-<name> of the flake.
         check:
           - actionlint
-          - book
           - commits
           - editorconfig
           - flake
@@ -29,6 +28,7 @@ jobs:
           - reuse
           - shellcheck
           - shfmt
+          - site
           - taplo
           - typos
           - yamllint
