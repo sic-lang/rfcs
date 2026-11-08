@@ -5,7 +5,7 @@ It builds on the [notation](01-notation.md).
 
 ## Definitions
 
-A use is an access to a value through a variable; what a multiplicity counts is said by the judgment that reads it: the uses of each variable of its scope by a term, for the usage, and the uses of a value during a whole run, through all the variables that lead to it, for the ownership.
+A use is an access to a value through a variable.
 
 A multiplicity is $`0`$, $`1`$ or $`\omega`$, where $`\omega`$ stands for any number of uses, none included, as in the linear modality of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862):
 
