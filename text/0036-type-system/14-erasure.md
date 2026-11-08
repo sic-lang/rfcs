@@ -27,6 +27,7 @@ The core has no position of its own, since the arguments of a variable are none,
 ```
 
 A constant keeps the grades of its instance and loses its qualities and its levels: the positions of its body that the erasure removes depend on the grades that instantiate its grade variables, and on nothing else, since the erasure follows the grades alone.
+The term $`f.\{\bar p\}`$ of the target language thus names the copy of $`f`$ compiled for the grades $`\bar p`$, the erasure of its body for this instance, as the [monomorphization](https://doc.rust-lang.org/book/ch10-01-syntax.html#performance-of-code-using-generics) of Rust compiles a copy of a generic function for each instance of its type parameters, so that no grade remains at run time: if the body of $`f`$ checks with its grade variable $`p`$ a position that computes from its parameter, the extraction erases this position in $`f.\{{00}^{\mathsf{p}}\}`$ and keeps it in $`f.\{{11}^{\mathsf{p}}\}`$.
 
 A term checked in the mode $`m`$ checks a position of grade $`p`$ in the mode $`m \odot p`$, and does not count the uses of the positions that it checks in a more erased mode, whose grades form the set $`S^m`$:
 
