@@ -9,7 +9,7 @@ It gives no definition, rule or property itself: the system is defined in the an
 
 ## Motivation
 
-The type system of Sic combines dependent types with grades that count the uses of each variable.
+The type system of Sic combines dependent types with grades, which count the uses of the variables and of the values of a program.
 Its pieces are tightly bound: the declared types need an equality to state their indices and their extensionality, and the equality is defined on the declared types, so that the system cannot be split into documents that each stand alone without one of them depending on a later one.
 This RFC therefore states the system in one place, and keeps apart the two things a reader looks for: the main document says what the system is made of and why, for a reader who decides or reviews the design, and the annexes say exactly what it is, for a reader who checks or implements it.
 
@@ -20,12 +20,13 @@ This document lists the pieces of the system and the reasons for each of them, a
 
 ### Grades
 
-The type system counts the uses of each variable along the two axes of the [grades](https://github.com/sic-lang/rfcs/pull/16) of Sic: its uses at run time, and all its uses, erased or not, so that a program states which resources it consumes, which proofs and specifications it erases, and which permissions it passes on exactly once.
+The type system counts uses along the two axes of the [grades](https://github.com/sic-lang/rfcs/pull/16) of Sic: the uses at run time, and all the uses, erased or not.
+A use is an access to a value through a variable, and two judgments count them: the usage counts the uses of each variable by a term, so that a program states which resources it consumes, which proofs and specifications it erases, and which permissions it passes on exactly once; the ownership counts the uses of a value during a whole run, through all the variables that lead to it, so that a program states which values no other variable reaches.
 A [multiplicity](0036-type-system/02-multiplicities.md) counts the uses on one axis, as the multiplicities $`0`$, $`1`$ and $`\omega`$ of [Idris 2](https://arxiv.org/abs/2104.00480) and of [Linear Haskell](https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html) do, and a [grade](0036-type-system/03-grades.md) is a pair of multiplicities, one per axis.
 The grades form a modality of the graded type theory of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), whose rules only know a modality by its laws, so that the rules of the type system follow theirs.
 Their meaning is an abstract interpretation of the numbers of uses: each grade stands for the numbers of uses it allows, and its operations and its order are derived from those of the numbers rather than chosen.
 
-The usage of a term is checked in one of three [modes](0036-type-system/04-modes.md): no use, all the uses but none at run time, and all the uses.
+The usage and the ownership of a term are checked in one of three [modes](0036-type-system/04-modes.md): no use, all the uses but none at run time, and all the uses.
 The theory of Abel, Danielsson and Eriksson has only the first and the last; the mode in between is added so that an erased term, such as a proof, still counts all its uses, and cannot drop or duplicate a permission that may be used once.
 
 ### Levels and Sorts

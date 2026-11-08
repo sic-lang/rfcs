@@ -1,6 +1,6 @@
 # Grades
 
-This annex defines the grades, which count the uses of a variable at run time and in total, with their operations, their order, their projection on the run-time multiplicity, their meaning and their properties.
+This annex defines the grades, which count uses at run time and in total, with their operations, their order, their projection on the run-time multiplicity, their meaning and their properties.
 It builds on the [multiplicities](02-multiplicities.md).
 
 ## Definitions
@@ -39,7 +39,7 @@ The operations act on each multiplicity, and the seven grades are closed under t
 \end{aligned}
 ```
 
-The grades are ordered by their meet, which means that a variable of grade $`p`$ may be used where the grade $`q`$ is expected:
+The grades are ordered by their meet, so that a lower grade allows more pairs of numbers of uses, and so states less about them, as their meaning shows:
 
 ```math
 \begin{aligned}
