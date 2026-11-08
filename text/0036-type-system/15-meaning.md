@@ -9,7 +9,7 @@ What the usage and the ownership of a term guarantee of its erasure when it runs
 
 ## Definitions
 
-This section gives the levels without variables, the interpretation of the constant declarations and the equality of the canonical terms, then the meaning of each judgment of the typing, by the objects it checks.
+This section gives the levels without variables, the interpretation of the constant declarations and the equality of the canonical terms, then the meaning of each judgment of the typing, by the objects it checks, and the interpretations that give each constant declaration a term of its type.
 The meaning of a judgment is written with $`\vDash`$ in place of $`\vdash`$.
 
 ### Levels Without Variables
@@ -234,6 +234,22 @@ A judgment $`\mathcal{J}`$ in a context $`\Gamma`$ whose objects have level vari
 \end{aligned}
 ```
 
+### Interpretations of a Signature
+
+An interpretation $`\iota`$ interprets a signature when it gives each constant declaration of the signature a term of its type, whenever the signature before the declaration is meaningful, so that it is asked nothing in a signature without meaning:
+
+```math
+\begin{aligned}
+& \iota \text{ interprets } \varnothing &&(\mathsf{hyp}_\iota) \\[1em]
+& \text{⟺} \\
+& \quad \iota \text{ interprets } \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\
+& \quad \text{and} \\
+& \qquad \iota \text{ interprets } \Sigma \\
+& \qquad \vDash \Sigma \implies \Sigma \vDash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\[1em]
+& \iota \text{ interprets } \Sigma,\ e \iff \iota \text{ interprets } \Sigma \text{ otherwise}
+\end{aligned}
+```
+
 ## Properties
 
 The equality of the terms of a closed canonical type is a partial equivalence relation, symmetric and transitive, and is unique, so that the notation $`\mathsf{eq}(v)`$ names one relation:
@@ -256,3 +272,33 @@ A meaningful signature has [distinct](07-syntax.md) names, as a well-formed one 
 & \quad \Sigma \vDash t \equiv u : A \iff \Sigma \vDash t : A \text{ and } \Sigma \vDash u : A
 \end{aligned}
 ```
+
+Every judgment of the typing is meaningful under an interpretation that interprets its signature, which is the soundness of the typing; a judgment whose objects have level variables is then meaningful at every assignment of them, by $`(\vDash_\rho)`$:
+
+```math
+\begin{aligned}
+& \iota \text{ interprets } \Sigma \text{ and } \vdash \Sigma \implies \vDash \Sigma &&(\mathsf{sound}.\Sigma) \\[1em]
+& \text{⟹} &&(\mathsf{sound}.\mathsf{def}) \\
+& \quad \text{and} \\
+& \qquad \iota \text{ interprets } \Sigma \\
+& \qquad \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t \\
+& \quad \Sigma \vDash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t \\[1em]
+& \text{⟹} &&(\mathsf{sound}.\mathsf{decl}) \\
+& \quad \text{and} \\
+& \qquad \iota \text{ interprets } \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\
+& \qquad \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\
+& \quad \Sigma \vDash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma \vdash \Gamma \implies \Sigma \vDash \Gamma &&(\mathsf{sound}.\Gamma) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash A \implies \Sigma;\ \Gamma \vDash A &&(\mathsf{sound}.A) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash A \equiv B \implies \Sigma;\ \Gamma \vDash A \equiv B &&(\mathsf{sound}.A_\equiv) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash t : A \implies \Sigma;\ \Gamma \vDash t : A &&(\mathsf{sound}.t) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash t \equiv u : A \implies \Sigma;\ \Gamma \vDash t \equiv u : A &&(\mathsf{sound}.t_\equiv) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar t : \Theta \implies \Sigma;\ \Gamma \vDash \bar t : \Theta &&(\mathsf{sound}.\bar t) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \implies \Sigma;\ \Gamma \vDash \bar t \equiv \bar u : \Theta &&(\mathsf{sound}.\bar t_\equiv) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \Sigma;\ \Gamma \vDash \bar a : \Delta &&(\mathsf{sound}.\bar a) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \Sigma;\ \Gamma \vDash \bar a_1 \equiv \bar a_2 : \Delta &&(\mathsf{sound}.\bar a_\equiv) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \Sigma;\ \Gamma \vDash \Theta : \kappa &&(\mathsf{sound}.\Theta)
+\end{aligned}
+```
+
+The soundness of a constant declaration rests on the interpretation alone: its typing checks its type but gives it no term, so that a well-formed constant declaration is meaningful only by an interpretation, as $`f : \Omega_0`$ shows, which is well formed while the core gives $`\Omega_0`$ no proposition, hence no term.
