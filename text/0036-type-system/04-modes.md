@@ -63,19 +63,19 @@ The three modes form a mode structure of the [formalization](https://github.com/
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{structure}_m) \\
-& \quad (m_1 \cdot^{\mathsf{m}} m_2) \cdot^{\mathsf{m}} m_3 = m_1 \cdot^{\mathsf{m}} (m_2 \cdot^{\mathsf{m}} m_3) \\
-& \quad m_1 \cdot^{\mathsf{m}} m_2 = m_2 \cdot^{\mathsf{m}} m_1 \\
-& \quad m \cdot^{\mathsf{m}} m = m \\
-& \quad {11}^{\mathsf{m}} \cdot^{\mathsf{m}} m = m \\
-& \quad {00}^{\mathsf{m}} \cdot^{\mathsf{m}} m = {00}^{\mathsf{m}} \\
-& \quad \ulcorner {00}^{\mathsf{m}} \urcorner = {00}^{\mathsf{p}} \\
-& \quad \llcorner \ulcorner m \urcorner \lrcorner = m \\
-& \quad \ulcorner m_1 \cdot^{\mathsf{m}} m_2 \urcorner = \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner \\
-& \quad \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner q \lrcorner = \llcorner p \cdot q \lrcorner \\
-& \quad p \cdot \ulcorner \llcorner p \lrcorner \urcorner = \ulcorner \llcorner p \lrcorner \urcorner \cdot p = p \\
-& \quad p \le q \text{ and } q \le \ulcorner m \urcorner \cdot q \implies p \le \ulcorner m \urcorner \cdot p \\
-& \quad \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner p + q \lrcorner = \llcorner p \lrcorner \\
-& \quad \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner p \wedge q \lrcorner = \llcorner p \lrcorner
+& (m_1 \cdot^{\mathsf{m}} m_2) \cdot^{\mathsf{m}} m_3 = m_1 \cdot^{\mathsf{m}} (m_2 \cdot^{\mathsf{m}} m_3) &&(\mathsf{structure}_m.\mathsf{assoc}) \\[1em]
+& m_1 \cdot^{\mathsf{m}} m_2 = m_2 \cdot^{\mathsf{m}} m_1 &&(\mathsf{structure}_m.\mathsf{comm}) \\[1em]
+& m \cdot^{\mathsf{m}} m = m &&(\mathsf{structure}_m.\mathsf{idem}) \\[1em]
+& {11}^{\mathsf{m}} \cdot^{\mathsf{m}} m = m &&(\mathsf{structure}_m.\mathsf{unit}) \\[1em]
+& {00}^{\mathsf{m}} \cdot^{\mathsf{m}} m = {00}^{\mathsf{m}} &&(\mathsf{structure}_m.\mathsf{zero}) \\[1em]
+& \ulcorner {00}^{\mathsf{m}} \urcorner = {00}^{\mathsf{p}} &&(\mathsf{structure}_m.\mathsf{grade}_{00}) \\[1em]
+& \llcorner \ulcorner m \urcorner \lrcorner = m &&(\mathsf{structure}_m.\mathsf{section}) \\[1em]
+& \ulcorner m_1 \cdot^{\mathsf{m}} m_2 \urcorner = \ulcorner m_1 \urcorner \cdot \ulcorner m_2 \urcorner &&(\mathsf{structure}_m.\mathsf{grade}_{\cdot}) \\[1em]
+& \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner q \lrcorner = \llcorner p \cdot q \lrcorner &&(\mathsf{structure}_m.\mathsf{mode}_{\cdot}) \\[1em]
+& p \cdot \ulcorner \llcorner p \lrcorner \urcorner = p &&(\mathsf{structure}_m.\mathsf{runit}) \\[1em]
+& \ulcorner \llcorner p \lrcorner \urcorner \cdot p = p &&(\mathsf{structure}_m.\mathsf{lunit}) \\[1em]
+& p \le q \text{ and } q \le \ulcorner m \urcorner \cdot q \implies p \le \ulcorner m \urcorner \cdot p &&(\mathsf{structure}_m.\mathsf{order}) \\[1em]
+& \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner p + q \lrcorner = \llcorner p \lrcorner &&(\mathsf{structure}_m.\mathsf{mode}_{+}) \\[1em]
+& \llcorner p \lrcorner \cdot^{\mathsf{m}} \llcorner p \wedge q \lrcorner = \llcorner p \lrcorner &&(\mathsf{structure}_m.\mathsf{mode}_{\wedge})
 \end{aligned}
 ```

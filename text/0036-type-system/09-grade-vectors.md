@@ -52,20 +52,18 @@ The vectors satisfy on each variable the laws of the [grades](03-grades.md), as 
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{module}_\gamma) \\
-& \quad (\gamma_1 +^{\gamma} \gamma_2) +^{\gamma} \gamma_3 = \gamma_1 +^{\gamma} (\gamma_2 +^{\gamma} \gamma_3) \\
-& \quad \gamma_1 +^{\gamma} \gamma_2 = \gamma_2 +^{\gamma} \gamma_1 \\
-& \quad {00}^{\gamma} +^{\gamma} \gamma = \gamma \\
-& \quad p \cdot^{\gamma} (\gamma_1 +^{\gamma} \gamma_2) = (p \cdot^{\gamma} \gamma_1) +^{\gamma} (p \cdot^{\gamma} \gamma_2) \\
-& \quad (p + q) \cdot^{\gamma} \gamma = (p \cdot^{\gamma} \gamma) +^{\gamma} (q \cdot^{\gamma} \gamma) \\
-& \quad (p \cdot q) \cdot^{\gamma} \gamma = p \cdot^{\gamma} (q \cdot^{\gamma} \gamma) \\
-& \quad {11}^{\mathsf{p}} \cdot^{\gamma} \gamma = \gamma \\
-& \quad {00}^{\mathsf{p}} \cdot^{\gamma} \gamma = {00}^{\gamma} \\
-& \quad p \cdot^{\gamma} {00}^{\gamma} = {00}^{\gamma} \\[1em]
+& (\gamma_1 +^{\gamma} \gamma_2) +^{\gamma} \gamma_3 = \gamma_1 +^{\gamma} (\gamma_2 +^{\gamma} \gamma_3) &&(\mathsf{module}_\gamma.\mathsf{assoc}_{+}) \\[1em]
+& \gamma_1 +^{\gamma} \gamma_2 = \gamma_2 +^{\gamma} \gamma_1 &&(\mathsf{module}_\gamma.\mathsf{comm}_{+}) \\[1em]
+& {00}^{\gamma} +^{\gamma} \gamma = \gamma &&(\mathsf{module}_\gamma.\mathsf{unit}_{+}) \\[1em]
+& p \cdot^{\gamma} (\gamma_1 +^{\gamma} \gamma_2) = (p \cdot^{\gamma} \gamma_1) +^{\gamma} (p \cdot^{\gamma} \gamma_2) &&(\mathsf{module}_\gamma.\mathsf{distrib}_{+^{\gamma}}) \\[1em]
+& (p + q) \cdot^{\gamma} \gamma = (p \cdot^{\gamma} \gamma) +^{\gamma} (q \cdot^{\gamma} \gamma) &&(\mathsf{module}_\gamma.\mathsf{distrib}_{+}) \\[1em]
+& (p \cdot q) \cdot^{\gamma} \gamma = p \cdot^{\gamma} (q \cdot^{\gamma} \gamma) &&(\mathsf{module}_\gamma.\mathsf{assoc}_{\cdot}) \\[1em]
+& {11}^{\mathsf{p}} \cdot^{\gamma} \gamma = \gamma &&(\mathsf{module}_\gamma.\mathsf{unit}_{\cdot}) \\[1em]
+& {00}^{\mathsf{p}} \cdot^{\gamma} \gamma = {00}^{\gamma} &&(\mathsf{module}_\gamma.\mathsf{lzero}_{\cdot}) \\[1em]
+& p \cdot^{\gamma} {00}^{\gamma} = {00}^{\gamma} &&(\mathsf{module}_\gamma.\mathsf{rzero}_{\cdot}) \\[1em]
 & \gamma_1 \wedge^{\gamma} \gamma_2 = \gamma_2 \wedge^{\gamma} \gamma_1 &&(\mathsf{meet}_\gamma) \\[1em]
-& \text{and} &&(\mathsf{preorder}_\gamma) \\
-& \quad \gamma \le^{\gamma} \gamma \\
-& \quad \gamma_1 \le^{\gamma} \gamma_2 \text{ and } \gamma_2 \le^{\gamma} \gamma_3 \implies \gamma_1 \le^{\gamma} \gamma_3 \\[1em]
+& \gamma \le^{\gamma} \gamma &&(\mathsf{preorder}_\gamma.\mathsf{refl}) \\[1em]
+& \gamma_1 \le^{\gamma} \gamma_2 \text{ and } \gamma_2 \le^{\gamma} \gamma_3 \implies \gamma_1 \le^{\gamma} \gamma_3 &&(\mathsf{preorder}_\gamma.\mathsf{trans}) \\[1em]
 & \gamma_1 \le^{\gamma} \gamma_2 \text{ and } \gamma_2 \le^{\gamma} \gamma_1 \implies \gamma_1 = \gamma_2 &&(\mathsf{antisymmetry}_\gamma) \\[1em]
 & \gamma_1 \le^{\gamma} \gamma_2 \text{ and } \delta_1 \le^{\gamma} \delta_2 \implies \gamma_1 +^{\gamma} \delta_1 \le^{\gamma} \gamma_2 +^{\gamma} \delta_2 &&({+}{\le}_\gamma) \\[1em]
 & \gamma_1 \le^{\gamma} \gamma_2 \implies p \cdot^{\gamma} \gamma_1 \le^{\gamma} p \cdot^{\gamma} \gamma_2 &&({\cdot}{\le}_\gamma) \\[1em]
@@ -77,10 +75,9 @@ The extension commutes with the operations:
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{op}{\bullet}_\gamma) \\
-& \quad {00}^{\gamma} \bullet {00}^{\mathsf{p}} = {00}^{\gamma} \\
-& \quad (\gamma_1 \bullet p) +^{\gamma} (\gamma_2 \bullet q) = (\gamma_1 +^{\gamma} \gamma_2) \bullet (p + q) \\
-& \quad r \cdot^{\gamma} (\gamma \bullet p) = (r \cdot^{\gamma} \gamma) \bullet (r \cdot p)
+& {00}^{\gamma} \bullet {00}^{\mathsf{p}} = {00}^{\gamma} &&(\mathsf{op}{\bullet}_\gamma.{00}) \\[1em]
+& (\gamma_1 \bullet p) +^{\gamma} (\gamma_2 \bullet q) = (\gamma_1 +^{\gamma} \gamma_2) \bullet (p + q) &&(\mathsf{op}{\bullet}_\gamma.{+}) \\[1em]
+& r \cdot^{\gamma} (\gamma \bullet p) = (r \cdot^{\gamma} \gamma) \bullet (r \cdot p) &&(\mathsf{op}{\bullet}_\gamma.{\cdot})
 \end{aligned}
 ```
 

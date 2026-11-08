@@ -50,9 +50,8 @@ The equality is an equivalence, and the order a preorder, whose equivalence is t
 & \quad l = l \\
 & \quad l_1 = l_2 \implies l_2 = l_1 \\
 & \quad l_1 = l_2 \text{ and } l_2 = l_3 \implies l_1 = l_3 \\[1em]
-& \text{and} &&(\mathsf{preorder}_l) \\
-& \quad l \le l \\
-& \quad l_1 \le l_2 \text{ and } l_2 \le l_3 \implies l_1 \le l_3 \\[1em]
+& l \le l &&(\mathsf{preorder}_l.\mathsf{refl}) \\[1em]
+& l_1 \le l_2 \text{ and } l_2 \le l_3 \implies l_1 \le l_3 &&(\mathsf{preorder}_l.\mathsf{trans}) \\[1em]
 & l_1 = l_2 \iff l_1 \le l_2 \text{ and } l_2 \le l_1 &&(\mathsf{antisymmetry}_l) \\[1em]
 & l_1 \le l_2 \iff l_1 \sqcup l_2 = l_2 &&({\le}{\sqcup}_l)
 \end{aligned}

@@ -42,14 +42,12 @@ The join of two qualities is the least quality above both, and the join of the q
 
 ```math
 \begin{aligned}
-& \text{and} &&({\sqcup}{\le}_s) \\
-& \quad s_1 \le s_1 \sqcup s_2 \\
-& \quad s_2 \le s_1 \sqcup s_2 \\
-& \quad s_1 \le s_3 \text{ and } s_2 \le s_3 \implies s_1 \sqcup s_2 \le s_3 \\[1em]
-& \text{and} &&({\sqcup}{\preceq}_\kappa) \\
-& \quad (s_1)_l \preceq (s_1 \sqcup s_2)_l \\
-& \quad (s_2)_l \preceq (s_1 \sqcup s_2)_l \\
-& \quad (s_1)_l \preceq \kappa \text{ and } (s_2)_l \preceq \kappa \implies (s_1 \sqcup s_2)_l \preceq \kappa
+& s_1 \le s_1 \sqcup s_2 &&({\sqcup}{\le}_s.\mathsf{left}) \\[1em]
+& s_2 \le s_1 \sqcup s_2 &&({\sqcup}{\le}_s.\mathsf{right}) \\[1em]
+& s_1 \le s_3 \text{ and } s_2 \le s_3 \implies s_1 \sqcup s_2 \le s_3 &&({\sqcup}{\le}_s.\mathsf{least}) \\[1em]
+& (s_1)_l \preceq (s_1 \sqcup s_2)_l &&({\sqcup}{\preceq}_\kappa.\mathsf{left}) \\[1em]
+& (s_2)_l \preceq (s_1 \sqcup s_2)_l &&({\sqcup}{\preceq}_\kappa.\mathsf{right}) \\[1em]
+& (s_1)_l \preceq \kappa \text{ and } (s_2)_l \preceq \kappa \implies (s_1 \sqcup s_2)_l \preceq \kappa &&({\sqcup}{\preceq}_\kappa.\mathsf{least})
 \end{aligned}
 ```
 
@@ -57,8 +55,7 @@ The relation $`\preceq`$ is a preorder:
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{preorder}_\kappa) \\
-& \quad \kappa \preceq \kappa \\
-& \quad \kappa_1 \preceq \kappa_2 \text{ and } \kappa_2 \preceq \kappa_3 \implies \kappa_1 \preceq \kappa_3
+& \kappa \preceq \kappa &&(\mathsf{preorder}_\kappa.\mathsf{refl}) \\[1em]
+& \kappa_1 \preceq \kappa_2 \text{ and } \kappa_2 \preceq \kappa_3 \implies \kappa_1 \preceq \kappa_3 &&(\mathsf{preorder}_\kappa.\mathsf{trans})
 \end{aligned}
 ```

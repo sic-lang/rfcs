@@ -144,33 +144,29 @@ The seven grades form a modality of [Abel, Danielsson and Eriksson](https://doi.
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{semiring}_p) \\
-& \quad (p + q) + r = p + (q + r) \\
-& \quad p + q = q + p \\
-& \quad {00}^{\mathsf{p}} + p = p \\
-& \quad (p \cdot q) \cdot r = p \cdot (q \cdot r) \\
-& \quad {11}^{\mathsf{p}} \cdot p = p \cdot {11}^{\mathsf{p}} = p \\
-& \quad {00}^{\mathsf{p}} \cdot p = p \cdot {00}^{\mathsf{p}} = {00}^{\mathsf{p}} \\[1em]
-& \text{and} &&(\mathsf{meet}_p) \\
-& \quad (p \wedge q) \wedge r = p \wedge (q \wedge r) \\
-& \quad p \wedge q = q \wedge p \\
-& \quad p \wedge p = p \\[1em]
-& \text{and} &&({\cdot}{+}_p) \\
-& \quad p \cdot (q + r) = (p \cdot q) + (p \cdot r) \\
-& \quad (q + r) \cdot p = (q \cdot p) + (r \cdot p) \\[1em]
-& \text{and} &&({\cdot}{\wedge}_p) \\
-& \quad p \cdot (q \wedge r) = (p \cdot q) \wedge (p \cdot r) \\
-& \quad (q \wedge r) \cdot p = (q \cdot p) \wedge (r \cdot p) \\[1em]
-& \text{and} &&({+}{\wedge}_p) \\
-& \quad p + (q \wedge r) = (p + q) \wedge (p + r) \\
-& \quad (q \wedge r) + p = (q + p) \wedge (r + p) \\[1em]
+& (p + q) + r = p + (q + r) &&(\mathsf{semiring}_p.\mathsf{assoc}_{+}) \\[1em]
+& p + q = q + p &&(\mathsf{semiring}_p.\mathsf{comm}_{+}) \\[1em]
+& {00}^{\mathsf{p}} + p = p &&(\mathsf{semiring}_p.\mathsf{unit}_{+}) \\[1em]
+& (p \cdot q) \cdot r = p \cdot (q \cdot r) &&(\mathsf{semiring}_p.\mathsf{assoc}_{\cdot}) \\[1em]
+& {11}^{\mathsf{p}} \cdot p = p &&(\mathsf{semiring}_p.\mathsf{lunit}_{\cdot}) \\[1em]
+& p \cdot {11}^{\mathsf{p}} = p &&(\mathsf{semiring}_p.\mathsf{runit}_{\cdot}) \\[1em]
+& {00}^{\mathsf{p}} \cdot p = {00}^{\mathsf{p}} &&(\mathsf{semiring}_p.\mathsf{lzero}_{\cdot}) \\[1em]
+& p \cdot {00}^{\mathsf{p}} = {00}^{\mathsf{p}} &&(\mathsf{semiring}_p.\mathsf{rzero}_{\cdot}) \\[1em]
+& (p \wedge q) \wedge r = p \wedge (q \wedge r) &&(\mathsf{meet}_p.\mathsf{assoc}) \\[1em]
+& p \wedge q = q \wedge p &&(\mathsf{meet}_p.\mathsf{comm}) \\[1em]
+& p \wedge p = p &&(\mathsf{meet}_p.\mathsf{idem}) \\[1em]
+& p \cdot (q + r) = (p \cdot q) + (p \cdot r) &&({\cdot}{+}_p.\mathsf{left}) \\[1em]
+& (q + r) \cdot p = (q \cdot p) + (r \cdot p) &&({\cdot}{+}_p.\mathsf{right}) \\[1em]
+& p \cdot (q \wedge r) = (p \cdot q) \wedge (p \cdot r) &&({\cdot}{\wedge}_p.\mathsf{left}) \\[1em]
+& (q \wedge r) \cdot p = (q \cdot p) \wedge (r \cdot p) &&({\cdot}{\wedge}_p.\mathsf{right}) \\[1em]
+& p + (q \wedge r) = (p + q) \wedge (p + r) &&({+}{\wedge}_p.\mathsf{left}) \\[1em]
+& (q \wedge r) + p = (q + p) \wedge (r + p) &&({+}{\wedge}_p.\mathsf{right}) \\[1em]
 & p \le q \implies p + r \le q + r &&({+}{\le}_p) \\[1em]
 & r \le p \text{ and } r \le q \iff r \le p \wedge q &&({\wedge}{\le}_p) \\[1em]
-& \text{and} &&(0_p) \\
-& \quad {00}^{\mathsf{p}} \ne {11}^{\mathsf{p}} \\
-& \quad p + q = {00}^{\mathsf{p}} \implies p = {00}^{\mathsf{p}} \text{ and } q = {00}^{\mathsf{p}} \\
-& \quad p \wedge q = {00}^{\mathsf{p}} \implies p = {00}^{\mathsf{p}} \text{ and } q = {00}^{\mathsf{p}} \\
-& \quad p \cdot q = {00}^{\mathsf{p}} \implies p = {00}^{\mathsf{p}} \text{ or } q = {00}^{\mathsf{p}}
+& {00}^{\mathsf{p}} \ne {11}^{\mathsf{p}} &&(0_p.1) \\[1em]
+& p + q = {00}^{\mathsf{p}} \implies p = {00}^{\mathsf{p}} \text{ and } q = {00}^{\mathsf{p}} &&(0_p.{+}) \\[1em]
+& p \wedge q = {00}^{\mathsf{p}} \implies p = {00}^{\mathsf{p}} \text{ and } q = {00}^{\mathsf{p}} &&(0_p.{\wedge}) \\[1em]
+& p \cdot q = {00}^{\mathsf{p}} \implies p = {00}^{\mathsf{p}} \text{ or } q = {00}^{\mathsf{p}} &&(0_p.{\cdot})
 \end{aligned}
 ```
 

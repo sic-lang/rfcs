@@ -115,32 +115,28 @@ The multiplicities form a modality of [Abel, Danielsson and Eriksson](https://do
 
 ```math
 \begin{aligned}
-& \text{and} &&(\mathsf{semiring}_\pi) \\
-& \quad (\pi_1 + \pi_2) + \pi_3 = \pi_1 + (\pi_2 + \pi_3) \\
-& \quad \pi_1 + \pi_2 = \pi_2 + \pi_1 \\
-& \quad 0 + \pi = \pi \\
-& \quad (\pi_1 \cdot \pi_2) \cdot \pi_3 = \pi_1 \cdot (\pi_2 \cdot \pi_3) \\
-& \quad 1 \cdot \pi = \pi \cdot 1 = \pi \\
-& \quad 0 \cdot \pi = \pi \cdot 0 = 0 \\[1em]
-& \text{and} &&(\mathsf{meet}_\pi) \\
-& \quad (\pi_1 \wedge \pi_2) \wedge \pi_3 = \pi_1 \wedge (\pi_2 \wedge \pi_3) \\
-& \quad \pi_1 \wedge \pi_2 = \pi_2 \wedge \pi_1 \\
-& \quad \pi \wedge \pi = \pi \\[1em]
-& \text{and} &&({\cdot}{+}_\pi) \\
-& \quad \pi_1 \cdot (\pi_2 + \pi_3) = (\pi_1 \cdot \pi_2) + (\pi_1 \cdot \pi_3) \\
-& \quad (\pi_2 + \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) + (\pi_3 \cdot \pi_1) \\[1em]
-& \text{and} &&({\cdot}{\wedge}_\pi) \\
-& \quad \pi_1 \cdot (\pi_2 \wedge \pi_3) = (\pi_1 \cdot \pi_2) \wedge (\pi_1 \cdot \pi_3) \\
-& \quad (\pi_2 \wedge \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) \wedge (\pi_3 \cdot \pi_1) \\[1em]
-& \text{and} &&({+}{\wedge}_\pi) \\
-& \quad \pi_1 + (\pi_2 \wedge \pi_3) = (\pi_1 + \pi_2) \wedge (\pi_1 + \pi_3) \\
-& \quad (\pi_2 \wedge \pi_3) + \pi_1 = (\pi_2 + \pi_1) \wedge (\pi_3 + \pi_1) \\[1em]
+& (\pi_1 + \pi_2) + \pi_3 = \pi_1 + (\pi_2 + \pi_3) &&(\mathsf{semiring}_\pi.\mathsf{assoc}_{+}) \\[1em]
+& \pi_1 + \pi_2 = \pi_2 + \pi_1 &&(\mathsf{semiring}_\pi.\mathsf{comm}_{+}) \\[1em]
+& 0 + \pi = \pi &&(\mathsf{semiring}_\pi.\mathsf{unit}_{+}) \\[1em]
+& (\pi_1 \cdot \pi_2) \cdot \pi_3 = \pi_1 \cdot (\pi_2 \cdot \pi_3) &&(\mathsf{semiring}_\pi.\mathsf{assoc}_{\cdot}) \\[1em]
+& 1 \cdot \pi = \pi &&(\mathsf{semiring}_\pi.\mathsf{lunit}_{\cdot}) \\[1em]
+& \pi \cdot 1 = \pi &&(\mathsf{semiring}_\pi.\mathsf{runit}_{\cdot}) \\[1em]
+& 0 \cdot \pi = 0 &&(\mathsf{semiring}_\pi.\mathsf{lzero}_{\cdot}) \\[1em]
+& \pi \cdot 0 = 0 &&(\mathsf{semiring}_\pi.\mathsf{rzero}_{\cdot}) \\[1em]
+& (\pi_1 \wedge \pi_2) \wedge \pi_3 = \pi_1 \wedge (\pi_2 \wedge \pi_3) &&(\mathsf{meet}_\pi.\mathsf{assoc}) \\[1em]
+& \pi_1 \wedge \pi_2 = \pi_2 \wedge \pi_1 &&(\mathsf{meet}_\pi.\mathsf{comm}) \\[1em]
+& \pi \wedge \pi = \pi &&(\mathsf{meet}_\pi.\mathsf{idem}) \\[1em]
+& \pi_1 \cdot (\pi_2 + \pi_3) = (\pi_1 \cdot \pi_2) + (\pi_1 \cdot \pi_3) &&({\cdot}{+}_\pi.\mathsf{left}) \\[1em]
+& (\pi_2 + \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) + (\pi_3 \cdot \pi_1) &&({\cdot}{+}_\pi.\mathsf{right}) \\[1em]
+& \pi_1 \cdot (\pi_2 \wedge \pi_3) = (\pi_1 \cdot \pi_2) \wedge (\pi_1 \cdot \pi_3) &&({\cdot}{\wedge}_\pi.\mathsf{left}) \\[1em]
+& (\pi_2 \wedge \pi_3) \cdot \pi_1 = (\pi_2 \cdot \pi_1) \wedge (\pi_3 \cdot \pi_1) &&({\cdot}{\wedge}_\pi.\mathsf{right}) \\[1em]
+& \pi_1 + (\pi_2 \wedge \pi_3) = (\pi_1 + \pi_2) \wedge (\pi_1 + \pi_3) &&({+}{\wedge}_\pi.\mathsf{left}) \\[1em]
+& (\pi_2 \wedge \pi_3) + \pi_1 = (\pi_2 + \pi_1) \wedge (\pi_3 + \pi_1) &&({+}{\wedge}_\pi.\mathsf{right}) \\[1em]
 & \pi_1 \le \pi_2 \implies \pi_1 + \pi_3 \le \pi_2 + \pi_3 &&({+}{\le}_\pi) \\[1em]
 & \pi_3 \le \pi_1 \text{ and } \pi_3 \le \pi_2 \iff \pi_3 \le \pi_1 \wedge \pi_2 &&({\wedge}{\le}_\pi) \\[1em]
-& \text{and} &&(0_\pi) \\
-& \quad 0 \ne 1 \\
-& \quad \pi_1 + \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 \\
-& \quad \pi_1 \wedge \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 \\
-& \quad \pi_1 \cdot \pi_2 = 0 \implies \pi_1 = 0 \text{ or } \pi_2 = 0
+& 0 \ne 1 &&(0_\pi.1) \\[1em]
+& \pi_1 + \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 &&(0_\pi.{+}) \\[1em]
+& \pi_1 \wedge \pi_2 = 0 \implies \pi_1 = 0 \text{ and } \pi_2 = 0 &&(0_\pi.{\wedge}) \\[1em]
+& \pi_1 \cdot \pi_2 = 0 \implies \pi_1 = 0 \text{ or } \pi_2 = 0 &&(0_\pi.{\cdot})
 \end{aligned}
 ```
