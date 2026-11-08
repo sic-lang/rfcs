@@ -87,6 +87,10 @@ The type system has these drawbacks:
 
 ## Rationale and Alternatives
 
+This section gives the principles of the design, then the choices that settle each part of the system, in the order of the proposal, and why the system is one RFC.
+
+### Principles
+
 The design of the type system follows a few principles, which explain most of its choices:
 
 - Soundness first: a program the compiler accepts has the properties its types state, as [RFC 13](https://github.com/sic-lang/rfcs/pull/13) requires, and no other benefit justifies weakening it.
@@ -95,6 +99,8 @@ The design of the type system follows a few principles, which explain most of it
 - Embrace duality where it exists: when a construct has a dual, both are given together and named after each other, as the data types and the codata types.
 - No speculative mechanism: a piece enters the system for a use that exists, not for one that might come.
 - Conscious exclusions: what the system leaves out is stated with what is lost, what remains, and whether it can be added later.
+
+### Choices on the Grades
 
 The grades are settled by the following choices:
 
@@ -108,11 +114,15 @@ The grades are settled by the following choices:
   - Exact counts above one, such as a grade for exactly two uses: a resource used twice is unrestricted; the pairs of multiplicities would extend to pairs of larger modalities, as the [exact usage](https://doi.org/10.1145/3341714) of Granule, at the cost of larger tables and of the finiteness of the grades.
   - A greatest grade that allows no number of uses, the best abstraction of the empty set: no operation needs it, and no multiplicity can be added above $`0`$, $`1`$ and $`\omega`$ without breaking the distributivity, since $`(0 \wedge 1) \cdot \varnothing = (0 \cdot \varnothing) \wedge (1 \cdot \varnothing)`$ would give $`\omega \cdot \varnothing = 0`$, hence $`\varnothing + \varnothing = 0`$ since $`\omega = 1 + 1`$, and $`\varnothing = 0`$ by the monotonicity of the addition.
 
+### Choices on the Levels and Sorts
+
 The levels and the sorts are settled by the following choices:
 
 - The levels are not terms: they appear only as the indices of the sorts, and their equality is defined by their values rather than by rules of equality, unlike the formalization of Abel, Danielsson and Eriksson, whose levels are terms of a type of levels since [Danielsson, Favier and Kubánek](https://doi.org/10.1145/3776645); no term computes a level, so that no rule is needed to compare two of them, and their equality is decidable.
 - The sort of a type declaration may be the join of two qualities, as its level may be the join of two levels, so that a pair holds two fields of independent sorts; the sort constraints of the [bounded sort polymorphism](https://doi.org/10.1145/3776732) of Rocq would be one mechanism more, for this need only.
 - Conscious exclusion of the quantification over levels: no type quantifies over levels, so that no universe is needed beyond the two hierarchies, as the $`\mathsf{Set}\omega`$ of [Agda](https://agda.readthedocs.io/en/latest/language/universe-levels.html) is; the level variables give the polymorphism that programs need, and a quantification could be added later with a universe above the hierarchies.
+
+### Choices on the Syntax and Substitution
 
 The syntax and the substitution are settled by the following choices:
 
@@ -120,6 +130,8 @@ The syntax and the substitution are settled by the following choices:
 - The sort and grade variables of an entry are not part of the terms: an entry stands for its instances, as a rule for the instances of its fraction, so that no judgment meets a grade variable, whose order with the other grades would be unknown; the level variables are part of the terms, since an entry is checked once with them and used at any levels.
 - The parameters that depend on variables are second-order variables, as the contextual types of Nanevski, Pfenning and Pientka, rather than parameters of a type of functions: the type of functions is itself declared, and its type declaration cannot take a function as a parameter.
 - The substitutions of the first and of the second order are defined apart, as in the theory of Nanevski, Pfenning and Pientka: the second one substitutes the arguments of an application in the abstraction it gives, which is not a part of the term it substitutes, and the first one does it.
+
+### Choices on the Judgments and Usage
 
 The judgments and the usage are settled by the following choices:
 
@@ -135,6 +147,8 @@ The judgments and the usage are settled by the following choices:
   - Impredicative propositions: a proposition cannot quantify over all propositions; the levels give the quantifications over the propositions of a lower level, which cover the usual encodings, and the sort variables give one entry for the types and the propositions.
     With definitional proof irrelevance, impredicativity makes the equality of types undecidable, as [Abel and Coquand](https://doi.org/10.23638/LMCS-16(2:14)2020) show, so it is excluded rather than deferred.
   - Cumulativity: a type of $`U_l`$ is not a type of $`U_{l + 1}`$; it is deferred, since adding it later only accepts more programs, at the cost of a subtyping in place of the equality of types.
+
+### One RFC
 
 The type system was first split into four RFCs, the grades, the core, the data and codata types, and the observational equality, linked by a contract that each kind of type declaration fulfills.
 The split did not hold: the data and codata types kept deferring to the equality what they needed, the indexed families, the extensionality of the recursive types, and the liftings through some nested types, while the equality is defined on the data and codata types.
