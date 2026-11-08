@@ -14,8 +14,8 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | Judgment | Reading |
 | --- | --- |
 | $`\vdash \Sigma`$ | $`\Sigma`$ is a well-formed signature |
-| $`\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t`$ | The constant definition is well formed |
-| $`\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A`$ | The constant declaration is well formed |
+| $`\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t`$ | The constant definition is well formed |
+| $`\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m`$ | The constant declaration is well formed |
 | $`\Sigma \vdash \Gamma`$ | $`\Gamma`$ is a well-formed context |
 | $`\Sigma;\ \Gamma \vdash A`$ | $`A`$ is a type |
 | $`\Sigma;\ \Gamma \vdash A \equiv B`$ | $`A`$ and $`B`$ are equal types |
@@ -67,8 +67,8 @@ A signature is empty, or a signature extended by an entry that is well formed in
 ```math
 \begin{gathered}
 \frac{}{\vdash \varnothing}\;(\mathsf{sig}_\varnothing) \\[1em]
-\frac{\begin{gathered}{}\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t \\ \text{no entry of } \Sigma \text{ introduces } f\end{gathered}}{\vdash \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t}\;(\mathsf{sig}_{\mathsf{def}}) \\[1em]
-\frac{\begin{gathered}{}\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \\ \text{no entry of } \Sigma \text{ introduces } f\end{gathered}}{\vdash \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} :_m A}\;(\mathsf{sig}_{\mathsf{decl}})
+\frac{\begin{gathered}{}\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t \\ \text{no entry of } \Sigma \text{ introduces } f\end{gathered}}{\vdash \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t}\;(\mathsf{sig}_{\mathsf{def}}) \\[1em]
+\frac{\begin{gathered}{}\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \\ \text{no entry of } \Sigma \text{ introduces } f\end{gathered}}{\vdash \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m}\;(\mathsf{sig}_{\mathsf{decl}})
 \end{gathered}
 ```
 
@@ -79,8 +79,8 @@ At each instance of its sort and grade variables, the type of a constant definit
 
 ```math
 \begin{gathered}
-\frac{\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa. \\ & \quad \text{and} \\ & \qquad \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \\ & \qquad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \Sigma;\ {00}^{\gamma} \mathrel{▶^m} t[\bar s' / \bar s,\ \bar p' / \bar p]\end{aligned}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t}\;(\mathsf{def}) \\[1em]
-\frac{\forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa.\ \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A}\;(\mathsf{decl})
+\frac{\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa. \\ & \quad \text{and} \\ & \qquad \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \\ & \qquad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \Sigma;\ {00}^{\gamma} \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} m\end{aligned}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t}\;(\mathsf{def}) \\[1em]
+\frac{\forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa.\ \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m}\;(\mathsf{decl})
 \end{gathered}
 ```
 
@@ -127,7 +127,7 @@ An instance of a constant, defined or declared, has the type of its entry at thi
 
 ```math
 \begin{gathered}
-\frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(f) \\[1em]
+\frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(f) \\[1em]
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash U_l : U_{l + 1}}\;(U) \\[1em]
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \Omega_l : U_{l + 1}}\;(\Omega) \\[1em]
 \frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a : \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(D)
@@ -159,8 +159,8 @@ Equal arguments give equal applications of a second-order variable, a constant d
 ```math
 \begin{gathered}
 \frac{\begin{gathered}{}X : (\Theta \vdash A) \in \Gamma \\ \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta\end{gathered}}{\Sigma;\ \Gamma \vdash X[\bar t] \equiv X[\bar u] : A[\bar t / \Theta]}\;(\mathsf{var}_{X\equiv}) \\[1em]
-\frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \equiv t[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(\delta) \\[1em]
-\frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \bar l_1 = \bar l_2\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l_1;\ \bar p'\} \equiv f.\{\bar s';\ \bar l_2;\ \bar p'\} : A[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(f_\equiv) \\[1em]
+\frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \equiv t[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(\delta) \\[1em]
+\frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \bar l_1 = \bar l_2\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l_1;\ \bar p'\} \equiv f.\{\bar s';\ \bar l_2;\ \bar p'\} : A[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(f_\equiv) \\[1em]
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ l_1 = l_2\end{gathered}}{\Sigma;\ \Gamma \vdash U_{l_1} \equiv U_{l_2} : U_{l_1 + 1}}\;(U_\equiv) \\[1em]
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ l_1 = l_2\end{gathered}}{\Sigma;\ \Gamma \vdash \Omega_{l_1} \equiv \Omega_{l_2} : U_{l_1 + 1}}\;(\Omega_\equiv) \\[1em]
 \frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\ \bar l_1 = \bar l_2\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1 \equiv D.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2 : \kappa[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(D_\equiv)
@@ -176,9 +176,9 @@ The arguments of a telescope are typed by its entries, each argument instantiati
 ```math
 \begin{gathered}
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () : \varepsilon}\;(\mathsf{tel}_\varepsilon) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash t : A \\ \Sigma;\ \Gamma \vdash \bar t : \Theta[t / x]\end{gathered}}{\Sigma;\ \Gamma \vdash (t,\ \bar t) : (x :^{q}_{p} A,\ \Theta)}\;(\mathsf{tel}_{,}) \\[1em]
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash t : A \\ \Sigma;\ \Gamma \vdash \bar t : \Theta[t / x]\end{gathered}}{\Sigma;\ \Gamma \vdash (t,\ \bar t) : (x : A \mathrel{▶} p;\ q,\ \Theta)}\;(\mathsf{tel}_{,}) \\[1em]
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{tel}_{\varepsilon\equiv}) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash t \equiv u : A \\ \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta[t / x]\end{gathered}}{\Sigma;\ \Gamma \vdash (t,\ \bar t) \equiv (u,\ \bar u) : (x :^{q}_{p} A,\ \Theta)}\;(\mathsf{tel}_{,\equiv})
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash t \equiv u : A \\ \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta[t / x]\end{gathered}}{\Sigma;\ \Gamma \vdash (t,\ \bar t) \equiv (u,\ \bar u) : (x : A \mathrel{▶} p;\ q,\ \Theta)}\;(\mathsf{tel}_{,\equiv})
 \end{gathered}
 ```
 
@@ -202,7 +202,7 @@ A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort th
 ```math
 \begin{gathered}
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : \kappa}\;(\mathsf{tel}_{\kappa\varepsilon}) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A : \kappa_1 \\ \kappa_1 \preceq \kappa_2 \\ \Sigma;\ \Gamma,\ x : A \vdash \Theta : \kappa_2 \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{gathered}}{\Sigma;\ \Gamma \vdash (x :^{q}_{p} A,\ \Theta) : \kappa_2}\;(\mathsf{tel}_{\kappa,})
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A : \kappa_1 \\ \kappa_1 \preceq \kappa_2 \\ \Sigma;\ \Gamma,\ x : A \vdash \Theta : \kappa_2 \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{gathered}}{\Sigma;\ \Gamma \vdash (x : A \mathrel{▶} p;\ q,\ \Theta) : \kappa_2}\;(\mathsf{tel}_{\kappa,})
 \end{gathered}
 ```
 
@@ -212,8 +212,8 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 
 ```math
 \begin{aligned}
-& \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{def}) \\[1em]
-& \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} :_m A \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{decl}) \\[1em]
+& \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{def}) \\[1em]
+& \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{decl}) \\[1em]
 & \Sigma \vdash \Gamma \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Gamma) \\[1em]
 & \Sigma;\ \Gamma \vdash A \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.A) \\[1em]
 & \Sigma;\ \Gamma \vdash A \equiv B \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.A_\equiv) \\[1em]

@@ -41,6 +41,11 @@ The letters follow the order of the annexes that define their objects, and, with
 No digit is double-struck: a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, and $`\gamma`$ for a vector of grades.
 An operation on the modes or on the vectors of grades carries the same exponent, as $`\cdot^{\mathsf{m}}`$ and $`+^{\gamma}`$, so that it is told apart from the operation of the grades.
 
+## Types, Usage and Ownership
+
+After a term or a variable, the colon gives its type, $`\mathrel{▶}`$ its usage and $`\mathrel{◀}`$ its ownership, in this order, each followed by what it states, and the mode in which it is checked comes last, after a semicolon, as $`x : A \mathrel{▶} p;\ q`$ for an entry of a telescope and $`\Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m`$ for the usage of arguments.
+The three symbols carry no index nor exponent, so that what each states is read in the same place in the entries and in the judgments.
+
 ## Sequences and Subscripts
 
 A bar marks a sequence, as the arguments $`\bar a`$ of an instance or the variables $`\bar x`$ of a telescope.

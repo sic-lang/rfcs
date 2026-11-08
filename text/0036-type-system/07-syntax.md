@@ -55,15 +55,15 @@ The abstraction for a parameter binds the variables $`\bar x`$, one for each ent
 
 ### Telescopes and Contexts
 
-A telescope in a scope is either empty, written $`\varepsilon`$, or an entry followed by a telescope, written $`(x :^{q}_{p} A,\ \Theta)`$, in which $`A`$ is a term in the scope and $`\Theta`$ a telescope in the scope extended by $`x`$, with an empty telescope:
+A telescope in a scope is either empty, written $`\varepsilon`$, or an entry followed by a telescope, written $`(x : A \mathrel{▶} p;\ q,\ \Theta)`$, in which $`A`$ is a term in the scope and $`\Theta`$ a telescope in the scope extended by $`x`$, with an empty telescope:
 
 ```math
 \begin{aligned}
-& \Theta \mathrel{::=} \varepsilon \mid (x :^{q}_{p} A,\ \Theta) &&(\mathsf{syntax}_\Theta)
+& \Theta \mathrel{::=} \varepsilon \mid (x : A \mathrel{▶} p;\ q,\ \Theta) &&(\mathsf{syntax}_\Theta)
 \end{aligned}
 ```
 
-The entry $`x :^{q}_{p} A`$ is used with the grade $`p`$, and its variable is used with the grade $`q`$ by the types after it; the grades of a telescope are the grades $`p`$ of its entries, in order.
+The entry $`x : A \mathrel{▶} p;\ q`$ is used with the grade $`p`$, and its variable is used with the grade $`q`$ by the types after it; the grades of a telescope are the grades $`p`$ of its entries, in order.
 
 A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ extended by a variable, written $`\Gamma,\ x : A`$, or by a second-order variable, written $`\Gamma,\ X : (\Theta \vdash A)`$, in which $`A`$ and $`\Theta`$ are in the scope of $`\Gamma`$, and in $`X : (\Theta \vdash A)`$, $`A`$ is in the scope of $`\Gamma`$ extended by the variables of $`\Theta`$:
 
@@ -89,24 +89,24 @@ An entry is one of three cases:
 & {\mathrel{::=}} &&(\mathsf{syntax}_e) \\
 & \quad e \\
 & \quad {\mid} \\
-& \qquad f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t \\
-& \qquad f.\{\bar s;\ \bar l;\ \bar p\} :_m A \\
+& \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t \\
+& \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \\
 & \qquad \mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots
 \end{aligned}
 ```
 
 The cases are:
 
-- A constant definition $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
-- A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses.
+- A constant definition $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
+- A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses.
 - A type declaration $`\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots`$, a block of types declared together, of the kind $`\mathcal{K}`$, of which the system knows the header only: the names $`D_1, \dots, D_n`$, the sort, level and grade variables, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, and the sort $`\kappa`$ of the declared types; the bodies of the declared types are given by $`\mathcal{K}`$, in its annex.
 
 The names that an entry introduces are $`D_1, \dots, D_n`$ for a type declaration, and $`f`$ for a constant definition or declaration:
 
 ```math
 \begin{aligned}
-& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
-& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} :_m A) = \{f\} \\
+& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
+& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m) = \{f\} \\
 & \mathsf{names}(\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots) = \{D_1, \dots, D_n\}
 \end{aligned}
 ```
@@ -128,15 +128,15 @@ A signature has the entries $`e \in \Sigma`$ that extend it, its last entry and 
 \end{gathered}
 ```
 
-A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A`$, written $`f.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$ and the type $`A`$, which the rules of the defined and of the declared constants share:
+A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m`$, written $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \in \Sigma`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$ and the type $`A`$, which the rules of the defined and of the declared constants share:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&(\in_f) \\
-& \quad f.\{\bar s;\ \bar l;\ \bar p\} :_m A \in \Sigma \\
+& \quad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \in \Sigma \\
 & \quad \text{or} \\
-& \qquad \exists t.\ (f.\{\bar s;\ \bar l;\ \bar p\} :_m A \mathrel{≔} t) \in \Sigma \\
-& \qquad (f.\{\bar s;\ \bar l;\ \bar p\} :_m A) \in \Sigma
+& \qquad \exists t.\ (f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{≔} t) \in \Sigma \\
+& \qquad (f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m) \in \Sigma
 \end{aligned}
 ```
 

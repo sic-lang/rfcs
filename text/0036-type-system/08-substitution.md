@@ -25,7 +25,7 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar a) \\
 & (\bar a,\ \bar x.\, B)[\sigma] = (\bar a[\sigma],\ \bar x.\, B[\sigma]) \\[1em]
 & \varepsilon[\sigma] = \varepsilon &&(\mathsf{subst}_\sigma.\Theta) \\
-& (x :^{q}_{p} A,\ \Theta)[\sigma] = (x :^{q}_{p} A[\sigma],\ \Theta[\sigma])
+& (x : A \mathrel{▶} p;\ q,\ \Theta)[\sigma] = (x : A[\sigma] \mathrel{▶} p;\ q,\ \Theta[\sigma])
 \end{aligned}
 ```
 
@@ -63,7 +63,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar a) \\
 & (\bar a,\ \bar x.\, B)[\theta] = (\bar a[\theta],\ \bar x.\, B[\theta]) \\[1em]
 & \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\Theta) \\
-& (x :^{q}_{p} A,\ \Theta)[\theta] = (x :^{q}_{p} A[\theta],\ \Theta[\theta])
+& (x : A \mathrel{▶} p;\ q,\ \Theta)[\theta] = (x : A[\theta] \mathrel{▶} p;\ q,\ \Theta[\theta])
 \end{aligned}
 ```
 
@@ -92,7 +92,7 @@ A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`
 ```math
 \begin{aligned}
 & \Gamma,\ \varepsilon = \Gamma &&(\mathsf{append}_\Gamma) \\
-& \Gamma,\ (x :^{q}_{p} A,\ \Theta) = (\Gamma,\ x : A),\ \Theta
+& \Gamma,\ (x : A \mathrel{▶} p;\ q,\ \Theta) = (\Gamma,\ x : A),\ \Theta
 \end{aligned}
 ```
 
@@ -150,7 +150,7 @@ It instantiates the level of a sort, and the levels of every term, argument, tel
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar a) \\
 & (\bar a,\ \bar x.\, B)[\bar l' / \bar l] = (\bar a[\bar l' / \bar l],\ \bar x.\, B[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Theta) \\
-& (x :^{q}_{p} A,\ \Theta)[\bar l' / \bar l] = (x :^{q}_{p} A[\bar l' / \bar l],\ \Theta[\bar l' / \bar l]) \\[1em]
+& (x : A \mathrel{▶} p;\ q,\ \Theta)[\bar l' / \bar l] = (x : A[\bar l' / \bar l] \mathrel{▶} p;\ q,\ \Theta[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Gamma) \\
 & (\Gamma,\ x : A)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ x : A[\bar l' / \bar l] \\
 & (\Gamma,\ X : (\Theta \vdash A))[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ X : (\Theta[\bar l' / \bar l] \vdash A[\bar l' / \bar l])
