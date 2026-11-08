@@ -44,6 +44,7 @@
             book = {
               tools = [
                 pkgs.mdbook
+                pkgs.mdbook-katex
                 pkgs.mdbook-mermaid
               ];
               command = lib.getExe buildBook.run;
@@ -106,13 +107,16 @@
           };
           # Builds the RFC book into book/: src/ links the README as the introduction and every entry
           # of text/, and its SUMMARY.md lists the RFCs in the order of their file names, that is of
-          # their numbers, which never change: an accepted RFC is never renumbered.
+          # their numbers, which never change: an accepted RFC is never renumbered. The annexes of an
+          # RFC, in the directory named after it, are its subchapters, in the order of their file
+          # names, which start with their numbers.
           buildBook = command {
             name = "build-book";
             runtimeInputs = [
               pkgs.coreutils
               pkgs.git
               pkgs.mdbook
+              pkgs.mdbook-katex
               pkgs.mdbook-mermaid
             ];
             text = ''
@@ -124,11 +128,18 @@
               for entry in text/*; do
                 ln -s "../$entry" "src/''${entry#text/}"
               done
+              # An RFC without annexes has no directory, whose pattern then matches nothing.
+              shopt -s nullglob
               {
                 printf '[Introduction](introduction.md)\n\n'
                 for file in text/*.md; do
                   name=''${file#text/}
                   printf -- '- [%s](%s)\n' "''${name%.md}" "$name"
+                  for annex in "''${file%.md}"/*.md; do
+                    annexName=''${annex#text/}
+                    annexTitle=''${annexName##*/}
+                    printf -- '  - [%s](%s)\n' "''${annexTitle%.md}" "$annexName"
+                  done
                 done
               } >src/SUMMARY.md
               # The JavaScript files of mdbook-mermaid, which its install command writes next to the
