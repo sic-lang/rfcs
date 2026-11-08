@@ -204,15 +204,17 @@ The substitution of arguments for the variables of a telescope commutes with the
 \end{aligned}
 ```
 
-The value of an instantiated level is the value of the level under the values of the levels that replace its variables, the instantiations compose, and they commute with the substitutions of the first order:
+The value of an instantiated level is the value of the level under the values of the levels that replace its variables, the instantiations compose, and they commute with the substitutions of both orders:
 
 ```math
 \begin{aligned}
 & [\![l[\bar l' / \bar l]]\!]_\rho = [\![l]\!]_{\rho'} \text{ if } \rho'(l_i) = [\![l'_i]\!]_\rho \text{ for each } i &&(\mathsf{instance}_l) \\[1em]
 & l[\bar l_1 / \bar l][\bar l_2 / \bar l'] = l[\bar l_1[\bar l_2 / \bar l'] / \bar l] &&(\mathsf{comp}_l.l) \\[1em]
 & t[\bar l_1 / \bar l][\bar l_2 / \bar l'] = t[\bar l_1[\bar l_2 / \bar l'] / \bar l] &&(\mathsf{comp}_l.t) \\[1em]
-& t[\sigma][\bar l' / \bar l] = t[\bar l' / \bar l][\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\bar l' / \bar l] \text{ for each } x &&(\mathsf{comm}_l.t) \\[1em]
-& \Theta[\sigma][\bar l' / \bar l] = \Theta[\bar l' / \bar l][\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\bar l' / \bar l] \text{ for each } x &&(\mathsf{comm}_l.\Theta) \\[1em]
+& t[\sigma][\bar l' / \bar l] = t[\bar l' / \bar l][\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\bar l' / \bar l] \text{ for each } x &&(\mathsf{comm}_{l\sigma}.t) \\[1em]
+& \Theta[\sigma][\bar l' / \bar l] = \Theta[\bar l' / \bar l][\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\bar l' / \bar l] \text{ for each } x &&(\mathsf{comm}_{l\sigma}.\Theta) \\[1em]
+& t[\theta][\bar l' / \bar l] = t[\bar l' / \bar l][\theta'] \text{ if } \theta'(x) = \bar x.\, B[\bar l' / \bar l] \text{ for each } x \text{ such that } \theta(x) = \bar x.\, B &&(\mathsf{comm}_{l\theta}.t) \\[1em]
+& \Theta[\theta][\bar l' / \bar l] = \Theta[\bar l' / \bar l][\theta'] \text{ if } \theta'(x) = \bar x.\, B[\bar l' / \bar l] \text{ for each } x \text{ such that } \theta(x) = \bar x.\, B &&(\mathsf{comm}_{l\theta}.\Theta) \\[1em]
 & B[\bar t / \bar x][\bar l' / \bar l] = B[\bar l' / \bar l][\bar t[\bar l' / \bar l] / \bar x] &&(\mathsf{comm}_l.\bar t) \\[1em]
 & (\Gamma,\ \Theta)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ \Theta[\bar l' / \bar l] &&(\mathsf{comm}_l.\Gamma)
 \end{aligned}
