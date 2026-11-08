@@ -176,7 +176,7 @@ The seven grades form a modality of [Abel, Danielsson and Eriksson](https://doi.
 
 ### Greatest Lower Bounds
 
-Every non-empty set $`S`$ of grades has a greatest lower bound $`\bigwedge S`$:
+Every non-empty decidable set $`S`$ of grades has a greatest lower bound $`\bigwedge S`$, which covers the sets of grades that a rule computes:
 
 ```math
 \begin{aligned}
@@ -186,7 +186,7 @@ Every non-empty set $`S`$ of grades has a greatest lower bound $`\bigwedge S`$:
 \end{aligned}
 ```
 
-For all families $`(p_i)_{i \in I}`$ and $`(q_i)_{i \in I}`$ of grades indexed by a non-empty set $`I`$, the greatest lower bound is superadditive, and the multiplication by a grade commutes with it, as [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) require of well-behaved greatest lower bounds:
+For all families $`(p_i)_{i \in I}`$ and $`(q_i)_{i \in I}`$ of grades indexed by a non-empty set $`I`$ whose greatest lower bounds exist, as they do when their sets of values are decidable, the greatest lower bound is superadditive, and the multiplication by a grade commutes with it, as [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) require of well-behaved greatest lower bounds:
 
 ```math
 \begin{aligned}
