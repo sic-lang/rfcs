@@ -21,8 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
       - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b  # 31.11.3
-      - name: Build the book
-        run: nix run --quiet .#build-book
+      - name: Build the site
+        run: nix run --quiet .#build-site
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9  # v5.0.0
         with:
           path: book

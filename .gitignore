@@ -4,7 +4,7 @@
 # Written by nix run .#setup-vscode, then personal.
 /.vscode/
 
-# Written by nix run .#build-book.
+# Written by nix run .#build-site.
 /book/
 /mermaid-init.js
 /mermaid.min.js
