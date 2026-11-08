@@ -64,6 +64,16 @@ Its ownership is trusted, as its type is, so that a foreign constant states whet
 
 The universes of propositions $`\Omega_l`$ hold strict propositions: two proofs of a proposition are equal, and an entry of a telescope whose type is a proposition has a grade without use at run time, so that the proofs are erased.
 
+### Reduction and Erasure
+
+The [reduction](0036-type-system/13-reduction.md) is the computation of the type theory: one step of weak head reduction, untyped and defined on the terms of every scope, which unfolds a constant definition to its body at its instance and applies the computations that the kinds of type declarations give to their terms.
+A closed term computes to a head normal form and stops there, without reducing its parts: the computation is lazy, as the meaning explanations of Martin-Löf type theory that [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present, and tells what a term is, not how a program runs, whose evaluation order the RFC of the calling convention fixes.
+
+The [erasure](0036-type-system/14-erasure.md) compiles a term to an untyped target language, and replaces with a value $`\text{↯}`$ the parts whose grade is in a set of grades.
+The set of the grades that a mode does not count gives, for the mode of run time, the program that runs, without its proofs and its specifications, as the extraction of Abel, Danielsson and Eriksson, and, for the mode of the proofs, the program that the proofs see, with its ghost code.
+A variable whose grade is in the set is absent from the erasure of a term whose usage is checked in a mode that counts no use of the set, so that the usage states what the erasure removes; the erasure follows the grades alone, and depends on no evaluation order.
+A constant keeps the grades of its instance, and the target language has one copy of it for each instance of its grades, so that no grade remains at run time.
+
 ### Annexes
 
 Each annex states one subject, with its definitions, its meaning and its properties, and only them; it names the annexes it builds on, and an annex never builds on a later one.
@@ -95,6 +105,7 @@ The type system has these drawbacks:
 - Without cumulativity, a program polymorphic in its universes writes its levels and their joins, as in Agda and in Lean.
 - Without impredicative propositions, the encodings that quantify a proposition over all propositions, which Lean and Rocq accept, are not available.
 - The constant definitions are transparent: a library cannot hide the body of a definition from the equality, until the modules of a later RFC give a way to hide it.
+- A constant whose body checks a position with a grade variable is compiled once for each instance of its grades that a program uses, which enlarges the program, as the monomorphization of Rust does.
 - The meaning of the grades counts the uses that a term makes, not those that a program makes when it runs, which depend on the evaluation order; the run-time multiplicities $`1`$ and $`\omega`$ wait for the RFC of the calling convention to mean a number of uses.
 
 ## Rationale and Alternatives
@@ -168,6 +179,17 @@ The judgments, the usage and the ownership are settled by the following choices:
   - Cumulativity: a type of $`U_l`$ is not a type of $`U_{l + 1}`$; it is deferred, since adding it later only accepts more programs, at the cost of a subtyping in place of the equality of types.
   - Fractions of ownership: several uses of a value at once followed by a use that requires it alone, which the [fractional uniqueness](https://doi.org/10.1145/3649848) of Marshall and Orchard accepts, are rejected, since the sum $`1 + 1 = \omega`$ of the multiplicities cannot be undone; the sequential case passes the value from one use to the next, and fractions could be added later, at the cost of a larger modality.
 
+### Choices on the Reduction and Erasure
+
+The reduction and the erasure are settled by the following choices:
+
+- The reduction is weak head, rather than to full normal forms: the meaning of a closed term and the comparison of two terms need only their heads, as in the decision procedure for the equality of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), which the formalization of Abel, Danielsson and Eriksson extends; it is untyped, so that a step needs no typing, and that a step keeps the type of a term is a property of the reduction, not a condition of its steps.
+- The reduction is the computation of the type theory, not the evaluation of a program: the computation is deterministic, and the guarantees of the system hold whatever the order in which a program runs.
+  The costs, the order of the foreign effects and the evaluation of the parts of a term that are taken one at a time belong to the RFC of the calling convention, whose direction is the call-by-push-value of [Levy](https://doi.org/10.1007/978-94-007-0954-6), by polarity, as [Downen, Sullivan, Ariola and Peyton Jones](https://doi.org/10.1007/978-3-030-17184-1_5) evaluate data by value and codata on observation; that RFC has to check again, on the machine it chooses, the resource correctness of the usage of recursion, which [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) prove for a call-by-name machine.
+- One erasure, parametrized by the set of grades it erases, rather than an erasure for the run time and another for the proofs, as the two erasures $`t^\bullet`$ and $`t^\circ`$ of [#24](https://github.com/sic-lang/rfcs/pull/24): each kind of type declaration gives the clauses of its terms once, and the erasure of each mode is an instance.
+- The erasures by two sets are compared by an order on the target language, in which a term is less defined than another when it has $`\text{↯}`$ in place of some of its parts, rather than by erasing an erased term again, which would need grades in the target language.
+- A constant keeps the grades of its instance, rather than having one copy that receives its erased parts at run time: the parts of its body that the erasure removes depend on these grades, so that each instance has a program of its own, with nothing left of the grades.
+
 ### One RFC
 
 The type system was first split into four RFCs, the grades, the core, the data and codata types, and the observational equality, linked by a contract that each kind of type declaration fulfills.
@@ -187,6 +209,7 @@ The type system builds on the following work:
 - The judgments are those of Martin-Löf type theory, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, and the signature follows the global environment of [Rocq](https://rocq-prover.org/doc/master/refman/language/cic.html), an ordered list of declarations, definitions and assumptions.
 - The uniqueness types of [Clean](https://doi.org/10.1017/S0960129500070109), from Barendsen and Smetsers, guarantee that a value has no other reference, so that it can be updated in place; [Marshall, Vollmer and Orchard](https://doi.org/10.1007/978-3-030-99336-8_13) relate uniqueness, a guarantee on the past uses, to linearity, a restriction of the future ones, [Marshall and Orchard](https://doi.org/10.1145/3649848) add fractions to share a unique value for a while, and [Lorenzen, White, Dolan, Eisenberg and Lindley](https://doi.org/10.1145/3674642) give OCaml a uniqueness mode on its types; all of them check uniqueness in the typing, where Sic checks the ownership by a judgment of its own, after the usage of Abel, Danielsson and Eriksson, which they check apart from the typing, and with the grades of the usage.
 - The strict propositions follow the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html) and the `SProp` of Rocq, both from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316).
+- The weak head reduction follows the decision procedure for the equality of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), and the erasure the extraction of Abel, Danielsson and Eriksson, which it extends with a set of erased grades; the order between erasures follows the approximants of the Böhm trees of [Kerinec, Manzonetto and Pagani](https://doi.org/10.23638/LMCS-16(3:6)2020), below which the undefined value lies.
 - [Verus](https://doi.org/10.1145/3586037) separates the code that runs from the specifications and proofs by [modes of variables](https://verus-lang.github.io/verus/guide/reference-var-modes.html), as the modes of the constants of Sic, and tracks ghost resources linearly, which the grades `none / linear` and `linear / unrestricted` express in Sic.
 
 ## Unresolved Questions
