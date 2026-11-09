@@ -8,13 +8,13 @@ It builds on the [syntax](08-syntax.md) and on the instances of the entries, whi
 The judgment $`\Sigma \vdash t \longrightarrow u`$ reads: in the signature $`\Sigma`$, the term $`t`$ reduces to $`u`$ in one step of weak head reduction.
 The reduction is untyped, and defined on the terms of every scope, with their level variables.
 
-The core reduces by one rule, which unfolds a constant definition to its body at the instance of its variables; the steps of the terms of the declared types, and the head normal forms among these terms, are given by the kinds of type declarations, in their annexes:
+The reduction has one rule, which unfolds a constant definition to its body at the instance of its variables; the step of the recursor comes with its typing:
 
 ```math
 \frac{\begin{gathered}{}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{gathered}}{\Sigma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \longrightarrow t[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(\delta_{\longrightarrow})
 ```
 
-A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, and a head normal form when it is a sort, an instance of a declared type or a neutral term:
+A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, and a head normal form when it is a sort, an instance of a declared type, a constructor applied to the terms of its fields, which it does not compute, or a neutral term:
 
 ```math
 \begin{aligned}
@@ -23,7 +23,13 @@ A term is neutral when its reduction is stuck on a variable or on a declared con
 & \quad {\mid} \\
 & \qquad x[\bar t] \\
 & \qquad f.\{\bar s';\ \bar l';\ \bar p'\} \text{ if } (f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) \in \Sigma \\[1em]
-& \text{a head normal form in } \Sigma \mathrel{::=} \kappa \mid D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \mid \text{a neutral term in } \Sigma &&(\mathsf{whnf}_t)
+& {\mathrel{::=}} &&(\mathsf{whnf}_t) \\
+& \quad \text{a head normal form in } \Sigma \\
+& \quad {\mid} \\
+& \qquad \kappa \\
+& \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \\
+& \qquad (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t) \\
+& \qquad \text{a neutral term in } \Sigma
 \end{aligned}
 ```
 

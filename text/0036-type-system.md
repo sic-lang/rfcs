@@ -62,7 +62,7 @@ A constant definition is transparent: it unfolds to its body, whose ownership is
 A constant declaration has no body, and covers three needs, told apart by the sort of its type and its mode: an axiom, a proposition assumed true, of the mode $`{01}^{\mathsf{m}}`$; a ghost constant, a value or a type that the specifications and the proofs use, of the mode $`{00}^{\mathsf{m}}`$ or $`{01}^{\mathsf{m}}`$; and a foreign constant, a type, a value or a function that the running program gets from outside, of the mode $`{11}^{\mathsf{m}}`$.
 Its ownership is trusted, as its type is, so that a foreign constant states whether its value may be shared.
 A type declaration declares a block of data types, each with the grades with which it uses the parameters of the block, which the elaboration computes and the type system checks against the uses of the fields of its constructors, all added; an instance uses its arguments as these grades say.
-Its formation is given, for a block whose types occur in none of its fields; its entry into the signature comes with the meaning of its instances, and its constructors and its recursor with their typing.
+Its formation is given, for a block whose types occur in none of its fields, and its instances have a meaning; its entry into the signature comes with the meaning of the type declarations, and its constructors and its recursor with their typing.
 
 The universes of propositions $`\Omega_l`$ hold strict propositions: two proofs of a proposition are equal, and an entry of a telescope whose type is a proposition has a grade without use at run time, so that the proofs are erased.
 
@@ -80,11 +80,13 @@ A constant keeps the grades of its instance, and the target language has one cop
 
 The [meaning](0036-type-system/16-meaning.md) of the judgments follows the meaning explanations of Martin-Löf type theory: a closed judgment is true when its terms compute as it says, a judgment in a context when it is true under every pair of equal closed substitutions of the context, and a judgment with level variables when it is true at every value of its level variables.
 Every judgment of the typing has a meaning, with the same objects, from the signatures to the arguments of an instance, and the meaning ignores the grades, the modes and the ownerships, as the typing does.
-A closed canonical type is known by the equality of its canonical terms, which the sorts give: a universe $`U_n`$ relates types, each with the equality of its terms, and a universe of propositions $`\Omega_n`$ relates propositions, each with its truth, the closed terms of a true proposition being all equal proofs of it.
+A closed canonical type is known by the equality of its canonical terms, which the sorts and the data types give: a universe $`U_n`$ gives its types, each with the equality of its terms, a universe of propositions $`\Omega_n`$ its propositions, each with its truth, the closed terms of a true proposition being all equal proofs of it, and an instance of a data type has its constructors as canonical terms, equal when they are the same constructor with equal fields, a proposition declared as a data type being true when one of its constructors has terms for its fields.
+Two types are equal when they have the same equality of terms.
+Each entry of a signature is meaningful in the whole signature, since a type declaration quantifies over the closed terms of its fields, which a larger signature may add.
 A constant declaration has no body to compute: the meaning takes an interpretation, which gives each constant declaration a term, and computes in the signature where the declarations become definitions with these terms.
 The typing is sound: under an interpretation that gives each constant declaration a term of its type, every judgment that the rules derive is true, so that the axioms and the foreign constants of a program are the hypotheses of its guarantees.
 
-What the usage and the ownership of a term guarantee of its erasure when it runs, and the soundness of the erasure, are not stated yet: every closed term of the core computes to a sort, whose erasure is $`\text{↯}`$, so that they need the terms that the kinds of type declarations bring, and the evaluation order that the RFC of the calling convention fixes.
+What the usage and the ownership of a term guarantee of its erasure when it runs, and the soundness of the erasure, are not stated yet: they need the recursors of the data types, which use the terms that their constructors build, and the evaluation order that the RFC of the calling convention fixes.
 
 ### Annexes
 
@@ -107,7 +109,7 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Typing](0036-type-system/13-typing.md): the judgments of the signatures, of the contexts, of the types, of the terms and of their arguments, their rules and their properties.
 - [Reduction](0036-type-system/14-reduction.md): the weak head reduction, its head normal forms, the computation of the closed terms and their determinism.
 - [Erasure](0036-type-system/15-erasure.md): the translation to an untyped target language that replaces with a value the parts of a term whose grade is in a set, the sets of grades that the modes do not count, and the absence of the erased variables.
-- [Meaning](0036-type-system/16-meaning.md): the meaning of the judgments of the typing, the interpretation of the constant declarations, the equality of the canonical terms of the sorts, the exactness of the meaning for the proofs, and the soundness of the typing under an interpretation of the constant declarations.
+- [Meaning](0036-type-system/16-meaning.md): the meaning of the judgments of the typing, the interpretation of the constant declarations, the equality of the canonical terms of the sorts and of the data types, the exactness of the meaning for the proofs, and the soundness of the typing under an interpretation of the constant declarations.
 
 ## Drawbacks
 
@@ -217,7 +219,10 @@ The meaning is settled by the following choices:
 - The constant declarations are interpreted, rather than given a meaning of their own: an axiom or a foreign constant has no body to compute, and the soundness holds under every interpretation that gives each of them a term of its type, so that a program depends on its declarations as on hypotheses.
 - Every judgment of the typing has a meaning, the telescopes in a sort and the arguments of an instance included, rather than the closed equality alone, so that the soundness is stated for each judgment that the rules derive, and the application of a second-order variable has the meaning of its arguments.
 - The terms of a proposition need not compute: the equality of a proposition relates the terms themselves, all when it is true and none when it is false, so that a proof, which the erasure removes, is never computed, and the meaning is exact for the rule of the irrelevance of the proofs.
-- What the usage and the ownership guarantee at run time, and the soundness of the erasure, wait for the kinds of type declarations, rather than being stated in the core: every closed term of the core computes to a sort, whose erasure is $`\text{↯}`$, so that these statements would hold of no program that runs.
+- A type of a sort is given alone, with the equality of its terms, and two types are equal when they have the same equality of terms, rather than by a relation between two types that compares them clause by clause: the fields of a constructor form a telescope, whose types depend on the fields before them, and the partial equivalence relations then follow by induction on one type, with the condition that equal fields give the rest of the telescope the same equality, as [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111) require of the families of types; the price is that the meaning equates types that the typing does not, such as two data types without constructors, which leaves the soundness unchanged.
+- Each entry is meaningful in the whole signature, rather than in the signature before it: a data type quantifies over the closed terms of its fields, which a larger signature may add, so that the meaning of an entry in the signature before it would not carry to the whole signature, where the entry is used.
+- The closed judgments require the names of their signature to be distinct, which makes the computation deterministic, rather than the signature to be meaningful, which they do not use.
+- What the usage and the ownership guarantee at run time, and the soundness of the erasure, wait for the recursors of the data types, rather than being stated before them: without a recursor, no term uses the data that a constructor builds, so that these statements would say nothing of a program that runs.
 
 ### One RFC
 

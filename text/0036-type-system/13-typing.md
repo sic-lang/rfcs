@@ -73,7 +73,7 @@ A signature is empty, or a signature extended by an entry that is well formed in
 \end{gathered}
 ```
 
-A type declaration enters no signature yet: the rule that adds it to a signature comes with the meaning of its instances, and its formation is given with the [type declarations](#type-declarations).
+A type declaration enters no signature yet: the rule that adds it to a signature comes with the meaning of the type declarations, and its formation is given with the [type declarations](#type-declarations).
 
 An entry is checked in the empty context, once with its level variables, and for each instance of its sort and grade variables, which are finitely many, so that its rules hold whatever instantiates them.
 At each instance of its sort and grade variables, the type of a constant definition or declaration is a type of some sort, which may depend on the instance, and the body of a constant definition is a term of its type that uses no variable and has the ownership of the definition, in the mode of the definition:

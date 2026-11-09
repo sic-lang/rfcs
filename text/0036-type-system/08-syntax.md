@@ -190,7 +190,7 @@ A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kapp
 \end{aligned}
 ```
 
-The names of a signature are distinct when each of its entries introduces names that no entry before it introduces:
+The names of a signature are distinct when each of its entries introduces distinct names, which no entry before it introduces, so that a type declaration names each of its types once:
 
 ```math
 \begin{aligned}
@@ -199,6 +199,7 @@ The names of a signature are distinct when each of its entries introduces names 
 & \quad \text{the names of } \Sigma,\ e \text{ are distinct} \\
 & \quad \text{and} \\
 & \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad e \text{ introduces each of its names once} \\
 & \qquad \forall e' \in \Sigma.\ \mathsf{names}(e) \cap \mathsf{names}(e') = \varnothing
 \end{aligned}
 ```
