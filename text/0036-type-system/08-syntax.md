@@ -29,7 +29,7 @@ A term in a scope is one of six cases:
 & \qquad f.\{\bar s;\ \bar l;\ \bar p\} \\
 & \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \\
 & \qquad (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t) \\
-& \qquad \mathsf{rec}_r\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u
+& \qquad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u
 \end{aligned}
 ```
 
@@ -40,7 +40,7 @@ The cases are:
 - An instance $`f.\{\bar s;\ \bar l;\ \bar p\}`$ of the constant $`f`$, defined or declared, in which $`\bar s`$ are qualities, $`\bar l`$ levels and $`\bar p`$ grades, one for each variable of each kind of the entry.
 - An instance $`D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$ of the declared type $`D`$, whose arguments $`\bar a`$ are in the scope, one for each parameter of its type declaration.
 - A constructor $`c`$ of the data type of an instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, applied to arguments $`\bar t`$, a term for each of its fields, written $`T.c(\bar t)`$: the constructor carries its instance, so that the term determines its type.
-- A recursor $`\mathsf{rec}_r\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u`$, which eliminates the term $`t`$, used with the grade $`r`$, with motives $`\bar C`$, one for each type of the block of $`t`$, and branches $`\bar u`$, one for each constructor of each type of the block, in the order of the declaration.
+- A recursor $`\mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u`$, which eliminates the term $`t`$ of the instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, used with the grade $`r`$, with motives $`\bar C`$, one for each type of the block of $`t`$, and branches $`\bar u`$, one for each constructor of each type of the block, in the order of the declaration: the recursor carries the instance of the term it eliminates, so that its usage and its ownership read the grades and the requirements of the fields at this instance.
 
 The levels of a term use only the level variables of the entry of the signature in which it appears, and none when it appears in no entry.
 

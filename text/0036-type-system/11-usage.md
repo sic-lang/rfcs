@@ -11,7 +11,7 @@ The judgment $`\Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m`$ reads: ch
 The judgment $`\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m`$ reads: checked in the mode $`m`$, the types of the telescope $`\Theta`$ use the variables of its scope as $`\gamma`$ allows, and the judgment $`\Sigma;\ \gamma \vdash \bar c \mathrel{▶} m`$ likewise for the telescopes of the fields of the constructors $`\bar c`$ of a data type, which the [formation](13-typing.md#type-declarations) of the type declarations reads.
 
 Usage is defined on the term and the signature alone, without a context: the scope gives each variable the grades of its telescope, with which an application uses its arguments, and the signature gives each constant its mode.
-The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, and each constructor the grades of its fields; the usage of the recursors comes with their typing.
+The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, and each constructor the grades of its fields, which the usage of the constructors and of the recursors reads at their instance.
 
 An application $`x[\bar t]`$ uses $`x`$ with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode $`m \odot p_j`$; a variable with an empty telescope uses itself only:
 
@@ -43,6 +43,13 @@ An instance of a declared type uses the variables of its arguments as many times
 \frac{\begin{gathered}{}\Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \\ \Sigma;\ \delta \vdash a \mathrel{▶} m \odot p\end{gathered}}{\Sigma;\ \gamma +^{\gamma} (p \cdot^{\gamma} \delta) \vdash (\bar a,\ a) \mathrel{▶} \zeta \bullet p;\ m}\;(\mathsf{arg}_{x▶}) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \\ X \text{, the parameter of } \bar x.\, B \text{, has the grades } p_1, \dots, p_n \\ \Sigma;\ \delta \bullet (\ulcorner m \odot p \urcorner \cdot p_1) \bullet \dots \bullet (\ulcorner m \odot p \urcorner \cdot p_n) \vdash B \mathrel{▶} m \odot p\end{gathered}}{\Sigma;\ \gamma +^{\gamma} (p \cdot^{\gamma} \delta) \vdash (\bar a,\ \bar x.\, B) \mathrel{▶} \zeta \bullet p;\ m}\;(\mathsf{arg}_{X▶})
 \end{gathered}
+```
+
+A recursor, written as in its [typing](13-typing.md#terms), uses the variables of its term $`r`$ times, the term checked in the mode $`m \odot r`$, and those of its branches, which share the same uses $`\delta`$ of the variables of the scope, since one of them runs, as the eliminations of the pairs of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda) do: each branch uses the variable of a field as $`\ulcorner m \urcorner \cdot r`$ times the grade of the field allows.
+Its motives, which are types, use no variable, checked in the mode $`{00}^{\mathsf{m}}`$; in the mode $`{11}^{\mathsf{m}}`$, a recursor on a block of which a type has two constructors or more uses its term at run time, since the constructor of the term chooses the branch that runs:
+
+```math
+\frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \forall j.\ \Sigma;\ {00}^{\gamma} \vdash C_j \mathrel{▶} {00}^{\mathsf{m}} \\ \Sigma;\ \gamma \vdash t \mathrel{▶} m \odot r \\ \forall j, i.\ \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ has the grades } q_{ji1}, \dots, q_{jik_{ji}} \\ \forall j, i.\ \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot r \cdot q_{ji1}) \bullet \dots \bullet (\ulcorner m \urcorner \cdot r \cdot q_{jik_{ji}}) \vdash u_{ji} \mathrel{▶} m \\ \llcorner r \lrcorner = {11}^{\mathsf{m}} \text{ if } m = {11}^{\mathsf{m}} \text{ and one of } \bar c_1, \dots, \bar c_k \text{ has two constructors or more}\end{gathered}}{\Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash \mathsf{rec}_r\ (D_h.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \mathrel{▶} m}\;(\mathsf{rec}_{▶})
 ```
 
 A term may be given grades lower than its uses:

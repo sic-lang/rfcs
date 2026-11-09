@@ -10,7 +10,7 @@ The judgment $`\Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m`
 
 Ownership is defined on the term and the signature alone, without a context, as usage is: the scope gives each second-order variable its telescope and the ownership $`\psi`$ of its result, and the signature gives each constant its ownership.
 Unlike the vector of the usage, which each premise computes and the conclusion adds, $`\varphi`$ is the same in every premise, as the context of the typing is.
-The data types give the ownership of their instances and of their constructors, below, and their recursors that of the terms that use them.
+The data types give the ownership of their instances, of their constructors and of their recursors, below.
 
 The value of the ownership $`\psi`$ of the result of a second-order variable, given the ownerships $`\bar o`$ of its arguments, written $`\psi[\bar o / \bar x]`$ where $`\bar x`$ are the variables of its telescope, is the meet of its constant and of its factors, each variable taking the ownership of its argument.
 The constant and the factors being optional, the value may be undefined: a meet with an undefined operand is its other operand, and an absent constant is undefined.
@@ -54,6 +54,12 @@ A constructor builds a new value, whose ownership is $`{11}^{\mathsf{p}}`$ whate
 \frac{}{\Sigma;\ \varphi \vdash D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \mathrel{◀} {\omega\omega}^{\mathsf{p}};\ m}\;(D_{◀}) \\[1em]
 \frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots \mid c : \Theta \mid \dots;\ \dots) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta[\bar s' / \bar s,\ \bar p' / \bar p];\ m\end{gathered}}{\Sigma;\ \varphi \vdash (D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).c(\bar t) \mathrel{◀} {11}^{\mathsf{p}};\ m}\;(c_{◀})
 \end{gathered}
+```
+
+A recursor, written as in its [typing](13-typing.md#terms), has the ownership of its branches, each checked with the ownership $`o`$ of the term times the requirement of the entry of each field for the variable of the field, written $`\varphi,\ x_1 \mathrel{◀} o \cdot r_1, \dots, x_n \mathrel{◀} o \cdot r_n`$: a field of a value owned alone has the ownership that its entry requires, and a field of a shared value is shared, since an other owner of the value reaches it:
+
+```math
+\frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \Sigma;\ \varphi \vdash t \mathrel{◀} o;\ m \odot r \\ \forall j, i.\ \text{the entries of } \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ require } r_{ji1}, \dots, r_{jik_{ji}} \\ \forall j, i.\ \Sigma;\ \varphi,\ x_{ji1} \mathrel{◀} o \cdot r_{ji1}, \dots, x_{jik_{ji}} \mathrel{◀} o \cdot r_{jik_{ji}} \vdash u_{ji} \mathrel{◀} p;\ m\end{gathered}}{\Sigma;\ \varphi \vdash \mathsf{rec}_r\ (D_h.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \mathrel{◀} p;\ m}\;(\mathsf{rec}_{◀})
 ```
 
 A term may be given an ownership lower than its own, which states less:

@@ -21,7 +21,7 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & f.\{\bar s;\ \bar l;\ \bar p\}[\sigma] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\sigma] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma] \\
 & ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\sigma] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).c(\bar t[\sigma]) \\
-& (\mathsf{rec}_r\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\sigma] = \mathsf{rec}_r\ t[\sigma]\ \mathsf{return}\ \bar C[\sigma]\ \mathsf{with}\ \bar u[\sigma] \\[1em]
+& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\sigma] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ t[\sigma]\ \mathsf{return}\ \bar C[\sigma]\ \mathsf{with}\ \bar u[\sigma] \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar t) \\
 & (t,\ \bar t)[\sigma] = (t[\sigma],\ \bar t[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar a) \\
@@ -65,7 +65,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & f.\{\bar s;\ \bar l;\ \bar p\}[\theta] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\theta] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta] \\
 & ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\theta] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).c(\bar t[\theta]) \\
-& (\mathsf{rec}_r\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\theta] = \mathsf{rec}_r\ t[\theta]\ \mathsf{return}\ \bar C[\theta]\ \mathsf{with}\ \bar u[\theta] \\[1em]
+& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\theta] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ t[\theta]\ \mathsf{return}\ \bar C[\theta]\ \mathsf{with}\ \bar u[\theta] \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar t) \\
 & (t,\ \bar t)[\theta] = (t[\theta],\ \bar t[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar a) \\
@@ -158,7 +158,7 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & f.\{\bar s;\ \bar l_1;\ \bar p\}[\bar l' / \bar l] = f.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\} \\
 & (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)[\bar l' / \bar l] = D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l] \\
 & ((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).c(\bar t))[\bar l' / \bar l] = (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).c(\bar t[\bar l' / \bar l]) \\
-& (\mathsf{rec}_r\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\bar l' / \bar l] = \mathsf{rec}_r\ t[\bar l' / \bar l]\ \mathsf{return}\ \bar C[\bar l' / \bar l]\ \mathsf{with}\ \bar u[\bar l' / \bar l] \\[1em]
+& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\bar l' / \bar l] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ t[\bar l' / \bar l]\ \mathsf{return}\ \bar C[\bar l' / \bar l]\ \mathsf{with}\ \bar u[\bar l' / \bar l] \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar t) \\
 & (t,\ \bar t)[\bar l' / \bar l] = (t[\bar l' / \bar l],\ \bar t[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar a) \\

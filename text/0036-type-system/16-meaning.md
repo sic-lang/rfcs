@@ -5,7 +5,7 @@ It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [substitu
 
 The judgments mean what the meaning explanations of Martin-Löf type theory say of them, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them: a judgment is true when its terms compute as it says.
 The meaning ignores the grades, the modes and the ownerships, as the typing does outside the judgments of usage and of ownership that the rule of the constant definitions reads.
-What the usage and the ownership of a term guarantee of its erasure when it runs is not stated here: these guarantees need the recursors of the data types, which use the terms that their constructors build, and the evaluation order that the RFC of the calling convention fixes.
+What the usage and the ownership of a term guarantee of its erasure when it runs is not stated here: these guarantees need the evaluation order that the RFC of the calling convention fixes.
 
 ## Definitions
 

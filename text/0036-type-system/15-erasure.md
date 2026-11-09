@@ -31,7 +31,7 @@ The grades $`\mathsf{grades}_\Sigma(T.c)`$ of the fields of the constructor $`c`
 ```
 
 The sorts and the instances have no representation in the target language, and are erased.
-A constructor keeps its fields, each erased at the grade of its field, and a field whose grade the signature does not give, in a term that no rule types, is erased; a recursor keeps its term, erased at its grade $`r`$, and its branches, and loses its motives, which are types.
+A constructor keeps its fields, each erased at the grade of its field, and a field whose grade the signature does not give, in a term that no rule types, is erased; a recursor keeps its term, erased at its grade $`r`$, and its branches, and loses its instance and its motives, which are types.
 The erasure $`\lfloor t \rfloor_{S, p}`$ of a position of grade $`p`$ is $`\text{↯}`$ when $`p \in S`$, and $`\lfloor t \rfloor_S`$ otherwise:
 
 ```math
@@ -41,7 +41,7 @@ The erasure $`\lfloor t \rfloor_{S, p}`$ of a position of grade $`p`$ is $`\text
 & \lfloor f.\{\bar s;\ \bar l;\ \bar p\} \rfloor_S = f.\{\bar p\} \\
 & \lfloor D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \rfloor_S = \text{↯} \\
 & \lfloor T.c(\bar t) \rfloor_S = c(\lfloor \bar t \rfloor_{S, \mathsf{grades}_\Sigma(T.c)}) \\
-& \lfloor \mathsf{rec}_r\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}\ \lfloor t \rfloor_{S, r}\ \mathsf{with}\ \lfloor \bar u \rfloor_S \\
+& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}\ \lfloor t \rfloor_{S, r}\ \mathsf{with}\ \lfloor \bar u \rfloor_S \\
 & \lfloor t \rfloor_{S, p} = \text{↯} \text{ if } p \in S \\
 & \lfloor t \rfloor_{S, p} = \lfloor t \rfloor_S \text{ if } p \notin S \\[1em]
 & \lfloor () \rfloor_{S, \bar p} = () &&(\mathsf{erase}_{\bar t}) \\
