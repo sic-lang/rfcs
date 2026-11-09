@@ -20,7 +20,7 @@ A branch $`(\bar x;\ \bar y).\, N`$ binds the variables $`\bar x`$ of the fields
 
 The erasure $`\lfloor t \rfloor_S`$ of a term $`t`$ replaces with $`\text{↯}`$ each position of $`t`$ whose grade is in the set $`S`$, a position being a subterm that a rule of usage checks with a grade of its own, as an argument $`t_j`$ of an entry of grade $`p_j`$ in $`(\mathsf{tel}_{,▶})`$.
 It is defined on the terms whose scope has no second-order variable: a program is closed, and the motives and the branches of a recursor and the states and the branches of a corecursor bind variables only, while a second-order variable exists only in the contexts in which a declaration is checked, so that a variable has no arguments, and the target language no second-order variables.
-It is defined in a signature $`\Sigma`$, which gives the grades of the fields of the constructors, of the arguments of the destructors and the positions of the codata types in their blocks, and which the notation leaves implicit, as the rules of usage read their grades in the signature.
+It is defined in a signature $`\Sigma`$, which gives the grades of the fields of the constructors, of the arguments of the destructors and of the destructors, and the positions of the codata types in their blocks, and which the notation leaves implicit, as the rules of usage read their grades in the signature.
 
 The grades $`\mathsf{grades}_\Sigma(T.c)`$ of the fields of the constructor $`c`$ of an instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$ are the grades of its telescope $`\Theta`$ at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ with a constructor $`c`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and none when $`\Sigma`$ has no such entry:
 
@@ -40,6 +40,15 @@ The grades $`\mathsf{grades}_\Sigma(T.d)`$ of the arguments of the destructor $`
 \end{aligned}
 ```
 
+The grades $`\mathsf{grades}_\Sigma(T.\bar g)`$ of the branches of a corecursor of an instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$ are the grades of the destructors of the block of $`D`$ at the instance $`\bar s`$, $`\bar p`$, in the order of the declaration, which is that of the branches, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and none when $`\Sigma`$ has no such entry:
+
+```math
+\begin{aligned}
+& \mathsf{grades}_\Sigma(T.\bar g) = p_{11}, \dots, p_{kn_k} \text{ if } (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k) \text{ is this entry, } D = D_h \text{ and } d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji} \text{ in } \bar d_j &&(\mathsf{grades}_{\bar g}) \\
+& \mathsf{grades}_\Sigma(T.\bar g) = () \text{ if } \Sigma \text{ has no such entry}
+\end{aligned}
+```
+
 The position $`\mathsf{position}_\Sigma(D)`$ of the declared type $`D`$ is its index $`h`$ in the last entry of $`\Sigma`$ that declares it, $`D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots`$ with $`D = D_h`$, and none when $`\Sigma`$ has no such entry:
 
 ```math
@@ -50,7 +59,7 @@ The position $`\mathsf{position}_\Sigma(D)`$ of the declared type $`D`$ is its i
 
 The sorts and the instances have no representation in the target language, and are erased.
 A constructor keeps its fields, each erased at the grade of its field, and a field whose grade the signature does not give, in a term that no rule types, is erased; a recursor keeps its term, erased at its grade $`r`$, and its branches, and loses its instance and its motives, which are types.
-An observation keeps its term and its arguments, each erased at the grade of its argument, and a corecursor keeps its state, each entry erased at its grade times the grade $`r`$ of the corecursor, since every observation that reaches the state uses it $`r`$ times, and its branches, and loses its instance and its states, which are types; the grades of the entries of the state are those of the state $`\Theta_h`$ of the type $`D_h`$ of its instance, with $`h = \mathsf{position}_\Sigma(D)`$, and an entry whose grade is not given, in a term that no rule types, is erased.
+An observation keeps its term and its arguments, each erased at the grade of its argument, and a corecursor keeps its state, each entry erased at its grade times the grade $`r`$ of the corecursor, since every observation that reaches the state uses it $`r`$ times, and its branches, each erased at the grade of its destructor, since its usage checks it in the mode of this grade, and loses its instance and its states, which are types; the grades of the entries of the state are those of the state $`\Theta_h`$ of the type $`D_h`$ of its instance, with $`h = \mathsf{position}_\Sigma(D)`$, and an entry whose grade is not given, in a term that no rule types, is erased.
 The erasure $`\lfloor t \rfloor_{S, p}`$ of a position of grade $`p`$ is $`\text{↯}`$ when $`p \in S`$, and $`\lfloor t \rfloor_S`$ otherwise:
 
 ```math
@@ -62,8 +71,8 @@ The erasure $`\lfloor t \rfloor_{S, p}`$ of a position of grade $`p`$ is $`\text
 & \lfloor T.c(\bar t) \rfloor_S = c(\lfloor \bar t \rfloor_{S, \mathsf{grades}_\Sigma(T.c)}) \\
 & \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}\ \lfloor t \rfloor_{S, r}\ \mathsf{with}\ \lfloor \bar u \rfloor_S \\
 & \lfloor t.(T.d)(\bar t) \rfloor_S = \lfloor t \rfloor_S.d(\lfloor \bar t \rfloor_{S, \mathsf{grades}_\Sigma(T.d)}) \\
-& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, r \cdot \bar q}\ \mathsf{with}\ \lfloor \bar g \rfloor_S \text{ if } \bar q \text{ are the grades of } \Theta_h,\ h = \mathsf{position}_\Sigma(D) \\
-& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, ()}\ \mathsf{with}\ \lfloor \bar g \rfloor_S \text{ otherwise} \\
+& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, r \cdot \bar q}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g)} \text{ if } \bar q \text{ are the grades of } \Theta_h,\ h = \mathsf{position}_\Sigma(D) \\
+& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, ()}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g)} \text{ otherwise} \\
 & \lfloor t \rfloor_{S, p} = \text{↯} \text{ if } p \in S \\
 & \lfloor t \rfloor_{S, p} = \lfloor t \rfloor_S \text{ if } p \notin S \\[1em]
 & \lfloor () \rfloor_{S, \bar p} = () &&(\mathsf{erase}_{\bar t}) \\
@@ -71,8 +80,9 @@ The erasure $`\lfloor t \rfloor_{S, p}`$ of a position of grade $`p`$ is $`\text
 & \lfloor (t,\ \bar t) \rfloor_{S, (p,\ \bar p)} = (\lfloor t \rfloor_{S, p},\ \lfloor \bar t \rfloor_{S, \bar p}) \\[1em]
 & \lfloor () \rfloor_S = () &&(\mathsf{erase}_{\bar u}) \\
 & \lfloor ((\bar x;\ \bar y).\, u,\ \bar u) \rfloor_S = ((\bar x;\ \bar y).\, \lfloor u \rfloor_S,\ \lfloor \bar u \rfloor_S) \\[1em]
-& \lfloor () \rfloor_S = () &&(\mathsf{erase}_{\bar g}) \\
-& \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_S = ((\bar x;\ \bar y;\ \bar z).\, \lfloor g \rfloor_S,\ \lfloor \bar g \rfloor_S)
+& \lfloor () \rfloor_{S, \bar p} = () &&(\mathsf{erase}_{\bar g}) \\
+& \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, ()} = ((\bar x;\ \bar y;\ \bar z).\, \text{↯},\ \lfloor \bar g \rfloor_{S, ()}) \\
+& \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, (p,\ \bar p)} = ((\bar x;\ \bar y;\ \bar z).\, \lfloor g \rfloor_{S, p},\ \lfloor \bar g \rfloor_{S, \bar p})
 \end{aligned}
 ```
 
@@ -91,7 +101,7 @@ A term checked in the mode $`m`$ checks a position of grade $`p`$ in the mode $`
 
 The erasure $`\lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}}`$ is thus the extraction $`t^\bullet`$ of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), which removes what has no use at run time, and $`\lfloor t \rfloor_{S^{{01}^{\mathsf{m}}}}`$ keeps the proofs, the specifications and the permissions that the extraction removes, as the ghost code of [Verus](https://doi.org/10.1145/3586037) is checked but never run.
 
-A set $`S`$ of grades erases only what the mode $`m`$ does not count when it erases neither the grade $`\ulcorner m \urcorner`$, with which a variable checked in the mode $`m`$ uses itself, nor a grade above one that it keeps, nor a part of a sum that it erases, when it erases the second factor of a product that it erases whose first factor it keeps, and when a grade that it keeps keeps the mode, in which the term of a field of this grade is checked:
+A set $`S`$ of grades erases only what the mode $`m`$ does not count when it erases neither the grade $`\ulcorner m \urcorner`$, with which a variable checked in the mode $`m`$ uses itself, nor a grade above one that it keeps, nor a part of a sum that it erases, when it erases the second factor of a product that it erases whose first factor it keeps, and every product of which it erases a factor, and when a grade that it keeps keeps the mode, in which the term of a field of this grade is checked:
 
 ```math
 \begin{aligned}
@@ -99,6 +109,7 @@ A set $`S`$ of grades erases only what the mode $`m`$ does not count when it era
 & p \le q \text{ and } p \in S \implies q \in S &&(\mathsf{uncounted}_S.{\le}) \\[1em]
 & p + q \in S \implies p \in S &&(\mathsf{uncounted}_S.{+}) \\[1em]
 & p \notin S \text{ and } p \cdot q \in S \implies q \in S &&(\mathsf{uncounted}_S.{\cdot}) \\[1em]
+& p \in S \text{ or } q \in S \implies p \cdot q \in S &&(\mathsf{uncounted}_S.\mathsf{factor}) \\[1em]
 & p \notin S \implies m \odot p = m &&(\mathsf{uncounted}_S.{\odot})
 \end{aligned}
 ```
