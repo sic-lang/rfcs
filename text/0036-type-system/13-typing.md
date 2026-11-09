@@ -1,11 +1,11 @@
 # Typing
 
-This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, and of the entries of the signatures, and their properties.
+This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes and of the destructors in a sort, and of the entries of the signatures, and their properties.
 It builds on the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [usage](11-usage.md) and the [ownership](12-ownership.md).
 
 ## Definitions
 
-This section gives the judgments, then their rules, by the objects they check: the signatures and their entries, the contexts, the types, the terms, the arguments, and the telescopes in a sort.
+This section gives the judgments, then their rules, by the objects they check: the signatures and their entries, the contexts, the types, the terms, the arguments, and the telescopes and the destructors in a sort.
 
 ### Judgments
 
@@ -26,9 +26,11 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash \bar a : \Delta`$ | $`\bar a`$ are arguments of the parameters $`\Delta`$ |
 | $`\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta`$ | $`\bar a_1`$ and $`\bar a_2`$ are equal arguments of $`\Delta`$ |
 | $`\Sigma;\ \Gamma \vdash \Theta : \kappa`$ | The telescope $`\Theta`$ lives in the sort $`\kappa`$ |
+| $`\Sigma;\ \Gamma \vdash \bar d : \kappa`$ | The destructors $`\bar d`$ live in the sort $`\kappa`$ |
 | $`\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ | The type declaration is well formed |
+| $`\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k`$ | The type declaration is well formed |
 
-The judgments are defined together, except the last two, which build on the others.
+The judgments are defined together, except the last four, which build on the others.
 Typing and equality carry no grade: the usage and the ownership of a term are checked by the judgments of [usage](11-usage.md) and of [ownership](12-ownership.md), which the rule of the constant definitions reads.
 Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](06-levels.md), and for sequences of levels holds on each component.
 
@@ -226,6 +228,18 @@ A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort th
 \end{gathered}
 ```
 
+### Destructors in a Sort
+
+The destructors $`\bar d`$ of a codata type, $`d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n`$, or $`\varepsilon`$ when there is none, live in a sort $`\kappa`$ of level $`l`$ when the arguments of each live in the universe $`U_l`$, whatever the quality of $`\kappa`$, so that a proposition may quantify over a type of its level, and its result in a sort that $`\kappa`$ [bounds](07-sorts.md), a result that is a proposition having a grade without use at run time.
+Each destructor is a second-order variable of the context of the destructors after it, whose formation checks that the ownership of its result has a constant or a factor:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : \kappa}\;(\bar d_{\kappa\varepsilon}) \\[1em]
+\frac{\begin{gathered}{}l \text{ is the level of } \kappa \\ \Sigma;\ \Gamma \vdash \Theta : U_l \\ \Sigma;\ \Gamma,\ \Theta \vdash B : \kappa_1 \\ \kappa_1 \preceq \kappa \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega \\ \Sigma;\ \Gamma,\ d : (\Theta \vdash B \mathrel{◀} \psi) \vdash \bar d : \kappa\end{gathered}}{\Sigma;\ \Gamma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) : \kappa}\;(\bar d_{\kappa|})
+\end{gathered}
+```
+
 ### Type Declarations
 
 A block of data types is well formed when, at each instance of its sort and grade variables, its parameters form a context, the fields of each constructor live in its sort, and the constructors $`\bar c_j`$ of each type $`D_j`$ use the parameters as its grades $`\zeta_j`$ allow, the uses of all the constructors added, as their [usage](11-usage.md) adds them; the constructors of each type have distinct names.
@@ -234,6 +248,13 @@ The fields of a type in a universe of propositions are propositions, by the rule
 
 ```math
 \frac{\begin{gathered}{}\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{and} \\ & \qquad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vdash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma;\ \gamma \vdash \bar c_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned} \\ \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct}\end{gathered}}{\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k}\;(\mathsf{data})
+```
+
+A block of codata types is well formed likewise, with the destructors $`\bar d_j`$ of each type $`D_j`$ in place of its constructors: at each instance of its sort and grade variables, its parameters form a context, the destructors of each type live in its sort and use the parameters as its grades $`\zeta_j`$ allow, the uses of all the destructors added, as their [usage](11-usage.md) adds them; the destructors of each type have distinct names.
+The destructors are checked in the signature $`\Sigma`$, which the block does not extend, so that the block is not recursive:
+
+```math
+\frac{\begin{gathered}{}\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{and} \\ & \qquad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma;\ \gamma \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned} \\ \forall j.\ \text{the names } d_{j1}, \dots, d_{j n_j} \text{ are distinct}\end{gathered}}{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k}\;(\mathsf{codata})
 ```
 
 ## Properties
@@ -254,7 +275,9 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 & \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar d : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar d) \\[1em]
 & \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{data}) \\[1em]
+& \Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{codata}) \\[1em]
 & {\vdash \Sigma,\ e} \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.e)
 \end{aligned}
 ```

@@ -8,7 +8,7 @@ It builds on the [modes](05-modes.md), the [syntax](08-syntax.md) and the [grade
 The judgment $`\Sigma;\ \gamma \vdash t \mathrel{▶} m`$ reads: checked in the mode $`m`$, the term $`t`$ uses each variable of its scope as the grade that the vector $`\gamma`$, over this scope, gives it allows.
 The judgment $`\Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m`$ reads: checked in the mode $`m`$, the arguments $`\bar t`$ of a telescope whose grades are $`\bar p`$ use the variables of their scope as $`\gamma`$ allows.
 The judgment $`\Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m`$ reads: checked in the mode $`m`$, the arguments $`\bar a`$ of an instance whose type uses its parameters with the grades $`\zeta`$ use the variables of their scope as $`\gamma`$ allows.
-The judgment $`\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m`$ reads: checked in the mode $`m`$, the types of the telescope $`\Theta`$ use the variables of its scope as $`\gamma`$ allows, and the judgment $`\Sigma;\ \gamma \vdash \bar c \mathrel{▶} m`$ likewise for the telescopes of the fields of the constructors $`\bar c`$ of a data type, which the [formation](13-typing.md#type-declarations) of the type declarations reads.
+The judgment $`\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m`$ reads: checked in the mode $`m`$, the types of the telescope $`\Theta`$ use the variables of its scope as $`\gamma`$ allows, the judgment $`\Sigma;\ \gamma \vdash \bar c \mathrel{▶} m`$ likewise for the telescopes of the fields of the constructors $`\bar c`$ of a data type, and the judgment $`\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m`$ likewise for the arguments and the results of the destructors $`\bar d`$ of a codata type, which the [formation](13-typing.md#type-declarations) of the type declarations reads.
 
 Usage is defined on the term and the signature alone, without a context: the scope gives each variable the grades of its telescope, with which an application uses its arguments, and the signature gives each constant its mode.
 The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, and each constructor the grades of its fields, which the usage of the constructors and of the recursors reads at their instance.
@@ -74,5 +74,15 @@ The constructors $`\bar c`$ of a data type, $`c_1 : \Theta_1 \mid \dots \mid c_n
 \begin{gathered}
 \frac{}{\Sigma;\ {00}^{\gamma} \vdash \varepsilon \mathrel{▶} m}\;(\bar c_{\varepsilon▶}) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \\ \Sigma;\ \delta \vdash \bar c \mathrel{▶} m\end{gathered}}{\Sigma;\ \gamma +^{\gamma} \delta \vdash (c : \Theta \mid \bar c) \mathrel{▶} m}\;(\bar c_{|▶})
+\end{gathered}
+```
+
+The destructors $`\bar d`$ of a codata type, $`d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n`$, or $`\varepsilon`$ when there is none, use the variables as the entries of a telescope do, each destructor as one entry: its arguments and its result count their uses as many times as its grade $`p`$ says, checked in the mode $`m' = m \odot p`$, its result using each argument $`x_i`$ of $`\Theta`$ as $`\ulcorner m' \urcorner \cdot q_i`$ allows, as the types after the entry of $`x_i`$ do, and the destructors after it use $`d`$ as $`\ulcorner m \urcorner \cdot q`$ allows; destructors may be given grades lower than their uses, as a telescope may:
+
+```math
+\begin{gathered}
+\frac{}{\Sigma;\ {00}^{\gamma} \vdash \varepsilon \mathrel{▶} m}\;(\bar d_{\varepsilon▶}) \\[1em]
+\frac{\begin{gathered}{}\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \odot p \\ \Theta = (x_1 : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \dots,\ x_n : A_n \mathrel{▶} p_n;\ q_n \mathrel{◀} r_n) \\ \Sigma;\ \delta \bullet (\ulcorner m \odot p \urcorner \cdot q_1) \bullet \dots \bullet (\ulcorner m \odot p \urcorner \cdot q_n) \vdash B \mathrel{▶} m \odot p \\ \Sigma;\ \eta \bullet (\ulcorner m \urcorner \cdot q) \vdash \bar d \mathrel{▶} m\end{gathered}}{\Sigma;\ (p \cdot^{\gamma} (\gamma +^{\gamma} \delta)) +^{\gamma} \eta \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) \mathrel{▶} m}\;(\bar d_{|▶}) \\[1em]
+\frac{\begin{gathered}{}\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m \\ \delta \le^{\gamma} \gamma\end{gathered}}{\Sigma;\ \delta \vdash \bar d \mathrel{▶} m}\;(\mathsf{sub}_{\bar d▶})
 \end{gathered}
 ```
