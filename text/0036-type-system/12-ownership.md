@@ -10,7 +10,7 @@ The judgment $`\Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m`
 
 Ownership is defined on the term and the signature alone, without a context, as usage is: the scope gives each second-order variable its telescope and the ownership $`\psi`$ of its result, and the signature gives each constant its ownership.
 Unlike the vector of the usage, which each premise computes and the conclusion adds, $`\varphi`$ is the same in every premise, as the context of the typing is.
-The ownership of the instances of the declared types, and of the terms that build and use them, is given by the kinds of type declarations, in their annexes.
+The data types give the ownership of their instances and of their constructors, below, and their recursors that of the terms that use them.
 
 The value of the ownership $`\psi`$ of the result of a second-order variable, given the ownerships $`\bar o`$ of its arguments, written $`\psi[\bar o / \bar x]`$ where $`\bar x`$ are the variables of its telescope, is the meet of its constant and of its factors, each variable taking the ownership of its argument.
 The constant and the factors being optional, the value may be undefined: a meet with an undefined operand is its other operand, and an absent constant is undefined.
@@ -43,6 +43,16 @@ A sort has the least ownership, $`{\omega\omega}^{\mathsf{p}}`$, which states no
 \begin{gathered}
 \frac{f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m_2 \mathrel{◀} p \in \Sigma}{\Sigma;\ \varphi \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \mathrel{◀} p;\ m_1}\;(f_{◀}) \\[1em]
 \frac{}{\Sigma;\ \varphi \vdash \kappa \mathrel{◀} {\omega\omega}^{\mathsf{p}};\ m}\;(\kappa_{◀})
+\end{gathered}
+```
+
+An instance of a declared type is a type, and has the least ownership, as a sort.
+A constructor builds a new value, whose ownership is $`{11}^{\mathsf{p}}`$ whatever its fields: what the value holds is stated by the requirements of the entries of its fields, which its arguments satisfy, as those of a telescope, unless they are not used:
+
+```math
+\begin{gathered}
+\frac{}{\Sigma;\ \varphi \vdash D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \mathrel{◀} {\omega\omega}^{\mathsf{p}};\ m}\;(D_{◀}) \\[1em]
+\frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots \mid c : \Theta \mid \dots;\ \dots) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta[\bar s' / \bar s,\ \bar p' / \bar p];\ m\end{gathered}}{\Sigma;\ \varphi \vdash (D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).c(\bar t) \mathrel{◀} {11}^{\mathsf{p}};\ m}\;(c_{◀})
 \end{gathered}
 ```
 

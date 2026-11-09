@@ -91,7 +91,7 @@ The canonical terms of an instance are its constructors, at any instance of its 
 \end{aligned}
 ```
 
-An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when its constructors have distinct names and fields that are telescopes in its sort, whose terms are equal by the relations $`\bar S`$:
+An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the fields of its constructors are telescopes in its sort, whose terms are equal by the relations $`\bar S`$:
 
 ```math
 \begin{aligned}
@@ -99,13 +99,11 @@ An instance in a universe is a type of it, and an instance in a universe of prop
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of } \Sigma \\
 & \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
-& \qquad \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct} \\
 & \qquad \forall i.\ (\Theta_{ji}[T],\ S_i) \in \mathsf{ty}(U_n) \\[1em]
 & (T,\ \mathsf{true}(D_j,\ \bar S)) \in \mathsf{ty}(\Omega_n) \text{ if} &&(\mathsf{ty}_{D\Omega}) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of } \Sigma \\
 & \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n \\
-& \qquad \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct} \\
 & \qquad \forall i.\ (\Theta_{ji}[T],\ S_i) \in \mathsf{ty}(\Omega_n)
 \end{aligned}
 ```
@@ -185,15 +183,13 @@ An entry is not made meaningful in the signature before it alone: a type declara
 \end{aligned}
 ```
 
-A type declaration is meaningful when, at each instance of its sort and grade variables, the fields of each of its constructors are a [telescope in its sort](#telescopes-in-a-sort), in the context of its parameters, and the constructors of each of its types have distinct names; the parameters need no meaning of their own, since that of the fields holds it, and an instance reads the meaning of its arguments only:
+A type declaration is meaningful when, at each instance of its sort and grade variables, the fields of each of its constructors are a [telescope in its sort](#telescopes-in-a-sort), in the context of its parameters, the constructors of each of its types having distinct names when the [names of the signature](08-syntax.md) are; the parameters need no meaning of their own, since that of the fields holds it, and an instance reads the meaning of its arguments only:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&({\vDash}\mathsf{data}) \\
 & \quad \Sigma \vDash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\
-& \quad \text{and} \\
-& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\
-& \qquad \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct}
+& \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
 \end{aligned}
 ```
 

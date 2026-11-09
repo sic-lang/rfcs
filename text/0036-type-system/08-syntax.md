@@ -140,7 +140,7 @@ The cases are:
 - A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses, and whose ownership $`p`$, which no body checks, is the one of the value it stands for.
 - A type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots`$, a block of data types declared together, which has sort, level and grade variables, the names $`D_1, \dots, D_k`$ of its types, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, the sort $`\kappa`$ of its types and their bodies: each type $`D_j`$ has the grades $`\zeta_j`$ with which it uses the parameters, a vector of grades over the scope of $`\Delta`$, and its constructors $`c_{j1}, \dots, c_{j n_j}`$, in order, and each constructor $`c_{ji}`$ the telescope $`\Theta_{ji}`$ of its fields, in the scope of $`\Delta`$.
 
-The names of the constructors are not names of the signature: a constructor is named within its type, as $`D.c`$, so that two types may have constructors of the same name.
+The names of the constructors are not names of the signature: a constructor is named within its type, as $`D.c`$, so that two types may have constructors of the same name, while the constructors of one type have distinct names.
 The names that an entry introduces are $`D_1, \dots, D_k`$ for a type declaration, and $`f`$ for a constant definition or declaration:
 
 ```math
@@ -190,7 +190,7 @@ A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kapp
 \end{aligned}
 ```
 
-The names of a signature are distinct when each of its entries introduces distinct names, which no entry before it introduces, so that a type declaration names each of its types once:
+The names of a signature are distinct when each of its entries introduces distinct names, which no entry before it introduces, and names the constructors of each of its types once, so that a type declaration names each of its types and each constructor of a type once:
 
 ```math
 \begin{aligned}
@@ -200,7 +200,8 @@ The names of a signature are distinct when each of its entries introduces distin
 & \quad \text{and} \\
 & \qquad \text{the names of } \Sigma \text{ are distinct} \\
 & \qquad e \text{ introduces each of its names once} \\
-& \qquad \forall e' \in \Sigma.\ \mathsf{names}(e) \cap \mathsf{names}(e') = \varnothing
+& \qquad \forall e' \in \Sigma.\ \mathsf{names}(e) \cap \mathsf{names}(e') = \varnothing \\
+& \qquad e \text{ names the constructors of each of its types once}
 \end{aligned}
 ```
 

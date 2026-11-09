@@ -123,14 +123,15 @@ A variable has the type of its entry, and an application of a second-order varia
 \end{gathered}
 ```
 
-An instance of a constant, defined or declared, has the type of its entry at this instance; a sort $`U_l`$ or $`\Omega_l`$ is in the universe above its level; an instance of a declared type, whose arguments are arguments of its parameters, is in the sort of its type declaration:
+An instance of a constant, defined or declared, has the type of its entry at this instance; a sort $`U_l`$ or $`\Omega_l`$ is in the universe above its level; an instance of a declared type, whose arguments are arguments of its parameters, is in the sort of its type declaration; a constructor of one of its types, applied to arguments of its fields at the instance that it carries, is a term of this instance:
 
 ```math
 \begin{gathered}
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(f) \\[1em]
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash U_l : U_{l + 1}}\;(U) \\[1em]
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \Omega_l : U_{l + 1}}\;(\Omega) \\[1em]
-\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a : \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(D)
+\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a : \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(D) \\[1em]
+\frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots \mid c : \Theta \mid \dots;\ \dots) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\ \Sigma;\ \Gamma \vdash \bar t : \Theta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p][\bar a / \Delta]\end{gathered}}{\Sigma;\ \Gamma \vdash (D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).c(\bar t) : D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}\;(c)
 \end{gathered}
 ```
 
@@ -154,7 +155,7 @@ The equality of terms is an equivalence, which holds at every type equal to its 
 \end{gathered}
 ```
 
-Equal arguments give equal applications of a second-order variable, a constant definition unfolds to its body, and two instances of a constant, two sorts, or two instances of a declared type with equal arguments, at equal levels, are equal:
+Equal arguments give equal applications of a second-order variable, a constant definition unfolds to its body, and two instances of a constant, two sorts, two instances of a declared type with equal arguments, or two applications of a constructor at equal arguments of the instance and of its fields, at equal levels, are equal:
 
 ```math
 \begin{gathered}
@@ -163,7 +164,8 @@ Equal arguments give equal applications of a second-order variable, a constant d
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \bar l_1 = \bar l_2\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l_1;\ \bar p'\} \equiv f.\{\bar s';\ \bar l_2;\ \bar p'\} : A[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(f_\equiv) \\[1em]
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ l_1 = l_2\end{gathered}}{\Sigma;\ \Gamma \vdash U_{l_1} \equiv U_{l_2} : U_{l_1 + 1}}\;(U_\equiv) \\[1em]
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ l_1 = l_2\end{gathered}}{\Sigma;\ \Gamma \vdash \Omega_{l_1} \equiv \Omega_{l_2} : U_{l_1 + 1}}\;(\Omega_\equiv) \\[1em]
-\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\ \bar l_1 = \bar l_2\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1 \equiv D.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2 : \kappa[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(D_\equiv)
+\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\ \bar l_1 = \bar l_2\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1 \equiv D.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2 : \kappa[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(D_\equiv) \\[1em]
+\frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots \mid c : \Theta \mid \dots;\ \dots) \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\ \bar l_1 = \bar l_2 \\ \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p][\bar a_1 / \Delta]\end{gathered}}{\Sigma;\ \Gamma \vdash (D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1).c(\bar t) \equiv (D.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2).c(\bar u) : D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1}\;(c_\equiv)
 \end{gathered}
 ```
 
