@@ -26,8 +26,9 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash \bar a : \Delta`$ | $`\bar a`$ are arguments of the parameters $`\Delta`$ |
 | $`\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta`$ | $`\bar a_1`$ and $`\bar a_2`$ are equal arguments of $`\Delta`$ |
 | $`\Sigma;\ \Gamma \vdash \Theta : \kappa`$ | The telescope $`\Theta`$ lives in the sort $`\kappa`$ |
+| $`\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ | The type declaration is well formed |
 
-The judgments are defined together, except the last one, which builds on the others.
+The judgments are defined together, except the last two, which build on the others.
 Typing and equality carry no grade: the usage and the ownership of a term are checked by the judgments of [usage](11-usage.md) and of [ownership](12-ownership.md), which the rule of the constant definitions reads.
 Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](06-levels.md), and for sequences of levels holds on each component.
 
@@ -52,7 +53,7 @@ A context has a variable $`x : A`$, written $`x : A \in \Gamma`$, when one of it
 \end{aligned}
 ```
 
-The instance of an entry with the sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$, as many as the variables of each kind, gives its type, its body, its parameters and its sort at the instance $`\bar s'`$, $`\bar p'`$, in which it [instantiates](09-substitution.md) the level variables $`[\bar l' / \bar l]`$; the rules write it $`A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]`$, as if the instance were substituted, and $`A[\bar s' / \bar s,\ \bar p' / \bar p]`$ when it keeps the level variables:
+The instance of an entry with the sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$, as many as the variables of each kind, gives its type, its body, its parameters, its sort, and the grades and the constructors of its types at the instance $`\bar s'`$, $`\bar p'`$, in which it [instantiates](09-substitution.md) the level variables $`[\bar l' / \bar l]`$; the rules write it $`A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]`$, as if the instance were substituted, and $`A[\bar s' / \bar s,\ \bar p' / \bar p]`$ when it keeps the level variables:
 
 ```math
 \begin{aligned}
@@ -72,7 +73,7 @@ A signature is empty, or a signature extended by an entry that is well formed in
 \end{gathered}
 ```
 
-The type declarations enter a signature by the rules of their kinds, in their annexes.
+A type declaration enters no signature yet: the rule that adds it to a signature comes with the meaning of its instances, and its formation is given with the [type declarations](#type-declarations).
 
 An entry is checked in the empty context, once with its level variables, and for each instance of its sort and grade variables, which are finitely many, so that its rules hold whatever instantiates them.
 At each instance of its sort and grade variables, the type of a constant definition or declaration is a type of some sort, which may depend on the instance, and the body of a constant definition is a term of its type that uses no variable and has the ownership of the definition, in the mode of the definition:
@@ -130,7 +131,7 @@ An instance of a constant, defined or declared, has the type of its entry at thi
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(f) \\[1em]
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash U_l : U_{l + 1}}\;(U) \\[1em]
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \Omega_l : U_{l + 1}}\;(\Omega) \\[1em]
-\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a : \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(D)
+\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a : \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(D)
 \end{gathered}
 ```
 
@@ -163,7 +164,7 @@ Equal arguments give equal applications of a second-order variable, a constant d
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \bar l_1 = \bar l_2\end{gathered}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l_1;\ \bar p'\} \equiv f.\{\bar s';\ \bar l_2;\ \bar p'\} : A[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(f_\equiv) \\[1em]
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ l_1 = l_2\end{gathered}}{\Sigma;\ \Gamma \vdash U_{l_1} \equiv U_{l_2} : U_{l_1 + 1}}\;(U_\equiv) \\[1em]
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma \\ l_1 = l_2\end{gathered}}{\Sigma;\ \Gamma \vdash \Omega_{l_1} \equiv \Omega_{l_2} : U_{l_1 + 1}}\;(\Omega_\equiv) \\[1em]
-\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\ \bar l_1 = \bar l_2\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1 \equiv D.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2 : \kappa[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(D_\equiv)
+\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\ \bar l_1 = \bar l_2\end{gathered}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1 \equiv D.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2 : \kappa[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(D_\equiv)
 \end{gathered}
 ```
 
@@ -204,6 +205,16 @@ A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort th
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : \kappa}\;(\mathsf{tel}_{\kappa\varepsilon}) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A : \kappa_1 \\ \kappa_1 \preceq \kappa_2 \\ \Sigma;\ \Gamma,\ x : A \vdash \Theta : \kappa_2 \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{gathered}}{\Sigma;\ \Gamma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa_2}\;(\mathsf{tel}_{\kappa,})
 \end{gathered}
+```
+
+### Type Declarations
+
+A block of data types is well formed when, at each instance of its sort and grade variables, its parameters form a context, the fields of each constructor live in its sort, and the constructors $`\bar c_j`$ of each type $`D_j`$ use the parameters as its grades $`\zeta_j`$ allow, the uses of all the constructors added, as their [usage](11-usage.md) adds them; the constructors of each type have distinct names.
+The fields are checked in the signature $`\Sigma`$, which the block does not extend, so that no type of the block occurs in them: the block is not recursive.
+The fields of a type in a universe of propositions are propositions, by the rule $`(\mathsf{tel}_{\kappa,})`$:
+
+```math
+\frac{\begin{gathered}{}\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{and} \\ & \qquad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vdash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma;\ \gamma \vdash \bar c_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned} \\ \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct}\end{gathered}}{\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k}\;(\mathsf{data})
 ```
 
 ## Properties

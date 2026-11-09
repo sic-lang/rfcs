@@ -130,7 +130,7 @@ An entry is one of three cases:
 & \quad {\mid} \\
 & \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t \\
 & \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\
-& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} c_{11} : \Theta_{11} \mid \dots \mid c_{1 n_1} : \Theta_{1 n_1};\ \dots;\ D_k \mathrel{≔} c_{k1} : \Theta_{k1} \mid \dots \mid c_{k n_k} : \Theta_{k n_k}
+& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} c_{11} : \Theta_{11} \mid \dots \mid c_{1 n_1} : \Theta_{1 n_1};\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} c_{k1} : \Theta_{k1} \mid \dots \mid c_{k n_k} : \Theta_{k n_k}
 \end{aligned}
 ```
 
@@ -138,7 +138,7 @@ The cases are:
 
 - A constant definition $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, the ownership $`p`$ of its value, which its body must have, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
 - A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses, and whose ownership $`p`$, which no body checks, is the one of the value it stands for.
-- A type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{≔} \dots`$, a block of data types declared together, which has sort, level and grade variables, the names $`D_1, \dots, D_k`$ of its types, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, the sort $`\kappa`$ of its types and their bodies: each type $`D_j`$ has its constructors $`c_{j1}, \dots, c_{j n_j}`$, in order, and each constructor $`c_{ji}`$ the telescope $`\Theta_{ji}`$ of its fields, in the scope of $`\Delta`$.
+- A type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots`$, a block of data types declared together, which has sort, level and grade variables, the names $`D_1, \dots, D_k`$ of its types, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, the sort $`\kappa`$ of its types and their bodies: each type $`D_j`$ has the grades $`\zeta_j`$ with which it uses the parameters, a vector of grades over the scope of $`\Delta`$, and its constructors $`c_{j1}, \dots, c_{j n_j}`$, in order, and each constructor $`c_{ji}`$ the telescope $`\Theta_{ji}`$ of its fields, in the scope of $`\Delta`$.
 
 The names of the constructors are not names of the signature: a constructor is named within its type, as $`D.c`$, so that two types may have constructors of the same name.
 The names that an entry introduces are $`D_1, \dots, D_k`$ for a type declaration, and $`f`$ for a constant definition or declaration:
@@ -147,7 +147,7 @@ The names that an entry introduces are $`D_1, \dots, D_k`$ for a type declaratio
 \begin{aligned}
 & \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
 & \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) = \{f\} \\
-& \mathsf{names}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{≔} \dots) = \{D_1, \dots, D_k\}
+& \mathsf{names}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots) = \{D_1, \dots, D_k\}
 \end{aligned}
 ```
 
@@ -180,13 +180,13 @@ A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m 
 \end{aligned}
 ```
 
-A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa`$, written $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma`$, when one of its entries is a type declaration that declares $`D`$, with these variables, the parameters $`\Delta`$ and the sort $`\kappa`$, which the rules of the declared types share:
+A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta`$, written $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma`$, when one of its entries is a type declaration that declares $`D`$, with these variables, the parameters $`\Delta`$, the sort $`\kappa`$ and the grades $`\zeta`$ of $`D`$, which the rules of the declared types share:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&(\in_D) \\
-& \quad D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma \\
-& \quad (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{≔} \dots;\ \dots) \in \Sigma
+& \quad D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\
+& \quad (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots;\ \dots) \in \Sigma
 \end{aligned}
 ```
 

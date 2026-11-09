@@ -41,7 +41,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\iota`$ | Interpretations of the constant declarations |
 | $`\sigma, \tau`$ | Substitutions of the first order |
 | $`\theta`$ | Substitutions of the second order |
-| $`\gamma, \delta`$ | Vectors of grades, one grade per variable of a scope |
+| $`\gamma, \delta, \zeta`$ | Vectors of grades, one grade per variable of a scope, $`\zeta`$ being the grades with which a declared type uses its parameters |
 | $`\varphi`$ | Ownerships of the variables of a scope, one grade per variable whose telescope is empty |
 | $`o`$ | Ownerships of the arguments of a second-order variable |
 | $`v, w`$ | Canonical terms |
