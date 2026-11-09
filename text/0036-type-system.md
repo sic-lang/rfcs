@@ -39,7 +39,7 @@ A sort bounds another when its level is above and it holds propositions only if 
 
 ### Syntax and Substitution
 
-The [syntax](0036-type-system/08-syntax.md) has few terms: variables applied to arguments, sorts, instances of the constants of the signature, defined or declared, and instances of the declared types, so that every type other than a sort comes from a type declaration, whose kind adds the terms that build and use its types.
+The [syntax](0036-type-system/08-syntax.md) has few terms: variables applied to arguments, sorts, instances of the constants of the signature, defined or declared, instances of the declared types, and the constructors and the recursors of the data types, so that every type other than a sort comes from a type declaration, and its terms from the constructors and the recursor of its block.
 A parameter of a type declaration may be a second-order variable, which stands for a term under the variables of a telescope, as the type of the result of a function depends on its argument.
 The [substitution](0036-type-system/09-substitution.md) of the first order gives terms to the variables, and the substitution of the second order gives abstractions to the variables, as the arguments of an instance do to its parameters.
 
@@ -97,7 +97,7 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Modes](0036-type-system/05-modes.md): the three settings in which the usage of a term is checked, and their structure on the grades.
 - [Levels](0036-type-system/06-levels.md): the indices of the sorts, their values, their equality, their order and their properties.
 - [Sorts](0036-type-system/07-sorts.md): the universes of types and of propositions, their qualities, the join of the qualities and the relation by which a sort bounds another.
-- [Syntax](0036-type-system/08-syntax.md): the terms, their arguments, the telescopes, the contexts and the signatures, with the variables they bind.
+- [Syntax](0036-type-system/08-syntax.md): the terms, among them the constructors and the recursors of the data types, their arguments, the motives and the branches of the recursors, the telescopes, the contexts and the signatures, with the variables they bind.
 - [Substitution](0036-type-system/09-substitution.md): the substitutions of the first and of the second order, the closed substitutions, the instantiation of the level variables and their properties.
 - [Grade vectors](0036-type-system/10-grade-vectors.md): the grades of the variables of a scope, their operations, their order and their properties.
 - [Usage](0036-type-system/11-usage.md): the judgment that checks, in a mode, how a term uses the variables of its scope.

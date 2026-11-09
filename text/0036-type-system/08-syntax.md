@@ -17,11 +17,19 @@ A term uses only the variables of its scope, each applied to an argument for eac
 
 ### Terms
 
-A term in a scope is one of four cases:
+A term in a scope is one of six cases:
 
 ```math
 \begin{aligned}
-& t \mathrel{::=} x[\bar t] \mid \kappa \mid f.\{\bar s;\ \bar l;\ \bar p\} \mid D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a &&(\mathsf{syntax}_t)
+& {\mathrel{::=}} &&(\mathsf{syntax}_t) \\
+& \quad t \\
+& \quad {\mid} \\
+& \qquad x[\bar t] \\
+& \qquad \kappa \\
+& \qquad f.\{\bar s;\ \bar l;\ \bar p\} \\
+& \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \\
+& \qquad (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t) \\
+& \qquad \mathsf{rec}_r\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u
 \end{aligned}
 ```
 
@@ -31,9 +39,10 @@ The cases are:
 - A sort $`\kappa`$.
 - An instance $`f.\{\bar s;\ \bar l;\ \bar p\}`$ of the constant $`f`$, defined or declared, in which $`\bar s`$ are qualities, $`\bar l`$ levels and $`\bar p`$ grades, one for each variable of each kind of the entry.
 - An instance $`D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$ of the declared type $`D`$, whose arguments $`\bar a`$ are in the scope, one for each parameter of its type declaration.
+- A constructor $`c`$ of the data type of an instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, applied to arguments $`\bar t`$, a term for each of its fields, written $`T.c(\bar t)`$: the constructor carries its instance, so that the term determines its type.
+- A recursor $`\mathsf{rec}_r\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u`$, which eliminates the term $`t`$, used with the grade $`r`$, with motives $`\bar C`$, one for each type of the block of $`t`$, and branches $`\bar u`$, one for each constructor of each type of the block, in the order of the declaration.
 
 The levels of a term use only the level variables of the entry of the signature in which it appears, and none when it appears in no entry.
-The terms that build and use the declared types are given by the kinds of type declarations, in their annexes.
 
 The arguments $`\bar t`$ of a telescope are a term for each of its entries, the first one first: they are either empty, written $`()`$, or an argument $`t`$ followed by arguments $`\bar t`$, written $`(t,\ \bar t)`$:
 
@@ -52,6 +61,26 @@ The arguments $`\bar a`$ of an instance are an abstraction for each parameter, t
 ```
 
 The abstraction for a parameter binds the variables $`\bar x`$, one for each entry of the telescope of the parameter, each with an empty telescope, and its term $`B`$ is in the scope extended by them; for a parameter with an empty telescope, $`\bar x`$ is empty and the abstraction is the term $`B`$.
+
+The motives $`\bar C`$ of a recursor are a motive for each type of the block, the first one first: they are either empty, written $`()`$, or a motive $`(\bar x,\ z).\, C`$ followed by motives $`\bar C`$, written $`((\bar x,\ z).\, C,\ \bar C)`$:
+
+```math
+\begin{aligned}
+& \bar C \mathrel{::=} () \mid ((\bar x,\ z).\, C,\ \bar C) &&(\mathsf{syntax}_{\bar C})
+\end{aligned}
+```
+
+The motive of a type binds the variables $`\bar x`$, one for each non-uniform parameter of the type, and the variable $`z`$, the term eliminated, each with an empty telescope, and its term $`C`$ is in the scope extended by them.
+
+The branches $`\bar u`$ of a recursor are a branch for each constructor, the first one first: they are either empty, written $`()`$, or a branch $`(\bar x;\ \bar y).\, u`$ followed by branches $`\bar u`$, written $`((\bar x;\ \bar y).\, u,\ \bar u)`$:
+
+```math
+\begin{aligned}
+& \bar u \mathrel{::=} () \mid ((\bar x;\ \bar y).\, u,\ \bar u) &&(\mathsf{syntax}_{\bar u})
+\end{aligned}
+```
+
+The branch of a constructor binds the variables $`\bar x`$, one for each field of the constructor, then the variables $`\bar y`$, one for each recursive result, each with an empty telescope, and its term $`u`$ is in the scope extended by them; the branch of the constructor $`c`$ of the type $`D`$ is written $`D.c(\bar x;\ \bar y) \Rightarrow u`$, without the semicolon when it binds no recursive result.
 
 ### Telescopes and Contexts
 
@@ -101,7 +130,7 @@ An entry is one of three cases:
 & \quad {\mid} \\
 & \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t \\
 & \qquad f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\
-& \qquad \mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots
+& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} c_{11} : \Theta_{11} \mid \dots \mid c_{1 n_1} : \Theta_{1 n_1};\ \dots;\ D_k \mathrel{≔} c_{k1} : \Theta_{k1} \mid \dots \mid c_{k n_k} : \Theta_{k n_k}
 \end{aligned}
 ```
 
@@ -109,15 +138,16 @@ The cases are:
 
 - A constant definition $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, the ownership $`p`$ of its value, which its body must have, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
 - A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses, and whose ownership $`p`$, which no body checks, is the one of the value it stands for.
-- A type declaration $`\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots`$, a block of types declared together, of the kind $`\mathcal{K}`$, of which the system knows the header only: the names $`D_1, \dots, D_n`$, the sort, level and grade variables, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, and the sort $`\kappa`$ of the declared types; the bodies of the declared types are given by $`\mathcal{K}`$, in its annex.
+- A type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{≔} \dots`$, a block of data types declared together, which has sort, level and grade variables, the names $`D_1, \dots, D_k`$ of its types, and, for each instance of $`\bar s`$ and $`\bar p`$, the parameters $`\Delta`$, a context, the sort $`\kappa`$ of its types and their bodies: each type $`D_j`$ has its constructors $`c_{j1}, \dots, c_{j n_j}`$, in order, and each constructor $`c_{ji}`$ the telescope $`\Theta_{ji}`$ of its fields, in the scope of $`\Delta`$.
 
-The names that an entry introduces are $`D_1, \dots, D_n`$ for a type declaration, and $`f`$ for a constant definition or declaration:
+The names of the constructors are not names of the signature: a constructor is named within its type, as $`D.c`$, so that two types may have constructors of the same name.
+The names that an entry introduces are $`D_1, \dots, D_k`$ for a type declaration, and $`f`$ for a constant definition or declaration:
 
 ```math
 \begin{aligned}
 & \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
 & \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) = \{f\} \\
-& \mathsf{names}(\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_n \mathrel{≔} \dots) = \{D_1, \dots, D_n\}
+& \mathsf{names}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{≔} \dots) = \{D_1, \dots, D_k\}
 \end{aligned}
 ```
 
@@ -156,7 +186,7 @@ A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kapp
 \begin{aligned}
 & \text{⟺} &&(\in_D) \\
 & \quad D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \in \Sigma \\
-& \quad \exists \mathcal{K}.\ (\mathcal{K}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{≔} \dots;\ \dots) \in \Sigma
+& \quad (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{≔} \dots;\ \dots) \in \Sigma
 \end{aligned}
 ```
 

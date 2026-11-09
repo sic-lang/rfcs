@@ -22,9 +22,9 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\rho`$ | Assignments of the level variables |
 | $`s`$ | Qualities of the sorts, $`U`$ and $`\Omega`$, and the sort variables that stand for them |
 | $`\kappa`$ | Sorts |
-| $`x, y`$ | Variables |
+| $`x, y, z`$ | Variables |
 | $`X`$ | Second-order variables, which bind variables |
-| $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$, and $`a`$ a term substituted for a variable |
+| $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$ or a branch of a recursor, and $`a`$ a term substituted for a variable |
 | $`A, B`$ | Types |
 | $`\Theta`$ | Telescopes |
 | $`\Gamma`$ | Contexts |
@@ -33,8 +33,9 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`e`$ | Entries of a signature |
 | $`\Delta`$ | Parameters of a type declaration |
 | $`\mathcal{D}`$ | Type declarations, blocks of types declared together |
-| $`\mathcal{K}`$ | Kinds of type declarations |
 | $`D, T`$ | Names of declared types, and their instances |
+| $`c`$ | Constructors of the data types |
+| $`C`$ | Motives of the recursors |
 | $`f`$ | Constants, defined or declared |
 | $`\Sigma`$ | Signatures |
 | $`\iota`$ | Interpretations of the constant declarations |
@@ -74,7 +75,7 @@ Rules and formulas are named as follows:
 - A formula is named in its last column.
 - The laws of a group, such as the laws of a semiring or the presuppositions of the judgments, and the parts of a definition made of several, such as the operations of the multiplicities or the substitution in each kind of object, are formulas or rules of their own, each named after the group or the definition, then after the law or the part, separated by a dot, as $`(\mathsf{semiring}_\xi.\mathsf{assoc}_{+})`$ and $`(\mathsf{op}_\pi.{+})`$.
 - A formula that defines an object is named after what it defines: $`\mathsf{syntax}`$ for the objects themselves, given by a grammar or by a condition, $`\mathsf{op}`$ for its operations and $`\mathsf{order}`$ for its order.
-- The name of a formula is indexed by the letter of the kind of objects it is about: $`\xi`$ for the elements of a modality, $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`t`$ for the terms, $`\bar t`$ and $`\bar a`$ for the arguments of the telescopes and of the instances, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\psi`$ for the ownerships of the results of the second-order variables, $`e`$ for the entries of the signatures, $`f`$ for the constants, $`D`$ for the declared types, $`\Sigma`$ for the signatures, $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order, $`\gamma`$ for the vectors of grades, $`S`$ for the sets of grades and $`M`$ for the terms of the target language of the erasure.
+- The name of a formula is indexed by the letter of the kind of objects it is about: $`\xi`$ for the elements of a modality, $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`t`$ for the terms, $`\bar t`$ and $`\bar a`$ for the arguments of the telescopes and of the instances, $`\bar C`$ and $`\bar u`$ for the motives and the branches of the recursors, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\psi`$ for the ownerships of the results of the second-order variables, $`e`$ for the entries of the signatures, $`f`$ for the constants, $`D`$ for the declared types, $`\Sigma`$ for the signatures, $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order, $`\gamma`$ for the vectors of grades, $`S`$ for the sets of grades, $`M`$ for the terms of the target language of the erasure, and $`\bar M`$ and $`\bar N`$ for its arguments and its branches.
 - The name of a formula of a meaning has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, and $`\mathsf{eq}`$ for a clause of the equality of a canonical type.
 - Every name designates one rule or one formula in all the annexes.
 
