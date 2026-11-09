@@ -213,13 +213,15 @@ A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m 
 \end{aligned}
 ```
 
-A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta`$, written $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma`$, when one of its entries is a type declaration that declares $`D`$, with these variables, the parameters $`\Delta`$, the sort $`\kappa`$ and the grades $`\zeta`$ of $`D`$, which the rules of the declared types share:
+A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta`$, written $`D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma`$, when one of its entries is a block of data types or of codata types that declares $`D`$, with these variables, the parameters $`\Delta`$, the sort $`\kappa`$ and the grades $`\zeta`$ of $`D`$, which the rules of the instances share; the rules of the constructors and of the recursors read the block of data types itself:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&(\in_D) \\
 & \quad D.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\
-& \quad (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots;\ \dots) \in \Sigma
+& \quad \text{or} \\
+& \qquad (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots;\ \dots) \in \Sigma \\
+& \qquad (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots;\ \dots) \in \Sigma
 \end{aligned}
 ```
 

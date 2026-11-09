@@ -21,7 +21,7 @@ The reduction unfolds a constant definition to its body at the instance of its v
 \end{gathered}
 ```
 
-A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, or a recursor on a neutral term, and a head normal form when it is a sort, an instance of a declared type, a constructor applied to the terms of its fields, which it does not compute, or a neutral term:
+A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, or a recursor on a neutral term, and a head normal form when it is a sort, an instance of a declared type, a constructor applied to the terms of its fields, which it does not compute, a corecursor, which computes only when it is observed, or a neutral term:
 
 ```math
 \begin{aligned}
@@ -37,6 +37,7 @@ A term is neutral when its reduction is stuck on a variable or on a declared con
 & \qquad \kappa \\
 & \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \\
 & \qquad (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t) \\
+& \qquad \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \\
 & \qquad \text{a neutral term in } \Sigma
 \end{aligned}
 ```

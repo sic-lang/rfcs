@@ -87,11 +87,13 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar g) \\
 & ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\theta] = ((\bar x;\ \bar y;\ \bar z).\, g[\theta],\ \bar g[\theta]) \\[1em]
 & \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\Theta) \\
-& (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\theta] = (x : A[\theta] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\theta])
+& (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\theta] = (x : A[\theta] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\theta]) \\[1em]
+& \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\bar d) \\
+& (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d)[\theta] = (d : (\Theta[\theta] \vdash B[\theta] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d[\theta])
 \end{aligned}
 ```
 
-Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty.
+Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`\bar x.\, d[\bar x]`$ of the identity.
 The identity gives each variable $`x`$ the abstraction $`\bar x.\, x[\bar x]`$:
 
 ```math
@@ -161,7 +163,7 @@ The instantiation $`[\bar l' / \bar l]`$ of the level variables $`\bar l`$ by th
 \end{aligned}
 ```
 
-It instantiates the level of a sort, and the levels of every term, argument, motive, branch, state, telescope and context, which it leaves the same otherwise:
+It instantiates the level of a sort, and the levels of every term, argument, motive, branch, state, telescope, list of destructors and context, which it leaves the same otherwise:
 
 ```math
 \begin{aligned}
@@ -187,6 +189,8 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\bar l' / \bar l] = ((\bar x;\ \bar y;\ \bar z).\, g[\bar l' / \bar l],\ \bar g[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Theta) \\
 & (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\bar l' / \bar l] = (x : A[\bar l' / \bar l] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\bar l' / \bar l]) \\[1em]
+& \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\bar d) \\
+& (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d)[\bar l' / \bar l] = (d : (\Theta[\bar l' / \bar l] \vdash B[\bar l' / \bar l] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Gamma) \\
 & (\Gamma,\ x : A)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ x : A[\bar l' / \bar l] \\
 & (\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi))[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ X : (\Theta[\bar l' / \bar l] \vdash A[\bar l' / \bar l] \mathrel{◀} \psi)
