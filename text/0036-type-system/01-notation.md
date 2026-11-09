@@ -24,7 +24,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\kappa`$ | Sorts |
 | $`x, y, z`$ | Variables |
 | $`X`$ | Second-order variables, which bind variables |
-| $`t, u, a`$ | Terms, $`u`$ being a term compared to $`t`$ or a branch of a recursor, and $`a`$ a term substituted for a variable |
+| $`t, u, a, g`$ | Terms, $`u`$ being a term compared to $`t`$ or a branch of a recursor, $`a`$ a term substituted for a variable, and $`g`$ a branch of a corecursor |
 | $`A, B`$ | Types |
 | $`\Theta`$ | Telescopes |
 | $`\Gamma`$ | Contexts |
@@ -35,6 +35,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\mathcal{D}`$ | Type declarations, blocks of types declared together |
 | $`D, T`$ | Names of declared types, and their instances |
 | $`c`$ | Constructors of the data types |
+| $`d`$ | Destructors of the codata types |
 | $`C`$ | Motives of the recursors |
 | $`f`$ | Constants, defined or declared |
 | $`\Sigma`$ | Signatures |
@@ -47,7 +48,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`v, w`$ | Canonical terms |
 | $`R`$ | Relations between closed terms, the equalities of the terms of the closed canonical types |
 | $`b`$ | Truth values of the propositions |
-| $`M, N`$ | Terms of the target language of the erasure |
+| $`M, N, P`$ | Terms of the target language of the erasure, $`N`$ being a branch of a recursor and $`P`$ a branch of a corecursor |
 
 No digit is double-struck: the zero and the unit of a modality, a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\xi`$ for a modality, $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, and $`\gamma`$ for a vector of grades.
 An operation on the modes or on the vectors of grades carries the same exponent, as $`\cdot^{\mathsf{m}}`$ and $`+^{\gamma}`$, so that it is told apart from the operation of the grades.
@@ -75,7 +76,7 @@ Rules and formulas are named as follows:
 - A formula is named in its last column.
 - The laws of a group, such as the laws of a semiring or the presuppositions of the judgments, and the parts of a definition made of several, such as the operations of the multiplicities or the substitution in each kind of object, are formulas or rules of their own, each named after the group or the definition, then after the law or the part, separated by a dot, as $`(\mathsf{semiring}_\xi.\mathsf{assoc}_{+})`$ and $`(\mathsf{op}_\pi.{+})`$.
 - A formula that defines an object is named after what it defines: $`\mathsf{syntax}`$ for the objects themselves, given by a grammar or by a condition, $`\mathsf{op}`$ for its operations and $`\mathsf{order}`$ for its order.
-- The name of a formula is indexed by the letter of the kind of objects it is about: $`\xi`$ for the elements of a modality, $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`t`$ for the terms, $`\bar t`$ and $`\bar a`$ for the arguments of the telescopes and of the instances, $`\bar C`$ and $`\bar u`$ for the motives and the branches of the recursors, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\psi`$ for the ownerships of the results of the second-order variables, $`e`$ for the entries of the signatures, $`f`$ for the constants, $`D`$ for the declared types, $`\Sigma`$ for the signatures, $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order, $`\gamma`$ for the vectors of grades, $`S`$ for the sets of grades, $`M`$ for the terms of the target language of the erasure, and $`\bar M`$ and $`\bar N`$ for its arguments and its branches.
+- The name of a formula is indexed by the letter of the kind of objects it is about: $`\xi`$ for the elements of a modality, $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`t`$ for the terms, $`\bar t`$ and $`\bar a`$ for the arguments of the telescopes and of the instances, $`\bar C`$ and $`\bar u`$ for the motives and the branches of the recursors, $`\bar\Theta`$ and $`\bar g`$ for the states and the branches of the corecursors, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\psi`$ for the ownerships of the results of the second-order variables, $`e`$ for the entries of the signatures, $`\mathcal{D}`$ for the type declarations, $`f`$ for the constants, $`c`$ and $`d`$ for the constructors and the destructors, $`D`$ for the declared types, $`\Sigma`$ for the signatures, $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order, $`\gamma`$ for the vectors of grades, $`S`$ for the sets of grades, $`M`$ for the terms of the target language of the erasure, and $`\bar M`$, $`\bar N`$ and $`\bar P`$ for its arguments and the branches of its recursors and of its corecursors.
 - The name of a formula of a meaning has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, and $`\mathsf{eq}`$ for a clause of the equality of a canonical type.
 - Every name designates one rule or one formula in all the annexes.
 

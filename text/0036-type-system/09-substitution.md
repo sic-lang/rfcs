@@ -7,7 +7,7 @@ It builds on the [syntax](08-syntax.md).
 
 This section defines the substitutions of the first order, then those of the second order, which apply them to the abstractions they give, the closed substitutions, and the instantiation of the level variables.
 A substitution of the first order and one of the second order are defined apart, as the substitution of the variables and the substitution of the metavariables of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), since the second one substitutes the arguments of each application in the abstraction it gives, which is not a part of the term.
-Under the variables that an abstraction, a motive, a branch or a telescope binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
+Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
 
 ### Substitutions of the First Order
 
@@ -21,7 +21,9 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & f.\{\bar s;\ \bar l;\ \bar p\}[\sigma] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\sigma] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma] \\
 & ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\sigma] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).c(\bar t[\sigma]) \\
-& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\sigma] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ t[\sigma]\ \mathsf{return}\ \bar C[\sigma]\ \mathsf{with}\ \bar u[\sigma] \\[1em]
+& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\sigma] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ t[\sigma]\ \mathsf{return}\ \bar C[\sigma]\ \mathsf{with}\ \bar u[\sigma] \\
+& (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\sigma] = t[\sigma].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).d)(\bar t[\sigma]) \\
+& (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g)[\sigma] = \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ \mathsf{from}\ \bar t[\sigma]\ \mathsf{return}\ \bar\Theta[\sigma]\ \mathsf{with}\ \bar g[\sigma] \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar t) \\
 & (t,\ \bar t)[\sigma] = (t[\sigma],\ \bar t[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar a) \\
@@ -30,6 +32,10 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & ((\bar x,\ z).\, C,\ \bar C)[\sigma] = ((\bar x,\ z).\, C[\sigma],\ \bar C[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar u) \\
 & ((\bar x;\ \bar y).\, u,\ \bar u)[\sigma] = ((\bar x;\ \bar y).\, u[\sigma],\ \bar u[\sigma]) \\[1em]
+& ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar\Theta) \\
+& (\bar x.\, \Theta,\ \bar\Theta)[\sigma] = (\bar x.\, \Theta[\sigma],\ \bar\Theta[\sigma]) \\[1em]
+& ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar g) \\
+& ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\sigma] = ((\bar x;\ \bar y;\ \bar z).\, g[\sigma],\ \bar g[\sigma]) \\[1em]
 & \varepsilon[\sigma] = \varepsilon &&(\mathsf{subst}_\sigma.\Theta) \\
 & (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\sigma] = (x : A[\sigma] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\sigma])
 \end{aligned}
@@ -65,7 +71,9 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & f.\{\bar s;\ \bar l;\ \bar p\}[\theta] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\theta] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta] \\
 & ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\theta] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).c(\bar t[\theta]) \\
-& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\theta] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ t[\theta]\ \mathsf{return}\ \bar C[\theta]\ \mathsf{with}\ \bar u[\theta] \\[1em]
+& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\theta] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ t[\theta]\ \mathsf{return}\ \bar C[\theta]\ \mathsf{with}\ \bar u[\theta] \\
+& (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\theta] = t[\theta].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).d)(\bar t[\theta]) \\
+& (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g)[\theta] = \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ \mathsf{from}\ \bar t[\theta]\ \mathsf{return}\ \bar\Theta[\theta]\ \mathsf{with}\ \bar g[\theta] \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar t) \\
 & (t,\ \bar t)[\theta] = (t[\theta],\ \bar t[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar a) \\
@@ -74,12 +82,16 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & ((\bar x,\ z).\, C,\ \bar C)[\theta] = ((\bar x,\ z).\, C[\theta],\ \bar C[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar u) \\
 & ((\bar x;\ \bar y).\, u,\ \bar u)[\theta] = ((\bar x;\ \bar y).\, u[\theta],\ \bar u[\theta]) \\[1em]
+& ()[\theta] = () &&(\mathsf{subst}_\theta.\bar\Theta) \\
+& (\bar x.\, \Theta,\ \bar\Theta)[\theta] = (\bar x.\, \Theta[\theta],\ \bar\Theta[\theta]) \\[1em]
+& ()[\theta] = () &&(\mathsf{subst}_\theta.\bar g) \\
+& ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\theta] = ((\bar x;\ \bar y;\ \bar z).\, g[\theta],\ \bar g[\theta]) \\[1em]
 & \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\Theta) \\
 & (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\theta] = (x : A[\theta] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\theta])
 \end{aligned}
 ```
 
-Under the variables that an abstraction, a motive or a branch binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty.
+Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty.
 The identity gives each variable $`x`$ the abstraction $`\bar x.\, x[\bar x]`$:
 
 ```math
@@ -149,7 +161,7 @@ The instantiation $`[\bar l' / \bar l]`$ of the level variables $`\bar l`$ by th
 \end{aligned}
 ```
 
-It instantiates the level of a sort, and the levels of every term, argument, motive, branch, telescope and context, which it leaves the same otherwise:
+It instantiates the level of a sort, and the levels of every term, argument, motive, branch, state, telescope and context, which it leaves the same otherwise:
 
 ```math
 \begin{aligned}
@@ -158,7 +170,9 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & f.\{\bar s;\ \bar l_1;\ \bar p\}[\bar l' / \bar l] = f.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\} \\
 & (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)[\bar l' / \bar l] = D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l] \\
 & ((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).c(\bar t))[\bar l' / \bar l] = (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).c(\bar t[\bar l' / \bar l]) \\
-& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\bar l' / \bar l] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ t[\bar l' / \bar l]\ \mathsf{return}\ \bar C[\bar l' / \bar l]\ \mathsf{with}\ \bar u[\bar l' / \bar l] \\[1em]
+& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\bar l' / \bar l] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ t[\bar l' / \bar l]\ \mathsf{return}\ \bar C[\bar l' / \bar l]\ \mathsf{with}\ \bar u[\bar l' / \bar l] \\
+& (t.((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).d)(\bar t))[\bar l' / \bar l] = t[\bar l' / \bar l].((D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).d)(\bar t[\bar l' / \bar l]) \\
+& (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g)[\bar l' / \bar l] = \mathsf{corec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ \mathsf{from}\ \bar t[\bar l' / \bar l]\ \mathsf{return}\ \bar\Theta[\bar l' / \bar l]\ \mathsf{with}\ \bar g[\bar l' / \bar l] \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar t) \\
 & (t,\ \bar t)[\bar l' / \bar l] = (t[\bar l' / \bar l],\ \bar t[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar a) \\
@@ -167,6 +181,10 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & ((\bar x,\ z).\, C,\ \bar C)[\bar l' / \bar l] = ((\bar x,\ z).\, C[\bar l' / \bar l],\ \bar C[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar u) \\
 & ((\bar x;\ \bar y).\, u,\ \bar u)[\bar l' / \bar l] = ((\bar x;\ \bar y).\, u[\bar l' / \bar l],\ \bar u[\bar l' / \bar l]) \\[1em]
+& ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar\Theta) \\
+& (\bar x.\, \Theta,\ \bar\Theta)[\bar l' / \bar l] = (\bar x.\, \Theta[\bar l' / \bar l],\ \bar\Theta[\bar l' / \bar l]) \\[1em]
+& ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar g) \\
+& ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\bar l' / \bar l] = ((\bar x;\ \bar y;\ \bar z).\, g[\bar l' / \bar l],\ \bar g[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Theta) \\
 & (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\bar l' / \bar l] = (x : A[\bar l' / \bar l] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Gamma) \\
