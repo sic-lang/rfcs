@@ -185,7 +185,17 @@ An entry is not made meaningful in the signature before it alone: a type declara
 \end{aligned}
 ```
 
-A type declaration has no meaning yet: the formula that makes it meaningful comes with the rule that adds it to a signature, so that a signature with a type declaration has no meaning.
+A type declaration is meaningful when, at each instance of its sort and grade variables, the fields of each of its constructors are a [telescope in its sort](#telescopes-in-a-sort), in the context of its parameters, and the constructors of each of its types have distinct names; the parameters need no meaning of their own, since that of the fields holds it, and an instance reads the meaning of its arguments only:
+
+```math
+\begin{aligned}
+& \text{⟺} &&({\vDash}\mathsf{data}) \\
+& \quad \Sigma \vDash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\
+& \quad \text{and} \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct}
+\end{aligned}
+```
 
 A constant definition is meaningful when its body is a term of its type, and a constant declaration when its interpretation is, at each instance of their sort and grade variables and each assignment of their level variables:
 
@@ -355,6 +365,11 @@ Every judgment of the typing is meaningful under an interpretation that interpre
 & \qquad \iota \text{ interprets } \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\
 & \qquad \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\
 & \quad \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \vDash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\[1em]
+& \text{⟹} &&(\mathsf{sound}.\mathsf{data}) \\
+& \quad \text{and} \\
+& \qquad \iota \text{ interprets } \Sigma \\
+& \qquad \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\
+& \quad \Sigma \vDash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma \vdash \Gamma \implies \Sigma \vDash \Gamma &&(\mathsf{sound}.\Gamma) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash A \implies \Sigma;\ \Gamma \vDash A &&(\mathsf{sound}.A) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash A \equiv B \implies \Sigma;\ \Gamma \vDash A \equiv B &&(\mathsf{sound}.A_\equiv) \\[1em]

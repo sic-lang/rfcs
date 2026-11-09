@@ -63,17 +63,16 @@ The instance of an entry with the sort variables $`\bar s`$, the level variables
 
 ### Signatures and Entries
 
-A signature is empty, or a signature extended by an entry that is well formed in it, and whose name no entry of the signature introduces:
+A signature is empty, or a signature extended by an entry that is well formed in it, and whose names no entry of the signature introduces, a type declaration naming each of its types once:
 
 ```math
 \begin{gathered}
 \frac{}{\vdash \varnothing}\;(\mathsf{sig}_\varnothing) \\[1em]
 \frac{\begin{gathered}{}\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t \\ \text{no entry of } \Sigma \text{ introduces } f\end{gathered}}{\vdash \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t}\;(\mathsf{sig}_{\mathsf{def}}) \\[1em]
-\frac{\begin{gathered}{}\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\ \text{no entry of } \Sigma \text{ introduces } f\end{gathered}}{\vdash \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p}\;(\mathsf{sig}_{\mathsf{decl}})
+\frac{\begin{gathered}{}\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\ \text{no entry of } \Sigma \text{ introduces } f\end{gathered}}{\vdash \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p}\;(\mathsf{sig}_{\mathsf{decl}}) \\[1em]
+\frac{\begin{gathered}{}\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\ \text{the names } D_1, \dots, D_k \text{ are distinct} \\ \text{no entry of } \Sigma \text{ introduces one of } D_1, \dots, D_k\end{gathered}}{\vdash \Sigma,\ \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k}\;(\mathsf{sig}_{\mathsf{data}})
 \end{gathered}
 ```
-
-A type declaration enters no signature yet: the rule that adds it to a signature comes with the meaning of the type declarations, and its formation is given with the [type declarations](#type-declarations).
 
 An entry is checked in the empty context, once with its level variables, and for each instance of its sort and grade variables, which are finitely many, so that its rules hold whatever instantiates them.
 At each instance of its sort and grade variables, the type of a constant definition or declaration is a type of some sort, which may depend on the instance, and the body of a constant definition is a term of its type that uses no variable and has the ownership of the definition, in the mode of the definition:
@@ -234,6 +233,8 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 & \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar t_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta) \\[1em]
+& \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{data}) \\[1em]
 & {\vdash \Sigma,\ e} \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.e)
 \end{aligned}
 ```

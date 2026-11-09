@@ -62,7 +62,7 @@ A constant definition is transparent: it unfolds to its body, whose ownership is
 A constant declaration has no body, and covers three needs, told apart by the sort of its type and its mode: an axiom, a proposition assumed true, of the mode $`{01}^{\mathsf{m}}`$; a ghost constant, a value or a type that the specifications and the proofs use, of the mode $`{00}^{\mathsf{m}}`$ or $`{01}^{\mathsf{m}}`$; and a foreign constant, a type, a value or a function that the running program gets from outside, of the mode $`{11}^{\mathsf{m}}`$.
 Its ownership is trusted, as its type is, so that a foreign constant states whether its value may be shared.
 A type declaration declares a block of data types, each with the grades with which it uses the parameters of the block, which the elaboration computes and the type system checks against the uses of the fields of its constructors, all added; an instance uses its arguments as these grades say.
-Its formation is given, for a block whose types occur in none of its fields, and its instances have a meaning; its entry into the signature comes with the meaning of the type declarations, and its constructors and its recursor with their typing.
+Its formation is given, for a block whose types occur in none of its fields, with its entry into the signature, its meaning and that of its instances; its constructors and its recursor come with their typing.
 
 The universes of propositions $`\Omega_l`$ hold strict propositions: two proofs of a proposition are equal, and an entry of a telescope whose type is a proposition has a grade without use at run time, so that the proofs are erased.
 
