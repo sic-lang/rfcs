@@ -10,7 +10,7 @@ The judgment $`\Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m`
 
 Ownership is defined on the term and the signature alone, without a context, as usage is: the scope gives each second-order variable its telescope and the ownership $`\psi`$ of its result, and the signature gives each constant its ownership.
 Unlike the vector of the usage, which each premise computes and the conclusion adds, $`\varphi`$ is the same in every premise, as the context of the typing is.
-The data types give the ownership of their instances, of their constructors and of their recursors, below.
+The declared types give the ownership of their instances, the data types that of their constructors and of their recursors, and the codata types that of their observations, below.
 
 The value of the ownership $`\psi`$ of the result of a second-order variable, given the ownerships $`\bar o`$ of its arguments, written $`\psi[\bar o / \bar x]`$ where $`\bar x`$ are the variables of its telescope, is the meet of its constant and of its factors, each variable taking the ownership of its argument.
 The constant and the factors being optional, the value may be undefined: a meet with an undefined operand is its other operand, and an absent constant is undefined.
@@ -60,6 +60,12 @@ A recursor, written as in its [typing](13-typing.md#terms), has the ownership of
 
 ```math
 \frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \Sigma;\ \varphi \vdash t \mathrel{◀} o;\ m \odot r \\ \forall j, i.\ \text{the entries of } \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ require } r_{ji1}, \dots, r_{jik_{ji}} \\ \forall j, i.\ \Sigma;\ \varphi,\ x_{ji1} \mathrel{◀} o \cdot r_{ji1}, \dots, x_{jik_{ji}} \mathrel{◀} o \cdot r_{jik_{ji}} \vdash u_{ji} \mathrel{◀} p;\ m\end{gathered}}{\Sigma;\ \varphi \vdash \mathsf{rec}_r\ (D_h.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \mathrel{◀} p;\ m}\;(\mathsf{rec}_{◀})
+```
+
+An observation, written as in its [typing](13-typing.md#terms), has the ownership $`o`$ of its term times the value of the ownership $`\psi`$ of the result of its destructor, given the ownerships of its arguments, which satisfy the requirements of the entries of the telescope of the destructor, as the arguments of a telescope do: the result of a value owned alone has the ownership that its destructor gives it, and the result of a shared value is shared, since an other owner of the value may observe it:
+
+```math
+\frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \bar d;\ \dots) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \bar d[\bar s' / \bar s,\ \bar p' / \bar p] = (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d_2) \\ \Sigma;\ \varphi \vdash t \mathrel{◀} o;\ m \\ \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \\ \psi[\bar o / \bar x] = r\end{gathered}}{\Sigma;\ \varphi \vdash t.((D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).d)(\bar t) \mathrel{◀} o \cdot r;\ m}\;(d_{◀})
 ```
 
 A term may be given an ownership lower than its own, which states less:

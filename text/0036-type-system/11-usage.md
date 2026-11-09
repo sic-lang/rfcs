@@ -11,7 +11,7 @@ The judgment $`\Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m`$ reads: ch
 The judgment $`\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m`$ reads: checked in the mode $`m`$, the types of the telescope $`\Theta`$ use the variables of its scope as $`\gamma`$ allows, the judgment $`\Sigma;\ \gamma \vdash \bar c \mathrel{▶} m`$ likewise for the telescopes of the fields of the constructors $`\bar c`$ of a data type, and the judgment $`\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m`$ likewise for the arguments and the results of the destructors $`\bar d`$ of a codata type, which the [formation](13-typing.md#type-declarations) of the type declarations reads.
 
 Usage is defined on the term and the signature alone, without a context: the scope gives each variable the grades of its telescope, with which an application uses its arguments, and the signature gives each constant its mode.
-The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, and each constructor the grades of its fields, which the usage of the constructors and of the recursors reads at their instance.
+The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, each constructor the grades of its fields, which the usage of the constructors and of the recursors reads at their instance, and each destructor its grade and the grades of its arguments, which the usage of the observations reads at their instance.
 
 An application $`x[\bar t]`$ uses $`x`$ with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode $`m \odot p_j`$; a variable with an empty telescope uses itself only:
 
@@ -50,6 +50,12 @@ Its motives, which are types, use no variable, checked in the mode $`{00}^{\math
 
 ```math
 \frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \forall j.\ \Sigma;\ {00}^{\gamma} \vdash C_j \mathrel{▶} {00}^{\mathsf{m}} \\ \Sigma;\ \gamma \vdash t \mathrel{▶} m \odot r \\ \forall j, i.\ \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ has the grades } q_{ji1}, \dots, q_{jik_{ji}} \\ \forall j, i.\ \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot r \cdot q_{ji1}) \bullet \dots \bullet (\ulcorner m \urcorner \cdot r \cdot q_{jik_{ji}}) \vdash u_{ji} \mathrel{▶} m \\ \llcorner r \lrcorner = {11}^{\mathsf{m}} \text{ if } m = {11}^{\mathsf{m}} \text{ and one of } \bar c_1, \dots, \bar c_k \text{ has two constructors or more}\end{gathered}}{\Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash \mathsf{rec}_r\ (D_h.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \mathrel{▶} m}\;(\mathsf{rec}_{▶})
+```
+
+An observation, written as in its [typing](13-typing.md#terms), uses the variables of its term once, the term checked in the mode $`m`$, and those of its arguments as the arguments of the telescope of the destructor at the instance do, and the instance it carries uses none; the mode must allow the grade $`p`$ of the destructor, as the mode of a constant must, so that a result without use at run time is observed only in a term without use at run time:
+
+```math
+\frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \bar d;\ \dots) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \bar d[\bar s' / \bar s,\ \bar p' / \bar p] = (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d_2) \\ \Theta \text{ has the grades } p_1, \dots, p_n \\ \Sigma;\ \gamma \vdash t \mathrel{▶} m \\ \Sigma;\ \delta \vdash \bar t \mathrel{▶} p_1, \dots, p_n;\ m \\ m \cdot^{\mathsf{m}} \llcorner p \lrcorner = m\end{gathered}}{\Sigma;\ \gamma +^{\gamma} \delta \vdash t.((D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).d)(\bar t) \mathrel{▶} m}\;(d_{▶})
 ```
 
 A term may be given grades lower than its uses:

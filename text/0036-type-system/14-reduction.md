@@ -8,7 +8,9 @@ It builds on the [syntax](08-syntax.md) and on the instances of the entries, whi
 The judgment $`\Sigma \vdash t \longrightarrow u`$ reads: in the signature $`\Sigma`$, the term $`t`$ reduces to $`u`$ in one step of weak head reduction.
 The reduction is untyped, and defined on the terms of every scope, with their level variables.
 
-The reduction unfolds a constant definition to its body at the instance of its variables, steps a recursor on a constructor applied to the terms of its fields to the branch of the constructor, the terms substituted for the variables of the fields, and reduces the term that a recursor eliminates; the block, written as in the [typing](13-typing.md#terms), gives the constructor its branch, at the position of the constructor in the block:
+The reduction unfolds a constant definition to its body at the instance of its variables, steps a recursor on a constructor applied to the terms of its fields to the branch of the constructor, the terms substituted for the variables of the fields, and reduces the term that a recursor eliminates; the block, written as in the [typing](13-typing.md#terms), gives the constructor its branch, at the position of the constructor in the block.
+It steps an observation of a corecursor to the branch of the destructor in the corecursor, the terms of the state and the arguments substituted for its variables, and reduces the term that an observation observes; the block of codata types, whose type $`D_j`$ has the destructors $`\bar d_j = d_{j1} : \dots \mid \dots \mid d_{jn_j} : \dots`$ and the state whose variables are $`\bar y_j`$, gives the destructor its branch, at the position of the destructor in the block, and the instance that the observation carries plays no part, as that of a recursor does not.
+The block is not recursive, so that the branch observes nothing again, and its parameters are uniform, so that the branch binds none of them:
 
 ```math
 \frac{\begin{gathered}{}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{gathered}}{\Sigma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \longrightarrow t[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(\delta_{\longrightarrow})
@@ -17,11 +19,13 @@ The reduction unfolds a constant definition to its body at the instance of its v
 ```math
 \begin{gathered}
 \frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar u = (D_1.c_{11}(\bar x_{11}) \Rightarrow u_{11},\ \dots,\ D_k.c_{kn_k}(\bar x_{kn_k}) \Rightarrow u_{kn_k}) \\ \bar t \text{ as many as } \bar x_{hi}\end{gathered}}{\Sigma \vdash \mathsf{rec}_r\ T\ ((D_h.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).c_{hi}(\bar t))\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \longrightarrow u_{hi}[\bar t / \bar x_{hi}]}\;(\iota_{\longrightarrow}) \\[1em]
-\frac{\Sigma \vdash t \longrightarrow t'}{\Sigma \vdash \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \longrightarrow \mathsf{rec}_r\ T\ t'\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u}\;(\mathsf{rec}_{\longrightarrow})
+\frac{\Sigma \vdash t \longrightarrow t'}{\Sigma \vdash \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \longrightarrow \mathsf{rec}_r\ T\ t'\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u}\;(\mathsf{rec}_{\longrightarrow}) \\[1em]
+\frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k) \in \Sigma \\ \bar g = (D_1.d_{11}(;\ \bar y_1;\ \bar z_{11}) \Rightarrow g_{11},\ \dots,\ D_k.d_{kn_k}(;\ \bar y_k;\ \bar z_{kn_k}) \Rightarrow g_{kn_k}) \\ \bar t \text{ as many as } \bar y_h \\ \bar u \text{ as many as } \bar z_{hi}\end{gathered}}{\Sigma \vdash (\mathsf{corec}_r\ (D_h.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g).(T.d_{hi})(\bar u) \longrightarrow g_{hi}[\bar t / \bar y_h,\ \bar u / \bar z_{hi}]}\;(\beta_{\longrightarrow}) \\[1em]
+\frac{\Sigma \vdash t \longrightarrow t'}{\Sigma \vdash t.(T.d)(\bar t) \longrightarrow t'.(T.d)(\bar t)}\;(d_{\longrightarrow})
 \end{gathered}
 ```
 
-A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, or a recursor on a neutral term, and a head normal form when it is a sort, an instance of a declared type, a constructor applied to the terms of its fields, which it does not compute, a corecursor, which computes only when it is observed, or a neutral term:
+A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, or a recursor or an observation of a neutral term, and a head normal form when it is a sort, an instance of a declared type, a constructor applied to the terms of its fields, which it does not compute, a corecursor, which computes only when it is observed, or a neutral term:
 
 ```math
 \begin{aligned}
@@ -30,7 +34,8 @@ A term is neutral when its reduction is stuck on a variable or on a declared con
 & \quad {\mid} \\
 & \qquad x[\bar t] \\
 & \qquad f.\{\bar s';\ \bar l';\ \bar p'\} \text{ if } (f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) \in \Sigma \\
-& \qquad \mathsf{rec}_r\ T\ n\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \text{ if } n \text{ is a neutral term in } \Sigma \\[1em]
+& \qquad \mathsf{rec}_r\ T\ n\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \text{ if } n \text{ is a neutral term in } \Sigma \\
+& \qquad n.(T.d)(\bar t) \text{ if } n \text{ is a neutral term in } \Sigma \\[1em]
 & {\mathrel{::=}} &&(\mathsf{whnf}_t) \\
 & \quad \text{a head normal form in } \Sigma \\
 & \quad {\mid} \\
@@ -66,7 +71,7 @@ The judgment $`\Sigma \vdash t \Downarrow v`$ reads: the closed term $`t`$ compu
 
 ## Properties
 
-In a signature whose names are [distinct](08-syntax.md), as those of a well-formed signature are by $`(\mathsf{distinct}_\Sigma)`$, a head normal form does not reduce, since a declared constant has no body and a neutral term is no constructor, and the reduction, its steps and the computation are deterministic, since a constant has one entry, and a constructor one position in the block of its type:
+In a signature whose names are [distinct](08-syntax.md), as those of a well-formed signature are by $`(\mathsf{distinct}_\Sigma)`$, a head normal form does not reduce, since a declared constant has no body and a neutral term is neither a constructor nor a corecursor, and the reduction, its steps and the computation are deterministic, since a constant has one entry, a constructor one position in the block of its type, and a destructor one position in the block of the type of a corecursor:
 
 ```math
 \begin{aligned}

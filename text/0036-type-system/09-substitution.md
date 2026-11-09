@@ -113,6 +113,15 @@ The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the p
 \end{aligned}
 ```
 
+The telescope and the result of a destructor of a codata type are in the scope of the parameters $`\Delta`$ of its type declaration extended by the destructors $`\bar d_1`$ before it, as second-order variables; the substitution $`[\bar a / \Delta,\ t.T / \bar d_1]`$ gives each parameter its argument in $`\bar a`$, as $`[\bar a / \Delta]`$ does, and each destructor $`d'`$ of $`\bar d_1`$ the observation $`\bar x.\, t.(T.d')(\bar x)`$ of the term $`t`$ of the instance $`T`$ by $`d'`$, over the variables $`\bar x`$ of its telescope, the first destructor first:
+
+```math
+\begin{aligned}
+& [\bar a / \Delta,\ t.T / \varepsilon] = [\bar a / \Delta] &&(\mathsf{obs}_\theta) \\
+& [\bar a / \Delta,\ t.T / (d' : (\Theta' \vdash B' \mathrel{◀} \psi') \mathrel{▶} p';\ q' \mid \bar d_1)] = [(\bar a,\ \bar x.\, t.(T.d')(\bar x)) / (\Delta,\ d' : (\Theta' \vdash B' \mathrel{◀} \psi')),\ t.T / \bar d_1]
+\end{aligned}
+```
+
 A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`\Gamma,\ \Theta`$, is extended by a variable for each entry of $`\Theta`$, whose grades and requirements it drops:
 
 ```math
