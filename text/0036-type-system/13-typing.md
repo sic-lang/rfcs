@@ -28,10 +28,11 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash \Theta : \kappa`$ | The telescope $`\Theta`$ lives in the sort $`\kappa`$ |
 | $`\Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa`$ | $`\Theta_1`$ and $`\Theta_2`$ are equal telescopes in the sort $`\kappa`$ |
 | $`\Sigma;\ \Gamma \vdash \bar d : \kappa`$ | The destructors $`\bar d`$ live in the sort $`\kappa`$ |
+| $`\Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa`$ | The fields $`\Theta`$ of a constructor of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
 | $`\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ | The type declaration is well formed |
 | $`\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k`$ | The type declaration is well formed |
 
-The judgments are defined together, except the last three, which build on the others.
+The judgments are defined together, except the last four, which build on the others.
 Typing and equality carry no grade: the usage and the ownership of a term are checked by the judgments of [usage](11-usage.md) and of [ownership](12-ownership.md), which the rule of the constant definitions reads.
 Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](06-levels.md), and for sequences of levels holds on each component.
 
@@ -145,7 +146,7 @@ The block is not recursive, so that the motives $`\bar C = (z.\, C_1,\ \dots,\ z
 The recursor has the motive of the type of its term at the term; each motive is a type of one sort $`\kappa_C`$ over a term of its type, and each branch a term of the motive of its type at its constructor applied to the variables of its fields; the motives on a block of propositions that has a constructor are propositions, since the proofs of a proposition need not compute:
 
 ```math
-\frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash t : T_h \\ \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_j : \kappa_C \\ \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji} \vdash u_{ji} : C_j[T_j.c_{ji}(\bar x_{ji}) / z] \\ \kappa_C \text{ is a universe of propositions if } \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one and } \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{rec}_r\ T_h\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u : C_h[t / z]}\;(\mathsf{rec})
+\frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\ \Sigma;\ \Gamma \vdash t : T_h \\ \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_j : \kappa_C \\ \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji} \vdash u_{ji} : C_j[T_j.c_{ji}(\bar x_{ji}) / z] \\ \kappa_C \text{ is a universe of propositions if } \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one and } \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{rec}_r\ T_h\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u : C_h[t / z]}\;(\mathsf{rec})
 ```
 
 A codata type is observed by its destructors.
@@ -205,7 +206,7 @@ Two recursors at equal arguments of the instance, at equal levels, on equal term
 \begin{gathered}
 \frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\ \bar l_1 = \bar l_2 \\ \Sigma;\ \Gamma \vdash t_1 \equiv t_2 : T_h \\ \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_{1j} \equiv C_{2j} : \kappa_C \\ \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji} \vdash u_{1ji} \equiv u_{2ji} : C_{1j}[T_j.c_{ji}(\bar x_{ji}) / z] \\ \kappa_C \text{ is a universe of propositions if } \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one and } \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{rec}_r\ (D_h.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1)\ t_1\ \mathsf{return}\ \bar C_1\ \mathsf{with}\ \bar u_1 \equiv \mathsf{rec}_r\ (D_h.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2)\ t_2\ \mathsf{return}\ \bar C_2\ \mathsf{with}\ \bar u_2 : C_{1h}[t_1 / z]}\;(\mathsf{rec}_\equiv) \\[1em]
 \frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\ \Sigma;\ \Gamma \vdash \bar t : \Theta'_{hi} \\ \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_j : \kappa_C \\ \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji} \vdash u_{ji} : C_j[T_j.c_{ji}(\bar x_{ji}) / z] \\ \kappa_C \text{ is a universe of propositions if } \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one and } \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{rec}_r\ T_h\ (T_h.c_{hi}(\bar t))\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \equiv u_{hi}[\bar t / \bar x_{hi}] : C_h[T_h.c_{hi}(\bar t) / z]}\;(\iota) \\[1em]
-\frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar c_h = c_{h1} : \Theta_{h1} \\ \Sigma;\ \Gamma \vdash t : T_h \\ \Sigma;\ \Gamma,\ z : T_h \vdash e : C_h \\ u_{h1} = e[T_h.c_{h1}(\bar x_{h1}) / z] \\ \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_j : \kappa_C \\ \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji} \vdash u_{ji} : C_j[T_j.c_{ji}(\bar x_{ji}) / z] \\ \kappa_C \text{ is a universe of propositions if } \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one and } \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{gathered}}{\Sigma;\ \Gamma \vdash e[t / z] \equiv \mathsf{rec}_r\ T_h\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u : C_h[t / z]}\;(\eta_c)
+\frac{\begin{gathered}{}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar c_h = c_{h1} : \Theta_{h1} \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\ \Sigma;\ \Gamma \vdash t : T_h \\ \Sigma;\ \Gamma,\ z : T_h \vdash e : C_h \\ u_{h1} = e[T_h.c_{h1}(\bar x_{h1}) / z] \\ \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_j : \kappa_C \\ \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji} \vdash u_{ji} : C_j[T_j.c_{ji}(\bar x_{ji}) / z] \\ \kappa_C \text{ is a universe of propositions if } \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one and } \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{gathered}}{\Sigma;\ \Gamma \vdash e[t / z] \equiv \mathsf{rec}_r\ T_h\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u : C_h[t / z]}\;(\eta_c)
 \end{gathered}
 ```
 
@@ -290,14 +291,37 @@ Each destructor is a second-order variable of the context of the destructors aft
 \end{gathered}
 ```
 
-### Type Declarations
+### Fields of a Block
 
-A block of data types is well formed when, at each instance of its sort and grade variables, its parameters form a context, the fields of each constructor live in its sort, and the constructors $`\bar c_j`$ of each type $`D_j`$ use the parameters as its grades $`\zeta_j`$ allow, the uses of all the constructors added, as their [usage](11-usage.md) adds them; the constructors of each type have distinct names.
-The fields are checked in the signature $`\Sigma`$, which the block does not extend, so that no type of the block occurs in them: the block is not recursive.
-The fields of a type in a universe of propositions are propositions, by the rule $`(\mathsf{tel}_{\kappa,})`$:
+A field of a constructor of a block of data types $`\mathcal{D}`$ is recursive when its type is an instance of a type of the block; $`\mathsf{rec}_{\mathcal{D}}(A)`$ names this type, $`\bot`$ when there is none, and $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$ gives it for each field of a telescope, in order:
 
 ```math
-\frac{\begin{gathered}{}\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{and} \\ & \qquad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vdash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma;\ \gamma \vdash \bar c_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned} \\ \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct}\end{gathered}}{\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k}\;(\mathsf{data})
+\begin{aligned}
+& \mathsf{rec}_{\mathcal{D}}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = D \text{ if } D \text{ is a type of } \mathcal{D} &&(\mathsf{recursive}_A) \\
+& \mathsf{rec}_{\mathcal{D}}(A) = \bot \text{ otherwise} \\[1em]
+& \mathsf{rec}_{\mathcal{D}}(\varepsilon) = () &&(\mathsf{recursive}_\Theta) \\
+& \mathsf{rec}_{\mathcal{D}}(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) = (\mathsf{rec}_{\mathcal{D}}(A),\ \mathsf{rec}_{\mathcal{D}}(\Theta))
+\end{aligned}
+```
+
+The fields of a constructor of a block $`\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, live in a sort when those that are not recursive do, as the entries of a [telescope in a sort](#telescopes-in-a-sort), and each recursive field is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, the abstraction $`\bar x.\, X[\bar x]`$ for a second-order parameter $`X`$, a field on which no field after it depends:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} \varepsilon : \kappa}\;(\mathsf{fields}_\varepsilon) \\[1em]
+\frac{\begin{gathered}{}\mathsf{rec}_{\mathcal{D}}(A) = \bot \\ \Sigma;\ \Gamma \vdash A : \kappa_1 \\ \kappa_1 \preceq \kappa \\ \Sigma;\ \Gamma,\ x : A \vdash_{\mathcal{D}} \Theta : \kappa \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{gathered}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa}\;(\mathsf{fields}_{,}) \\[1em]
+\frac{\begin{gathered}{}D \text{ is a type of } \mathcal{D} \\ x \text{ does not occur in } \Theta \\ \Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa \text{ is } \Omega\end{gathered}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (x : D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa}\;(\mathsf{fields}_{\mathsf{rec}})
+\end{gathered}
+```
+
+### Type Declarations
+
+A block of data types $`\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ is well formed when, at each instance of its sort and grade variables, its parameters form a context, the fields of each constructor live in its sort, and the constructors $`\bar c_j`$ of each type $`D_j`$ use the parameters as its grades $`\zeta_j`$ allow, the uses of all the constructors added, as their [usage](11-usage.md) adds them; the constructors of each type have distinct names.
+The fields that are not recursive are checked in the signature $`\Sigma`$, which the block does not extend, so that the types of the block occur only as the types of the recursive fields, at its parameters, and the usage of the constructors in the signature $`\Sigma,\ \mathcal{D}`$, which reads the grades of the types of the block.
+The fields of a type in a universe of propositions are propositions, by the rules $`(\mathsf{fields}_{,})`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$:
+
+```math
+\frac{\begin{gathered}{}\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{and} \\ & \qquad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar c_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned} \\ \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct}\end{gathered}}{\Sigma \vdash \mathcal{D}}\;(\mathsf{data})
 ```
 
 A block of codata types is well formed likewise, with the destructors $`\bar d_j`$ of each type $`D_j`$ in place of its constructors: at each instance of its sort and grade variables, its parameters form a context, the destructors of each type live in its sort and use the parameters as its grades $`\zeta_j`$ allow, the uses of all the destructors added, as their [usage](11-usage.md) adds them; the destructors of each type have distinct names.
@@ -327,6 +351,7 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar d : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar d) \\[1em]
+& \Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{fields}) \\[1em]
 & \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{data}) \\[1em]
 & \Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{codata}) \\[1em]
 & {\vdash \Sigma,\ e} \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.e)

@@ -99,22 +99,37 @@ The canonical terms of an instance are its constructors, at any instance of its 
 \end{aligned}
 ```
 
-An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the fields of its constructors are telescopes in its sort, whose terms are equal by the relations $`\bar S`$:
+The instances of the types of a block are given together, since a recursive field of one is an instance of another: given relations $`\bar X`$, one $`X_{D}`$ for each type $`D`$ of the block, and the equality $`S_{j'i}(\bar X)`$ of the terms of the fields of each constructor $`c_{j'i}`$ that relates its recursive fields of the type $`D`$ by $`X_D`$, the equality of the instances is the least family of relations closed under $`(\mathsf{eq}_c)`$, the one that every family closed under it contains, as in the fixed point theorem of [Tarski](https://doi.org/10.2140/pjm.1955.5.285), and the truth of the propositions the least family of truths $`\bar B`$ closed under $`(\mathsf{true}_D)`$:
 
 ```math
 \begin{aligned}
-& (T,\ \mathsf{eq}_c(D_j,\ \bar S)) \in \mathsf{ty}(U_n) \text{ if} &&(\mathsf{ty}_D) \\
-& \quad \text{and} \\
-& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of } \Sigma \\
-& \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
-& \qquad \forall i.\ (\Theta_{ji}[T],\ S_i) \in \mathsf{ty}(U_n) \\[1em]
-& (T,\ \mathsf{true}(D_j,\ \bar S)) \in \mathsf{ty}(\Omega_n) \text{ if} &&(\mathsf{ty}_{D\Omega}) \\
-& \quad \text{and} \\
-& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of } \Sigma \\
-& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n \\
-& \qquad \forall i.\ (\Theta_{ji}[T],\ S_i) \in \mathsf{ty}(\Omega_n)
+& \text{⟺} &&(\mathsf{eq}_\mu) \\
+& \quad (v,\ w) \in \mathsf{eq}_\mu(D_j,\ \bar S) \\
+& \quad \forall \bar X.\ (\forall j'.\ \mathsf{eq}_c(D_{j'},\ \bar S_{j'}(\bar X)) \subseteq X_{D_{j'}}) \implies (v,\ w) \in X_{D_j} \\[1em]
+& \text{⟺} &&(\mathsf{true}_\mu) \\
+& \quad \mathsf{true}_\mu(D_j,\ \bar S) \\
+& \quad \forall \bar B.\ (\forall j'.\ \mathsf{true}(D_{j'},\ \bar S_{j'}(\bar B)) \implies B_{D_{j'}}) \implies B_{D_j}
 \end{aligned}
 ```
+
+An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes in its sort, whose terms are equal by the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions $`\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i})`$ of the recursive fields of the type $`D`$, the graph of the telescopes takes the relation $`\mathsf{eq}_\Downarrow(X_D)`$, or the relation that holds when $`B_D`$ does:
+
+```math
+\begin{aligned}
+& (T,\ \mathsf{eq}_\mu(D_j,\ \bar S)) \in \mathsf{ty}(U_n) \text{ if} &&(\mathsf{ty}_D) \\
+& \quad \text{and} \\
+& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of a block } \mathcal{D} \text{ of } \Sigma \\
+& \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
+& \qquad \forall \bar X.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar X)) \in \mathsf{ty}(U_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto \mathsf{eq}_\Downarrow(X_D)] \\[1em]
+& (T,\ \mathsf{true}_\mu(D_j,\ \bar S)) \in \mathsf{ty}(\Omega_n) \text{ if} &&(\mathsf{ty}_{D\Omega}) \\
+& \quad \text{and} \\
+& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of a block } \mathcal{D} \text{ of } \Sigma \\
+& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n \\
+& \qquad \forall \bar B.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar B)) \in \mathsf{ty}(\Omega_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto \{(t,\ u) \mid B_D\}]
+\end{aligned}
+```
+
+Here $`\Theta_{j'i}[T]`$ is the fields of the constructor $`c_{j'i}`$ at the instance and the arguments of $`T`$, by $`(\mathsf{inst}_T)`$.
 
 The canonical terms of an instance of a codata type are its corecursors, at any instance of its type, as for the constructors, and two of them are equal when their observations are related by the equality $`S`$ of the destructors of the type: the observations $`\mathsf{obs}(v)`$ of a corecursor $`v`$ of the instance $`T_v`$ it carries are the closed abstractions $`\bar x.\, v.(T_v.d)(\bar x)`$, one for each destructor $`d`$, over the variables of its arguments, so that two corecursors are equal when their observations at equal arguments are equal, as the partial equivalence relations of the types of functions relate them; a proposition declared as a codata type is true when $`S`$ relates some abstractions to themselves, so that each of its destructors has a result at all its arguments:
 
@@ -144,19 +159,24 @@ An instance of a codata type in a universe is a type of it, and an instance in a
 \end{aligned}
 ```
 
-The graph $`\mathsf{ty}(s_n)`$ of the telescopes in the sort $`s_n`$, of the quality $`s`$ at the level $`n`$, relates a closed telescope $`\Theta`$ to the equality $`S`$ of the terms of its fields, written $`(\Theta,\ S) \in \mathsf{ty}(s_n)`$.
-A telescope is in it when its first type computes to a type of a sort that $`s_n`$ [bounds](07-sorts.md), and its rest is for each term of it, the same for equal terms, as the condition on the families of types of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111) requires:
+The graph $`\mathsf{ty}(s_n)[\bar R]`$ of the telescopes in the sort $`s_n`$, of the quality $`s`$ at the level $`n`$, relates a closed telescope $`\Theta`$ to the equality $`S`$ of the terms of its fields, written $`(\Theta,\ S) \in \mathsf{ty}(s_n)[\bar R]`$, where $`\bar R`$ gives a relation $`R`$ at the position of each recursive field of $`\Theta`$, and $`\bot`$ at the others; $`\mathsf{ty}(s_n)`$ is the graph of the telescopes without recursive fields, $`\bar R`$ being $`\bot`$ everywhere.
+A telescope is in it when its first type, if it is not a recursive field, computes to a type of a sort that $`s_n`$ [bounds](07-sorts.md), and its rest is for each term of it, the same for equal terms, as the condition on the families of types of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111) requires, and when its first type, if it is a recursive field, has the relation $`R`$ that $`\bar R`$ gives it, the rest being the same for every term of it, on which it does not depend:
 
 ```math
 \begin{aligned}
-& (\varepsilon,\ \{((),\ ())\}) \in \mathsf{ty}(s_n) &&(\mathsf{ty}_{\Theta\varepsilon}) \\[1em]
+& (\varepsilon,\ \{((),\ ())\}) \in \mathsf{ty}(s_n)[\bar R] &&(\mathsf{ty}_{\Theta\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{ty}_{\Theta,}) \\
 & \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta),\ \{((a_1,\ \bar t),\ (a_2,\ \bar u)) \mid (a_1,\ a_2) \in F \text{ and } (\bar t,\ \bar u) \in G(a_1)\}) \\
-& \quad \mathsf{ty}(s_n) \\
+& \quad \mathsf{ty}(s_n)[\bot,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad \exists v,\ \kappa_1.\ A \Downarrow v,\ \kappa_1 \preceq s_n \text{ and } (v,\ F) \in \mathsf{ty}_\Downarrow(\kappa_1) \\
-& \qquad \forall (a,\ a) \in F.\ (\Theta[a / x],\ G(a)) \in \mathsf{ty}(s_n) \\
-& \qquad \forall (a_1,\ a_2) \in F.\ G(a_1) = G(a_2)
+& \qquad \forall (a,\ a) \in F.\ (\Theta[a / x],\ G(a)) \in \mathsf{ty}(s_n)[\bar R] \\
+& \qquad \forall (a_1,\ a_2) \in F.\ G(a_1) = G(a_2) \\[1em]
+& \in \text{ if} &&(\mathsf{ty}_{\Theta\mathsf{rec}}) \\
+& \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta),\ \{((a_1,\ \bar t),\ (a_2,\ \bar u)) \mid (a_1,\ a_2) \in R \text{ and } (\bar t,\ \bar u) \in G\}) \\
+& \quad \mathsf{ty}(s_n)[R,\ \bar R] \\
+& \quad \text{and} \\
+& \qquad \forall a.\ (\Theta[a / x],\ G) \in \mathsf{ty}(s_n)[\bar R]
 \end{aligned}
 ```
 
@@ -180,8 +200,8 @@ Destructors are in it when the arguments $`\Theta`$ of the first one are a teles
 \end{aligned}
 ```
 
-At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$ and $`\mathsf{ty}(s_n)`$, of the telescopes and of the destructors, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
-The block is not recursive, so that the fields and the destructors of an instance are given before it, and its relations are not circular.
+At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$ and $`\mathsf{ty}(s_n)[\bar R]`$, of the telescopes and of the destructors, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
+The fields of an instance that are not recursive and the destructors of an instance are of types given before its block, and its recursive fields have the relations that the clause $`(\mathsf{ty}_D)`$ gives them, so that its relations are not circular.
 
 A closed canonical type has the equality that a universe gives it, and a proposition the equality of its proofs: all the closed terms when it is true, and none when it is false; a closed canonical type is a proposition when a universe of propositions gives it, and a closed type computes to a proposition when its canonical form is one:
 
@@ -239,13 +259,13 @@ An entry is not made meaningful in the signature before it alone: a type declara
 \end{aligned}
 ```
 
-A type declaration is meaningful when, at each instance of its sort and grade variables, the fields of each of its constructors are a [telescope in its sort](#telescopes-in-a-sort), in the context of its parameters, the constructors of each of its types having distinct names when the [names of the signature](08-syntax.md) are; the parameters need no meaning of their own, since that of the fields holds it, and an instance reads the meaning of its arguments only:
+A block of data types $`\mathcal{D}`$ is meaningful when, at each instance of its sort and grade variables, the fields of each of its constructors are [fields in its sort](#fields-of-a-block), in the context of its parameters, the constructors of each of its types having distinct names when the [names of the signature](08-syntax.md) are; the parameters need no meaning of their own, since that of the fields holds it, and an instance reads the meaning of its arguments only:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&({\vDash}\mathsf{data}) \\
-& \quad \Sigma \vDash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\
-& \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
+& \quad \Sigma \vDash \mathcal{D} \\
+& \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
 \end{aligned}
 ```
 
@@ -355,6 +375,33 @@ Two closed telescopes are equal in a sort $`\kappa`$ when their first types are 
 & \Sigma;\ \Gamma \vDash \Theta : \kappa \iff \Sigma;\ \Gamma \vDash \Theta \equiv \Theta : \kappa &&({\vDash}\Gamma_{\mathsf{tel}\kappa})
 \end{aligned}
 ```
+
+### Fields of a Block
+
+The fields of a constructor of a block $`\mathcal{D}`$, whose recursive fields $`\mathsf{rec}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields that are not recursive, and their recursive fields of the type $`D`$ are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, the rest being equal for every pair of terms of them, on which it does not depend, as the rules [$`(\mathsf{fields}_{,})`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$](13-typing.md) check; fields live in a sort in a context when their instances by equal closed substitutions of the context are equal in it, at the parameters themselves substituted:
+
+```math
+\begin{aligned}
+& \Sigma \vDash^{()}_{\bar a_1,\ \bar a_2} \varepsilon \equiv \varepsilon : \kappa \iff \text{the names of } \Sigma \text{ are distinct} &&({\vDash}\mathsf{fields}_\varepsilon) \\[1em]
+& \text{⟺} &&({\vDash}\mathsf{fields}_{,}) \\
+& \quad \Sigma \vDash^{(\bot,\ \bar D)}_{\bar a_1,\ \bar a_2} (x : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \Theta_1) \equiv (x : A_2 \mathrel{▶} p_2;\ q_2 \mathrel{◀} r_2,\ \Theta_2) : \kappa \\
+& \quad \text{and} \\
+& \qquad \exists \kappa_1 \preceq \kappa.\ \Sigma \vDash A_1 \equiv A_2 : \kappa_1 \\
+& \qquad \forall a_1,\ a_2.\ \Sigma \vDash a_1 \equiv a_2 : A_1 \implies \Sigma \vDash^{\bar D}_{\bar a_1,\ \bar a_2} \Theta_1[a_1 / x] \equiv \Theta_2[a_2 / x] : \kappa \\[1em]
+& \text{⟺} &&({\vDash}\mathsf{fields}_{\mathsf{rec}}) \\
+& \quad \Sigma \vDash^{(D,\ \bar D)}_{\bar a_1,\ \bar a_2} (x : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \Theta_1) \equiv (x : A_2 \mathrel{▶} p_2;\ q_2 \mathrel{◀} r_2,\ \Theta_2) : \kappa \\
+& \quad \text{and} \\
+& \qquad A_1 = T_D(\bar a_1) \text{ and } A_2 = T_D(\bar a_2) \\
+& \qquad \forall a_1,\ a_2.\ \Sigma \vDash^{\bar D}_{\bar a_1,\ \bar a_2} \Theta_1[a_1 / x] \equiv \Theta_2[a_2 / x] : \kappa \\[1em]
+& \text{⟺} &&({\vDash}\Gamma_{\mathsf{fields}}) \\
+& \quad \Sigma;\ \Gamma \vDash_{\mathcal{D}} \Theta : \kappa \\
+& \quad \text{and} \\
+& \qquad \Sigma \vDash \Gamma \\
+& \qquad \forall (\theta_1,\ \theta_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash^{\mathsf{rec}_{\mathcal{D}}(\Theta)}_{\bar x_\Delta[\theta_1],\ \bar x_\Delta[\theta_2]} \Theta[\theta_1] \equiv \Theta[\theta_2] : \kappa
+\end{aligned}
+```
+
+Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a`$, and $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\mathsf{fields}_{\mathsf{rec}})`$.
 
 ### Destructors in a Sort
 
