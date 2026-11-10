@@ -142,20 +142,33 @@ The canonical terms of an instance of a codata type are its corecursors, at any 
 \end{aligned}
 ```
 
-An instance of a codata type in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when its destructors are in its sort, with the equality $`S`$ of the abstractions for them:
+The instances of the types of a block of codata types are given together, since the result of a recursive destructor of one is an instance of another: given relations $`\bar X`$, one $`X_D`$ for each type $`D`$ of the block, and the equality $`S_{j'}(\bar X)`$ of the destructors of each type $`D_{j'}`$ that relates the results of its recursive destructors of the type $`D`$ by $`X_D`$, the equality of the instances is the greatest family of relations consistent with $`(\mathsf{eq}_d)`$, the one that contains every family whose related terms $`(\mathsf{eq}_d)`$ relates, as in the fixed point theorem of [Tarski](https://doi.org/10.2140/pjm.1955.5.285), so that two terms are equal when their observations are, as far as they are observed, and the truth of the propositions the greatest family of truths $`\bar B`$ consistent with $`(\mathsf{true}_d)`$:
 
 ```math
 \begin{aligned}
-& (T,\ \mathsf{eq}_d(D_j,\ S)) \in \mathsf{ty}(U_n) \text{ if} &&(\mathsf{ty}_d) \\
+& \text{⟺} &&(\mathsf{eq}_\nu) \\
+& \quad (v,\ w) \in \mathsf{eq}_\nu(D_j,\ \bar S) \\
+& \quad \exists \bar X.\ (\forall j'.\ X_{D_{j'}} \subseteq \mathsf{eq}_d(D_{j'},\ S_{j'}(\bar X))) \text{ and } (v,\ w) \in X_{D_j} \\[1em]
+& \text{⟺} &&(\mathsf{true}_\nu) \\
+& \quad \mathsf{true}_\nu(D_j,\ \bar S) \\
+& \quad \exists \bar B.\ (\forall j'.\ B_{D_{j'}} \implies \mathsf{true}_d(S_{j'}(\bar B))) \text{ and } B_{D_j}
+\end{aligned}
+```
+
+An instance of a codata type in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the destructors of the types of its block, at its instance and its arguments, are in its sort, with the equalities $`\bar S(\bar X)`$ of the abstractions for them, whatever the relations $`\bar X`$ of the results of the recursive destructors, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions $`\mathsf{rec}_{\mathcal{D}}(\bar d_{j'})`$ of the recursive destructors of the type $`D`$, the graph of the destructors takes the relation $`\mathsf{eq}_\Downarrow(X_D)`$, or the relation that holds when $`B_D`$ does:
+
+```math
+\begin{aligned}
+& (T,\ \mathsf{eq}_\nu(D_j,\ \bar S)) \in \mathsf{ty}(U_n) \text{ if} &&(\mathsf{ty}_d) \\
 & \quad \text{and} \\
-& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of } \Sigma \\
+& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
 & \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
-& \qquad (\bar d_j[T],\ S) \in \mathsf{ty}(U_n) \\[1em]
-& (T,\ \mathsf{true}_d(S)) \in \mathsf{ty}(\Omega_n) \text{ if} &&(\mathsf{ty}_{d\Omega}) \\
+& \qquad \forall \bar X.\ \forall j'.\ (\bar d_{j'}[T],\ S_{j'}(\bar X)) \in \mathsf{ty}(U_n)[\mathsf{rec}_{\mathcal{D}}(\bar d_{j'}) \mapsto \mathsf{eq}_\Downarrow(X_D)] \\[1em]
+& (T,\ \mathsf{true}_\nu(D_j,\ \bar S)) \in \mathsf{ty}(\Omega_n) \text{ if} &&(\mathsf{ty}_{d\Omega}) \\
 & \quad \text{and} \\
-& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of } \Sigma \\
+& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
 & \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n \\
-& \qquad (\bar d_j[T],\ S) \in \mathsf{ty}(\Omega_n)
+& \qquad \forall \bar B.\ \forall j'.\ (\bar d_{j'}[T],\ S_{j'}(\bar B)) \in \mathsf{ty}(\Omega_n)[\mathsf{rec}_{\mathcal{D}}(\bar d_{j'}) \mapsto \{(t,\ u) \mid B_D\}]
 \end{aligned}
 ```
 
@@ -180,28 +193,35 @@ A telescope is in it when its first type, if it is not a recursive field, comput
 \end{aligned}
 ```
 
-The graph $`\mathsf{ty}(s_n)`$ relates likewise closed destructors $`\bar d`$ to the equality $`S`$ of the families $`\bar f`$ of closed abstractions for them, one abstraction $`f_d`$ for each destructor $`d`$, written $`(\bar d,\ S) \in \mathsf{ty}(s_n)`$.
-Destructors are in it when the arguments $`\Theta`$ of the first one are a telescope in the universe $`U_n`$, whatever the quality $`s`$, its result type computes at equal arguments $`\bar t`$, and to types of sorts that $`s_n`$ bounds, with an equality $`F(\bar t)`$ of their terms that is the same for equal arguments, and the destructors after it are for each abstraction for it, the same for equal abstractions, two abstractions being equal when they give equal results at equal arguments:
+The graph $`\mathsf{ty}(s_n)[\bar R]`$ relates likewise closed destructors $`\bar d`$ to the equality $`S`$ of the families $`\bar f`$ of closed abstractions for them, one abstraction $`f_d`$ for each destructor $`d`$, written $`(\bar d,\ S) \in \mathsf{ty}(s_n)[\bar R]`$, where $`\bar R`$ gives a relation $`R`$ at the position of each recursive destructor, and $`\bot`$ at the others.
+Destructors are in it when the arguments $`\Theta`$ of the first one are a telescope in the universe $`U_n`$, whatever the quality $`s`$, and, if it is not recursive, its result type computes at equal arguments $`\bar t`$, and to types of sorts that $`s_n`$ bounds, with an equality $`F(\bar t)`$ of their terms that is the same for equal arguments, and the destructors after it are for each abstraction for it, the same for equal abstractions, two abstractions being equal when they give equal results at equal arguments; if it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it, and the destructors after it are the same for every abstraction for it, on which they do not depend:
 
 ```math
 \begin{aligned}
-& (\varepsilon,\ \{(\bar f,\ \bar g) \mid \bar f \text{ and } \bar g \text{ are families of closed abstractions}\}) \in \mathsf{ty}(s_n) &&(\mathsf{ty}_{\bar d\varepsilon}) \\[1em]
+& (\varepsilon,\ \{(\bar f,\ \bar g) \mid \bar f \text{ and } \bar g \text{ are families of closed abstractions}\}) \in \mathsf{ty}(s_n)[\bar R] &&(\mathsf{ty}_{\bar d\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{ty}_{\bar d|}) \\
 & \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G(f_d)\}) \\
-& \quad \mathsf{ty}(s_n) \\
+& \quad \mathsf{ty}(s_n)[\bot,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad (\Theta,\ S_\Theta) \in \mathsf{ty}(U_n) \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ \exists v.\ B[\bar t / \bar x] \Downarrow v \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ \forall v.\ B[\bar t / \bar x] \Downarrow v \implies \exists \kappa_1 \preceq s_n.\ (v,\ F(\bar t)) \in \mathsf{ty}_\Downarrow(\kappa_1) \\
 & \qquad \forall (\bar t_1,\ \bar t_2) \in S_\Theta.\ F(\bar t_1) = F(\bar t_2) \\
 & \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
-& \qquad \forall (f,\ f) \in E.\ (\bar d[f / d],\ G(f)) \in \mathsf{ty}(s_n) \\
-& \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2)
+& \qquad \forall (f,\ f) \in E.\ (\bar d[f / d],\ G(f)) \in \mathsf{ty}(s_n)[\bar R] \\
+& \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2) \\[1em]
+& \in \text{ if} &&(\mathsf{ty}_{\bar d\mathsf{rec}}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G\}) \\
+& \quad \mathsf{ty}(s_n)[R,\ \bar R] \\
+& \quad \text{and} \\
+& \qquad (\Theta,\ S_\Theta) \in \mathsf{ty}(U_n) \\
+& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in R\} \\
+& \qquad \forall f.\ (\bar d[f / d],\ G) \in \mathsf{ty}(s_n)[\bar R]
 \end{aligned}
 ```
 
-At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$ and $`\mathsf{ty}(s_n)[\bar R]`$, of the telescopes and of the destructors, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
-The fields of an instance that are not recursive and the destructors of an instance are of types given before its block, and its recursive fields have the relations that the clause $`(\mathsf{ty}_D)`$ gives them, so that its relations are not circular.
+At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$ and $`\mathsf{ty}(s_n)[\bar R]`$, of the telescopes and of the destructors, where $`\mathsf{ty}(s_n)`$ is the graph without recursive positions, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
+The fields of an instance that are not recursive and the destructors of an instance that are not recursive are of types given before its block, and its recursive fields and the results of its recursive destructors have the relations that the clauses $`(\mathsf{ty}_D)`$ and $`(\mathsf{ty}_d)`$ give them, so that its relations are not circular.
 
 A closed canonical type has the equality that a universe gives it, and a proposition the equality of its proofs: all the closed terms when it is true, and none when it is false; a closed canonical type is a proposition when a universe of propositions gives it, and a closed type computes to a proposition when its canonical form is one:
 
@@ -269,13 +289,13 @@ A block of data types $`\mathcal{D}`$ is meaningful when, at each instance of it
 \end{aligned}
 ```
 
-A block of codata types is meaningful likewise when, at each instance of its sort and grade variables, the destructors of each of its types are [in its sort](#destructors-in-a-sort), in the context of its parameters:
+A block of codata types is meaningful likewise when, at each instance of its sort and grade variables, the destructors of each of its types are [destructors in its sort](#destructors-of-a-block), in the context of its parameters:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&({\vDash}\mathsf{codata}) \\
 & \quad \Sigma \vDash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \\
-& \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
+& \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
 \end{aligned}
 ```
 
@@ -403,21 +423,35 @@ The fields of a constructor of a block $`\mathcal{D}`$, whose recursive fields $
 
 Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a`$, and $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\mathsf{fields}_{\mathsf{rec}})`$.
 
-### Destructors in a Sort
+### Destructors of a Block
 
-Destructors live in a sort $`\kappa`$ in a context when the premises of the rules [$`(\bar d_{\kappa\varepsilon})`$ and $`(\bar d_{\kappa|})`$](13-typing.md) are meaningful: the arguments of the first one are a telescope in the universe of the level of $`\kappa`$, its result is a term of a sort that $`\kappa`$ bounds, in the context extended by its arguments, and the destructors after it live in $`\kappa`$, in the context extended by it, a second-order variable whose equal substitutions are the equal abstractions for it:
+The destructors of a codata type of a block $`\mathcal{D}`$, whose recursive destructors $`\mathsf{rec}_{\mathcal{D}}`$ gives, are equal in a sort $`\kappa`$ at two closed substitutions $`\theta_1`$ and $`\theta_2`$ of their scope when the premises of the rules [$`(\bar d_{\kappa|})`$ and $`(\bar d_{\kappa\mathsf{rec}})`$](13-typing.md) are meaningful: the arguments of the first one are equal telescopes in the universe of the level of $`\kappa`$; if it is not recursive, its results at equal arguments are equal types of a sort that $`\kappa`$ bounds, and the destructors after it are equal for every pair of abstractions for it whose instances at equal arguments are equal terms of its result, as $`(\mathsf{eq}_X)`$ relates them; if it is recursive, its result is the instance $`T_D(\bar x_\Delta)`$ of the block at the parameters themselves, and the destructors after it are equal for every pair of abstractions for it, on which they do not depend.
+Destructors live in a sort in a context when they are equal at equal closed substitutions of the context:
 
 ```math
 \begin{aligned}
-& \Sigma;\ \Gamma \vDash \varepsilon : \kappa \iff \Sigma \vDash \Gamma &&({\vDash}\bar d_{\kappa\varepsilon}) \\[1em]
+& \Sigma \vDash^{()}_{\theta_1,\ \theta_2} \varepsilon : \kappa \iff \text{the names of } \Sigma \text{ are distinct} &&({\vDash}\bar d_{\kappa\varepsilon}) \\[1em]
 & \text{⟺} &&({\vDash}\bar d_{\kappa|}) \\
-& \quad \Sigma;\ \Gamma \vDash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) : \kappa \\
+& \quad \Sigma \vDash^{(\bot,\ \bar D)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) : \kappa \\
 & \quad \text{and} \\
-& \qquad \Sigma;\ \Gamma \vDash \Theta : U_l \text{ where } l \text{ is the level of } \kappa \\
-& \qquad \exists \kappa_1 \preceq \kappa.\ \Sigma;\ \Gamma,\ \Theta \vDash B : \kappa_1 \\
-& \qquad \Sigma;\ \Gamma,\ d : (\Theta \vdash B \mathrel{◀} \psi) \vDash \bar d : \kappa
+& \qquad \Sigma \vDash \Theta[\theta_1] \equiv \Theta[\theta_2] : U_l \text{ where } l \text{ is the level of } \kappa \\
+& \qquad \exists \kappa_1 \preceq \kappa.\ \forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B[\theta_1,\ \sigma_1] \equiv B[\theta_2,\ \sigma_2] : \kappa_1 \\
+& \qquad \forall \bar x.\, B_1,\ \bar x.\, B_2.\ (\forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B_1[\sigma_1] \equiv B_2[\sigma_2] : B[\theta_1,\ \sigma_1]) \implies \Sigma \vDash^{\bar D}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
+& \text{⟺} &&({\vDash}\bar d_{\kappa\mathsf{rec}}) \\
+& \quad \Sigma \vDash^{(D,\ \bar D)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) : \kappa \\
+& \quad \text{and} \\
+& \qquad \Sigma \vDash \Theta[\theta_1] \equiv \Theta[\theta_2] : U_l \text{ where } l \text{ is the level of } \kappa \\
+& \qquad B = T_D(\bar x_\Delta) \\
+& \qquad \forall \bar x.\, B_1,\ \bar x.\, B_2.\ \Sigma \vDash^{\bar D}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
+& \text{⟺} &&({\vDash}\Gamma_{\bar d}) \\
+& \quad \Sigma;\ \Gamma \vDash_{\mathcal{D}} \bar d : \kappa \\
+& \quad \text{and} \\
+& \qquad \Sigma \vDash \Gamma \\
+& \qquad \forall (\theta_1,\ \theta_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash^{\mathsf{rec}_{\mathcal{D}}(\bar d)}_{\theta_1,\ \theta_2} \bar d : \kappa
 \end{aligned}
 ```
+
+Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a`$, and $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\bar d_{\kappa\mathsf{rec}})`$; the destructors are not substituted, and their closed substitutions are written apart, as the graph of the destructors reads them.
 
 ### Level Variables
 
@@ -512,7 +546,7 @@ Every judgment of the typing is meaningful under an interpretation that interpre
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \Sigma;\ \Gamma \vDash \bar a_1 \equiv \bar a_2 : \Delta &&(\mathsf{sound}.\bar a_\equiv) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \Sigma;\ \Gamma \vDash \Theta : \kappa &&(\mathsf{sound}.\Theta) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \Sigma;\ \Gamma \vDash \Theta_1 \equiv \Theta_2 : \kappa &&(\mathsf{sound}.\Theta_\equiv) \\[1em]
-& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar d : \kappa \implies \Sigma;\ \Gamma \vDash \bar d : \kappa &&(\mathsf{sound}.\bar d)
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa \implies \Sigma;\ \Gamma \vDash_{\mathcal{D}} \bar d : \kappa &&(\mathsf{sound}.\bar d)
 \end{aligned}
 ```
 

@@ -1,11 +1,11 @@
 # Typing
 
-This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes and of the destructors in a sort, and of the entries of the signatures, and their properties.
+This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, of the fields and of the destructors of a block, and of the entries of the signatures, and their properties.
 It builds on the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [usage](11-usage.md) and the [ownership](12-ownership.md).
 
 ## Definitions
 
-This section gives the judgments, then their rules, by the objects they check: the signatures and their entries, the contexts, the types, the terms, the arguments, and the telescopes and the destructors in a sort.
+This section gives the judgments, then their rules, by the objects they check: the signatures and their entries, the contexts, the types, the terms, the arguments, the telescopes in a sort, and the fields and the destructors of a block.
 
 ### Judgments
 
@@ -27,8 +27,8 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta`$ | $`\bar a_1`$ and $`\bar a_2`$ are equal arguments of $`\Delta`$ |
 | $`\Sigma;\ \Gamma \vdash \Theta : \kappa`$ | The telescope $`\Theta`$ lives in the sort $`\kappa`$ |
 | $`\Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa`$ | $`\Theta_1`$ and $`\Theta_2`$ are equal telescopes in the sort $`\kappa`$ |
-| $`\Sigma;\ \Gamma \vdash \bar d : \kappa`$ | The destructors $`\bar d`$ live in the sort $`\kappa`$ |
 | $`\Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa`$ | The fields $`\Theta`$ of a constructor of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
+| $`\Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa`$ | The destructors $`\bar d`$ of a codata type of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
 | $`\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ | The type declaration is well formed |
 | $`\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k`$ | The type declaration is well formed |
 
@@ -172,7 +172,7 @@ An observation of a term of an instance, whose arguments are arguments of the pa
 
 A corecursor builds a term of an instance of a type of a block of codata types from a state, with a state for each type of the block and a branch for each destructor of each type.
 In its rules, the block has the types $`D_1, \dots, D_k`$, the type $`D_j`$ the destructors $`\bar d_j`$, and the corecursor builds a term of the type $`D_h`$; at the instance $`\bar s',\ \bar l',\ \bar p'`$ of its variables and at the arguments $`\bar a`$, $`T_j`$ is the instance $`D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a`$ of each type, and $`\bar d_j[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_{ji,1} \mid d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji} \mid \bar d_{ji,2})`$ decomposes the destructors of each type at each of them.
-The block is not recursive, so that the states $`\bar\Theta = (\Theta_1,\ \dots,\ \Theta_k)`$ bind none of the parameters, which are uniform, and the branches $`\bar g = (D_1.d_{11}(;\ \bar y_1;\ \bar z_{11}) \Rightarrow g_{11},\ \dots,\ D_k.d_{kn_k}(;\ \bar y_k;\ \bar z_{kn_k}) \Rightarrow g_{kn_k})`$ bind the variables $`\bar y_j`$ of the state of their type and $`\bar z_{ji}`$ of the telescope of their destructor; $`c_j`$ is the corecursor $`\mathsf{corec}_r\ T_j\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g`$ of each type from the variables of its state.
+The recursive destructors have the types of the block at the parameters themselves, which are thus uniform, so that the states $`\bar\Theta = (\Theta_1,\ \dots,\ \Theta_k)`$ bind none of them, and the branches $`\bar g = (D_1.d_{11}(;\ \bar y_1;\ \bar z_{11}) \Rightarrow g_{11},\ \dots,\ D_k.d_{kn_k}(;\ \bar y_k;\ \bar z_{kn_k}) \Rightarrow g_{kn_k})`$ bind the variables $`\bar y_j`$ of the state of their type and $`\bar z_{ji}`$ of the telescope of their destructor; $`c_j`$ is the corecursor $`\mathsf{corec}_r\ T_j\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g`$ of each type from the variables of its state.
 A corecursor from arguments of the state of its type is a term of its instance; each state is a telescope of a sort $`\kappa_j`$ of its own, and each branch a term of the result of its destructor, over the variables of the state of its type and of the telescope of its destructor, the destructors before it being the observations $`[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}]`$ of the corecursor of its type from the variables of its state:
 
 ```math
@@ -238,10 +238,10 @@ Two corecursors at equal arguments of the instance, at equal levels, from equal 
 \end{gathered}
 ```
 
-Two terms of an instance whose observations by each destructor, at the variables $`\bar z_i`$ of its telescope, are equal, the destructors before it being the observations of the first term, are equal, so that a term of a codata type is determined by its observations, where $`T`$ is the instance $`D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a`$ and $`\bar d[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_{i,1} \mid d_i : (\Theta_i \vdash B_i \mathrel{◀} \psi_i) \mathrel{▶} p_i;\ q_i \mid \bar d_{i,2})`$ decomposes the destructors at each of them:
+Two terms of an instance, whose arguments are arguments of the parameters, whose observations by each destructor, at the variables $`\bar z_i`$ of its telescope, are equal, the destructors before it being the observations of the first term, are equal, so that a term of a codata type is determined by its observations, where $`T`$ is the instance $`D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a`$ and $`\bar d[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_{i,1} \mid d_i : (\Theta_i \vdash B_i \mathrel{◀} \psi_i) \mathrel{▶} p_i;\ q_i \mid \bar d_{i,2})`$ decomposes the destructors at each of them:
 
 ```math
-\frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \bar d;\ \dots) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash t : T \\ \Sigma;\ \Gamma \vdash u : T \\ \forall i.\ \Sigma;\ \Gamma,\ \Theta_i[\bar a / \Delta,\ t.T / \bar d_{i,1}] \vdash t.(T.d_i)(\bar z_i) \equiv u.(T.d_i)(\bar z_i) : B_i[\bar a / \Delta,\ t.T / \bar d_{i,1}]\end{gathered}}{\Sigma;\ \Gamma \vdash t \equiv u : T}\;(\eta_d)
+\frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \bar d;\ \dots) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\ \Sigma;\ \Gamma \vdash t : T \\ \Sigma;\ \Gamma \vdash u : T \\ \forall i.\ \Sigma;\ \Gamma,\ \Theta_i[\bar a / \Delta,\ t.T / \bar d_{i,1}] \vdash t.(T.d_i)(\bar z_i) \equiv u.(T.d_i)(\bar z_i) : B_i[\bar a / \Delta,\ t.T / \bar d_{i,1}]\end{gathered}}{\Sigma;\ \Gamma \vdash t \equiv u : T}\;(\eta_d)
 ```
 
 No rule equates two instances with different qualities or grades: two types that differ only by a grade are different types.
@@ -292,18 +292,6 @@ Two telescopes are equal in a sort $`\kappa`$ when their entries have the same g
 \end{gathered}
 ```
 
-### Destructors in a Sort
-
-The destructors $`\bar d`$ of a codata type, $`d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n`$, or $`\varepsilon`$ when there is none, live in a sort $`\kappa`$ of level $`l`$ when the arguments of each live in the universe $`U_l`$, whatever the quality of $`\kappa`$, so that a proposition may quantify over a type of its level, and its result in a sort that $`\kappa`$ [bounds](07-sorts.md), a result that is a proposition having a grade without use at run time.
-Each destructor is a second-order variable of the context of the destructors after it, whose formation checks that the ownership of its result has a constant or a factor:
-
-```math
-\begin{gathered}
-\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : \kappa}\;(\bar d_{\kappa\varepsilon}) \\[1em]
-\frac{\begin{gathered}{}l \text{ is the level of } \kappa \\ \Sigma;\ \Gamma \vdash \Theta : U_l \\ \Sigma;\ \Gamma,\ \Theta \vdash B : \kappa_1 \\ \kappa_1 \preceq \kappa \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega \\ \Sigma;\ \Gamma,\ d : (\Theta \vdash B \mathrel{◀} \psi) \vdash \bar d : \kappa\end{gathered}}{\Sigma;\ \Gamma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) : \kappa}\;(\bar d_{\kappa|})
-\end{gathered}
-```
-
 ### Fields of a Block
 
 A field of a constructor of a block of data types $`\mathcal{D}`$ is recursive when its type is an instance of a type of the block; $`\mathsf{rec}_{\mathcal{D}}(A)`$ names this type, $`\bot`$ when there is none, and $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$ gives it for each field of a telescope, in order:
@@ -327,6 +315,28 @@ The fields of a constructor of a block $`\mathcal{D} = \mathsf{data}.\{\bar s;\ 
 \end{gathered}
 ```
 
+### Destructors of a Block
+
+A destructor of a codata type of a block of codata types $`\mathcal{D}`$ is recursive when its result is an instance of a type of the block, as a field is; $`\mathsf{rec}_{\mathcal{D}}(\bar d)`$ gives the type of the result of each destructor, in order:
+
+```math
+\begin{aligned}
+& \mathsf{rec}_{\mathcal{D}}(\varepsilon) = () &&(\mathsf{recursive}_{\bar d}) \\
+& \mathsf{rec}_{\mathcal{D}}(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) = (\mathsf{rec}_{\mathcal{D}}(B),\ \mathsf{rec}_{\mathcal{D}}(\bar d))
+\end{aligned}
+```
+
+The destructors $`\bar d`$ of a codata type of a block $`\mathcal{D} = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n`$, or $`\varepsilon`$ when there is none, live in a sort $`\kappa`$ of level $`l`$ when the arguments of each live in the universe $`U_l`$, whatever the quality of $`\kappa`$, so that a proposition may quantify over a type of its level.
+The result of a destructor that is not recursive lives in a sort that $`\kappa`$ [bounds](07-sorts.md), a result that is a proposition having a grade without use at run time, and the destructor is a second-order variable of the context of the destructors after it, whose formation checks that the ownership of its result has a constant or a factor; the result of a recursive destructor is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, as the type of a recursive field is, with a grade without use at run time if $`\kappa`$ is a universe of propositions, and no destructor after it depends on it:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} \varepsilon : \kappa}\;(\bar d_{\kappa\varepsilon}) \\[1em]
+\frac{\begin{gathered}{}\mathsf{rec}_{\mathcal{D}}(B) = \bot \\ l \text{ is the level of } \kappa \\ \Sigma;\ \Gamma \vdash \Theta : U_l \\ \Sigma;\ \Gamma,\ \Theta \vdash B : \kappa_1 \\ \kappa_1 \preceq \kappa \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega \\ \Sigma;\ \Gamma,\ d : (\Theta \vdash B \mathrel{◀} \psi) \vdash_{\mathcal{D}} \bar d : \kappa\end{gathered}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) : \kappa}\;(\bar d_{\kappa|}) \\[1em]
+\frac{\begin{gathered}{}D \text{ is a type of } \mathcal{D} \\ l \text{ is the level of } \kappa \\ \Sigma;\ \Gamma \vdash \Theta : U_l \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa \text{ is } \Omega \\ d \text{ does not occur in } \bar d \\ \Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa\end{gathered}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (d : (\Theta \vdash D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) : \kappa}\;(\bar d_{\kappa\mathsf{rec}})
+\end{gathered}
+```
+
 ### Type Declarations
 
 A block of data types $`\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ is well formed when, at each instance of its sort and grade variables, its parameters form a context, the fields of each constructor live in its sort, and the constructors $`\bar c_j`$ of each type $`D_j`$ use the parameters as its grades $`\zeta_j`$ allow, the uses of all the constructors added, as their [usage](11-usage.md) adds them; the constructors of each type have distinct names.
@@ -338,10 +348,10 @@ The fields of a type in a universe of propositions are propositions, by the rule
 ```
 
 A block of codata types is well formed likewise, with the destructors $`\bar d_j`$ of each type $`D_j`$ in place of its constructors: at each instance of its sort and grade variables, its parameters form a context, the destructors of each type live in its sort and use the parameters as its grades $`\zeta_j`$ allow, the uses of all the destructors added, as their [usage](11-usage.md) adds them; the destructors of each type have distinct names.
-The destructors are checked in the signature $`\Sigma`$, which the block does not extend, so that the block is not recursive:
+The arguments of the destructors and the results of those that are not recursive are checked in the signature $`\Sigma`$, which the block does not extend, so that the types of the block occur only as the results of the recursive destructors, at its parameters, and the usage of the destructors in the signature $`\Sigma,\ \mathcal{D}`$, which reads the grades of the types of the block:
 
 ```math
-\frac{\begin{gathered}{}\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{and} \\ & \qquad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma;\ \gamma \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned} \\ \forall j.\ \text{the names } d_{j1}, \dots, d_{j n_j} \text{ are distinct}\end{gathered}}{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k}\;(\mathsf{codata})
+\frac{\begin{gathered}{}\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{and} \\ & \qquad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \forall j.\ \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned} \\ \forall j.\ \text{the names } d_{j1}, \dots, d_{j n_j} \text{ are distinct}\end{gathered}}{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k}\;(\mathsf{codata})
 ```
 
 ## Properties
@@ -363,8 +373,8 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta_\equiv) \\[1em]
-& \Sigma;\ \Gamma \vdash \bar d : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar d) \\[1em]
 & \Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{fields}) \\[1em]
+& \Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar d) \\[1em]
 & \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{data}) \\[1em]
 & \Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{codata}) \\[1em]
 & {\vdash \Sigma,\ e} \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.e)
