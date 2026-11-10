@@ -1,11 +1,11 @@
 # Typing
 
-This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, of the fields and of the destructors of a block, and of the entries of the signatures, and their properties.
+This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, of the fields and of the destructors of a block, of the entries of the signatures, and of the renamings, and their properties.
 It builds on the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [usage](11-usage.md) and the [ownership](12-ownership.md).
 
 ## Definitions
 
-This section gives the judgments, then their rules, by the objects they check: the signatures and their entries, the contexts, the types, the terms, the arguments, the telescopes in a sort, and the fields and the destructors of a block.
+This section gives the judgments, then their rules, by the objects they check: the signatures and their entries, the contexts, the types, the terms, the arguments, the telescopes in a sort, and the fields and the destructors of a block, then the renamings.
 
 ### Judgments
 
@@ -31,8 +31,9 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa`$ | The destructors $`\bar d`$ of a codata type of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
 | $`\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ | The type declaration is well formed |
 | $`\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k`$ | The type declaration is well formed |
+| $`\Sigma;\ \Gamma' \vdash \xi : \Gamma`$ | $`\xi`$ is a renaming of the context $`\Gamma`$ in the context $`\Gamma'`$ |
 
-The judgments are defined together, except the last four, which build on the others.
+The judgments are defined together, except the last five, which build on the others.
 Typing and equality carry no grade: the usage and the ownership of a term are checked by the judgments of [usage](11-usage.md) and of [ownership](12-ownership.md), which the rule of the constant definitions reads.
 Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](06-levels.md), and for sequences of levels holds on each component.
 
@@ -354,6 +355,15 @@ The arguments of the destructors and the results of those that are not recursive
 \frac{\begin{gathered}{}\exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\ \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j.\ \exists \gamma. \\ & \qquad \qquad \text{and} \\ & \qquad \qquad \quad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \quad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned} \\ \forall j.\ \text{the names } d_{j1}, \dots, d_{j n_j} \text{ are distinct}\end{gathered}}{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k}\;(\mathsf{codata})
 ```
 
+### Renamings
+
+A renaming $`\xi`$ of a context $`\Gamma`$ in a context $`\Gamma'`$ gives each variable $`x`$ of $`\Gamma`$ a variable $`\xi(x)`$ of $`\Gamma'`$ with the same telescope, and renames a term $`t`$ to $`t[\xi]`$, the [substitution of the second order](09-substitution.md) that gives each variable $`x`$ the abstraction $`\bar y.\, \xi(x)[\bar y]`$.
+It is typed when $`\Gamma'`$ is a well-formed context that has the image of each variable of $`\Gamma`$, with its type and its telescope renamed:
+
+```math
+\frac{\begin{gathered}{}\Sigma \vdash \Gamma' \\ \forall x : A \in \Gamma.\ \xi(x) : A[\xi] \in \Gamma' \\ \forall X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma.\ \xi(X) : (\Theta[\xi] \vdash A[\xi] \mathrel{◀} \psi) \in \Gamma'\end{gathered}}{\Sigma;\ \Gamma' \vdash \xi : \Gamma}\;(\mathsf{ren}_\vdash)
+```
+
 ## Properties
 
 Every judgment holds in a well-formed signature, and the signature that a well-formed signature extends is well formed:
@@ -395,6 +405,23 @@ Every judgment in a context holds in a well-formed context, which its rules chec
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar a_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta_\equiv)
+\end{aligned}
+```
+
+Every judgment in a context holds in every context in which a renaming of it is typed, renamed; the arguments of an instance keep their parameters, which are closed:
+
+```math
+\begin{aligned}
+& \Sigma;\ \Gamma \vdash A \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\xi] &&(\mathsf{ren}_\vdash.A) \\[1em]
+& \Sigma;\ \Gamma \vdash A \equiv B \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\xi] \equiv B[\xi] &&(\mathsf{ren}_\vdash.A_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\xi] : A[\xi] &&(\mathsf{ren}_\vdash.t) \\[1em]
+& \Sigma;\ \Gamma \vdash t \equiv u : A \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\xi] \equiv u[\xi] : A[\xi] &&(\mathsf{ren}_\vdash.t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\xi] : \Theta[\xi] &&(\mathsf{ren}_\vdash.\bar t) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\xi] \equiv \bar u[\xi] : \Theta[\xi] &&(\mathsf{ren}_\vdash.\bar t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a[\xi] : \Delta &&(\mathsf{ren}_\vdash.\bar a) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a_1[\xi] \equiv \bar a_2[\xi] : \Delta &&(\mathsf{ren}_\vdash.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\xi] : \kappa &&(\mathsf{ren}_\vdash.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta_1[\xi] \equiv \Theta_2[\xi] : \kappa &&(\mathsf{ren}_\vdash.\Theta_\equiv)
 \end{aligned}
 ```
 
