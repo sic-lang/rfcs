@@ -86,7 +86,7 @@ The erasure $`\lfloor t \rfloor_{S, p}`$ of a position of grade $`p`$ is $`\text
 \end{aligned}
 ```
 
-In the erasure of a corecursor, $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, $`\bar\Theta = (\bar x_1.\, \Theta_1,\ \dots,\ \bar x_k.\, \Theta_k)`$, and $`r \cdot \bar q`$ multiplies each grade of $`\bar q`$ by $`r`$ on the left.
+In the erasure of a corecursor, $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, $`\bar\Theta = (\bar x_1.\, \Theta_1 : \bar\kappa_1,\ \dots,\ \bar x_k.\, \Theta_k : \bar\kappa_k)`$, and $`r \cdot \bar q`$ multiplies each grade of $`\bar q`$ by $`r`$ on the left.
 
 A constant keeps the grades of its instance and loses its qualities and its levels: the positions of its body that the erasure removes depend on the grades that instantiate its grade variables, and on nothing else, since the erasure follows the grades alone.
 The term $`f.\{\bar p\}`$ of the target language thus names the copy of $`f`$ compiled for the grades $`\bar p`$, the erasure of its body for this instance, as the [monomorphization](https://doc.rust-lang.org/book/ch10-01-syntax.html#performance-of-code-using-generics) of Rust compiles a copy of a generic function for each instance of its type parameters, so that no grade remains at run time: if the body of $`f`$ checks with its grade variable $`p`$ a position that computes from its parameter, the extraction erases this position in $`f.\{{00}^{\mathsf{p}}\}`$ and keeps it in $`f.\{{11}^{\mathsf{p}}\}`$.

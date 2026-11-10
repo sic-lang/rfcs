@@ -33,7 +33,7 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar u) \\
 & ((\bar x;\ \bar y).\, u,\ \bar u)[\sigma] = ((\bar x;\ \bar y).\, u[\sigma],\ \bar u[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar\Theta) \\
-& (\bar x.\, \Theta,\ \bar\Theta)[\sigma] = (\bar x.\, \Theta[\sigma],\ \bar\Theta[\sigma]) \\[1em]
+& (\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)[\sigma] = (\bar x.\, \Theta[\sigma] : \bar\kappa,\ \bar\Theta[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar g) \\
 & ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\sigma] = ((\bar x;\ \bar y;\ \bar z).\, g[\sigma],\ \bar g[\sigma]) \\[1em]
 & \varepsilon[\sigma] = \varepsilon &&(\mathsf{subst}_\sigma.\Theta) \\
@@ -83,7 +83,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar u) \\
 & ((\bar x;\ \bar y).\, u,\ \bar u)[\theta] = ((\bar x;\ \bar y).\, u[\theta],\ \bar u[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar\Theta) \\
-& (\bar x.\, \Theta,\ \bar\Theta)[\theta] = (\bar x.\, \Theta[\theta],\ \bar\Theta[\theta]) \\[1em]
+& (\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)[\theta] = (\bar x.\, \Theta[\theta] : \bar\kappa,\ \bar\Theta[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar g) \\
 & ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\theta] = ((\bar x;\ \bar y;\ \bar z).\, g[\theta],\ \bar g[\theta]) \\[1em]
 & \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\Theta) \\
@@ -198,7 +198,7 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar u) \\
 & ((\bar x;\ \bar y).\, u,\ \bar u)[\bar l' / \bar l] = ((\bar x;\ \bar y).\, u[\bar l' / \bar l],\ \bar u[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar\Theta) \\
-& (\bar x.\, \Theta,\ \bar\Theta)[\bar l' / \bar l] = (\bar x.\, \Theta[\bar l' / \bar l],\ \bar\Theta[\bar l' / \bar l]) \\[1em]
+& (\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)[\bar l' / \bar l] = (\bar x.\, \Theta[\bar l' / \bar l] : \bar\kappa[\bar l' / \bar l],\ \bar\Theta[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar g) \\
 & ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\bar l' / \bar l] = ((\bar x;\ \bar y;\ \bar z).\, g[\bar l' / \bar l],\ \bar g[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Theta) \\

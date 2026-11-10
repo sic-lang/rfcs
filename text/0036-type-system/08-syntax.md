@@ -86,15 +86,15 @@ The branches $`\bar u`$ of a recursor are a branch for each constructor, the fir
 
 The branch of a constructor binds the variables $`\bar x`$, one for each field of the constructor, then the variables $`\bar y`$, one for each recursive result, each with an empty telescope, and its term $`u`$ is in the scope extended by them; the branch of the constructor $`c`$ of the type $`D`$ is written $`D.c(\bar x;\ \bar y) \Rightarrow u`$, without the semicolon when it binds no recursive result.
 
-The states $`\bar\Theta`$ of a corecursor are a state for each type of the block, the first one first: they are either empty, written $`()`$, or a state $`\bar x.\, \Theta`$ followed by states $`\bar\Theta`$, written $`(\bar x.\, \Theta,\ \bar\Theta)`$:
+The states $`\bar\Theta`$ of a corecursor are a state for each type of the block, the first one first: they are either empty, written $`()`$, or a state $`\bar x.\, \Theta : \bar\kappa`$ followed by states $`\bar\Theta`$, written $`(\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)`$:
 
 ```math
 \begin{aligned}
-& \bar\Theta \mathrel{::=} () \mid (\bar x.\, \Theta,\ \bar\Theta) &&(\mathsf{syntax}_{\bar\Theta})
+& \bar\Theta \mathrel{::=} () \mid (\bar x.\, \Theta : \bar\kappa,\ \bar\Theta) &&(\mathsf{syntax}_{\bar\Theta})
 \end{aligned}
 ```
 
-The state of a type binds the variables $`\bar x`$, one for each non-uniform parameter of the type, each with an empty telescope, and its telescope $`\Theta`$ is in the scope extended by them.
+The state of a type binds the variables $`\bar x`$, one for each non-uniform parameter of the type, each with an empty telescope, and its telescope $`\Theta`$ is in the scope extended by them; it carries the sorts $`\bar\kappa`$ of the entries of $`\Theta`$, one for each entry, which the [packing](17-prelude.md#packing) of the state needs and the telescope does not give.
 
 The branches $`\bar g`$ of a corecursor are a branch for each destructor, the first one first: they are either empty, written $`()`$, or a branch $`(\bar x;\ \bar y;\ \bar z).\, g`$ followed by branches $`\bar g`$, written $`((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)`$:
 
