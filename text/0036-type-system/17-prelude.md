@@ -1,6 +1,6 @@
 # Prelude
 
-This annex defines the prelude, three type declarations that the type system uses for its own needs: a unit, a pair and a type of positions; it then defines the packing of a telescope into nested pairs, and of its arguments into nested constructors of pairs, with the properties of these packings.
+This annex defines the prelude, three type declarations that the type system uses for its own needs: a unit, a pair and a type of positions; it then defines the packing of a telescope into nested pairs, and of its arguments into nested constructors of pairs, and the unpacking of a term of a packing, with the properties of these packings and of the unpacking.
 It builds on the [usage](11-usage.md), the [ownership](12-ownership.md) and the [typing](13-typing.md).
 
 ## Definitions
@@ -17,13 +17,13 @@ The unit `Unit` has, at each level $`l`$, a single constructor without fields, i
 \end{aligned}
 ```
 
-The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the grade $`p`$ and of the requirement $`r`$, and a term of $`X[x]`$, a type of a universe that depends on $`x`$, used once and requiring nothing; it lives in a universe whatever the sort of $`A`$, and its constraint admits the instances at which a proposition $`A`$ has a grade without use at run time, as the [formation of its fields](13-typing.md#fields-of-a-block) requires:
+The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the grade $`p`$ and of the requirement $`r`$, and a term of $`X[x]`$, a type of a universe that depends on $`x`$, used once and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, so that the unpacking keeps the ownership of each entry; it lives in a universe whatever the sort of $`A`$, and its constraint admits the instances at which a proposition $`A`$ has a grade without use at run time, as the [formation of its fields](13-typing.md#fields-of-a-block) requires:
 
 ```math
 \begin{aligned}
 & \mathsf{data}.\{s;\ l_1, l_2;\ p, r \mid s = \Omega \implies \llcorner p \lrcorner \ne {11}^{\mathsf{m}}\} &&(\mathsf{prelude}.\mathsf{Pair}) \\
 & \quad (A : s_{l_1},\ X : (x : A \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash U_{l_2} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) : U_{l_1 \sqcup l_2} \\
-& \quad \mathsf{where}\ \mathsf{Pair} \mathrel{▶} {00}^{\gamma} \bullet p \bullet {11}^{\mathsf{p}} \mathrel{≔} \mathsf{mk} : (x : A \mathrel{▶} p;\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} r,\ y : X[x] \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}})
+& \quad \mathsf{where}\ \mathsf{Pair} \mathrel{▶} {00}^{\gamma} \bullet p \bullet {11}^{\mathsf{p}} \mathrel{≔} \mathsf{mk} : (x : A \mathrel{▶} p;\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} r,\ y : X[x] \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}})
 \end{aligned}
 ```
 
@@ -69,6 +69,18 @@ The level $`\mathsf{level}_{\bar\kappa}(l)`$ of a packing is the join of the lev
 \end{aligned}
 ```
 
+### Unpacking
+
+The unpacking $`\mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b`$ of the term $`u`$ of the packing of $`\Theta`$ into the term $`b`$, over the variables of $`\Theta`$, is a recursor on each pair, then on the unit, each using its term with the grade $`r`$, with the motive $`z.\, C`$, which does not depend on the term $`z`$ eliminated; the branch of the pair unpacks its second field into $`b`$, which does not use the variable $`y`$ of this field:
+
+```math
+\begin{aligned}
+& \mathsf{unpack}_r\ u : \langle \varepsilon \rangle_{();\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b = \mathsf{rec}_r\ (\mathsf{Unit}.\{;\ l;\}\ ())\ u\ \mathsf{return}\ z.\, C\ \mathsf{with}\ \mathsf{Unit}.\mathsf{mk}() \Rightarrow b &&(\mathsf{unpack}) \\
+& \mathsf{unpack}_r\ u : \langle x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta \rangle_{(s_{l'},\ \bar\kappa);\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b = \mathsf{rec}_r\ (\mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r'\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l}))\ u \\
+& \quad \mathsf{return}\ z.\, C\ \mathsf{with}\ \mathsf{Pair}.\mathsf{mk}(x,\ y) \Rightarrow \mathsf{unpack}_r\ y : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b
+\end{aligned}
+```
+
 ## Properties
 
 The prelude is a well-formed signature: each of its declarations is well formed in the declarations before it, at every instance that its constraint admits:
@@ -79,7 +91,7 @@ The prelude is a well-formed signature: each of its declarations is well formed 
 \end{aligned}
 ```
 
-In a signature that holds the prelude, the packing of a telescope is a type of the universe of its level, the packing of arguments uses the variables as the arguments do, each pair using its first term with the grade of its entry and the rest once, and the packing of arguments that satisfy the requirements of their entries has the ownership $`{11}^{\mathsf{p}}`$ of a new value, as every constructor:
+In a signature that holds the prelude, the packing of a telescope is a type of the universe of its level, the packing of arguments of the telescope is a term of it, the packing of arguments uses the variables as the arguments do, each pair using its first term with the grade of its entry and the rest once, and the packing of arguments that satisfy the requirements of their entries has the ownership $`{11}^{\mathsf{p}}`$ of a new value, as every constructor:
 
 ```math
 \begin{aligned}
@@ -88,6 +100,12 @@ In a signature that holds the prelude, the packing of a telescope is a type of t
 & \qquad \Sigma \ni \mathsf{prelude} \\
 & \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
 & \quad \Sigma;\ \Gamma \vdash \langle \Theta \rangle_{\bar\kappa;\ l} : U_{\mathsf{level}_{\bar\kappa}(l)} \\[1em]
+& \text{⟹} &&(\mathsf{pack}_{\bar t:}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \quad \Sigma;\ \Gamma \vdash \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} : \langle \Theta \rangle_{\bar\kappa;\ l} \\[1em]
 & \text{⟹} &&(\mathsf{pack}_{\bar t▶}) \\
 & \quad \text{and} \\
 & \qquad \Sigma \ni \mathsf{prelude} \\
@@ -98,5 +116,36 @@ In a signature that holds the prelude, the packing of a telescope is a type of t
 & \qquad \Sigma \ni \mathsf{prelude} \\
 & \qquad \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \\
 & \quad \Sigma;\ \varphi \vdash \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} \mathrel{◀} {11}^{\mathsf{p}};\ m
+\end{aligned}
+```
+
+In a signature that holds the prelude, the unpacking of a term of the packing of a telescope, into a term over the variables of the telescope whose type does not depend on them, has this type; the unpacking of the packing of arguments is the term at the arguments; and a term over a term $`z`$ of the packing is the unpacking of the term it is at into the term at the packing $`\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l}`$ of the variables $`\bar x`$ of the telescope:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unpack}_{:}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash u : \langle \Theta \rangle_{\bar\kappa;\ l} \\
+& \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
+& \qquad \Sigma;\ \Gamma,\ \Theta \vdash b : C \\
+& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b : C \\[1em]
+& \text{⟹} &&(\mathsf{unpack}_\beta) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
+& \qquad \Sigma;\ \Gamma,\ \Theta \vdash b : C \\
+& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \equiv b[\bar t / \Theta] : C \\[1em]
+& \text{⟹} &&(\mathsf{unpack}_\eta) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash u : \langle \Theta \rangle_{\bar\kappa;\ l} \\
+& \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
+& \qquad \Sigma;\ \Gamma,\ z : \langle \Theta \rangle_{\bar\kappa;\ l} \vdash e : C \\
+& \quad \Sigma;\ \Gamma \vdash e[u / z] \equiv \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ e[\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l} / z] : C
 \end{aligned}
 ```
