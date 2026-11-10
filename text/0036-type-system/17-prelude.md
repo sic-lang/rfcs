@@ -149,3 +149,25 @@ In a signature that holds the prelude, the unpacking of a term of the packing of
 & \quad \Sigma;\ \Gamma \vdash e[u / z] \equiv \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ e[\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l} / z] : C
 \end{aligned}
 ```
+
+In a signature that holds the prelude, the unpacking uses the variables of its term $`r`$ times and those of its term $`b`$, which uses the variable of each entry of the telescope $`\ulcorner m \urcorner \cdot r`$ times its grade, its motive using no variable, as a [recursor](11-usage.md) does; and it has the ownership of $`b`$, checked with the ownership $`o`$ of its term times the requirement of each entry for the variable of the entry, as a [recursor](12-ownership.md) does, the second field of each pair requiring $`{11}^{\mathsf{p}}`$:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unpack}_{▶}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ {00}^{\gamma} \vdash C \mathrel{▶} {00}^{\mathsf{m}} \\
+& \qquad \Sigma;\ \gamma \vdash u \mathrel{▶} m \odot r \\
+& \qquad \Theta \text{ has the grades } p_1, \dots, p_n \\
+& \qquad \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot r \cdot p_1) \bullet \dots \bullet (\ulcorner m \urcorner \cdot r \cdot p_n) \vdash b \mathrel{▶} m \\
+& \quad \Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \mathrel{▶} m \\[1em]
+& \text{⟹} &&(\mathsf{unpack}_{◀}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \varphi \vdash u \mathrel{◀} o;\ m \odot r \\
+& \qquad \text{the entries of } \Theta \text{ require } r_1, \dots, r_n \\
+& \qquad \Sigma;\ \varphi,\ x_1 \mathrel{◀} o \cdot r_1, \dots, x_n \mathrel{◀} o \cdot r_n \vdash b \mathrel{◀} p;\ m \\
+& \quad \Sigma;\ \varphi \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \mathrel{◀} p;\ m
+\end{aligned}
+```
