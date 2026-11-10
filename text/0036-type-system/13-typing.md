@@ -26,6 +26,7 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash \bar a : \Delta`$ | $`\bar a`$ are arguments of the parameters $`\Delta`$ |
 | $`\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta`$ | $`\bar a_1`$ and $`\bar a_2`$ are equal arguments of $`\Delta`$ |
 | $`\Sigma;\ \Gamma \vdash \Theta : \kappa`$ | The telescope $`\Theta`$ lives in the sort $`\kappa`$ |
+| $`\Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l`$ | The telescope $`\Theta`$ lives in the sorts $`\bar\kappa`$ below the level $`l`$ |
 | $`\Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa`$ | $`\Theta_1`$ and $`\Theta_2`$ are equal telescopes in the sort $`\kappa`$ |
 | $`\Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa`$ | The fields $`\Theta`$ of a constructor of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
 | $`\Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa`$ | The destructors $`\bar d`$ of a codata type of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
@@ -285,6 +286,15 @@ A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort th
 \end{gathered}
 ```
 
+A telescope lives in the sorts $`\bar\kappa`$ below the level $`l`$, one sort for each entry, when the type of each entry lives in its sort, of a level below $`l`$, and an entry whose type is a proposition has a grade without use at run time, as in a telescope in a sort; the sorts of the entries, which a sort only bounds, are those that the [packing](17-prelude.md#packing) of the telescope needs:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : () \le l}\;(\mathsf{tel}_{\bar\kappa\varepsilon}) \\[1em]
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A : s_{l'} \\ l' \le l \\ \Sigma;\ \Gamma,\ x : A \vdash \Theta : \bar\kappa \le l \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if } s \text{ is } \Omega\end{gathered}}{\Sigma;\ \Gamma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : (s_{l'},\ \bar\kappa) \le l}\;(\mathsf{tel}_{\bar\kappa,})
+\end{gathered}
+```
+
 Two telescopes are equal in a sort $`\kappa`$ when their entries have the same grades, their types are equal types of sorts that $`\kappa`$ bounds, each under the entries before it in the first telescope, and an entry whose type is a proposition has a grade without use at run time:
 
 ```math
@@ -390,6 +400,7 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 & \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta_{\bar\kappa}) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{fields}) \\[1em]
 & \Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar d) \\[1em]
@@ -412,6 +423,7 @@ Every judgment in a context holds in a well-formed context, which its rules chec
 & \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar a) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar a_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta_{\bar\kappa}) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta_\equiv)
 \end{aligned}
 ```
@@ -429,6 +441,7 @@ Every judgment in a context holds in every context in which a renaming of it is 
 & \Sigma;\ \Gamma \vdash \bar a : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a[\xi] : \Delta &&(\mathsf{ren}_\vdash.\bar a) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a_1[\xi] \equiv \bar a_2[\xi] : \Delta &&(\mathsf{ren}_\vdash.\bar a_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\xi] : \kappa &&(\mathsf{ren}_\vdash.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\xi] : \bar\kappa \le l &&(\mathsf{ren}_\vdash.\Theta_{\bar\kappa}) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta_1[\xi] \equiv \Theta_2[\xi] : \kappa &&(\mathsf{ren}_\vdash.\Theta_\equiv)
 \end{aligned}
 ```
@@ -446,6 +459,7 @@ Every judgment in a context holds in every context in which a substitution of th
 & \Sigma;\ \Gamma \vdash \bar a : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a[\sigma] : \Delta &&(\mathsf{subst}_\vdash.\bar a) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a_1[\sigma] \equiv \bar a_2[\sigma] : \Delta &&(\mathsf{subst}_\vdash.\bar a_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\sigma] : \kappa &&(\mathsf{subst}_\vdash.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\sigma] : \bar\kappa \le l &&(\mathsf{subst}_\vdash.\Theta_{\bar\kappa}) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta_1[\sigma] \equiv \Theta_2[\sigma] : \kappa &&(\mathsf{subst}_\vdash.\Theta_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash t : A \implies \Sigma;\ \Gamma \vdash [t / x] : (\Gamma,\ x : A) &&(\mathsf{subst}_\vdash.\mathsf{single})
 \end{aligned}

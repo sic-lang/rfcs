@@ -47,15 +47,7 @@ The prelude is the signature of the three declarations, in this order, and a sig
 
 ### Packing
 
-A telescope packs into nested pairs, which need the sort of each of its entries, while a telescope in a sort only bounds them; the telescope $`\Theta`$ lives in the sorts $`\bar\kappa`$ below the level $`l`$, $`\Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l`$, when the type of each entry lives in its sort, of a level below $`l`$, and an entry whose type is a proposition has a grade without use at run time, as in a [telescope in a sort](13-typing.md#telescopes-in-a-sort):
-
-```math
-\begin{gathered}
-\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : () \le l}\;(\mathsf{tel}_{\bar\kappa\varepsilon}) \\[1em]
-\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A : s_{l'} \\ l' \le l \\ \Sigma;\ \Gamma,\ x : A \vdash \Theta : \bar\kappa \le l \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if } s \text{ is } \Omega\end{gathered}}{\Sigma;\ \Gamma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : (s_{l'},\ \bar\kappa) \le l}\;(\mathsf{tel}_{\bar\kappa,})
-\end{gathered}
-```
-
+A telescope packs into nested pairs, which need the sort of each of its entries, given by a [telescope in sorts](13-typing.md#telescopes-in-a-sort).
 The level $`\mathsf{level}_{\bar\kappa}(l)`$ of a packing is the join of the levels of the sorts $`\bar\kappa`$ and of $`l`$; the packing $`\langle \Theta \rangle_{\bar\kappa;\ l}`$ of the telescope $`\Theta`$, whose entries live in the sorts $`\bar\kappa`$, is the pair of its first entry, with its grade and its requirement, and of the packing of the rest, ending with the unit of the level $`l`$; the packing $`\langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l}`$ of arguments of $`\Theta`$ is the pair of the first argument and of the packing of the others, as arguments of the rest of the telescope instantiated by the first, ending with the constructor of the unit:
 
 ```math
