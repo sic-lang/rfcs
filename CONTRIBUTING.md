@@ -116,7 +116,11 @@ With [direnv](https://direnv.net/), `.envrc` loads it when entering the reposito
 
 `nix run '.#build-site'` builds into `book/` the site published by GitHub Pages, the book of the RFCs, to read it as it will be published, from `book/index.html`.
 
-For VS Code, `nix run '.#setup-vscode'` writes the recommended extensions and settings to `.vscode/`, which git ignores: the files are then yours to customize.
+`nix run '.#setup'` runs every setup you confirm, and `nix run '.#setup-<name>'` one of them, which writes recommended files without overwriting one that differs from them, unless given `--force`: the files are then yours to customize, and the checks enforce what they recommend.
+The setups write these files:
+
+- `setup-hooks` copies the Git hooks to the hooks of the clone: `commit-msg` rejects a commit without the sign-off of its author, which the `commits` check requires.
+- `setup-vscode` writes the recommended extensions and settings of VS Code to `.vscode/`, which Git ignores.
 
 ## Checks
 
