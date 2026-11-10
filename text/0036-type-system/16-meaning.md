@@ -71,7 +71,7 @@ A universe is a type of the universe above its level, whose terms are the types 
 \end{aligned}
 ```
 
-A data type $`D_j`$ of a type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots`$ of the signature, whose constructors are $`c_{j1} : \Theta_{j1} \mid \dots \mid c_{j n_j} : \Theta_{j n_j}`$, has, at a closed instance $`T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a`$, the sort and the fields of its declaration at the instance of its variables and at the arguments of its parameters:
+A data type $`D_j`$ of a type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots`$ of the signature, whose constructors are $`c_{j1} : \Theta_{j1} \mid \dots \mid c_{j n_j} : \Theta_{j n_j}`$, has, at a closed instance $`T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a`$, the sort and the fields of its declaration at the instance of its variables and at the arguments of its parameters:
 
 ```math
 \begin{aligned}
@@ -80,7 +80,7 @@ A data type $`D_j`$ of a type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \b
 \end{aligned}
 ```
 
-A codata type $`D_j`$ of a type declaration $`\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots`$ of the signature, whose destructors are $`\bar d_j`$, has likewise, at a closed instance $`T`$, the sort $`\kappa[T]`$ and the destructors of its declaration at the instance of its variables and at the arguments of its parameters:
+A codata type $`D_j`$ of a type declaration $`\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots`$ of the signature, whose destructors are $`\bar d_j`$, has likewise, at a closed instance $`T`$, the sort $`\kappa[T]`$ and the destructors of its declaration at the instance of its variables and at the arguments of its parameters:
 
 ```math
 \begin{aligned}
@@ -279,23 +279,29 @@ An entry is not made meaningful in the signature before it alone: a type declara
 \end{aligned}
 ```
 
-A block of data types $`\mathcal{D}`$ is meaningful when, at each instance of its sort and grade variables, the fields of each of its constructors are [fields in its sort](#fields-of-a-block), in the context of its parameters, the constructors of each of its types having distinct names when the [names of the signature](08-syntax.md) are; the parameters need no meaning of their own, since that of the fields holds it, and an instance reads the meaning of its arguments only:
+A block of data types $`\mathcal{D}`$ is meaningful when, at each instance of its sort and grade variables that its constraint $`C`$ admits, the fields of each of its constructors are [fields in its sort](#fields-of-a-block), in the context of its parameters, the constructors of each of its types having distinct names when the [names of the signature](08-syntax.md) are; the parameters need no meaning of their own, since that of the fields holds it, and an instance reads the meaning of its arguments only:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&({\vDash}\mathsf{data}) \\
 & \quad \Sigma \vDash \mathcal{D} \\
-& \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
+& \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\
+& \qquad \text{⟹} \\
+& \qquad \quad C[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \quad \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
 \end{aligned}
 ```
 
-A block of codata types is meaningful likewise when, at each instance of its sort and grade variables, the destructors of each of its types are [destructors in its sort](#destructors-of-a-block), in the context of its parameters:
+A block of codata types is meaningful likewise when, at each instance of its sort and grade variables that its constraint admits, the destructors of each of its types are [destructors in its sort](#destructors-of-a-block), in the context of its parameters:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&({\vDash}\mathsf{codata}) \\
-& \quad \Sigma \vDash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \\
-& \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
+& \quad \Sigma \vDash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \\
+& \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\
+& \qquad \text{⟹} \\
+& \qquad \quad C[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \quad \forall j.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
 \end{aligned}
 ```
 
@@ -528,13 +534,13 @@ Every judgment of the typing is meaningful under an interpretation that interpre
 & \text{⟹} &&(\mathsf{sound}.\mathsf{data}) \\
 & \quad \text{and} \\
 & \qquad \iota \text{ interprets } \Sigma \\
-& \qquad \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\
-& \quad \Sigma \vDash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\[1em]
+& \qquad \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\
+& \quad \Sigma \vDash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \\[1em]
 & \text{⟹} &&(\mathsf{sound}.\mathsf{codata}) \\
 & \quad \text{and} \\
 & \qquad \iota \text{ interprets } \Sigma \\
-& \qquad \Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \\
-& \quad \Sigma \vDash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \\[1em]
+& \qquad \Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \\
+& \quad \Sigma \vDash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma \vdash \Gamma \implies \Sigma \vDash \Gamma &&(\mathsf{sound}.\Gamma) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash A \implies \Sigma;\ \Gamma \vDash A &&(\mathsf{sound}.A) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash A \equiv B \implies \Sigma;\ \Gamma \vDash A \equiv B &&(\mathsf{sound}.A_\equiv) \\[1em]
