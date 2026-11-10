@@ -25,7 +25,7 @@ The block is not recursive, so that the branch observes nothing again, and its p
 \end{gathered}
 ```
 
-A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, or a recursor or an observation of a neutral term, and a head normal form when it is a sort, an instance of a declared type, a constructor applied to the terms of its fields, which it does not compute, a corecursor, which computes only when it is observed, or a neutral term:
+A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, or a recursor or an observation of a neutral term, and a head normal form when it is a sort, an instance of a declared type, a constructor applied to the terms of its fields, which it does not compute, a corecursor, which computes only when it is observed, or a neutral term; a recursor on a neutral term of a type with a single constructor is neutral too, since the reduction does not apply $`(\eta_c)`$, which only the [equality](13-typing.md) gives:
 
 ```math
 \begin{aligned}
