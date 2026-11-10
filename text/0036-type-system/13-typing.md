@@ -1,11 +1,11 @@
 # Typing
 
-This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, of the fields and of the destructors of a block, of the entries of the signatures, and of the renamings, and their properties.
+This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, of the fields and of the destructors of a block, of the entries of the signatures, of the renamings and of the substitutions of the first order, and their properties.
 It builds on the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [usage](11-usage.md) and the [ownership](12-ownership.md).
 
 ## Definitions
 
-This section gives the judgments, then their rules, by the objects they check: the signatures and their entries, the contexts, the types, the terms, the arguments, the telescopes in a sort, and the fields and the destructors of a block, then the renamings.
+This section gives the judgments, then their rules, by the objects they check: the signatures and their entries, the contexts, the types, the terms, the arguments, the telescopes in a sort, and the fields and the destructors of a block, then the renamings and the substitutions of the first order.
 
 ### Judgments
 
@@ -32,6 +32,7 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ | The type declaration is well formed |
 | $`\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k`$ | The type declaration is well formed |
 | $`\Sigma;\ \Gamma' \vdash \xi : \Gamma`$ | $`\xi`$ is a renaming of the context $`\Gamma`$ in the context $`\Gamma'`$ |
+| $`\Sigma;\ \Gamma' \vdash \sigma : \Gamma`$ | $`\sigma`$ is a substitution of the first order of the context $`\Gamma`$ in the context $`\Gamma'`$ |
 
 The judgments are defined together, except the last five, which build on the others.
 Typing and equality carry no grade: the usage and the ownership of a term are checked by the judgments of [usage](11-usage.md) and of [ownership](12-ownership.md), which the rule of the constant definitions reads.
@@ -363,6 +364,14 @@ A [renaming](09-substitution.md#renamings) $`\xi`$ of the scope of a context $`\
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma' \\ \forall x : A \in \Gamma.\ \xi(x) : A[\xi] \in \Gamma' \\ \forall X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma.\ \xi(X) : (\Theta[\xi] \vdash A[\xi] \mathrel{◀} \psi) \in \Gamma'\end{gathered}}{\Sigma;\ \Gamma' \vdash \xi : \Gamma}\;(\mathsf{ren}_\vdash)
 ```
 
+### Substitutions of the First Order
+
+A [substitution of the first order](09-substitution.md#substitutions-of-the-first-order) $`\sigma`$ of the scope of a context $`\Gamma`$ in the scope of a context $`\Gamma'`$ is typed when $`\Gamma'`$ is a well-formed context in which the term that $`\sigma`$ gives each variable of $`\Gamma`$ has its type, substituted, and which has each second-order variable of $`\Gamma`$, which $`\sigma`$ leaves, with its telescope and its type substituted:
+
+```math
+\frac{\begin{gathered}{}\Sigma \vdash \Gamma' \\ \forall x : A \in \Gamma.\ \Sigma;\ \Gamma' \vdash \sigma(x) : A[\sigma] \\ \forall X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma.\ X : (\Theta[\sigma] \vdash A[\sigma] \mathrel{◀} \psi) \in \Gamma'\end{gathered}}{\Sigma;\ \Gamma' \vdash \sigma : \Gamma}\;(\mathsf{subst}_\vdash)
+```
+
 ## Properties
 
 Every judgment holds in a well-formed signature, and the signature that a well-formed signature extends is well formed:
@@ -421,6 +430,24 @@ Every judgment in a context holds in every context in which a renaming of it is 
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a_1[\xi] \equiv \bar a_2[\xi] : \Delta &&(\mathsf{ren}_\vdash.\bar a_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\xi] : \kappa &&(\mathsf{ren}_\vdash.\Theta) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta_1[\xi] \equiv \Theta_2[\xi] : \kappa &&(\mathsf{ren}_\vdash.\Theta_\equiv)
+\end{aligned}
+```
+
+Every judgment in a context holds in every context in which a substitution of the first order of it is typed, substituted, and the substitution of a term of a type for a variable of this type is typed:
+
+```math
+\begin{aligned}
+& \Sigma;\ \Gamma \vdash A \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\sigma] &&(\mathsf{subst}_\vdash.A) \\[1em]
+& \Sigma;\ \Gamma \vdash A \equiv B \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\sigma] \equiv B[\sigma] &&(\mathsf{subst}_\vdash.A_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\sigma] : A[\sigma] &&(\mathsf{subst}_\vdash.t) \\[1em]
+& \Sigma;\ \Gamma \vdash t \equiv u : A \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\sigma] \equiv u[\sigma] : A[\sigma] &&(\mathsf{subst}_\vdash.t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\sigma] : \Theta[\sigma] &&(\mathsf{subst}_\vdash.\bar t) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\sigma] \equiv \bar u[\sigma] : \Theta[\sigma] &&(\mathsf{subst}_\vdash.\bar t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a[\sigma] : \Delta &&(\mathsf{subst}_\vdash.\bar a) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a_1[\sigma] \equiv \bar a_2[\sigma] : \Delta &&(\mathsf{subst}_\vdash.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\sigma] : \kappa &&(\mathsf{subst}_\vdash.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta_1[\sigma] \equiv \Theta_2[\sigma] : \kappa &&(\mathsf{subst}_\vdash.\Theta_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \implies \Sigma;\ \Gamma \vdash [t / x] : (\Gamma,\ x : A) &&(\mathsf{subst}_\vdash.\mathsf{single})
 \end{aligned}
 ```
 
