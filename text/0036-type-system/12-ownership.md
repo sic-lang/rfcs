@@ -1,7 +1,7 @@
 # Ownership
 
-This annex defines the judgment of ownership, which checks the ownership of the value of a term, in a mode.
-It builds on the [grades](04-grades.md), the [modes](05-modes.md) and the [syntax](08-syntax.md).
+This annex defines the judgment of ownership, which checks the ownership of the value of a term, in a mode, and its properties.
+It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md) and the [substitution](09-substitution.md).
 
 ## Definitions
 
@@ -79,4 +79,15 @@ A term may be given an ownership lower than its own, which states less:
 
 ```math
 \frac{\begin{gathered}{}\Sigma;\ \varphi \vdash t \mathrel{◀} p;\ m \\ q \le p\end{gathered}}{\Sigma;\ \varphi \vdash t \mathrel{◀} q;\ m}\;(\mathsf{sub}_{◀})
+```
+
+## Properties
+
+Ownership is stable under the [renamings](09-substitution.md#renamings): renamed, a term has the same ownership, given ownerships $`\varphi'`$ of the variables that give the image of each variable its ownership, as the types of a context are renamed:
+
+```math
+\begin{aligned}
+& \forall x.\ \varphi'(\xi(x)) = \varphi(x) \text{ and } \Sigma;\ \varphi \vdash t \mathrel{◀} p;\ m \implies \Sigma;\ \varphi' \vdash t[\xi] \mathrel{◀} p;\ m &&(\mathsf{ren}_{◀}.t) \\[1em]
+& \forall x.\ \varphi'(\xi(x)) = \varphi(x) \text{ and } \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \implies \Sigma;\ \varphi' \vdash \bar t[\xi] \mathrel{◀} \bar o;\ \Theta[\xi];\ m &&(\mathsf{ren}_{◀}.\bar t)
+\end{aligned}
 ```

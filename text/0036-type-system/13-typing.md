@@ -357,8 +357,7 @@ The arguments of the destructors and the results of those that are not recursive
 
 ### Renamings
 
-A renaming $`\xi`$ of a context $`\Gamma`$ in a context $`\Gamma'`$ gives each variable $`x`$ of $`\Gamma`$ a variable $`\xi(x)`$ of $`\Gamma'`$ with the same telescope, and renames a term $`t`$ to $`t[\xi]`$, the [substitution of the second order](09-substitution.md) that gives each variable $`x`$ the abstraction $`\bar y.\, \xi(x)[\bar y]`$.
-It is typed when $`\Gamma'`$ is a well-formed context that has the image of each variable of $`\Gamma`$, with its type and its telescope renamed:
+A [renaming](09-substitution.md#renamings) $`\xi`$ of the scope of a context $`\Gamma`$ in the scope of a context $`\Gamma'`$ is typed when $`\Gamma'`$ is a well-formed context that has the image of each variable of $`\Gamma`$, with its type and its telescope renamed:
 
 ```math
 \frac{\begin{gathered}{}\Sigma \vdash \Gamma' \\ \forall x : A \in \Gamma.\ \xi(x) : A[\xi] \in \Gamma' \\ \forall X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma.\ \xi(X) : (\Theta[\xi] \vdash A[\xi] \mathrel{◀} \psi) \in \Gamma'\end{gathered}}{\Sigma;\ \Gamma' \vdash \xi : \Gamma}\;(\mathsf{ren}_\vdash)

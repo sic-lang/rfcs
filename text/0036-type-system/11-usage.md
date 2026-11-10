@@ -1,7 +1,7 @@
 # Usage
 
-This annex defines the judgment of usage, which checks how a term uses the variables of its scope, in a mode.
-It builds on the [modes](05-modes.md), the [syntax](08-syntax.md) and the [grade vectors](10-grade-vectors.md).
+This annex defines the judgment of usage, which checks how a term uses the variables of its scope, in a mode, and its properties.
+It builds on the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md) and the [grade vectors](10-grade-vectors.md).
 
 ## Definitions
 
@@ -100,4 +100,17 @@ The destructors $`\bar d`$ of a codata type, $`d_1 : (\Theta_1 \vdash B_1 \mathr
 \frac{\begin{gathered}{}\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \odot p \\ \Theta = (x_1 : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \dots,\ x_n : A_n \mathrel{▶} p_n;\ q_n \mathrel{◀} r_n) \\ \Sigma;\ \delta \bullet (\ulcorner m \odot p \urcorner \cdot q_1) \bullet \dots \bullet (\ulcorner m \odot p \urcorner \cdot q_n) \vdash B \mathrel{▶} m \odot p \\ \Sigma;\ \eta \bullet (\ulcorner m \urcorner \cdot q) \vdash \bar d \mathrel{▶} m\end{gathered}}{\Sigma;\ (p \cdot^{\gamma} (\gamma +^{\gamma} \delta)) +^{\gamma} \eta \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) \mathrel{▶} m}\;(\bar d_{|▶}) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m \\ \delta \le^{\gamma} \gamma\end{gathered}}{\Sigma;\ \delta \vdash \bar d \mathrel{▶} m}\;(\mathsf{sub}_{\bar d▶})
 \end{gathered}
+```
+
+## Properties
+
+Usage is stable under the [renamings](09-substitution.md#renamings): renamed, a term uses the variables as the [vector renamed](10-grade-vectors.md) allows, and the arguments of an instance keep the grades of their parameters, which the renaming does not change:
+
+```math
+\begin{aligned}
+& \Sigma;\ \gamma \vdash t \mathrel{▶} m \implies \Sigma;\ \gamma[\xi] \vdash t[\xi] \mathrel{▶} m &&(\mathsf{ren}_{▶}.t) \\[1em]
+& \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \implies \Sigma;\ \gamma[\xi] \vdash \bar t[\xi] \mathrel{▶} \bar p;\ m &&(\mathsf{ren}_{▶}.\bar t) \\[1em]
+& \Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \implies \Sigma;\ \gamma[\xi] \vdash \bar a[\xi] \mathrel{▶} \zeta;\ m &&(\mathsf{ren}_{▶}.\bar a) \\[1em]
+& \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \implies \Sigma;\ \gamma[\xi] \vdash \Theta[\xi] \mathrel{▶} m &&(\mathsf{ren}_{▶}.\Theta)
+\end{aligned}
 ```

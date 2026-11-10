@@ -111,10 +111,10 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Levels](0036-type-system/06-levels.md): the indices of the sorts, their values, their equality, their order and their properties.
 - [Sorts](0036-type-system/07-sorts.md): the universes of types and of propositions, their qualities, the join of the qualities and the relation by which a sort bounds another.
 - [Syntax](0036-type-system/08-syntax.md): the terms, among them the constructors and the recursors of the data types and the observations and the corecursors of the codata types, their arguments, the motives and the branches of the recursors, the states and the branches of the corecursors, the telescopes, the contexts and the signatures, with the variables they bind.
-- [Substitution](0036-type-system/09-substitution.md): the substitutions of the first and of the second order, the closed substitutions, the instantiation of the level variables and their properties.
-- [Grade vectors](0036-type-system/10-grade-vectors.md): the grades of the variables of a scope, their operations, their order and their properties.
-- [Usage](0036-type-system/11-usage.md): the judgment that checks, in a mode, how a term uses the variables of its scope.
-- [Ownership](0036-type-system/12-ownership.md): the judgment that checks, in a mode, the ownership of the value of a term.
+- [Substitution](0036-type-system/09-substitution.md): the substitutions of the first and of the second order, the renamings, the closed substitutions, the instantiation of the level variables and their properties.
+- [Grade vectors](0036-type-system/10-grade-vectors.md): the grades of the variables of a scope, their operations, their order, their renaming and their properties.
+- [Usage](0036-type-system/11-usage.md): the judgment that checks, in a mode, how a term uses the variables of its scope, and its properties.
+- [Ownership](0036-type-system/12-ownership.md): the judgment that checks, in a mode, the ownership of the value of a term, and its properties.
 - [Typing](0036-type-system/13-typing.md): the judgments of the signatures, of the contexts, of the types, of the terms and of their arguments, their rules and their properties.
 - [Reduction](0036-type-system/14-reduction.md): the weak head reduction, its head normal forms, the computation of the closed terms and their determinism.
 - [Erasure](0036-type-system/15-erasure.md): the translation to an untyped target language that replaces with a value the parts of a term whose grade is in a set, the sets of grades that the modes do not count, and the absence of the erased variables.
@@ -186,6 +186,7 @@ The syntax and the substitution are settled by the following choices:
 - The second parameter of the pair, a type over the first field, uses this field with the grade $`{\omega\omega}^{\mathsf{p}}`$, which states nothing, rather than with a grade variable: the parameters of a type declaration are the same at all its instances, so that the grades of the telescope of a second-order parameter cannot vary with them, and a packing, which is a type, needs no grade there.
 - The parameters that depend on variables are second-order variables, as the contextual types of Nanevski, Pfenning and Pientka, rather than parameters of a type of functions: the type of functions is itself declared, and its type declaration cannot take a function as a parameter.
 - The substitutions of the first and of the second order are defined apart, as in the theory of Nanevski, Pfenning and Pientka: the second one substitutes the arguments of an application in the abstraction it gives, which is not a part of the term it substitutes, and the first one does it.
+- A renaming may rename two variables to the same one, rather than keep them apart and in order, as the weakenings of the formalization of Abel, Danielsson and Eriksson do: the usage adds the uses of the variables renamed to the same one, the ownership asks them the same ownership, and the typing the same type, so that the judgments hold under every renaming that their premises allow.
 
 ### Choices on the Judgments, Usage and Ownership
 

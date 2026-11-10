@@ -1,11 +1,11 @@
 # Substitution
 
-This annex defines the substitutions of the first order, which give terms to variables, the substitutions of the second order, which give abstractions to variables, the closed substitutions, the instantiation of the level variables, and their properties.
+This annex defines the substitutions of the first order, which give terms to variables, the substitutions of the second order, which give abstractions to variables, the renamings, which give variables to variables, the closed substitutions, the instantiation of the level variables, and their properties.
 It builds on the [syntax](08-syntax.md).
 
 ## Definitions
 
-This section defines the substitutions of the first order, then those of the second order, which apply them to the abstractions they give, the closed substitutions, and the instantiation of the level variables.
+This section defines the substitutions of the first order, then those of the second order, which apply them to the abstractions they give, the renamings, the closed substitutions, and the instantiation of the level variables.
 A substitution of the first order and one of the second order are defined apart, as the substitution of the variables and the substitution of the metavariables of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), since the second one substitutes the arguments of each application in the abstraction it gives, which is not a part of the term.
 Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
 
@@ -130,6 +130,11 @@ A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`
 & \Gamma,\ (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) = (\Gamma,\ x : A),\ \Theta
 \end{aligned}
 ```
+
+### Renamings
+
+A renaming $`\xi`$ of a scope $`\Gamma`$ in a scope $`\Gamma'`$ gives each variable $`x`$ of $`\Gamma`$ a variable $`\xi(x)`$ of $`\Gamma'`$ with the same telescope, and renames a term $`t`$ to $`t[\xi]`$, the substitution of the second order that gives each variable $`x`$ the abstraction $`\bar y.\, \xi(x)[\bar y]`$.
+It may rename two variables to the same one.
 
 ### Closed Substitutions
 
