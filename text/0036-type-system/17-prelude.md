@@ -27,12 +27,12 @@ The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the gr
 \end{aligned}
 ```
 
-The type of positions `Step` holds either a term of a type $`A`$ of a universe, used with the grade $`p`$, by its constructor $`\mathsf{next}`$, or a term of a type $`B`$ of any sort, used with the grade $`q`$, by its constructor $`\mathsf{done}`$; it lives in a universe whatever the sort of $`B`$, and its constraint admits the instances at which a proposition $`B`$ has a grade without use at run time:
+The type of positions `Step` holds either a term of a type $`A`$ of a universe, used with the grade $`p`$ and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, by its constructor $`\mathsf{next}`$, or a term of a type $`B`$ of any sort, used with the grade $`q`$ and of the requirement $`r`$, by its constructor $`\mathsf{done}`$; it lives in a universe whatever the sort of $`B`$, and its constraint admits the instances at which a proposition $`B`$ has a grade without use at run time:
 
 ```math
 \begin{aligned}
-& \mathsf{data}.\{s;\ l_1, l_2;\ p, q \mid s = \Omega \implies \llcorner q \lrcorner \ne {11}^{\mathsf{m}}\}\ (A : U_{l_1},\ B : s_{l_2}) : U_{l_1 \sqcup l_2} &&(\mathsf{prelude}.\mathsf{Step}) \\
-& \quad \mathsf{where}\ \mathsf{Step} \mathrel{▶} {00}^{\gamma} \bullet p \bullet q \mathrel{≔} \mathsf{next} : (x : A \mathrel{▶} p;\ {00}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}}) \mid \mathsf{done} : (x : B \mathrel{▶} q;\ {00}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}})
+& \mathsf{data}.\{s;\ l_1, l_2;\ p, q, r \mid s = \Omega \implies \llcorner q \lrcorner \ne {11}^{\mathsf{m}}\}\ (A : U_{l_1},\ B : s_{l_2}) : U_{l_1 \sqcup l_2} &&(\mathsf{prelude}.\mathsf{Step}) \\
+& \quad \mathsf{where}\ \mathsf{Step} \mathrel{▶} {00}^{\gamma} \bullet p \bullet q \mathrel{≔} \mathsf{next} : (x : A \mathrel{▶} p;\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}}) \mid \mathsf{done} : (x : B \mathrel{▶} q;\ {00}^{\mathsf{p}} \mathrel{◀} r)
 \end{aligned}
 ```
 
