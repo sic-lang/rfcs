@@ -1,11 +1,11 @@
 # Prelude
 
-This annex defines the prelude, three type declarations that the type system uses for its own needs: a unit, a pair and a type of positions; it then defines the packing of a telescope into nested pairs, and of its arguments into nested constructors of pairs, and the unpacking of a term of a packing, with the properties of these packings and of the unpacking.
-It builds on the [usage](11-usage.md), the [ownership](12-ownership.md) and the [typing](13-typing.md).
+This annex defines the prelude, three type declarations that the type system uses for its own needs: a unit, a pair and a type of positions; it then defines the packing of a telescope into nested pairs, and of its arguments into nested constructors of pairs, the unpacking of a term of a packing, and the positions of the recursive destructors and their resumption, with the properties of these packings and of the unpacking.
+Its definitions build on the [substitution](09-substitution.md) and on the [recursive destructors](13-typing.md#destructors-of-a-block), and the typing reads them; its properties build on the [usage](11-usage.md), the [ownership](12-ownership.md) and the [typing](13-typing.md).
 
 ## Definitions
 
-This section gives the declarations of the prelude and the signature that holds them, then the packing of the telescopes and of their arguments.
+This section gives the declarations of the prelude and the signature that holds them, then the packing of the telescopes and of their arguments, their unpacking, and the positions.
 
 ### Declarations
 
@@ -70,6 +70,39 @@ The unpacking $`\mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ 
 & \mathsf{unpack}_r\ u : \langle \varepsilon \rangle_{();\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b = \mathsf{rec}_r\ (\mathsf{Unit}.\{;\ l;\}\ ())\ u\ \mathsf{return}\ z.\, C\ \mathsf{with}\ \mathsf{Unit}.\mathsf{mk}() \Rightarrow b &&(\mathsf{unpack}) \\
 & \mathsf{unpack}_r\ u : \langle x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta \rangle_{(s_{l'},\ \bar\kappa);\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b = \mathsf{rec}_r\ (\mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r'\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l}))\ u \\
 & \quad \mathsf{return}\ z.\, C\ \mathsf{with}\ \mathsf{Pair}.\mathsf{mk}(x,\ y) \Rightarrow \mathsf{unpack}_r\ y : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b
+\end{aligned}
+```
+
+### Positions
+
+A recursive destructor of a block of codata types gives back, in a branch of a corecursor, a position: a new state, packed, from which the corecursor goes on, or a term already built.
+The grade $`q_s`$ of a term already built, of the quality $`s`$, is $`{11}^{\mathsf{p}}`$ in a universe, and $`{01}^{\mathsf{p}}`$, without use at run time, in a universe of propositions, as the constraint of the type of positions requires; the type of positions $`\mathsf{pos}_{r;\ \chi}(\Theta : \bar\kappa,\ T : s_{l'})`$ of a corecursor of the grade $`r`$ whose state $`\Theta`$ lives in the sorts $`\bar\kappa`$, at the terms already built of the type $`T`$ of the sort $`s_{l'}`$ that the ownership $`\chi`$ requires, is the instance of `Step` at the packing of the state, of the level $`\mathsf{level}_{\bar\kappa}(l)`$, where $`l = \mathsf{level}_{\bar\kappa}(0)`$ is the join of the levels of $`\bar\kappa`$, and at $`T`$:
+
+```math
+\begin{aligned}
+& q_U = {11}^{\mathsf{p}} &&(q_s) \\
+& q_\Omega = {01}^{\mathsf{p}} \\[1em]
+& \mathsf{pos}_{r;\ \chi}(\Theta : \bar\kappa,\ T : s_{l'}) = \mathsf{Step}.\{s;\ \mathsf{level}_{\bar\kappa}(l), l';\ r, q_s, \chi\}\ (\langle \Theta \rangle_{\bar\kappa;\ l},\ T) &&(\mathsf{pos})
+\end{aligned}
+```
+
+In a block $`\mathcal{D}`$ of codata types $`D_1, \dots, D_k`$, whose states are $`\bar\Theta = (\Theta_1 : \bar\kappa_1,\ \dots,\ \Theta_k : \bar\kappa_k)`$, the type $`\mathsf{pos}_{\bar\Theta;\ r;\ \chi}(B,\ T : \kappa)`$ of the branch of a destructor whose result is $`B`$, at the type $`T`$ of this result, is the type of the positions of the state of the type of the block that $`B`$ names, if the destructor is recursive, and $`T`$ otherwise:
+
+```math
+\begin{aligned}
+& \mathsf{pos}_{\bar\Theta;\ r;\ \chi}(B,\ T : \kappa) = \mathsf{pos}_{r;\ \chi}(\Theta_j : \bar\kappa_j,\ T : \kappa) \text{ if } \mathsf{rec}_{\mathcal{D}}(B) = D_j &&(\mathsf{pos}_{\bar\Theta}) \\
+& \mathsf{pos}_{\bar\Theta;\ r;\ \chi}(B,\ T : \kappa) = T \text{ otherwise}
+\end{aligned}
+```
+
+The resumption $`\mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)`$ of the position $`v`$ of the instance $`T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, of the sort $`\kappa`$, by the corecursor of the grade $`r`$ with the states $`\bar\Theta`$ and the branches $`\bar g`$, is a recursor on $`v`$, with the motive $`z.\, T`$, which unpacks a new state into the corecursor of $`T`$ from the variables $`\bar y_j`$ of the state $`\Theta_j`$ of $`D_j`$, of the sorts $`\bar\kappa_j`$ and of the join $`l_j = \mathsf{level}_{\bar\kappa_j}(0)`$ of their levels, and gives a term already built itself; the resumption $`\mathsf{resume}_{B;\ r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)`$ of the term $`v`$ of the branch of a destructor whose result is $`B`$, observed in a corecursor of the instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, is the resumption of $`v`$ by the corecursor of the type of the block that $`B`$ names, if the destructor is recursive, and $`v`$ otherwise:
+
+```math
+\begin{aligned}
+& \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) = \mathsf{rec}_{{11}^{\mathsf{p}}}\ \mathsf{pos}_{r;\ \chi}(\Theta_j : \bar\kappa_j,\ T : \kappa)\ v\ \mathsf{return}\ z.\, T\ \mathsf{with} &&(\mathsf{resume}) \\
+& \quad (\mathsf{Step}.\mathsf{next}(x) \Rightarrow \mathsf{unpack}_r\ x : \langle \Theta_j \rangle_{\bar\kappa_j;\ l_j}\ \mathsf{return}\ T\ \mathsf{with}\ \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g,\ \mathsf{Step}.\mathsf{done}(x) \Rightarrow x) \\[1em]
+& \mathsf{resume}_{B;\ r;\ \chi}(v,\ D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a : \kappa,\ \bar\Theta,\ \bar g) = \mathsf{resume}_{r;\ \chi}(v,\ D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a : \kappa,\ \bar\Theta,\ \bar g) \text{ if } \mathsf{rec}_{\mathcal{D}}(B) = D_j &&(\mathsf{resume}_B) \\
+& \mathsf{resume}_{B;\ r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) = v \text{ otherwise}
 \end{aligned}
 ```
 
