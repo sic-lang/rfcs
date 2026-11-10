@@ -381,6 +381,23 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 \end{aligned}
 ```
 
+Every judgment in a context holds in a well-formed context, which its rules check down to a rule of the variables, of the sorts, of the constants or of the empty arguments:
+
+```math
+\begin{aligned}
+& \Sigma;\ \Gamma \vdash A \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.A) \\[1em]
+& \Sigma;\ \Gamma \vdash A \equiv B \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.A_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.t) \\[1em]
+& \Sigma;\ \Gamma \vdash t \equiv u : A \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t : \Theta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar t) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar a) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta_\equiv)
+\end{aligned}
+```
+
 The names of a well-formed signature are [distinct](08-syntax.md):
 
 ```math
