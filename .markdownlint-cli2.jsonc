@@ -3,6 +3,6 @@
     // Lines are not wrapped at a fixed length.
     "MD013": false
   },
-  // The files that git ignores, such as those that nix run .#build-site writes, are not linted.
+  // The files that Git ignores, such as those that nix run .#build-site writes, are not linted.
   "gitignore": true
 }

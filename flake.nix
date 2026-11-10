@@ -374,7 +374,7 @@
                 sources = [ commitMsgHook.run ];
               };
             };
-            # Writes the configuration to .vscode/, which git ignores.
+            # Writes the configuration to .vscode/, which Git ignores.
             vscode = {
               description = "Write the recommended VS Code configuration to .vscode/";
               command = setup {
