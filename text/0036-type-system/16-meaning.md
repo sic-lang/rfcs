@@ -337,7 +337,7 @@ A judgment in a context requires the context to be meaningful, and holds under e
 
 ### Telescopes in a Sort
 
-Two closed telescopes are equal in a sort $`\kappa`$ when their first types are equal types of a sort that $`\kappa`$ bounds, and the rest of them equal for every pair of equal terms of these types, whatever their grades, as the rule $`(\mathsf{tel}_{\kappa,})`$ checks; a telescope lives in a sort in a context when its instances by equal closed substitutions of the context are equal in it:
+Two closed telescopes are equal in a sort $`\kappa`$ when their first types are equal types of a sort that $`\kappa`$ bounds, and the rest of them equal for every pair of equal terms of these types, whatever their grades, as the rule $`(\mathsf{tel}_{\kappa,})`$ checks; two telescopes are equal in a sort in a context when their instances by equal closed substitutions of the context are equal in it, and a telescope lives in a sort when it is equal to itself in it:
 
 ```math
 \begin{aligned}
@@ -347,11 +347,12 @@ Two closed telescopes are equal in a sort $`\kappa`$ when their first types are 
 & \quad \text{and} \\
 & \qquad \exists \kappa_1 \preceq \kappa.\ \Sigma \vDash A_1 \equiv A_2 : \kappa_1 \\
 & \qquad \forall a_1,\ a_2.\ \Sigma \vDash a_1 \equiv a_2 : A_1 \implies \Sigma \vDash \Theta_1[a_1 / x] \equiv \Theta_2[a_2 / x] : \kappa \\[1em]
-& \text{⟺} &&({\vDash}\Gamma_{\mathsf{tel}\kappa}) \\
-& \quad \Sigma;\ \Gamma \vDash \Theta : \kappa \\
+& \text{⟺} &&({\vDash}\Gamma_{\mathsf{tel}\kappa\equiv}) \\
+& \quad \Sigma;\ \Gamma \vDash \Theta_1 \equiv \Theta_2 : \kappa \\
 & \quad \text{and} \\
 & \qquad \Sigma \vDash \Gamma \\
-& \qquad \forall (\theta_1,\ \theta_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash \Theta[\theta_1] \equiv \Theta[\theta_2] : \kappa
+& \qquad \forall (\theta_1,\ \theta_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash \Theta_1[\theta_1] \equiv \Theta_2[\theta_2] : \kappa \\[1em]
+& \Sigma;\ \Gamma \vDash \Theta : \kappa \iff \Sigma;\ \Gamma \vDash \Theta \equiv \Theta : \kappa &&({\vDash}\Gamma_{\mathsf{tel}\kappa})
 \end{aligned}
 ```
 
@@ -463,6 +464,7 @@ Every judgment of the typing is meaningful under an interpretation that interpre
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \Sigma;\ \Gamma \vDash \bar a : \Delta &&(\mathsf{sound}.\bar a) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \Sigma;\ \Gamma \vDash \bar a_1 \equiv \bar a_2 : \Delta &&(\mathsf{sound}.\bar a_\equiv) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \Sigma;\ \Gamma \vDash \Theta : \kappa &&(\mathsf{sound}.\Theta) \\[1em]
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \Sigma;\ \Gamma \vDash \Theta_1 \equiv \Theta_2 : \kappa &&(\mathsf{sound}.\Theta_\equiv) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar d : \kappa \implies \Sigma;\ \Gamma \vDash \bar d : \kappa &&(\mathsf{sound}.\bar d)
 \end{aligned}
 ```

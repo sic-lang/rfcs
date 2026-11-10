@@ -26,11 +26,12 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash \bar a : \Delta`$ | $`\bar a`$ are arguments of the parameters $`\Delta`$ |
 | $`\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta`$ | $`\bar a_1`$ and $`\bar a_2`$ are equal arguments of $`\Delta`$ |
 | $`\Sigma;\ \Gamma \vdash \Theta : \kappa`$ | The telescope $`\Theta`$ lives in the sort $`\kappa`$ |
+| $`\Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa`$ | $`\Theta_1`$ and $`\Theta_2`$ are equal telescopes in the sort $`\kappa`$ |
 | $`\Sigma;\ \Gamma \vdash \bar d : \kappa`$ | The destructors $`\bar d`$ live in the sort $`\kappa`$ |
 | $`\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ | The type declaration is well formed |
 | $`\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k`$ | The type declaration is well formed |
 
-The judgments are defined together, except the last four, which build on the others.
+The judgments are defined together, except the last three, which build on the others.
 Typing and equality carry no grade: the usage and the ownership of a term are checked by the judgments of [usage](11-usage.md) and of [ownership](12-ownership.md), which the rule of the constant definitions reads.
 Equality is written $`\equiv`$, and $`=`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](06-levels.md), and for sequences of levels holds on each component.
 
@@ -213,10 +214,13 @@ Two observations by the same destructor, at equal arguments of the instance, at 
 \frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \bar d;\ \dots) \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \bar d[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] = (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d_2) \\ \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\ \bar l_1 = \bar l_2 \\ \Sigma;\ \Gamma \vdash t_1 \equiv t_2 : T_1 \\ \Sigma;\ \Gamma \vdash \bar t_1 \equiv \bar t_2 : \Theta[\bar a_1 / \Delta,\ t_1.T_1 / \bar d_1]\end{gathered}}{\Sigma;\ \Gamma \vdash t_1.(T_1.d)(\bar t_1) \equiv t_2.(T_2.d)(\bar t_2) : B[\bar a_1 / \Delta,\ t_1.T_1 / \bar d_1][\bar t_1 / \Theta]}\;(d_\equiv)
 ```
 
-An observation of a corecursor by a destructor of its type, at arguments of its telescope, with the premises of $`(\mathsf{corec})`$, is equal to the branch of the destructor, with the terms of the state substituted for the variables of the state and the arguments for those of the telescope, where $`t_c`$ is the corecursor $`\mathsf{corec}_r\ T_h\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g`$:
+Two corecursors at equal arguments of the instance, at equal levels, from equal states, with equal states and equal branches, are equal, where $`T_j`$ and the destructors are at the levels $`\bar l_1`$ and at the arguments $`\bar a_1`$, and $`c_{1j}`$ is the corecursor $`\mathsf{corec}_r\ T_j\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta_1\ \mathsf{with}\ \bar g_1`$ of each type from the variables of its state; an observation of a corecursor by a destructor of its type, at arguments of its telescope, with the premises of $`(\mathsf{corec})`$, is equal to the branch of the destructor, with the terms of the state substituted for the variables of the state and the arguments for those of the telescope, where $`t_c`$ is the corecursor $`\mathsf{corec}_r\ T_h\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g`$:
 
 ```math
+\begin{gathered}
+\frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k) \in \Sigma \\ \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \bar l_2 \text{ as many as } \bar l \\ \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\ \bar l_1 = \bar l_2 \\ \Sigma;\ \Gamma \vdash \bar t_1 \equiv \bar t_2 : \Theta_{1h} \\ \forall j.\ \Sigma;\ \Gamma \vdash \Theta_{1j} \equiv \Theta_{2j} : \kappa_j \\ \forall j, i.\ \Sigma;\ \Gamma,\ \Theta_{1j},\ \Theta_{ji}[\bar a_1 / \Delta,\ c_{1j}.T_j / \bar d_{ji,1}] \vdash g_{1ji} \equiv g_{2ji} : B_{ji}[\bar a_1 / \Delta,\ c_{1j}.T_j / \bar d_{ji,1}]\end{gathered}}{\Sigma;\ \Gamma \vdash \mathsf{corec}_r\ (D_h.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1)\ \mathsf{from}\ \bar t_1\ \mathsf{return}\ \bar\Theta_1\ \mathsf{with}\ \bar g_1 \equiv \mathsf{corec}_r\ (D_h.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2)\ \mathsf{from}\ \bar t_2\ \mathsf{return}\ \bar\Theta_2\ \mathsf{with}\ \bar g_2 : T_h}\;(\mathsf{corec}_\equiv) \\[1em]
 \frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\ \Sigma;\ \Gamma \vdash \bar t : \Theta_h \\ \Sigma;\ \Gamma \vdash \bar u : \Theta_{hi}[\bar a / \Delta,\ t_c.T_h / \bar d_{hi,1}] \\ \forall j.\ \Sigma;\ \Gamma \vdash \Theta_j : \kappa_j \\ \forall j, i.\ \Sigma;\ \Gamma,\ \Theta_j,\ \Theta_{ji}[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}] \vdash g_{ji} : B_{ji}[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}]\end{gathered}}{\Sigma;\ \Gamma \vdash t_c.(T_h.d_{hi})(\bar u) \equiv g_{hi}[\bar t / \bar y_h,\ \bar u / \bar z_{hi}] : B_{hi}[\bar a / \Delta,\ t_c.T_h / \bar d_{hi,1}][\bar u / \Theta_{hi}]}\;(\beta)
+\end{gathered}
 ```
 
 No rule equates two instances with different qualities or grades: two types that differ only by a grade are different types.
@@ -255,6 +259,15 @@ A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort th
 \begin{gathered}
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : \kappa}\;(\mathsf{tel}_{\kappa\varepsilon}) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A : \kappa_1 \\ \kappa_1 \preceq \kappa_2 \\ \Sigma;\ \Gamma,\ x : A \vdash \Theta : \kappa_2 \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{gathered}}{\Sigma;\ \Gamma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa_2}\;(\mathsf{tel}_{\kappa,})
+\end{gathered}
+```
+
+Two telescopes are equal in a sort $`\kappa`$ when their entries have the same grades, their types are equal types of sorts that $`\kappa`$ bounds, each under the entries before it in the first telescope, and an entry whose type is a proposition has a grade without use at run time:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon \equiv \varepsilon : \kappa}\;(\mathsf{tel}_{\kappa\varepsilon\equiv}) \\[1em]
+\frac{\begin{gathered}{}\Sigma;\ \Gamma \vdash A_1 \equiv A_2 : \kappa_1 \\ \kappa_1 \preceq \kappa_2 \\ \Sigma;\ \Gamma,\ x : A_1 \vdash \Theta_1 \equiv \Theta_2 : \kappa_2 \\ \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{gathered}}{\Sigma;\ \Gamma \vdash (x : A_1 \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta_1) \equiv (x : A_2 \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta_2) : \kappa_2}\;(\mathsf{tel}_{\kappa,\equiv})
 \end{gathered}
 ```
 
@@ -305,6 +318,7 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 & \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash \bar d : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar d) \\[1em]
 & \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{data}) \\[1em]
 & \Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{codata}) \\[1em]
