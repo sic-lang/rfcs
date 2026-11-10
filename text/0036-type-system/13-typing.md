@@ -224,6 +224,12 @@ Two corecursors at equal arguments of the instance, at equal levels, from equal 
 \end{gathered}
 ```
 
+Two terms of an instance whose observations by each destructor, at the variables $`\bar z_i`$ of its telescope, are equal, the destructors before it being the observations of the first term, are equal, so that a term of a codata type is determined by its observations, where $`T`$ is the instance $`D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a`$ and $`\bar d[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_{i,1} \mid d_i : (\Theta_i \vdash B_i \mathrel{◀} \psi_i) \mathrel{▶} p_i;\ q_i \mid \bar d_{i,2})`$ decomposes the destructors at each of them:
+
+```math
+\frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \bar d;\ \dots) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma;\ \Gamma \vdash t : T \\ \Sigma;\ \Gamma \vdash u : T \\ \forall i.\ \Sigma;\ \Gamma,\ \Theta_i[\bar a / \Delta,\ t.T / \bar d_{i,1}] \vdash t.(T.d_i)(\bar z_i) \equiv u.(T.d_i)(\bar z_i) : B_i[\bar a / \Delta,\ t.T / \bar d_{i,1}]\end{gathered}}{\Sigma;\ \Gamma \vdash t \equiv u : T}\;(\eta_d)
+```
+
 No rule equates two instances with different qualities or grades: two types that differ only by a grade are different types.
 
 ### Arguments
