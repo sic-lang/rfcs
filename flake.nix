@@ -33,6 +33,12 @@
             program = lib.getExe program.run;
             meta = { inherit description; };
           };
+          # Mermaid 12, in place of the Mermaid 11.6.0 that mdbook-mermaid 0.17.1 bundles, whose layout
+          # stretches the boxes of the subgraphs far wider than their nodes.
+          mermaidJs = pkgs.fetchurl {
+            url = "https://cdn.jsdelivr.net/npm/mermaid@12.2.0/dist/mermaid.min.js";
+            hash = "sha256-qKam+AWwdKgmGiglyG+ZyAVKyzs19Qu34kpPnyw8O58=";
+          };
           # The checks of the files: their tools, also provided by the development shell, and their
           # command, run from the root of the repository.
           fileChecks = {
@@ -149,6 +155,7 @@
               touch "$mermaid/book.toml"
               RUST_LOG=warn mdbook-mermaid install "$mermaid"
               cp "$mermaid"/*.js .
+              install -m 644 ${mermaidJs} mermaid.min.js
               mdbook build
             '';
           };
