@@ -1,7 +1,7 @@
 # Prelude
 
 This annex defines the prelude, three type declarations that the type system uses for its own needs: a unit, a pair and a type of positions; it then defines the packing of a telescope into nested pairs, and of its arguments into nested constructors of pairs, the unpacking of a term of a packing, and the positions of the recursive destructors and their resumption, with the properties of these packings and of the unpacking.
-Its definitions build on the [substitution](09-substitution.md) and on the [recursive destructors](13-typing.md#destructors-of-a-block), and the typing reads them; its properties build on the [usage](11-usage.md), the [ownership](12-ownership.md) and the [typing](13-typing.md).
+Its definitions build on the [substitution](09-substitution.md) and on the [recursive destructors](14-typing.md#destructors-of-a-block), and the typing reads them; its properties build on the [usage](12-usage.md), the [ownership](13-ownership.md) and the [typing](14-typing.md).
 
 ## Definitions
 
@@ -17,7 +17,7 @@ The unit `Unit` has, at each level $`l`$, a single constructor without fields, i
 \end{aligned}
 ```
 
-The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the grade $`p`$ and of the requirement $`r`$, and a term of $`X[x]`$, a type of a universe that depends on $`x`$, used once and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, so that the unpacking keeps the ownership of each entry; it lives in a universe whatever the sort of $`A`$, and its constraint admits the instances at which a proposition $`A`$ has a grade without use at run time, as the [formation of its fields](13-typing.md#fields-of-a-block) requires:
+The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the grade $`p`$ and of the requirement $`r`$, and a term of $`X[x]`$, a type of a universe that depends on $`x`$, used once and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, so that the unpacking keeps the ownership of each entry; it lives in a universe whatever the sort of $`A`$, and its constraint admits the instances at which a proposition $`A`$ has a grade without use at run time, as the [formation of its fields](14-typing.md#fields-of-a-block) requires:
 
 ```math
 \begin{aligned}
@@ -47,7 +47,7 @@ The prelude is the signature of the three declarations, in this order, and a sig
 
 ### Packing
 
-A telescope packs into nested pairs, which need the sort of each of its entries, given by a [telescope in sorts](13-typing.md#telescopes-in-a-sort).
+A telescope packs into nested pairs, which need the sort of each of its entries, given by a [telescope in sorts](14-typing.md#telescopes-in-a-sort).
 The level $`\mathsf{level}_{\bar\kappa}(l)`$ of a packing is the join of the levels of the sorts $`\bar\kappa`$ and of $`l`$; the packing $`\langle \Theta \rangle_{\bar\kappa;\ l}`$ of the telescope $`\Theta`$, whose entries live in the sorts $`\bar\kappa`$, is the pair of its first entry, with its grade and its requirement, and of the packing of the rest, ending with the unit of the level $`l`$; the packing $`\langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l}`$ of arguments of $`\Theta`$ is the pair of the first argument and of the packing of the others, as arguments of the rest of the telescope instantiated by the first, ending with the constructor of the unit:
 
 ```math
@@ -177,7 +177,7 @@ In a signature that holds the prelude, the unpacking of a term of the packing of
 \end{aligned}
 ```
 
-In a signature that holds the prelude, the unpacking uses the variables of its term $`r`$ times and those of its term $`b`$, which uses the variable of each entry of the telescope $`\ulcorner m \urcorner \cdot r`$ times its grade, its motive using no variable, as a [recursor](11-usage.md) does; and it has the ownership of $`b`$, checked with the ownership $`o`$ of its term times the requirement of each entry, times the grade $`\ulcorner m \urcorner \cdot r`$ times the grade of the entry, for the variable of the entry, as a [recursor](12-ownership.md) does, the second field of each pair requiring $`{11}^{\mathsf{p}}`$ and having the grade $`{11}^{\mathsf{p}}`$, and $`\ulcorner m \urcorner \cdot r`$ being idempotent, so that the nested recursors scale it once:
+In a signature that holds the prelude, the unpacking uses the variables of its term $`r`$ times and those of its term $`b`$, which uses the variable of each entry of the telescope $`\ulcorner m \urcorner \cdot r`$ times its grade, its motive using no variable, as a [recursor](12-usage.md) does; and it has the ownership of $`b`$, checked with the ownership $`o`$ of its term times the requirement of each entry, times the grade $`\ulcorner m \urcorner \cdot r`$ times the grade of the entry, for the variable of the entry, as a [recursor](13-ownership.md) does, the second field of each pair requiring $`{11}^{\mathsf{p}}`$ and having the grade $`{11}^{\mathsf{p}}`$, and $`\ulcorner m \urcorner \cdot r`$ being idempotent, so that the nested recursors scale it once:
 
 ```math
 \begin{aligned}
@@ -200,7 +200,7 @@ In a signature that holds the prelude, the unpacking uses the variables of its t
 \end{aligned}
 ```
 
-In a signature that holds the prelude, the resumption of a position $`v`$ by a corecursor of the grade $`r`$ of the instance $`T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, of the sort $`\kappa`$ of the quality $`s`$, uses the variables of $`v`$ and those of the corecursor from the variables $`\bar y_j`$ of the state $`\Theta_j`$, which it uses $`\ulcorner m \urcorner \cdot r`$ times their grades, as a lower bound $`\eta`$ of the uses $`\delta`$ of the corecursor and of no use allows, in a mode that allows the grade $`q_s`$ of a term already built, since a position resumes the corecursor or gives a term already built, as a [recursor](11-usage.md) shares the uses of its branches; and it has every ownership $`p`$ below the ownership $`{11}^{\mathsf{p}}`$ of the corecursor, a new value, and below the ownership $`o \cdot \chi \cdot (\ulcorner m \urcorner \cdot q_s)`$ that a [recursor](12-ownership.md) gives the term already built, of the requirement $`\chi`$ and of the grade $`q_s`$, in a position of the ownership $`o`$, so that it has the ownership $`\chi`$ of the result of a recursive destructor, at run time, when the position is owned alone and $`\chi \le {11}^{\mathsf{p}}`$:
+In a signature that holds the prelude, the resumption of a position $`v`$ by a corecursor of the grade $`r`$ of the instance $`T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, of the sort $`\kappa`$ of the quality $`s`$, uses the variables of $`v`$ and those of the corecursor from the variables $`\bar y_j`$ of the state $`\Theta_j`$, which it uses $`\ulcorner m \urcorner \cdot r`$ times their grades, as a lower bound $`\eta`$ of the uses $`\delta`$ of the corecursor and of no use allows, in a mode that allows the grade $`q_s`$ of a term already built, since a position resumes the corecursor or gives a term already built, as a [recursor](12-usage.md) shares the uses of its branches; and it has every ownership $`p`$ below the ownership $`{11}^{\mathsf{p}}`$ of the corecursor, a new value, and below the ownership $`o \cdot \chi \cdot (\ulcorner m \urcorner \cdot q_s)`$ that a [recursor](13-ownership.md) gives the term already built, of the requirement $`\chi`$ and of the grade $`q_s`$, in a position of the ownership $`o`$, so that it has the ownership $`\chi`$ of the result of a recursive destructor, at run time, when the position is owned alone and $`\chi \le {11}^{\mathsf{p}}`$:
 
 ```math
 \begin{aligned}

@@ -1,7 +1,7 @@
 # Erasure
 
-This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, the sets of grades that the modes do not count, and their properties.
-It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md) and the [usage](11-usage.md).
+This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, and its properties.
+It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [sets of grades](11-grade-sets.md) and the [usage](12-usage.md).
 
 ## Definitions
 
@@ -91,28 +91,9 @@ In the erasure of a corecursor, $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, 
 A constant keeps the grades of its instance and loses its qualities and its levels: the positions of its body that the erasure removes depend on the grades that instantiate its grade variables, and on nothing else, since the erasure follows the grades alone.
 The term $`f.\{\bar p\}`$ of the target language thus names the copy of $`f`$ compiled for the grades $`\bar p`$, the erasure of its body for this instance, as the [monomorphization](https://doc.rust-lang.org/book/ch10-01-syntax.html#performance-of-code-using-generics) of Rust compiles a copy of a generic function for each instance of its type parameters, so that no grade remains at run time: if the body of $`f`$ checks with its grade variable $`p`$ a position that computes from its parameter, the extraction erases this position in $`f.\{{00}^{\mathsf{p}}\}`$ and keeps it in $`f.\{{11}^{\mathsf{p}}\}`$.
 
-A term checked in the mode $`m`$ checks a position of grade $`p`$ in the mode $`m \odot p`$, and does not count the uses of the positions that it checks in a more erased mode, whose grades form the set $`S^m`$:
-
-```math
-\begin{aligned}
-& S^m = \{p \mid m \odot p \ne m\} &&(\mathsf{uncounted}_m)
-\end{aligned}
-```
+A term checked in the mode $`m`$ does not count the uses of the positions that it checks in a more erased mode, whose grades form the [set](11-grade-sets.md#definitions) $`S^m`$.
 
 The erasure $`\lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}}`$ is thus the extraction $`t^\bullet`$ of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862), which removes what has no use at run time, and $`\lfloor t \rfloor_{S^{{01}^{\mathsf{m}}}}`$ keeps the proofs, the specifications and the permissions that the extraction removes, as the ghost code of [Verus](https://doi.org/10.1145/3586037) is checked but never run.
-
-A set $`S`$ of grades erases only what the mode $`m`$ does not count when it erases neither the grade $`\ulcorner m \urcorner`$, with which a variable checked in the mode $`m`$ uses itself, nor a grade above one that it keeps, nor a part of a sum that it erases, when it erases the second factor of a product that it erases whose first factor it keeps, and every product of which it erases a factor, and when a grade that it keeps keeps the mode, in which the term of a field of this grade is checked:
-
-```math
-\begin{aligned}
-& \ulcorner m \urcorner \notin S &&(\mathsf{uncounted}_S.\mathsf{grade}) \\[1em]
-& p \le q \text{ and } p \in S \implies q \in S &&(\mathsf{uncounted}_S.{\le}) \\[1em]
-& p + q \in S \implies p \in S &&(\mathsf{uncounted}_S.{+}) \\[1em]
-& p \notin S \text{ and } p \cdot q \in S \implies q \in S &&(\mathsf{uncounted}_S.{\cdot}) \\[1em]
-& p \in S \text{ or } q \in S \implies p \cdot q \in S &&(\mathsf{uncounted}_S.\mathsf{factor}) \\[1em]
-& p \notin S \implies m \odot p = m &&(\mathsf{uncounted}_S.{\odot})
-\end{aligned}
-```
 
 A variable occurs in a term of the target language when the term is the variable, or when the variable occurs in one of its subterms, a field of a constructor, the term or a branch of a recursor, the term or an argument of an observation, the state or a branch of a corecursor; it occurs in arguments or in branches when it occurs in one of them:
 
@@ -158,18 +139,6 @@ The judgment $`M \sqsubseteq N`$ reads: the term $`M`$ of the target language is
 ```
 
 ## Properties
-
-The set $`S^m`$ is, for the mode $`{11}^{\mathsf{m}}`$ of run time, the grades without use at run time, for the mode $`{01}^{\mathsf{m}}`$, the grade without any use, and, for the mode $`{00}^{\mathsf{m}}`$, which counts no use, empty, and it erases only what its mode does not count:
-
-```math
-\begin{aligned}
-& \text{and} &&(\mathsf{values}_m) \\
-& \quad p \in S^{{11}^{\mathsf{m}}} \iff \mathsf{run}(p) = 0 \\
-& \quad p \in S^{{01}^{\mathsf{m}}} \iff p = {00}^{\mathsf{p}} \\
-& \quad p \notin S^{{00}^{\mathsf{m}}} \\[1em]
-& S^m \text{ erases only what } m \text{ does not count} &&(\mathsf{erases}_m)
-\end{aligned}
-```
 
 A variable whose grade is in a set $`S`$ is absent from the erasure by $`S`$ of a term checked in a mode whose uses $`S`$ does not erase, in a signature whose names are distinct, so that the usage and the erasure of a constructor read the grades of its fields in the same entry, and the erasure by a larger set is less defined, so that the extraction is the program that the proofs see with more parts erased:
 

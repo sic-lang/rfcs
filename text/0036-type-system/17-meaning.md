@@ -1,7 +1,7 @@
 # Meaning
 
 This annex defines the meaning of the judgments of the typing, with the interpretation of the constant declarations and the equality of the canonical terms of the sorts, and its properties.
-It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [typing](13-typing.md) and the [reduction](14-reduction.md).
+It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [typing](14-typing.md) and the [reduction](15-reduction.md).
 
 The judgments mean what the meaning explanations of Martin-Löf type theory say of them, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them: a judgment is true when its terms compute as it says.
 The meaning ignores the grades, the modes and the ownerships, as the typing does outside the judgments of usage and of ownership that the rule of the constant definitions reads.
@@ -38,7 +38,7 @@ The signature $`\iota(\Sigma)`$ is $`\Sigma`$ in which each constant declaration
 \end{aligned}
 ```
 
-In the meaning, a closed term $`t`$ computes to $`v`$, written $`t \Downarrow v`$, when $`\iota(\Sigma) \vdash t \Downarrow v`$, as the formula $`(\Downarrow)`$ of the [reduction](14-reduction.md) defines it, so that the meaning has the single reduction of the typing.
+In the meaning, a closed term $`t`$ computes to $`v`$, written $`t \Downarrow v`$, when $`\iota(\Sigma) \vdash t \Downarrow v`$, as the formula $`(\Downarrow)`$ of the [reduction](15-reduction.md) defines it, so that the meaning has the single reduction of the typing.
 The computation, the equality $`\mathsf{eq}`$ and the meaning of the judgments all depend on the signature $`\Sigma`$ and on the interpretation $`\iota`$, which their notation omits.
 
 ### Equality of the Canonical Terms
@@ -266,7 +266,7 @@ Two closed types are equal when they compute to canonical types with the same eq
 
 ### Signatures and Entries
 
-A signature is meaningful when its names are [distinct](08-syntax.md), as the rules of the [signatures](13-typing.md) require, and each of its entries is meaningful in the whole signature, written $`\Sigma \vDash e`$ for an entry $`e`$ of $`\Sigma`$.
+A signature is meaningful when its names are [distinct](08-syntax.md), as the rules of the [signatures](14-typing.md) require, and each of its entries is meaningful in the whole signature, written $`\Sigma \vDash e`$ for an entry $`e`$ of $`\Sigma`$.
 An entry is not made meaningful in the signature before it alone: a type declaration quantifies over the closed terms of its fields, which a larger signature may add, so that a type meaningful in a signature need not be in a larger one, while the typing ensures that it is:
 
 ```math
@@ -404,7 +404,7 @@ Two closed telescopes are equal in a sort $`\kappa`$ when their first types are 
 
 ### Fields of a Block
 
-The fields of a constructor of a block $`\mathcal{D}`$, whose recursive fields $`\mathsf{rec}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields that are not recursive, and their recursive fields of the type $`D`$ are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, the rest being equal for every pair of terms of them, on which it does not depend, as the rules [$`(\mathsf{fields}_{,})`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$](13-typing.md) check; fields live in a sort in a context when their instances by equal closed substitutions of the context are equal in it, at the parameters themselves substituted:
+The fields of a constructor of a block $`\mathcal{D}`$, whose recursive fields $`\mathsf{rec}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields that are not recursive, and their recursive fields of the type $`D`$ are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, the rest being equal for every pair of terms of them, on which it does not depend, as the rules [$`(\mathsf{fields}_{,})`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$](14-typing.md) check; fields live in a sort in a context when their instances by equal closed substitutions of the context are equal in it, at the parameters themselves substituted:
 
 ```math
 \begin{aligned}
@@ -431,7 +431,7 @@ Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and 
 
 ### Destructors of a Block
 
-The destructors of a codata type of a block $`\mathcal{D}`$, whose recursive destructors $`\mathsf{rec}_{\mathcal{D}}`$ gives, are equal in a sort $`\kappa`$ at two closed substitutions $`\theta_1`$ and $`\theta_2`$ of their scope when the premises of the rules [$`(\bar d_{\kappa|})`$ and $`(\bar d_{\kappa\mathsf{rec}})`$](13-typing.md) are meaningful: the arguments of the first one are equal telescopes in the universe of the level of $`\kappa`$; if it is not recursive, its results at equal arguments are equal types of a sort that $`\kappa`$ bounds, and the destructors after it are equal for every pair of abstractions for it whose instances at equal arguments are equal terms of its result, as $`(\mathsf{eq}_X)`$ relates them; if it is recursive, its result is the instance $`T_D(\bar x_\Delta)`$ of the block at the parameters themselves, and the destructors after it are equal for every pair of abstractions for it, on which they do not depend.
+The destructors of a codata type of a block $`\mathcal{D}`$, whose recursive destructors $`\mathsf{rec}_{\mathcal{D}}`$ gives, are equal in a sort $`\kappa`$ at two closed substitutions $`\theta_1`$ and $`\theta_2`$ of their scope when the premises of the rules [$`(\bar d_{\kappa|})`$ and $`(\bar d_{\kappa\mathsf{rec}})`$](14-typing.md) are meaningful: the arguments of the first one are equal telescopes in the universe of the level of $`\kappa`$; if it is not recursive, its results at equal arguments are equal types of a sort that $`\kappa`$ bounds, and the destructors after it are equal for every pair of abstractions for it whose instances at equal arguments are equal terms of its result, as $`(\mathsf{eq}_X)`$ relates them; if it is recursive, its result is the instance $`T_D(\bar x_\Delta)`$ of the block at the parameters themselves, and the destructors after it are equal for every pair of abstractions for it, on which they do not depend.
 Destructors live in a sort in a context when they are equal at equal closed substitutions of the context:
 
 ```math

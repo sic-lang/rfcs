@@ -133,35 +133,10 @@ The projection on the run-time multiplicity is sound for the first components of
 
 ## Properties
 
-The properties of the grades are those of a modality and of its greatest lower bounds.
-
-### Modality
-
 The seven grades form a [modality](02-modalities.md), as the multiplicities do, whose laws and properties they have:
 
 ```math
 \begin{aligned}
 & \text{the grades, with } {00}^{\mathsf{p}},\ {11}^{\mathsf{p}},\ +,\ \cdot,\ \wedge, \text{ form a modality} &&(\mathsf{modality}_p)
-\end{aligned}
-```
-
-### Greatest Lower Bounds
-
-Every non-empty decidable set $`S`$ of grades has a greatest lower bound $`\bigwedge S`$, which covers the sets of grades that a rule computes:
-
-```math
-\begin{aligned}
-& \text{and} &&(\textstyle\bigwedge_p) \\
-& \quad \forall p \in S.\ \textstyle\bigwedge S \le p \\
-& \quad (\forall p \in S.\ r \le p) \implies r \le \textstyle\bigwedge S
-\end{aligned}
-```
-
-For all families $`(p_i)_{i \in I}`$ and $`(q_i)_{i \in I}`$ of grades indexed by a non-empty set $`I`$ whose greatest lower bounds exist, as they do when their sets of values are decidable, the greatest lower bound is superadditive, and the multiplication by a grade commutes with it, as [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) require of well-behaved greatest lower bounds:
-
-```math
-\begin{aligned}
-& \textstyle\bigwedge_{i \in I} p_i + \bigwedge_{i \in I} q_i \le \bigwedge_{i \in I} (p_i + q_i) &&(\textstyle\bigwedge{+}_p) \\[1em]
-& r \cdot \textstyle\bigwedge_{i \in I} p_i = \bigwedge_{i \in I} (r \cdot p_i) &&(\textstyle\bigwedge{\cdot}_p)
 \end{aligned}
 ```
