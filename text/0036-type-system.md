@@ -50,11 +50,12 @@ The [ownership](0036-type-system/12-ownership.md) is a third judgment, which che
 Where the usage of a variable comes from the term that uses it, its ownership comes from the argument that its binder receives: each entry of a telescope requires an ownership of its argument, and a second-order variable states the ownership of its result from those of its arguments, as the meet of a constant and of factors, each scaling the ownership of one argument, so that a result may be a fresh value, an alias of an argument, or either.
 A variable that a recursor or a corecursor binds has the ownership of the value it receives times the grade with which its scope uses it, so that a value received once and used twice through its variable is shared.
 
-A program is a term well typed, well used and well owned.
+A program is a signature and a term, well typed, well used and well owned.
 Its typing tells what it computes.
 Its usage tells how it uses its resources, so that it states which resources it consumes, which proofs and specifications it erases, and which permissions it passes on exactly once.
 Its ownership tells how its values are shared, so that it states which values no other variable reaches.
 The ownership only reads grades of the syntax: those of the telescopes, which give the mode in which each argument is checked, as for the usage, and, with those of the recursive results of the branches, the uses of each variable that a recursor or a corecursor binds.
+The three judgments are separate: no rule of one has a premise of another, for the terms as for the signature, which each checks with a judgment of its own, so that each judgment says what it checks, and nothing that another checks.
 
 The signature lists the constant definitions, the constant declarations and the type declarations, in order, each checked against the entries before it, once with its level variables and for each instance of its sort and grade variables.
 A constant has a mode, which says where it may be used: a constant of the mode $`{11}^{\mathsf{m}}`$ is a program, used anywhere, one of the mode $`{01}^{\mathsf{m}}`$ a proof or a ghost term, used in proofs and specifications, and one of the mode $`{00}^{\mathsf{m}}`$ a specification, used in specifications only.
@@ -115,8 +116,8 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Syntax](0036-type-system/08-syntax.md): the terms, among them the constructors and the recursors of the data types and the observations and the corecursors of the codata types, their arguments, the motives and the branches of the recursors, the states and the branches of the corecursors, the telescopes, the contexts and the signatures, with the variables they bind.
 - [Substitution](0036-type-system/09-substitution.md): the substitutions of the first and of the second order, the renamings, the closed substitutions, the instantiation of the level variables and their properties.
 - [Grade vectors](0036-type-system/10-grade-vectors.md): the grades of the variables of a scope, their operations, their order, their renaming and their properties.
-- [Usage](0036-type-system/11-usage.md): the judgment that checks, in a mode, how a term uses the variables of its scope, and its properties.
-- [Ownership](0036-type-system/12-ownership.md): the judgment that checks, in a mode, the ownership of the value of a term, and its properties.
+- [Usage](0036-type-system/11-usage.md): the judgment that checks, in a mode, how a term uses the variables of its scope, the usage of the entries of a signature, and their properties.
+- [Ownership](0036-type-system/12-ownership.md): the judgment that checks, in a mode, the ownership of the value of a term, the ownership of the entries of a signature, and their properties.
 - [Typing](0036-type-system/13-typing.md): the judgments of the signatures, of the contexts, of the types, of the terms and of their arguments, their rules and their properties.
 - [Reduction](0036-type-system/14-reduction.md): the weak head reduction, its head normal forms, the computation of the closed terms and their determinism.
 - [Erasure](0036-type-system/15-erasure.md): the translation to an untyped target language that replaces with a value the parts of a term whose grade is in a set, the sets of grades that the modes do not count, and the absence of the erased variables.
