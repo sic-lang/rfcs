@@ -1,6 +1,6 @@
 # Usage
 
-This annex defines the judgment of usage, which checks how a term uses the variables of its scope, in a mode, and its properties.
+This annex defines the judgment of usage, which checks how a term uses the variables of its scope, in a mode, the usage of the entries of a signature, and their properties.
 It builds on the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md) and the [grade vectors](10-grade-vectors.md).
 
 ## Definitions
@@ -8,7 +8,8 @@ It builds on the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitu
 The judgment $`\Sigma;\ \gamma \vdash t \mathrel{▶} m`$ reads: checked in the mode $`m`$, the term $`t`$ uses each variable of its scope as the grade that the vector $`\gamma`$, over this scope, gives it allows.
 The judgment $`\Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m`$ reads: checked in the mode $`m`$, the arguments $`\bar t`$ of a telescope whose grades are $`\bar p`$ use the variables of their scope as $`\gamma`$ allows.
 The judgment $`\Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m`$ reads: checked in the mode $`m`$, the arguments $`\bar a`$ of an instance whose type uses its parameters with the grades $`\zeta`$ use the variables of their scope as $`\gamma`$ allows.
-The judgment $`\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m`$ reads: checked in the mode $`m`$, the types of the telescope $`\Theta`$ use the variables of its scope as $`\gamma`$ allows, the judgment $`\Sigma;\ \gamma \vdash \bar c \mathrel{▶} m`$ likewise for the telescopes of the fields of the constructors $`\bar c`$ of a data type, and the judgment $`\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m`$ likewise for the arguments and the results of the destructors $`\bar d`$ of a codata type, which the [formation](13-typing.md#type-declarations) of the type declarations reads.
+The judgment $`\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m`$ reads: checked in the mode $`m`$, the types of the telescope $`\Theta`$ use the variables of its scope as $`\gamma`$ allows, the judgment $`\Sigma;\ \gamma \vdash \bar c \mathrel{▶} m`$ likewise for the telescopes of the fields of the constructors $`\bar c`$ of a data type, and the judgment $`\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m`$ likewise for the arguments and the results of the destructors $`\bar d`$ of a codata type, which the usage of the type declarations reads.
+The judgment $`\vdash \Sigma \mathrel{▶}`$ reads: the entries of the signature $`\Sigma`$ use the variables as their grades allow.
 
 Usage is defined on the term and the signature alone, without a context: the scope gives each variable the grades of its telescope, with which an application uses its arguments, and the signature gives each constant its mode.
 The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, each constructor the grades of its fields, which the usage of the constructors and of the recursors reads at their instance, and each destructor its grade and the grades of its arguments, which the usage of the observations reads at their instance.
@@ -100,6 +101,19 @@ The destructors $`\bar d`$ of a codata type, $`d_1 : (\Theta_1 \vdash B_1 \mathr
 \frac{}{\Sigma;\ {00}^{\gamma} \vdash \varepsilon \mathrel{▶} m}\;(\bar d_{\varepsilon▶}) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \odot p \\ \Theta = (x_1 : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \dots,\ x_n : A_n \mathrel{▶} p_n;\ q_n \mathrel{◀} r_n) \\ \Sigma;\ \delta \bullet (\ulcorner m \odot p \urcorner \cdot q_1) \bullet \dots \bullet (\ulcorner m \odot p \urcorner \cdot q_n) \vdash B \mathrel{▶} m \odot p \\ \Sigma;\ \eta \bullet (\ulcorner m \urcorner \cdot q) \vdash \bar d \mathrel{▶} m\end{gathered}}{\Sigma;\ (p \cdot^{\gamma} (\gamma +^{\gamma} \delta)) +^{\gamma} \eta \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) \mathrel{▶} m}\;(\bar d_{|▶}) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m \\ \delta \le^{\gamma} \gamma\end{gathered}}{\Sigma;\ \delta \vdash \bar d \mathrel{▶} m}\;(\mathsf{sub}_{\bar d▶})
+\end{gathered}
+```
+
+The entries of a signature use the variables as their grades allow when, at each instance of its sort and grade variables, the body of each constant definition uses no variable, in the mode of the definition, and, at each instance that the constraint $`C`$ of a type declaration admits, the constructors $`\bar c_j`$ or the destructors $`\bar d_j`$ of each of its types $`D_j`$ use the parameters as the grades $`\zeta_j`$ of the type allow, the uses of all of them added, as their usage adds them.
+Each entry is checked in the signature before it, as its [formation](13-typing.md#signatures-and-entries) is, and the constructors or the destructors of a type declaration in the signature $`\Sigma,\ \mathcal{D}`$, which reads the grades of the types of the block:
+
+```math
+\begin{gathered}
+\frac{}{\vdash \varnothing \mathrel{▶}}\;(\mathsf{sig}_{\varnothing▶}) \\[1em]
+\frac{\begin{gathered}{}\vdash \Sigma \mathrel{▶} \\ \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \Sigma;\ {00}^{\gamma} \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} m\end{gathered}}{\vdash (\Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{def}▶}) \\[1em]
+\frac{\vdash \Sigma \mathrel{▶}}{\vdash (\Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{decl}▶}) \\[1em]
+\frac{\begin{gathered}{}\mathcal{D} = (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \\ \vdash \Sigma \mathrel{▶} \\ \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar c_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned}\end{gathered}}{\vdash (\Sigma,\ \mathcal{D}) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{data}▶}) \\[1em]
+\frac{\begin{gathered}{}\mathcal{D} = (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k) \\ \vdash \Sigma \mathrel{▶} \\ \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned}\end{gathered}}{\vdash (\Sigma,\ \mathcal{D}) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{codata}▶})
 \end{gathered}
 ```
 

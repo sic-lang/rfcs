@@ -108,11 +108,13 @@ The resumption $`\mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g
 
 ## Properties
 
-The prelude is a well-formed signature: each of its declarations is well formed in the declarations before it, at every instance that its constraint admits:
+The prelude is a well-formed signature: each of its declarations is well formed in the declarations before it, at every instance that its constraint admits; the constructors of each of its types use the parameters as the grades of the type allow, and the values of its entries have their ownerships, its declarations being data types:
 
 ```math
 \begin{aligned}
-& \vdash \mathsf{prelude} &&(\mathsf{prelude}_{\vdash})
+& \vdash \mathsf{prelude} &&(\mathsf{prelude}_{\vdash}) \\[1em]
+& \vdash \mathsf{prelude} \mathrel{▶} &&(\mathsf{prelude}_{▶}) \\[1em]
+& \vdash \mathsf{prelude} \mathrel{◀} &&(\mathsf{prelude}_{◀})
 \end{aligned}
 ```
 

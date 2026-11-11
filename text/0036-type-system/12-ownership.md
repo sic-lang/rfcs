@@ -1,12 +1,13 @@
 # Ownership
 
-This annex defines the judgment of ownership, which checks the ownership of the value of a term, in a mode, and its properties.
+This annex defines the judgment of ownership, which checks the ownership of the value of a term, in a mode, the ownership of the entries of a signature, and their properties.
 It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md) and the [substitution](09-substitution.md).
 
 ## Definitions
 
 The judgment $`\Sigma;\ \varphi \vdash t \mathrel{◀} p;\ m`$ reads: checked in the mode $`m`$, the value of the term $`t`$ has the ownership $`p`$, given the ownership $`\varphi`$ of each variable of its scope whose telescope is empty.
 The judgment $`\Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m`$ reads: checked in the mode $`m`$, the arguments $`\bar t`$ of the telescope $`\Theta`$ have the ownerships $`\bar o`$, each satisfying the requirement of its entry.
+The judgment $`\vdash \Sigma \mathrel{◀}`$ reads: the values of the entries of the signature $`\Sigma`$ have their ownerships.
 
 Ownership is defined on the term and the signature alone, without a context, as usage is: the scope gives each second-order variable its telescope and the ownership $`\psi`$ of its result, and the signature gives each constant its ownership.
 Unlike the vector of the usage, which each premise computes and the conclusion adds, $`\varphi`$ is the same in every premise, as the context of the typing is.
@@ -80,6 +81,19 @@ A term may be given an ownership lower than its own, which states less:
 
 ```math
 \frac{\begin{gathered}{}\Sigma;\ \varphi \vdash t \mathrel{◀} p;\ m \\ q \le p\end{gathered}}{\Sigma;\ \varphi \vdash t \mathrel{◀} q;\ m}\;(\mathsf{sub}_{◀})
+```
+
+The values of the entries of a signature have their ownerships when, at each instance of its sort and grade variables, the value of the body of each constant definition has the ownership of the definition, in its mode, without variable, and, at each instance that the constraint $`C`$ of a block of codata types admits, the ownership $`\psi`$ of the result of each recursive destructor is a constant $`\chi`$, which the ownerships of its arguments do not change, below the ownership $`{11}^{\mathsf{p}}`$ of a new value, which an observation that [resumes](17-prelude.md#positions) the corecursor gives; a constant declaration has no body, and the constructors of a block of data types give the ownerships of their values.
+Each entry is checked in the signature before it, as its [formation](13-typing.md#signatures-and-entries) is:
+
+```math
+\begin{gathered}
+\frac{}{\vdash \varnothing \mathrel{◀}}\;(\mathsf{sig}_{\varnothing◀}) \\[1em]
+\frac{\begin{gathered}{}\vdash \Sigma \mathrel{◀} \\ \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{◀} p;\ m\end{gathered}}{\vdash (\Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) \mathrel{◀}}\;(\mathsf{sig}_{\mathsf{def}◀}) \\[1em]
+\frac{\vdash \Sigma \mathrel{◀}}{\vdash (\Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) \mathrel{◀}}\;(\mathsf{sig}_{\mathsf{decl}◀}) \\[1em]
+\frac{\begin{gathered}{}\mathcal{D} = (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \\ \vdash \Sigma \mathrel{◀}\end{gathered}}{\vdash (\Sigma,\ \mathcal{D}) \mathrel{◀}}\;(\mathsf{sig}_{\mathsf{data}◀}) \\[1em]
+\frac{\begin{gathered}{}\mathcal{D} = (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k) \\ \vdash \Sigma \mathrel{◀} \\ \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j, i. \\ & \quad \text{⟹} \\ & \qquad \text{and} \\ & \qquad \quad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] = (\bar d_{ji,1} \mid d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji} \mid \bar d_{ji,2}) \\ & \qquad \quad \mathsf{rec}_{\mathcal{D}}(B_{ji}) \ne \bot \\ & \qquad \exists \chi. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \psi_{ji} = \chi \\ & \qquad \qquad \chi \le {11}^{\mathsf{p}}\end{aligned}\end{gathered}}{\vdash (\Sigma,\ \mathcal{D}) \mathrel{◀}}\;(\mathsf{sig}_{\mathsf{codata}◀})
+\end{gathered}
 ```
 
 ## Properties
