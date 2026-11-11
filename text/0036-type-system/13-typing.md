@@ -472,39 +472,3 @@ The names of a well-formed signature are [distinct](08-syntax.md):
 & \vdash \Sigma \implies \text{the names of } \Sigma \text{ are distinct} &&(\mathsf{distinct}_\Sigma)
 \end{aligned}
 ```
-
-The typing, the usage and the ownership are independent: for each of them, a term passes the two others and fails it, its variables being declared with their types, grades and ownerships, so that none of the three judgments follows from the two others.
-The terms are in the empty signature, and are checked in the mode $`{11}^{\mathsf{m}}`$.
-
-In the context $`\Gamma = x : U_0,\ X : (\Theta \vdash U_0 \mathrel{◀} {\omega\omega}^{\mathsf{p}})`$, where $`\Theta = (y : U_0 \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}},\ z : U_0 \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}})`$ has two entries used once, which require nothing of their arguments, with the vector of grades $`\gamma`$ that gives $`{11}^{\mathsf{p}}`$ to $`x`$ and to $`X`$, and the ownerships $`\varphi`$ that give $`x`$ the ownership $`{11}^{\mathsf{p}}`$, $`X[x, x]`$ uses $`x`$ twice, which its grade does not allow:
-
-```math
-\begin{aligned}
-& \text{and} &&(\mathsf{independent}.{▶}) \\
-& \quad \varnothing;\ \Gamma \vdash X[x, x] : U_0 \\
-& \quad \varnothing;\ \varphi \vdash X[x, x] \mathrel{◀} {\omega\omega}^{\mathsf{p}};\ {11}^{\mathsf{m}} \\
-& \quad \varnothing;\ \gamma \nvdash X[x, x] \mathrel{▶} {11}^{\mathsf{m}}
-\end{aligned}
-```
-
-In the context $`\Gamma = x : U_0,\ X : (\Theta \vdash U_0 \mathrel{◀} {\omega\omega}^{\mathsf{p}})`$, where $`\Theta = (y : U_0 \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}})`$ has one entry used once, which requires its argument to be owned alone, with the vector of grades $`\gamma`$ that gives $`{11}^{\mathsf{p}}`$ to $`x`$ and to $`X`$, and the ownerships $`\varphi`$ that give $`x`$ the ownership $`{\omega\omega}^{\mathsf{p}}`$, $`X[x]`$ passes the shared $`x`$ to this entry:
-
-```math
-\begin{aligned}
-& \text{and} &&(\mathsf{independent}.{◀}) \\
-& \quad \varnothing;\ \Gamma \vdash X[x] : U_0 \\
-& \quad \varnothing;\ \gamma \vdash X[x] \mathrel{▶} {11}^{\mathsf{m}} \\
-& \quad \forall p.\ \varnothing;\ \varphi \nvdash X[x] \mathrel{◀} p;\ {11}^{\mathsf{m}}
-\end{aligned}
-```
-
-In the empty context, with the vector of grades $`{00}^{\gamma}`$ and the ownerships $`\varphi`$ of the empty scope, which has no variable, $`U_0`$ is not a term of $`U_0`$, since the sorts are not cumulative:
-
-```math
-\begin{aligned}
-& \text{and} &&(\mathsf{independent}.{:}) \\
-& \quad \varnothing;\ {00}^{\gamma} \vdash U_0 \mathrel{▶} {11}^{\mathsf{m}} \\
-& \quad \varnothing;\ \varphi \vdash U_0 \mathrel{◀} {\omega\omega}^{\mathsf{p}};\ {11}^{\mathsf{m}} \\
-& \quad \varnothing;\ \varepsilon \nvdash U_0 : U_0
-\end{aligned}
-```
