@@ -47,10 +47,15 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\gamma, \delta, \zeta`$ | Vectors of grades, one grade per variable of a scope, $`\zeta`$ being the grades with which a declared type uses its parameters |
 | $`\varphi`$ | Ownerships of the variables of a scope, one grade per variable whose telescope is empty |
 | $`o`$ | Ownerships of the arguments of a second-order variable |
+| $`M, N, P`$ | Terms of the target language of the erasure, $`N`$ being a branch of a recursor and $`P`$ a branch of a corecursor |
+| $`V`$ | Values of the evaluation |
+| $`H`$ | Heaps |
+| $`\ell`$ | Addresses in a heap |
+| $`E`$ | Environments, the address of each variable of a scope |
+| $`\mathcal{P}`$ | Programs of the target language |
 | $`v, w`$ | Canonical terms |
 | $`R`$ | Relations between closed terms, the equalities of the terms of the closed canonical types |
 | $`b`$ | Truth values of the propositions |
-| $`M, N, P`$ | Terms of the target language of the erasure, $`N`$ being a branch of a recursor and $`P`$ a branch of a corecursor |
 
 No digit is double-struck: the zero and the unit of a modality, a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\xi`$ for a modality, $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, $`\mu`$ for a vector and $`\gamma`$ for a vector of grades.
 An operation on the modes, on the vectors or on the vectors of grades carries the same exponent, as $`\cdot^{\mathsf{m}}`$, $`+^{\mu}`$ and $`+^{\gamma}`$, so that it is told apart from the operation of the grades.
@@ -63,7 +68,7 @@ The three symbols carry no index nor exponent, so that what each states is read 
 
 ## Sequences and Subscripts
 
-A bar marks a sequence, as the arguments $`\bar a`$ of an instance or the variables $`\bar x`$ of a telescope.
+A bar marks a sequence, as the arguments $`\bar a`$ of an instance or the variables $`\bar x`$ of a telescope, and a double bar a sequence of sequences.
 A subscript numbers objects of the same kind that come from different premises or from different parts of a context, as $`\gamma_1`$ and $`\gamma_2`$: an object alone of its kind has none, and several are all numbered; a subscript never selects a component.
 
 ## Names of Rules and Formulas

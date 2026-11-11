@@ -95,7 +95,7 @@ The states $`\bar\Theta`$ of a corecursor are a state for each type of the block
 \end{aligned}
 ```
 
-The state of a type binds the variables $`\bar x`$, one for each non-uniform parameter of the type, each with an empty telescope, and its telescope $`\Theta`$ is in the scope extended by them; it carries the sorts $`\bar\kappa`$ of the entries of $`\Theta`$, one for each entry, which the [packing](18-prelude.md#packing) of the state needs and the telescope does not give.
+The state of a type binds the variables $`\bar x`$, one for each non-uniform parameter of the type, each with an empty telescope, and its telescope $`\Theta`$ is in the scope extended by them; it carries the sorts $`\bar\kappa`$ of the entries of $`\Theta`$, one for each entry, which the [packing](19-prelude.md#packing) of the state needs and the telescope does not give.
 
 The branches $`\bar g`$ of a corecursor are a branch for each destructor, the first one first: they are either empty, written $`()`$, or a branch $`(\bar x;\ \bar y;\ \bar z).\, g`$ followed by branches $`\bar g`$, written $`((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)`$:
 
