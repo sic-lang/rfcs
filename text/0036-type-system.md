@@ -125,6 +125,7 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Evaluation](0036-type-system/17-evaluation.md): the calling convention, the call by value with closures for the corecursors, as a big-step evaluation of the target language in a heap, the program of a signature, and its determinism.
 - [Meaning](0036-type-system/18-meaning.md): the meaning of the judgments of the typing, the interpretation of the constant declarations, the equality of the canonical terms of the sorts and of the data types, the exactness of the meaning for the proofs, and the soundness of the typing under an interpretation of the constant declarations.
 - [Prelude](0036-type-system/19-prelude.md): the unit, the pair and the type of positions that the type system declares for its own needs, the packing of a telescope and of its arguments, the unpacking of a term of a packing, and their properties.
+- [Run time](0036-type-system/20-run-time.md): the extension of the heaps, and the relation of run time between the closed terms and the values that their erasure computes, by the graph of the relations of the types of each level.
 
 ## Drawbacks
 
@@ -294,6 +295,17 @@ The meaning is settled by the following choices:
 - Each entry is meaningful in the whole signature, rather than in the signature before it: a data type quantifies over the closed terms of its fields, which a larger signature may add, so that the meaning of an entry in the signature before it would not carry to the whole signature, where the entry is used.
 - The closed judgments require the names of their signature to be distinct, which makes the computation deterministic, rather than the signature to be meaningful, which they do not use.
 - What the usage and the ownership guarantee at run time, and the soundness of the erasure, wait for the calling convention, which a later step of this RFC fixes, and are then stated for this convention only, rather than for every evaluation order, a generality that no program of Sic would use.
+
+### Choices on the Run Time
+
+The relation of run time is settled by the following choices:
+
+- The relation of run time is a graph of its own, defined after the meaning and reading it, as the relation of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Erasure/LogicalRelation.agda) is defined on their reducible types, rather than a part of the meaning: the meaning explains the typing, which knows nothing of the erasure, and stays the same; the price is that the meaning equates types that the erasure tells apart, such as two instances of a type at grades that erase a field in one and keep it in the other, so that the relation of run time of a type is not a function of the equality of its terms.
+- The rest of a telescope of fields, and the destructors after a destructor, are of run time for each term that the meaning gives to the field or to the destructor, rather than for every term or for the terms related at run time: a field erased at run time says nothing at run time of its term, and the types after it depend on this term all the same, so that only the meaning tells which terms they are given at.
+- A term of an instance of a data type is related to a constructor in the heap where it is related, and a term of an instance of a codata type is related in each heap that extends it, rather than both in the same way: a constructor is read at its address, which every later heap keeps, while the observation of a value of a codata type runs later, at arguments that may be computed after the value.
+- The terms of a universe and those of a proposition are related to every address, rather than to $`\text{↯}`$: the erasure removes the types, and the entries whose type is a proposition have a grade without use at run time, so that nothing at run time reads these values.
+- The grades that decide whether a field or a destructor is related at run time are those of the instance of the type, rather than those that the term carries: the typing gives a constructor the instance of its type, and the equality of two instances keeps their grades.
+- The relation is written with $`\circledR`$, after the relation of Abel, Danielsson and Eriksson, rather than with $`\mathsf{run}`$, which already names the run-time multiplicity of a grade.
 
 ### One RFC
 
