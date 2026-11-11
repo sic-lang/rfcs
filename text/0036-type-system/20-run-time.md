@@ -202,3 +202,21 @@ The extension of the heaps keeps the values, and the evaluation extends the heap
 & \quad H \sqsubseteq H'
 \end{aligned}
 ```
+
+A type has one relation of run time when the names of the signature are distinct, as it has one equality of its terms, and a term related to an address in a heap stays related to it in each heap that extends it, since the relations of the data types read only values that the heap keeps, and those of the codata types relate the observations in each heap that extends it:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unique}_\circledR) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \circledR(v) = R_1 \text{ and } \circledR(v) = R_2 \\
+& \quad R_1 = R_2 \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\circledR) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad H \sqsubseteq H' \\
+& \qquad t \circledR_H \ell : A \\
+& \quad t \circledR_{H'} \ell : A
+\end{aligned}
+```
