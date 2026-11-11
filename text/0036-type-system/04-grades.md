@@ -5,7 +5,7 @@ It builds on the [multiplicities](03-multiplicities.md).
 
 ## Definitions
 
-A grade is a pair $`\langle \pi_1, \pi_2 \rangle`$ of multiplicities, whose first multiplicity counts the uses at run time and the second all the uses, erased or not.
+A grade is a pair $`{\langle \pi_1, \pi_2 \rangle}`$ of multiplicities, whose first multiplicity counts the uses at run time and the second all the uses, erased or not.
 The uses at run time are among all the uses, so a pair whose second multiplicity is $`0`$ has $`0`$ as its first multiplicity too: of the nine pairs, the seven others are the grades:
 
 ```math
@@ -14,7 +14,7 @@ The uses at run time are among all the uses, so a pair whose second multiplicity
 \end{aligned}
 ```
 
-A grade is written as its two multiplicities side by side, with the exponent $`\mathsf{p}`$, such as $`{01}^{\mathsf{p}}`$ for $`\langle 0, 1 \rangle`$; a grade whose multiplicities are variables keeps the angle brackets, as $`\langle \pi_1, \pi_2 \rangle`$, since $`\pi_1 \pi_2`$ would read as a product.
+A grade is written as its two multiplicities side by side, with the exponent $`\mathsf{p}`$, such as $`{01}^{\mathsf{p}}`$ for $`{\langle 0, 1 \rangle}`$; a grade whose multiplicities are variables keeps the angle brackets, as $`{\langle \pi_1, \pi_2 \rangle}`$, since $`\pi_1 \pi_2`$ would read as a product.
 
 Each grade has a name in Sic, made of the names of its two multiplicities: `none`, `linear` and `unrestricted` for $`0`$, $`1`$ and $`\omega`$, except a run-time multiplicity $`\omega`$ under a total multiplicity $`1`$, named `affine` since it counts at most one use, in the order of their multiplicities, $`0`$, $`1`$, then $`\omega`$:
 
@@ -82,7 +82,7 @@ A pair of multiplicities stands for the pairs of numbers of uses it allows, at r
 \end{aligned}
 ```
 
-This meaning chooses the seven grades among the nine pairs: $`\langle 1, 0 \rangle`$ allows no pair, since a use at run time is a use, and $`\langle \omega, 0 \rangle`$ allows only $`(0, 0)`$, as $`{00}^{\mathsf{p}}`$ does, while the seven grades allow non-empty sets of pairs, all different:
+This meaning chooses the seven grades among the nine pairs: $`{\langle 1, 0 \rangle}`$ allows no pair, since a use at run time is a use, and $`{\langle \omega, 0 \rangle}`$ allows only $`{(0, 0)}`$, as $`{00}^{\mathsf{p}}`$ does, while the seven grades allow non-empty sets of pairs, all different:
 
 ```math
 \begin{aligned}

@@ -34,7 +34,7 @@ A term used with the grade $`p`$ is checked in the mode $`\llcorner p \lrcorner`
 \end{aligned}
 ```
 
-The product of two modes is the mode of the product of their grades, and, inside a term checked in the mode $`m`$, a subterm used with the grade $`p`$ is checked in the mode $`m \odot p`$:
+The product of two modes is the mode of the product of their grades, and, inside a term checked in the mode $`m`$, a subterm used with the grade $`p`$ is checked in the mode $`{m \odot p}`$:
 
 ```math
 \begin{aligned}

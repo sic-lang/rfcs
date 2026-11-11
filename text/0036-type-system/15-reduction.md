@@ -5,12 +5,12 @@ It builds on the [syntax](08-syntax.md), on the instances of the entries, which 
 
 ## Definitions
 
-The judgment $`\Sigma \vdash t \longrightarrow u`$ reads: in the signature $`\Sigma`$, the term $`t`$ reduces to $`u`$ in one step of weak head reduction.
+The judgment $`{\Sigma \vdash t \longrightarrow u}`$ reads: in the signature $`\Sigma`$, the term $`t`$ reduces to $`u`$ in one step of weak head reduction.
 The reduction is untyped, and defined on the terms of every scope, with their level variables.
 
 The reduction unfolds a constant definition to its body at the instance of its variables, steps a recursor on a constructor applied to the terms of its fields to the branch of the constructor, the terms substituted for the variables of the fields and their [recursive results](14-typing.md#terms), the recursors at the instance of the recursor on the terms of the recursive fields, for those of the recursive results, and reduces the term that a recursor eliminates; the block $`\mathcal{D}`$, written as in the [typing](14-typing.md#terms), gives the constructor its branch, at the position of the constructor in the block.
-It steps an observation of a corecursor to the branch of the destructor in the corecursor, the terms of the state and the arguments substituted for its variables, and reduces the term that an observation observes; the block of codata types, whose type $`D_j`$ has the destructors $`\bar d_j = d_{j1} : \dots \mid \dots \mid d_{jn_j} : \dots`$ and the state whose variables are $`\bar y_j`$, gives the destructor its branch, at the position of the destructor in the block, and the instance that the observation carries plays no part, as that of a recursor does not.
-The term of the branch is [resumed](19-prelude.md#positions) if the destructor is recursive, so that a new state that it gives becomes the corecursor from it, where $`\bar d_h[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_{hi,1} \mid d_{hi} : (\Theta_{hi} \vdash B_{hi} \mathrel{◀} \psi_{hi}) \mathrel{▶} p_{hi};\ q_{hi} \mid \bar d_{hi,2})`$ decomposes the destructors at the instance of the corecursor, $`\kappa' = \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]`$ is the sort of the block at this instance, and $`\chi_{hi}`$ is the constant of $`\psi_{hi}`$, $`{\omega\omega}^{\mathsf{p}}`$ if it has none; the parameters of the block are uniform, so that the branch binds none of them:
+It steps an observation of a corecursor to the branch of the destructor in the corecursor, the terms of the state and the arguments substituted for its variables, and reduces the term that an observation observes; the block of codata types, whose type $`D_j`$ has the destructors $`{\bar d_j = d_{j1} : \dots \mid \dots \mid d_{jn_j} : \dots}`$ and the state whose variables are $`\bar y_j`$, gives the destructor its branch, at the position of the destructor in the block, and the instance that the observation carries plays no part, as that of a recursor does not.
+The term of the branch is [resumed](19-prelude.md#positions) if the destructor is recursive, so that a new state that it gives becomes the corecursor from it, where $`{\bar d_h[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_{hi,1} \mid d_{hi} : (\Theta_{hi} \vdash B_{hi} \mathrel{◀} \psi_{hi}) \mathrel{▶} p_{hi};\ q_{hi} \mid \bar d_{hi,2})}`$ decomposes the destructors at the instance of the corecursor, $`{\kappa' = \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}`$ is the sort of the block at this instance, and $`\chi_{hi}`$ is the constant of $`\psi_{hi}`$, $`{\omega\omega}^{\mathsf{p}}`$ if it has none; the parameters of the block are uniform, so that the branch binds none of them:
 
 ```math
 \frac{\begin{gathered}{}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{gathered}}{\Sigma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \longrightarrow t[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(\delta_{\longrightarrow})
@@ -47,7 +47,7 @@ A term is neutral when its reduction is stuck on a variable or on a declared con
 \end{aligned}
 ```
 
-The judgment $`\Sigma \vdash t \longrightarrow^{*} u`$ reads: $`t`$ reduces to $`u`$ in some steps, none or a step followed by the others:
+The judgment $`{\Sigma \vdash t \longrightarrow^{*} u}`$ reads: $`t`$ reduces to $`u`$ in some steps, none or a step followed by the others:
 
 ```math
 \begin{gathered}
@@ -57,7 +57,7 @@ The judgment $`\Sigma \vdash t \longrightarrow^{*} u`$ reads: $`t`$ reduces to $
 ```
 
 A closed term is a term in the empty scope without level variables.
-The judgment $`\Sigma \vdash t \Downarrow v`$ reads: the closed term $`t`$ computes to the closed term $`v`$, a head normal form that it reduces to, stuck on no variable:
+The judgment $`{\Sigma \vdash t \Downarrow v}`$ reads: the closed term $`t`$ computes to the closed term $`v`$, a head normal form that it reduces to, stuck on no variable:
 
 ```math
 \begin{aligned}

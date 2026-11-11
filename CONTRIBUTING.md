@@ -92,6 +92,7 @@ An RFC follows these rules, in addition to the [style](#style) of every text:
 
 - Give every notation a single meaning: a notation shared by several definitions hides the cases where one of them is missing.
 - Name every definition, formula and rule, so that its formalization can be related to it.
+- Enclose in braces an inline formula that has a relation, an operator, a punctuation or a space, as `` $`{\Sigma \vdash t \longrightarrow u}`$ ``: GitHub breaks such a formula at the end of a line and misplaces its parts, while a group is never broken.
 - List in the pull request the decisions of the RFC to review, as a checklist whose boxes are ticked as soon as they are approved, and link each to the section of the RFC that gives its rationale.
 
 ### Changing an Accepted RFC

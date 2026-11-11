@@ -5,7 +5,7 @@ It builds on the [notation](01-notation.md).
 
 ## Definitions
 
-A level is $`0`$, a successor $`l + 1`$, the larger $`l_1 \sqcup l_2`$ of two levels, or a level variable, which stands for any natural number:
+A level is $`0`$, a successor $`{l + 1}`$, the larger $`l_1 \sqcup l_2`$ of two levels, or a level variable, which stands for any natural number:
 
 ```math
 \begin{aligned}
@@ -37,7 +37,7 @@ Two levels are equal when their values are equal whatever numbers their variable
 \end{aligned}
 ```
 
-The equality $`=`$ of two levels is therefore this one, and not the equality of their syntax, in every annex.
+The equality $`{=}`$ of two levels is therefore this one, and not the equality of their syntax, in every annex.
 
 ## Properties
 

@@ -5,7 +5,7 @@ It builds on the [notation](01-notation.md).
 
 ## Definitions
 
-A modality $`\mathcal{M}`$, as [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862) define it, is a set of elements $`\xi`$ with a zero $`0^{\xi}`$, a unit $`1^{\xi}`$, an addition $`+`$, a multiplication $`\cdot`$ and a meet $`\wedge`$, which form a semiring whose addition and multiplication distribute over the meet, with a well-behaved zero:
+A modality $`\mathcal{M}`$, as [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3607862) define it, is a set of elements $`\xi`$ with a zero $`0^{\xi}`$, a unit $`1^{\xi}`$, an addition $`{+}`$, a multiplication $`{\cdot}`$ and a meet $`{\wedge}`$, which form a semiring whose addition and multiplication distribute over the meet, with a well-behaved zero:
 
 ```math
 \begin{aligned}

@@ -5,7 +5,7 @@ It builds on the [grades](04-grades.md) and the [modes](05-modes.md).
 
 ## Definitions
 
-A term checked in the mode $`m`$ checks a position of grade $`p`$ in the mode $`m \odot p`$, and does not count the uses of the positions that it checks in a more erased mode, whose grades form the set $`S^m`$:
+A term checked in the mode $`m`$ checks a position of grade $`p`$ in the mode $`{m \odot p}`$, and does not count the uses of the positions that it checks in a more erased mode, whose grades form the set $`S^m`$:
 
 ```math
 \begin{aligned}
@@ -38,7 +38,7 @@ Every non-empty decidable set $`S`$ of grades has a greatest lower bound $`\bigw
 \end{aligned}
 ```
 
-For all families $`(p_i)_{i \in I}`$ and $`(q_i)_{i \in I}`$ of grades indexed by a non-empty set $`I`$ whose greatest lower bounds exist, as they do when their sets of values are decidable, the greatest lower bound is superadditive, and the multiplication by a grade commutes with it, as [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) require of well-behaved greatest lower bounds:
+For all families $`{(p_i)_{i \in I}}`$ and $`{(q_i)_{i \in I}}`$ of grades indexed by a non-empty set $`I`$ whose greatest lower bounds exist, as they do when their sets of values are decidable, the greatest lower bound is superadditive, and the multiplication by a grade commutes with it, as [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) require of well-behaved greatest lower bounds:
 
 ```math
 \begin{aligned}

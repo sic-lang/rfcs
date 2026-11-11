@@ -10,7 +10,7 @@ What the usage and the ownership of a term guarantee of its erasure when it runs
 ## Definitions
 
 This section gives the levels without variables, the interpretation of the constant declarations and the equality of the canonical terms of the sorts, of the data types and of the codata types, then the meaning of each judgment of the typing, by the objects it checks, and the interpretations that give each constant declaration a term of its type.
-The meaning of a judgment is written with $`\vDash`$ in place of $`\vdash`$.
+The meaning of a judgment is written with $`\vDash`$ in place of $`{\vdash}`$.
 
 ### Levels Without Variables
 
@@ -27,8 +27,8 @@ The level $`\underline{n}`$ is the level without variables whose value is the na
 
 ### Interpretation of the Constants
 
-A constant declaration has no body to compute: the meaning takes an interpretation $`\iota`$, which gives each constant declaration $`f`$, at each instance $`\bar s',\ \bar p'`$ of its sort and grade variables, a term $`\iota(f.\{\bar s';\ \bar p'\})`$ without variables, in which its level variables may occur.
-The signature $`\iota(\Sigma)`$ is $`\Sigma`$ in which each constant declaration becomes the constant definition whose body is its interpretation, $`\iota(f)`$ being the body whose instance at $`\bar s',\ \bar p'`$ is $`\iota(f.\{\bar s';\ \bar p'\})`$:
+A constant declaration has no body to compute: the meaning takes an interpretation $`\iota`$, which gives each constant declaration $`f`$, at each instance $`{\bar s',\ \bar p'}`$ of its sort and grade variables, a term $`{\iota(f.\{\bar s';\ \bar p'\})}`$ without variables, in which its level variables may occur.
+The signature $`\iota(\Sigma)`$ is $`\Sigma`$ in which each constant declaration becomes the constant definition whose body is its interpretation, $`\iota(f)`$ being the body whose instance at $`{\bar s',\ \bar p'}`$ is $`{\iota(f.\{\bar s';\ \bar p'\})}`$:
 
 ```math
 \begin{aligned}
@@ -38,13 +38,13 @@ The signature $`\iota(\Sigma)`$ is $`\Sigma`$ in which each constant declaration
 \end{aligned}
 ```
 
-In the meaning, a closed term $`t`$ computes to $`v`$, written $`t \Downarrow v`$, when $`\iota(\Sigma) \vdash t \Downarrow v`$, as the formula $`(\Downarrow)`$ of the [reduction](15-reduction.md) defines it, so that the meaning has the single reduction of the typing.
+In the meaning, a closed term $`t`$ computes to $`v`$, written $`{t \Downarrow v}`$, when $`{\iota(\Sigma) \vdash t \Downarrow v}`$, as the formula $`{(\Downarrow)}`$ of the [reduction](15-reduction.md) defines it, so that the meaning has the single reduction of the typing.
 The computation, the equality $`\mathsf{eq}`$ and the meaning of the judgments all depend on the signature $`\Sigma`$ and on the interpretation $`\iota`$, which their notation omits.
 
 ### Equality of the Canonical Terms
 
 A closed canonical type $`v`$ is known by its canonical terms and by their equality $`\mathsf{eq}(v)`$, a relation between closed terms, which the sorts, the data types and the codata types give, together with the types themselves.
-The graph $`\mathsf{ty}(U_n)`$ of the universe $`U_n`$ relates each of its types $`v`$ to the equality $`R`$ of its canonical terms, written $`(v,\ R) \in \mathsf{ty}(U_n)`$, and the graph $`\mathsf{ty}(\Omega_n)`$ of the universe of propositions $`\Omega_n`$ relates each of its propositions $`v`$ to its truth $`b`$, written $`(v,\ b) \in \mathsf{ty}(\Omega_n)`$.
+The graph $`\mathsf{ty}(U_n)`$ of the universe $`U_n`$ relates each of its types $`v`$ to the equality $`R`$ of its canonical terms, written $`{(v,\ R) \in \mathsf{ty}(U_n)}`$, and the graph $`\mathsf{ty}(\Omega_n)`$ of the universe of propositions $`\Omega_n`$ relates each of its propositions $`v`$ to its truth $`b`$, written $`{(v,\ b) \in \mathsf{ty}(\Omega_n)}`$.
 A graph gives one type at a time, and two types are equal when they have the same equality of terms, so that two types that the typing does not equate may be equal in the meaning, such as two data types without constructors.
 The value $`[\![l]\!]`$ of a level $`l`$ without variables is its [value](06-levels.md) under any assignment.
 
@@ -71,7 +71,7 @@ A universe is a type of the universe above its level, whose terms are the types 
 \end{aligned}
 ```
 
-A data type $`D_j`$ of a type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots`$ of the signature, whose constructors are $`c_{j1} : \Theta_{j1} \mid \dots \mid c_{j n_j} : \Theta_{j n_j}`$, has, at a closed instance $`T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a`$, the sort and the fields of its declaration at the instance of its variables and at the arguments of its parameters:
+A data type $`D_j`$ of a type declaration $`{\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$ of the signature, whose constructors are $`c_{j1} : \Theta_{j1} \mid \dots \mid c_{j n_j} : \Theta_{j n_j}`$, has, at a closed instance $`{T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$, the sort and the fields of its declaration at the instance of its variables and at the arguments of its parameters:
 
 ```math
 \begin{aligned}
@@ -80,7 +80,7 @@ A data type $`D_j`$ of a type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \b
 \end{aligned}
 ```
 
-A codata type $`D_j`$ of a type declaration $`\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots`$ of the signature, whose destructors are $`\bar d_j`$, has likewise, at a closed instance $`T`$, the sort $`\kappa[T]`$ and the destructors of its declaration at the instance of its variables and at the arguments of its parameters:
+A codata type $`D_j`$ of a type declaration $`{\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$ of the signature, whose destructors are $`\bar d_j`$, has likewise, at a closed instance $`T`$, the sort $`\kappa[T]`$ and the destructors of its declaration at the instance of its variables and at the arguments of its parameters:
 
 ```math
 \begin{aligned}
@@ -112,7 +112,7 @@ The instances of the types of a block are given together, since a recursive fiel
 \end{aligned}
 ```
 
-An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes in its sort, whose terms are equal by the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions $`\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i})`$ of the recursive fields of the type $`D`$, the graph of the telescopes takes the relation $`\mathsf{eq}_\Downarrow(X_D)`$, or the relation that holds when $`B_D`$ does:
+An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes in its sort, whose terms are equal by the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions $`\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i})`$ of the recursive fields of the type $`D`$, the graph of the telescopes takes the relation $`{\mathsf{eq}_\Downarrow(X_D)}`$, or the relation that holds when $`B_D`$ does:
 
 ```math
 \begin{aligned}
@@ -131,7 +131,7 @@ An instance in a universe is a type of it, and an instance in a universe of prop
 
 Here $`\Theta_{j'i}[T]`$ is the fields of the constructor $`c_{j'i}`$ at the instance and the arguments of $`T`$, by $`(\mathsf{inst}_T)`$.
 
-The canonical terms of an instance of a codata type are its corecursors, at any instance of its type, as for the constructors, and two of them are equal when their observations are related by the equality $`S`$ of the destructors of the type: the observations $`\mathsf{obs}(v)`$ of a corecursor $`v`$ of the instance $`T_v`$ it carries are the closed abstractions $`\bar x.\, v.(T_v.d)(\bar x)`$, one for each destructor $`d`$, over the variables of its arguments, so that two corecursors are equal when their observations at equal arguments are equal, as the partial equivalence relations of the types of functions relate them; a proposition declared as a codata type is true when $`S`$ relates some abstractions to themselves, so that each of its destructors has a result at all its arguments:
+The canonical terms of an instance of a codata type are its corecursors, at any instance of its type, as for the constructors, and two of them are equal when their observations are related by the equality $`S`$ of the destructors of the type: the observations $`\mathsf{obs}(v)`$ of a corecursor $`v`$ of the instance $`T_v`$ it carries are the closed abstractions $`{\bar x.\, v.(T_v.d)(\bar x)}`$, one for each destructor $`d`$, over the variables of its arguments, so that two corecursors are equal when their observations at equal arguments are equal, as the partial equivalence relations of the types of functions relate them; a proposition declared as a codata type is true when $`S`$ relates some abstractions to themselves, so that each of its destructors has a result at all its arguments:
 
 ```math
 \begin{aligned}
@@ -155,7 +155,7 @@ The instances of the types of a block of codata types are given together, since 
 \end{aligned}
 ```
 
-An instance of a codata type in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the destructors of the types of its block, at its instance and its arguments, are in its sort, with the equalities $`\bar S(\bar X)`$ of the abstractions for them, whatever the relations $`\bar X`$ of the results of the recursive destructors, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions $`\mathsf{rec}_{\mathcal{D}}(\bar d_{j'})`$ of the recursive destructors of the type $`D`$, the graph of the destructors takes the relation $`\mathsf{eq}_\Downarrow(X_D)`$, or the relation that holds when $`B_D`$ does:
+An instance of a codata type in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the destructors of the types of its block, at its instance and its arguments, are in its sort, with the equalities $`\bar S(\bar X)`$ of the abstractions for them, whatever the relations $`\bar X`$ of the results of the recursive destructors, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions $`\mathsf{rec}_{\mathcal{D}}(\bar d_{j'})`$ of the recursive destructors of the type $`D`$, the graph of the destructors takes the relation $`{\mathsf{eq}_\Downarrow(X_D)}`$, or the relation that holds when $`B_D`$ does:
 
 ```math
 \begin{aligned}
@@ -172,7 +172,7 @@ An instance of a codata type in a universe is a type of it, and an instance in a
 \end{aligned}
 ```
 
-The graph $`\mathsf{ty}(s_n)[\bar R]`$ of the telescopes in the sort $`s_n`$, of the quality $`s`$ at the level $`n`$, relates a closed telescope $`\Theta`$ to the equality $`S`$ of the terms of its fields, written $`(\Theta,\ S) \in \mathsf{ty}(s_n)[\bar R]`$, where $`\bar R`$ gives a relation $`R`$ at the position of each recursive field of $`\Theta`$, and $`\bot`$ at the others; $`\mathsf{ty}(s_n)`$ is the graph of the telescopes without recursive fields, $`\bar R`$ being $`\bot`$ everywhere.
+The graph $`\mathsf{ty}(s_n)[\bar R]`$ of the telescopes in the sort $`s_n`$, of the quality $`s`$ at the level $`n`$, relates a closed telescope $`\Theta`$ to the equality $`S`$ of the terms of its fields, written $`{(\Theta,\ S) \in \mathsf{ty}(s_n)[\bar R]}`$, where $`\bar R`$ gives a relation $`R`$ at the position of each recursive field of $`\Theta`$, and $`\bot`$ at the others; $`\mathsf{ty}(s_n)`$ is the graph of the telescopes without recursive fields, $`\bar R`$ being $`\bot`$ everywhere.
 A telescope is in it when its first type, if it is not a recursive field, computes to a type of a sort that $`s_n`$ [bounds](07-sorts.md), and its rest is for each term of it, the same for equal terms, as the condition on the families of types of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111) requires, and when its first type, if it is a recursive field, has the relation $`R`$ that $`\bar R`$ gives it, the rest being the same for every term of it, on which it does not depend:
 
 ```math
@@ -193,7 +193,7 @@ A telescope is in it when its first type, if it is not a recursive field, comput
 \end{aligned}
 ```
 
-The graph $`\mathsf{ty}(s_n)[\bar R]`$ relates likewise closed destructors $`\bar d`$ to the equality $`S`$ of the families $`\bar f`$ of closed abstractions for them, one abstraction $`f_d`$ for each destructor $`d`$, written $`(\bar d,\ S) \in \mathsf{ty}(s_n)[\bar R]`$, where $`\bar R`$ gives a relation $`R`$ at the position of each recursive destructor, and $`\bot`$ at the others.
+The graph $`\mathsf{ty}(s_n)[\bar R]`$ relates likewise closed destructors $`\bar d`$ to the equality $`S`$ of the families $`\bar f`$ of closed abstractions for them, one abstraction $`f_d`$ for each destructor $`d`$, written $`{(\bar d,\ S) \in \mathsf{ty}(s_n)[\bar R]}`$, where $`\bar R`$ gives a relation $`R`$ at the position of each recursive destructor, and $`\bot`$ at the others.
 Destructors are in it when the arguments $`\Theta`$ of the first one are a telescope in the universe $`U_n`$, whatever the quality $`s`$, and, if it is not recursive, its result type computes at equal arguments $`\bar t`$, and to types of sorts that $`s_n`$ bounds, with an equality $`F(\bar t)`$ of their terms that is the same for equal arguments, and the destructors after it are for each abstraction for it, the same for equal abstractions, two abstractions being equal when they give equal results at equal arguments; if it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it, and the destructors after it are the same for every abstraction for it, on which they do not depend:
 
 ```math
@@ -383,7 +383,7 @@ A judgment in a context requires the context to be meaningful, and holds under e
 
 ### Telescopes in a Sort
 
-Two closed telescopes are equal in a sort $`\kappa`$ when their first types are equal types of a sort that $`\kappa`$ bounds, and the rest of them equal for every pair of equal terms of these types, whatever their grades, as the rule $`(\mathsf{tel}_{\kappa,})`$ checks; two telescopes are equal in a sort in a context when their instances by equal closed substitutions of the context are equal in it, and a telescope lives in a sort when it is equal to itself in it:
+Two closed telescopes are equal in a sort $`\kappa`$ when their first types are equal types of a sort that $`\kappa`$ bounds, and the rest of them equal for every pair of equal terms of these types, whatever their grades, as the rule $`{(\mathsf{tel}_{\kappa,})}`$ checks; two telescopes are equal in a sort in a context when their instances by equal closed substitutions of the context are equal in it, and a telescope lives in a sort when it is equal to itself in it:
 
 ```math
 \begin{aligned}
@@ -404,7 +404,7 @@ Two closed telescopes are equal in a sort $`\kappa`$ when their first types are 
 
 ### Fields of a Block
 
-The fields of a constructor of a block $`\mathcal{D}`$, whose recursive fields $`\mathsf{rec}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields that are not recursive, and their recursive fields of the type $`D`$ are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, the rest being equal for every pair of terms of them, on which it does not depend, as the rules [$`(\mathsf{fields}_{,})`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$](14-typing.md) check; fields live in a sort in a context when their instances by equal closed substitutions of the context are equal in it, at the parameters themselves substituted:
+The fields of a constructor of a block $`\mathcal{D}`$, whose recursive fields $`\mathsf{rec}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields that are not recursive, and their recursive fields of the type $`D`$ are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, the rest being equal for every pair of terms of them, on which it does not depend, as the rules [$`{(\mathsf{fields}_{,})}`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$](14-typing.md) check; fields live in a sort in a context when their instances by equal closed substitutions of the context are equal in it, at the parameters themselves substituted:
 
 ```math
 \begin{aligned}
@@ -427,7 +427,7 @@ The fields of a constructor of a block $`\mathcal{D}`$, whose recursive fields $
 \end{aligned}
 ```
 
-Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a`$, and $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\mathsf{fields}_{\mathsf{rec}})`$.
+Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`{D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a}`$, and $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\mathsf{fields}_{\mathsf{rec}})`$.
 
 ### Destructors of a Block
 
@@ -457,7 +457,7 @@ Destructors live in a sort in a context when they are equal at equal closed subs
 \end{aligned}
 ```
 
-Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a`$, and $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\bar d_{\kappa\mathsf{rec}})`$; the destructors are not substituted, and their closed substitutions are written apart, as the graph of the destructors reads them.
+Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`{D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a}`$, and $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\bar d_{\kappa\mathsf{rec}})`$; the destructors are not substituted, and their closed substitutions are written apart, as the graph of the destructors reads them.
 
 ### Level Variables
 
@@ -505,7 +505,7 @@ In a signature whose names are distinct, the equality of the terms of a closed c
 \end{aligned}
 ```
 
-A meaningful signature has [distinct](08-syntax.md) names, as a well-formed one does, so that the computation is deterministic, by $`(\mathsf{det}_{\Downarrow})`$; and the meaning is exact for the proofs: two closed terms are equal proofs of a proposition exactly when each of them is a proof of it, as the rule $`(\mathsf{irr})`$ says:
+A meaningful signature has [distinct](08-syntax.md) names, as a well-formed one does, so that the computation is deterministic, by $`{(\mathsf{det}_{\Downarrow})}`$; and the meaning is exact for the proofs: two closed terms are equal proofs of a proposition exactly when each of them is a proof of it, as the rule $`(\mathsf{irr})`$ says:
 
 ```math
 \begin{aligned}

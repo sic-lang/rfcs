@@ -37,7 +37,7 @@ The vectors are ordered by the [order](02-modalities.md#definitions) of the moda
 \end{aligned}
 ```
 
-The vector $`\mu \bullet \xi`$ over $`I`$ extended by an index $`i`$ gives $`i`$ the element $`\xi`$ and each other index its element in $`\mu`$, and the vector $`(\mu,\ i \mathrel{≔} \xi)`$ over the indices of $`\mu`$ gives the element $`\xi`$ to its index $`i`$ instead:
+The vector $`\mu \bullet \xi`$ over $`I`$ extended by an index $`i`$ gives $`i`$ the element $`\xi`$ and each other index its element in $`\mu`$, and the vector $`{(\mu,\ i \mathrel{≔} \xi)}`$ over the indices of $`\mu`$ gives the element $`\xi`$ to its index $`i`$ instead:
 
 ```math
 \begin{aligned}
@@ -107,7 +107,7 @@ A vector of grades $`\gamma`$ over a scope is a vector over its variables, whate
 \end{aligned}
 ```
 
-Its operations, its order, its extension and its update are those of the vectors, written $`+^{\gamma}`$, $`\cdot^{\gamma}`$, $`\wedge^{\gamma}`$, $`\le^{\gamma}`$, $`\gamma \bullet p`$ and $`(\gamma,\ x \mathrel{≔} p)`$, the extension giving its grade to the variable that extends the scope, and they satisfy the properties of the vectors, at the modality of the grades.
+Its operations, its order, its extension and its update are those of the vectors, written $`{+^{\gamma}}`$, $`{\cdot^{\gamma}}`$, $`{\wedge^{\gamma}}`$, $`{\le^{\gamma}}`$, $`\gamma \bullet p`$ and $`{(\gamma,\ x \mathrel{≔} p)}`$, the extension giving its grade to the variable that extends the scope, and they satisfy the properties of the vectors, at the modality of the grades.
 
 The vector $`\gamma[\alpha]`$, renamed by a [renaming](09-substitution.md#renamings) $`\alpha`$ of the scope of $`\gamma`$, gives each variable $`y`$ the sum of the grades of the variables that $`\alpha`$ renames to $`y`$, the grade $`{00}^{\mathsf{p}}`$ when there is none, so that the uses of two variables renamed to the same one add up:
 

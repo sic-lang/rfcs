@@ -93,8 +93,8 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 \end{aligned}
 ```
 
-Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`\bar x.\, d[\bar x]`$ of the identity.
-The identity gives each variable $`x`$ the abstraction $`\bar x.\, x[\bar x]`$:
+Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`{\bar x.\, d[\bar x]}`$ of the identity.
+The identity gives each variable $`x`$ the abstraction $`{\bar x.\, x[\bar x]}`$:
 
 ```math
 \begin{aligned}
@@ -102,7 +102,7 @@ The identity gives each variable $`x`$ the abstraction $`\bar x.\, x[\bar x]`$:
 \end{aligned}
 ```
 
-The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the parameters $`\Delta`$ of its type declaration is of the second order: $`[(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))]`$ gives the abstraction $`\bar x.\, B`$ to $`X`$, and to each parameter of $`\Delta`$ what $`[\bar a / \Delta]`$ gives it, and likewise when the last parameter is a variable $`x : A`$, whose abstraction is a term:
+The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the parameters $`\Delta`$ of its type declaration is of the second order: $`{[(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))]}`$ gives the abstraction $`{\bar x.\, B}`$ to $`X`$, and to each parameter of $`\Delta`$ what $`[\bar a / \Delta]`$ gives it, and likewise when the last parameter is a variable $`x : A`$, whose abstraction is a term:
 
 ```math
 \begin{aligned}
@@ -113,7 +113,7 @@ The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the p
 \end{aligned}
 ```
 
-The telescope and the result of a destructor of a codata type are in the scope of the parameters $`\Delta`$ of its type declaration extended by the destructors $`\bar d_1`$ before it, as second-order variables; the substitution $`[\bar a / \Delta,\ t.T / \bar d_1]`$ gives each parameter its argument in $`\bar a`$, as $`[\bar a / \Delta]`$ does, and each destructor $`d'`$ of $`\bar d_1`$ the observation $`\bar x.\, t.(T.d')(\bar x)`$ of the term $`t`$ of the instance $`T`$ by $`d'`$, over the variables $`\bar x`$ of its telescope, the first destructor first:
+The telescope and the result of a destructor of a codata type are in the scope of the parameters $`\Delta`$ of its type declaration extended by the destructors $`\bar d_1`$ before it, as second-order variables; the substitution $`{[\bar a / \Delta,\ t.T / \bar d_1]}`$ gives each parameter its argument in $`\bar a`$, as $`[\bar a / \Delta]`$ does, and each destructor $`d'`$ of $`\bar d_1`$ the observation $`{\bar x.\, t.(T.d')(\bar x)}`$ of the term $`t`$ of the instance $`T`$ by $`d'`$, over the variables $`\bar x`$ of its telescope, the first destructor first:
 
 ```math
 \begin{aligned}
@@ -122,7 +122,7 @@ The telescope and the result of a destructor of a codata type are in the scope o
 \end{aligned}
 ```
 
-A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`\Gamma,\ \Theta`$, is extended by a variable for each entry of $`\Theta`$, whose grades and requirements it drops:
+A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`{\Gamma,\ \Theta}`$, is extended by a variable for each entry of $`\Theta`$, whose grades and requirements it drops:
 
 ```math
 \begin{aligned}
@@ -133,7 +133,7 @@ A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`
 
 ### Renamings
 
-A renaming $`\alpha`$ of a scope $`\Gamma`$ in a scope $`\Gamma'`$ gives each variable $`x`$ of $`\Gamma`$ a variable $`\alpha(x)`$ of $`\Gamma'`$ with the same telescope, and renames a term $`t`$ to $`t[\alpha]`$, the substitution of the second order that gives each variable $`x`$ the abstraction $`\bar y.\, \alpha(x)[\bar y]`$.
+A renaming $`\alpha`$ of a scope $`\Gamma`$ in a scope $`\Gamma'`$ gives each variable $`x`$ of $`\Gamma`$ a variable $`\alpha(x)`$ of $`\Gamma'`$ with the same telescope, and renames a term $`t`$ to $`t[\alpha]`$, the substitution of the second order that gives each variable $`x`$ the abstraction $`{\bar y.\, \alpha(x)[\bar y]}`$.
 It may rename two variables to the same one.
 
 ### Closed Substitutions
@@ -146,7 +146,7 @@ A substitution of the second order is closed when the abstractions it gives are 
 \end{aligned}
 ```
 
-The closed substitution $`(\theta_1,\ \theta_2)`$ of the scope of $`\Gamma`$ extended by variables $`\bar x`$ with empty telescopes gives each variable of $`\Gamma`$ what the closed substitution $`\theta_1`$ gives it, and each variable of $`\bar x`$ what the closed substitution $`\theta_2`$ of $`\bar x`$ gives it:
+The closed substitution $`{(\theta_1,\ \theta_2)}`$ of the scope of $`\Gamma`$ extended by variables $`\bar x`$ with empty telescopes gives each variable of $`\Gamma`$ what the closed substitution $`\theta_1`$ gives it, and each variable of $`\bar x`$ what the closed substitution $`\theta_2`$ of $`\bar x`$ gives it:
 
 ```math
 \begin{aligned}
@@ -155,7 +155,7 @@ The closed substitution $`(\theta_1,\ \theta_2)`$ of the scope of $`\Gamma`$ ext
 \end{aligned}
 ```
 
-The closed substitution of closed arguments $`\bar t`$ for variables $`\bar x`$ with empty telescopes gives the first argument to the first variable, then the others: $`(t,\ \bar t)`$ gives $`t`$ to $`x`$, and to $`\bar x`$ what $`\bar t`$ gives them:
+The closed substitution of closed arguments $`\bar t`$ for variables $`\bar x`$ with empty telescopes gives the first argument to the first variable, then the others: $`{(t,\ \bar t)}`$ gives $`t`$ to $`x`$, and to $`\bar x`$ what $`\bar t`$ gives them:
 
 ```math
 \begin{aligned}

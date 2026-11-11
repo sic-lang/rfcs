@@ -17,11 +17,11 @@ A value is $`\text{↯}`$, the constructor of a case applied to the addresses of
 \end{aligned}
 ```
 
-A heap $`H`$ is a sequence of values, the address $`\ell`$ of a value being its position in it, the first one at $`1`$, so that $`H(\ell)`$ is the value at the address $`\ell`$, and $`(H,\ V)`$ allocates $`V`$ at the address $`|H| + 1`$, where $`|H|`$ is the number of the values of $`H`$.
-An environment $`E`$ gives each variable of a scope the address of its value, $`E(x)`$, and $`E,\ \bar x \mapsto \bar\ell`$ extends it with the addresses $`\bar\ell`$ of the variables $`\bar x`$, as many; $`\varepsilon`$ is the environment of the empty scope.
+A heap $`H`$ is a sequence of values, the address $`\ell`$ of a value being its position in it, the first one at $`1`$, so that $`H(\ell)`$ is the value at the address $`\ell`$, and $`{(H,\ V)}`$ allocates $`V`$ at the address $`{|H| + 1}`$, where $`|H|`$ is the number of the values of $`H`$.
+An environment $`E`$ gives each variable of a scope the address of its value, $`E(x)`$, and $`{E,\ \bar x \mapsto \bar\ell}`$ extends it with the addresses $`\bar\ell`$ of the variables $`\bar x`$, as many; $`\varepsilon`$ is the environment of the empty scope.
 
-A program $`\mathcal{P}`$ gives a constant at the qualities and the grades of an instance, $`f.\{\bar s;\ \bar p\}`$, a closed term of the target language, its body.
-The program $`\lfloor \Sigma \rfloor_S`$ of a signature $`\Sigma`$, erased by a set of grades $`S`$, gives $`f.\{\bar s';\ \bar p'\}`$ the erasure by $`S`$ of the body of $`f`$ at this instance, in the last entry of $`\Sigma`$ that defines $`f`$ with as many sort and grade variables as $`\bar s'`$ and $`\bar p'`$, and nothing when $`\Sigma`$ has no such entry:
+A program $`\mathcal{P}`$ gives a constant at the qualities and the grades of an instance, $`{f.\{\bar s;\ \bar p\}}`$, a closed term of the target language, its body.
+The program $`\lfloor \Sigma \rfloor_S`$ of a signature $`\Sigma`$, erased by a set of grades $`S`$, gives $`{f.\{\bar s';\ \bar p'\}}`$ the erasure by $`S`$ of the body of $`f`$ at this instance, in the last entry of $`\Sigma`$ that defines $`f`$ with as many sort and grade variables as $`\bar s'`$ and $`\bar p'`$, and nothing when $`\Sigma`$ has no such entry:
 
 ```math
 \begin{aligned}
@@ -29,8 +29,8 @@ The program $`\lfloor \Sigma \rfloor_S`$ of a signature $`\Sigma`$, erased by a 
 \end{aligned}
 ```
 
-The judgment $`\mathcal{P};\ H;\ E \vdash M \Downarrow \ell;\ H'`$ reads: in the program $`\mathcal{P}`$, the term $`M`$ of the target language, in the environment $`E`$ and the heap $`H`$, evaluates to the address $`\ell`$ of its value in the heap $`H'`$.
-The judgment $`\mathcal{P};\ H;\ E \vdash \bar M \Downarrow \bar\ell;\ H'`$ reads: the terms $`\bar M`$ evaluate, the first one first, to the addresses $`\bar\ell`$.
+The judgment $`{\mathcal{P};\ H;\ E \vdash M \Downarrow \ell;\ H'}`$ reads: in the program $`\mathcal{P}`$, the term $`M`$ of the target language, in the environment $`E`$ and the heap $`H`$, evaluates to the address $`\ell`$ of its value in the heap $`H'`$.
+The judgment $`{\mathcal{P};\ H;\ E \vdash \bar M \Downarrow \bar\ell;\ H'}`$ reads: the terms $`\bar M`$ evaluate, the first one first, to the addresses $`\bar\ell`$.
 A variable is the address that the environment gives it, a constant evaluates its body in the empty environment, $`\text{↯}`$, a constructor and a corecursor evaluate their fields and their state and allocate their value, a recursor evaluates its term and eliminates its value, and an observation evaluates its term and its arguments and observes the value of its term:
 
 ```math
@@ -47,8 +47,8 @@ A variable is the address that the environment gives it, a constant evaluates it
 \end{gathered}
 ```
 
-The judgment $`\mathcal{P};\ H;\ E \vdash \mathsf{rec}\ \ell\ \mathsf{with}\ \bar N \Downarrow \ell';\ H'`$ reads: the recursor with the branches $`\bar N`$, in the environment $`E`$, eliminates the value at the address $`\ell`$, a constructor, to the address $`\ell'`$.
-The branch of the case of the constructor evaluates, with the addresses of its fields and those of its recursive results, each the recursor on its field, or $`\text{↯}`$ when it is erased, which the judgment $`\mathcal{P};\ H;\ E \vdash \mathsf{rec}\ \bar\ell\ \mathsf{with}\ \bar N \leftarrow \bar k \Downarrow \bar\ell';\ H'`$ gives, in order, for the fields at the addresses $`\bar\ell`$:
+The judgment $`{\mathcal{P};\ H;\ E \vdash \mathsf{rec}\ \ell\ \mathsf{with}\ \bar N \Downarrow \ell';\ H'}`$ reads: the recursor with the branches $`\bar N`$, in the environment $`E`$, eliminates the value at the address $`\ell`$, a constructor, to the address $`\ell'`$.
+The branch of the case of the constructor evaluates, with the addresses of its fields and those of its recursive results, each the recursor on its field, or $`\text{↯}`$ when it is erased, which the judgment $`{\mathcal{P};\ H;\ E \vdash \mathsf{rec}\ \bar\ell\ \mathsf{with}\ \bar N \leftarrow \bar k \Downarrow \bar\ell';\ H'}`$ gives, in order, for the fields at the addresses $`\bar\ell`$:
 
 ```math
 \begin{gathered}
@@ -59,9 +59,9 @@ The branch of the case of the constructor evaluates, with the addresses of its f
 \end{gathered}
 ```
 
-The judgment $`\mathcal{P};\ H \vdash \ell.d_i(\bar\ell) \Downarrow \ell';\ H'`$ reads: the observation by the destructor of the case $`i`$, applied to the arguments at the addresses $`\bar\ell`$, of the value at the address $`\ell`$, a closure, evaluates to the address $`\ell'`$.
-The branch of the case evaluates in the environment of the closure, with the addresses of its state and of the arguments, and its value is resumed, which the judgment $`H \vdash \langle E;\ \bar P \rangle \circlearrowleft_k \ell \Downarrow \ell';\ H'`$ gives: the value at the address $`\ell`$ itself when the branch resumes no state, $`k = \bot`$, a new closure of the same environment and branches from the state of $`k`$ entries that $`\mathsf{next}`$ packs, or the term already built that $`\mathsf{done}`$ holds, these constructors being the cases $`1`$ and $`2`$ of the type of positions.
-The judgment $`H \vdash \mathsf{unpack}_k(\ell) = \bar\ell`$ reads: the value at the address $`\ell`$ packs the $`k`$ entries at the addresses $`\bar\ell`$, the first fields of $`k`$ nested pairs, each the case $`1`$ of the pair:
+The judgment $`{\mathcal{P};\ H \vdash \ell.d_i(\bar\ell) \Downarrow \ell';\ H'}`$ reads: the observation by the destructor of the case $`i`$, applied to the arguments at the addresses $`\bar\ell`$, of the value at the address $`\ell`$, a closure, evaluates to the address $`\ell'`$.
+The branch of the case evaluates in the environment of the closure, with the addresses of its state and of the arguments, and its value is resumed, which the judgment $`{H \vdash \langle E;\ \bar P \rangle \circlearrowleft_k \ell \Downarrow \ell';\ H'}`$ gives: the value at the address $`\ell`$ itself when the branch resumes no state, $`{k = \bot}`$, a new closure of the same environment and branches from the state of $`k`$ entries that $`\mathsf{next}`$ packs, or the term already built that $`\mathsf{done}`$ holds, these constructors being the cases $`1`$ and $`2`$ of the type of positions.
+The judgment $`{H \vdash \mathsf{unpack}_k(\ell) = \bar\ell}`$ reads: the value at the address $`\ell`$ packs the $`k`$ entries at the addresses $`\bar\ell`$, the first fields of $`k`$ nested pairs, each the case $`1`$ of the pair:
 
 ```math
 \begin{gathered}

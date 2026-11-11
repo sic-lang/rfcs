@@ -48,7 +48,7 @@ The prelude is the signature of the three declarations, in this order, and a sig
 ### Packing
 
 A telescope packs into nested pairs, which need the sort of each of its entries, given by a [telescope in sorts](14-typing.md#telescopes-in-a-sort).
-The level $`\mathsf{level}_{\bar\kappa}(l)`$ of a packing is the join of the levels of the sorts $`\bar\kappa`$ and of $`l`$; the packing $`\langle \Theta \rangle_{\bar\kappa;\ l}`$ of the telescope $`\Theta`$, whose entries live in the sorts $`\bar\kappa`$, is the pair of its first entry, with its grade and its requirement, and of the packing of the rest, ending with the unit of the level $`l`$; the packing $`\langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l}`$ of arguments of $`\Theta`$ is the pair of the first argument and of the packing of the others, as arguments of the rest of the telescope instantiated by the first, ending with the constructor of the unit:
+The level $`\mathsf{level}_{\bar\kappa}(l)`$ of a packing is the join of the levels of the sorts $`\bar\kappa`$ and of $`l`$; the packing $`{\langle \Theta \rangle_{\bar\kappa;\ l}}`$ of the telescope $`\Theta`$, whose entries live in the sorts $`\bar\kappa`$, is the pair of its first entry, with its grade and its requirement, and of the packing of the rest, ending with the unit of the level $`l`$; the packing $`{\langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l}}`$ of arguments of $`\Theta`$ is the pair of the first argument and of the packing of the others, as arguments of the rest of the telescope instantiated by the first, ending with the constructor of the unit:
 
 ```math
 \begin{aligned}
@@ -63,7 +63,7 @@ The level $`\mathsf{level}_{\bar\kappa}(l)`$ of a packing is the join of the lev
 
 ### Unpacking
 
-The unpacking $`\mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b`$ of the term $`u`$ of the packing of $`\Theta`$ into the term $`b`$, over the variables of $`\Theta`$, is a recursor on each pair, then on the unit, each using its term with the grade $`r`$, with the motive $`z.\, C`$, which does not depend on the term $`z`$ eliminated; the branch of the pair unpacks its second field into $`b`$, which does not use the variable $`y`$ of this field:
+The unpacking $`{\mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b}`$ of the term $`u`$ of the packing of $`\Theta`$ into the term $`b`$, over the variables of $`\Theta`$, is a recursor on each pair, then on the unit, each using its term with the grade $`r`$, with the motive $`{z.\, C}`$, which does not depend on the term $`z`$ eliminated; the branch of the pair unpacks its second field into $`b`$, which does not use the variable $`y`$ of this field:
 
 ```math
 \begin{aligned}
@@ -76,7 +76,7 @@ The unpacking $`\mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ 
 ### Positions
 
 A recursive destructor of a block of codata types gives back, in a branch of a corecursor, a position: a new state, packed, from which the corecursor goes on, or a term already built.
-The grade $`q_s`$ of a term already built, of the quality $`s`$, is $`{11}^{\mathsf{p}}`$ in a universe, and $`{01}^{\mathsf{p}}`$, without use at run time, in a universe of propositions, as the constraint of the type of positions requires; the type of positions $`\mathsf{pos}_{r;\ \chi}(\Theta : \bar\kappa,\ T : s_{l'})`$ of a corecursor of the grade $`r`$ whose state $`\Theta`$ lives in the sorts $`\bar\kappa`$, at the terms already built of the type $`T`$ of the sort $`s_{l'}`$ that the ownership $`\chi`$ requires, is the instance of `Step` at the packing of the state, of the level $`\mathsf{level}_{\bar\kappa}(l)`$, where $`l = \mathsf{level}_{\bar\kappa}(0)`$ is the join of the levels of $`\bar\kappa`$, and at $`T`$:
+The grade $`q_s`$ of a term already built, of the quality $`s`$, is $`{11}^{\mathsf{p}}`$ in a universe, and $`{01}^{\mathsf{p}}`$, without use at run time, in a universe of propositions, as the constraint of the type of positions requires; the type of positions $`{\mathsf{pos}_{r;\ \chi}(\Theta : \bar\kappa,\ T : s_{l'})}`$ of a corecursor of the grade $`r`$ whose state $`\Theta`$ lives in the sorts $`\bar\kappa`$, at the terms already built of the type $`T`$ of the sort $`s_{l'}`$ that the ownership $`\chi`$ requires, is the instance of `Step` at the packing of the state, of the level $`\mathsf{level}_{\bar\kappa}(l)`$, where $`{l = \mathsf{level}_{\bar\kappa}(0)}`$ is the join of the levels of $`\bar\kappa`$, and at $`T`$:
 
 ```math
 \begin{aligned}
@@ -86,7 +86,7 @@ The grade $`q_s`$ of a term already built, of the quality $`s`$, is $`{11}^{\mat
 \end{aligned}
 ```
 
-In a block $`\mathcal{D}`$ of codata types $`D_1, \dots, D_k`$, whose states are $`\bar\Theta = (\Theta_1 : \bar\kappa_1,\ \dots,\ \Theta_k : \bar\kappa_k)`$, the type $`\mathsf{pos}_{\bar\Theta;\ r;\ \chi}(B,\ T : \kappa)`$ of the branch of a destructor whose result is $`B`$, at the type $`T`$ of this result, is the type of the positions of the state of the type of the block that $`B`$ names, if the destructor is recursive, and $`T`$ otherwise:
+In a block $`\mathcal{D}`$ of codata types $`{D_1, \dots, D_k}`$, whose states are $`{\bar\Theta = (\Theta_1 : \bar\kappa_1,\ \dots,\ \Theta_k : \bar\kappa_k)}`$, the type $`{\mathsf{pos}_{\bar\Theta;\ r;\ \chi}(B,\ T : \kappa)}`$ of the branch of a destructor whose result is $`B`$, at the type $`T`$ of this result, is the type of the positions of the state of the type of the block that $`B`$ names, if the destructor is recursive, and $`T`$ otherwise:
 
 ```math
 \begin{aligned}
@@ -95,7 +95,7 @@ In a block $`\mathcal{D}`$ of codata types $`D_1, \dots, D_k`$, whose states are
 \end{aligned}
 ```
 
-The resumption $`\mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)`$ of the position $`v`$ of the instance $`T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, of the sort $`\kappa`$, by the corecursor of the grade $`r`$ with the states $`\bar\Theta`$ and the branches $`\bar g`$, is a recursor on $`v`$, with the motive $`z.\, T`$, which unpacks a new state into the corecursor of $`T`$ from the variables $`\bar y_j`$ of the state $`\Theta_j`$ of $`D_j`$, of the sorts $`\bar\kappa_j`$ and of the join $`l_j = \mathsf{level}_{\bar\kappa_j}(0)`$ of their levels, and gives a term already built itself; the resumption $`\mathsf{resume}_{B;\ r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)`$ of the term $`v`$ of the branch of a destructor whose result is $`B`$, observed in a corecursor of the instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, is the resumption of $`v`$ by the corecursor of the type of the block that $`B`$ names, if the destructor is recursive, and $`v`$ otherwise:
+The resumption $`{\mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)}`$ of the position $`v`$ of the instance $`{T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, of the sort $`\kappa`$, by the corecursor of the grade $`r`$ with the states $`\bar\Theta`$ and the branches $`\bar g`$, is a recursor on $`v`$, with the motive $`{z.\, T}`$, which unpacks a new state into the corecursor of $`T`$ from the variables $`\bar y_j`$ of the state $`\Theta_j`$ of $`D_j`$, of the sorts $`\bar\kappa_j`$ and of the join $`{l_j = \mathsf{level}_{\bar\kappa_j}(0)}`$ of their levels, and gives a term already built itself; the resumption $`{\mathsf{resume}_{B;\ r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)}`$ of the term $`v`$ of the branch of a destructor whose result is $`B`$, observed in a corecursor of the instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, is the resumption of $`v`$ by the corecursor of the type of the block that $`B`$ names, if the destructor is recursive, and $`v`$ otherwise:
 
 ```math
 \begin{aligned}
@@ -146,7 +146,7 @@ In a signature that holds the prelude, the packing of a telescope is a type of t
 \end{aligned}
 ```
 
-In a signature that holds the prelude, the unpacking of a term of the packing of a telescope, into a term over the variables of the telescope whose type does not depend on them, has this type; the unpacking of the packing of arguments is the term at the arguments; and a term over a term $`z`$ of the packing is the unpacking of the term it is at into the term at the packing $`\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l}`$ of the variables $`\bar x`$ of the telescope:
+In a signature that holds the prelude, the unpacking of a term of the packing of a telescope, into a term over the variables of the telescope whose type does not depend on them, has this type; the unpacking of the packing of arguments is the term at the arguments; and a term over a term $`z`$ of the packing is the unpacking of the term it is at into the term at the packing $`{\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l}}`$ of the variables $`\bar x`$ of the telescope:
 
 ```math
 \begin{aligned}
@@ -177,7 +177,7 @@ In a signature that holds the prelude, the unpacking of a term of the packing of
 \end{aligned}
 ```
 
-In a signature that holds the prelude, the unpacking uses the variables of its term $`r`$ times and those of its term $`b`$, which uses the variable of each entry of the telescope $`\ulcorner m \urcorner \cdot r`$ times its grade, its motive using no variable, as a [recursor](12-usage.md) does; and it has the ownership of $`b`$, checked with the ownership $`o`$ of its term times the requirement of each entry, times the grade $`\ulcorner m \urcorner \cdot r`$ times the grade of the entry, for the variable of the entry, as a [recursor](13-ownership.md) does, the second field of each pair requiring $`{11}^{\mathsf{p}}`$ and having the grade $`{11}^{\mathsf{p}}`$, and $`\ulcorner m \urcorner \cdot r`$ being idempotent, so that the nested recursors scale it once:
+In a signature that holds the prelude, the unpacking uses the variables of its term $`r`$ times and those of its term $`b`$, which uses the variable of each entry of the telescope $`{\ulcorner m \urcorner \cdot r}`$ times its grade, its motive using no variable, as a [recursor](12-usage.md) does; and it has the ownership of $`b`$, checked with the ownership $`o`$ of its term times the requirement of each entry, times the grade $`{\ulcorner m \urcorner \cdot r}`$ times the grade of the entry, for the variable of the entry, as a [recursor](13-ownership.md) does, the second field of each pair requiring $`{11}^{\mathsf{p}}`$ and having the grade $`{11}^{\mathsf{p}}`$, and $`{\ulcorner m \urcorner \cdot r}`$ being idempotent, so that the nested recursors scale it once:
 
 ```math
 \begin{aligned}
@@ -200,7 +200,7 @@ In a signature that holds the prelude, the unpacking uses the variables of its t
 \end{aligned}
 ```
 
-In a signature that holds the prelude, the resumption of a position $`v`$ by a corecursor of the grade $`r`$ of the instance $`T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, of the sort $`\kappa`$ of the quality $`s`$, uses the variables of $`v`$ and those of the corecursor from the variables $`\bar y_j`$ of the state $`\Theta_j`$, which it uses $`\ulcorner m \urcorner \cdot r`$ times their grades, as a lower bound $`\eta`$ of the uses $`\delta`$ of the corecursor and of no use allows, in a mode that allows the grade $`q_s`$ of a term already built, since a position resumes the corecursor or gives a term already built, as a [recursor](12-usage.md) shares the uses of its branches; and it has every ownership $`p`$ below the ownership $`{11}^{\mathsf{p}}`$ of the corecursor, a new value, and below the ownership $`o \cdot \chi \cdot (\ulcorner m \urcorner \cdot q_s)`$ that a [recursor](13-ownership.md) gives the term already built, of the requirement $`\chi`$ and of the grade $`q_s`$, in a position of the ownership $`o`$, so that it has the ownership $`\chi`$ of the result of a recursive destructor, at run time, when the position is owned alone and $`\chi \le {11}^{\mathsf{p}}`$:
+In a signature that holds the prelude, the resumption of a position $`v`$ by a corecursor of the grade $`r`$ of the instance $`{T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, of the sort $`\kappa`$ of the quality $`s`$, uses the variables of $`v`$ and those of the corecursor from the variables $`\bar y_j`$ of the state $`\Theta_j`$, which it uses $`{\ulcorner m \urcorner \cdot r}`$ times their grades, as a lower bound $`\eta`$ of the uses $`\delta`$ of the corecursor and of no use allows, in a mode that allows the grade $`q_s`$ of a term already built, since a position resumes the corecursor or gives a term already built, as a [recursor](12-usage.md) shares the uses of its branches; and it has every ownership $`p`$ below the ownership $`{11}^{\mathsf{p}}`$ of the corecursor, a new value, and below the ownership $`{o \cdot \chi \cdot (\ulcorner m \urcorner \cdot q_s)}`$ that a [recursor](13-ownership.md) gives the term already built, of the requirement $`\chi`$ and of the grade $`q_s`$, in a position of the ownership $`o`$, so that it has the ownership $`\chi`$ of the result of a recursive destructor, at run time, when the position is owned alone and $`{\chi \le {11}^{\mathsf{p}}}`$:
 
 ```math
 \begin{aligned}

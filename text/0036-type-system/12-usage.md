@@ -5,16 +5,16 @@ It builds on the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitu
 
 ## Definitions
 
-The judgment $`\Sigma;\ \gamma \vdash t \mathrel{▶} m`$ reads: checked in the mode $`m`$, the term $`t`$ uses each variable of its scope as the grade that the vector $`\gamma`$, over this scope, gives it allows.
-The judgment $`\Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m`$ reads: checked in the mode $`m`$, the arguments $`\bar t`$ of a telescope whose grades are $`\bar p`$ use the variables of their scope as $`\gamma`$ allows.
-The judgment $`\Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m`$ reads: checked in the mode $`m`$, the arguments $`\bar a`$ of an instance whose type uses its parameters with the grades $`\zeta`$ use the variables of their scope as $`\gamma`$ allows.
-The judgment $`\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m`$ reads: checked in the mode $`m`$, the types of the telescope $`\Theta`$ use the variables of its scope as $`\gamma`$ allows, the judgment $`\Sigma;\ \gamma \vdash \bar c \mathrel{▶} m`$ likewise for the telescopes of the fields of the constructors $`\bar c`$ of a data type, and the judgment $`\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m`$ likewise for the arguments and the results of the destructors $`\bar d`$ of a codata type, which the usage of the type declarations reads.
-The judgment $`\vdash \Sigma \mathrel{▶}`$ reads: the entries of the signature $`\Sigma`$ use the variables as their grades allow.
+The judgment $`{\Sigma;\ \gamma \vdash t \mathrel{▶} m}`$ reads: checked in the mode $`m`$, the term $`t`$ uses each variable of its scope as the grade that the vector $`\gamma`$, over this scope, gives it allows.
+The judgment $`{\Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m}`$ reads: checked in the mode $`m`$, the arguments $`\bar t`$ of a telescope whose grades are $`\bar p`$ use the variables of their scope as $`\gamma`$ allows.
+The judgment $`{\Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m}`$ reads: checked in the mode $`m`$, the arguments $`\bar a`$ of an instance whose type uses its parameters with the grades $`\zeta`$ use the variables of their scope as $`\gamma`$ allows.
+The judgment $`{\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m}`$ reads: checked in the mode $`m`$, the types of the telescope $`\Theta`$ use the variables of its scope as $`\gamma`$ allows, the judgment $`{\Sigma;\ \gamma \vdash \bar c \mathrel{▶} m}`$ likewise for the telescopes of the fields of the constructors $`\bar c`$ of a data type, and the judgment $`{\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m}`$ likewise for the arguments and the results of the destructors $`\bar d`$ of a codata type, which the usage of the type declarations reads.
+The judgment $`{\vdash \Sigma \mathrel{▶}}`$ reads: the entries of the signature $`\Sigma`$ use the variables as their grades allow.
 
 Usage is defined on the term and the signature alone, without a context: the scope gives each variable the grades of its telescope, with which an application uses its arguments, and the signature gives each constant its mode.
 The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, each constructor the grades of its fields, which the usage of the constructors and of the recursors reads at their instance, and each destructor its grade and the grades of its arguments, which the usage of the observations reads at their instance.
 
-An application $`x[\bar t]`$ uses $`x`$ with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode $`m \odot p_j`$; a variable with an empty telescope uses itself only:
+An application $`x[\bar t]`$ uses $`x`$ with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode $`{m \odot p_j}`$; a variable with an empty telescope uses itself only:
 
 ```math
 \begin{gathered}
@@ -24,7 +24,7 @@ An application $`x[\bar t]`$ uses $`x`$ with the grade of the mode, and each arg
 \end{gathered}
 ```
 
-A constant, defined or declared, uses no variable, in a mode $`m_1`$ that the mode $`m_2`$ of its entry allows, which $`m_1 \cdot^{\mathsf{m}} m_2 = m_1`$ states: a constant of the mode $`{00}^{\mathsf{m}}`$ is used in this mode only, one of the mode $`{01}^{\mathsf{m}}`$ in the modes $`{00}^{\mathsf{m}}`$ and $`{01}^{\mathsf{m}}`$, and one of the mode $`{11}^{\mathsf{m}}`$ in every mode.
+A constant, defined or declared, uses no variable, in a mode $`m_1`$ that the mode $`m_2`$ of its entry allows, which $`{m_1 \cdot^{\mathsf{m}} m_2 = m_1}`$ states: a constant of the mode $`{00}^{\mathsf{m}}`$ is used in this mode only, one of the mode $`{01}^{\mathsf{m}}`$ in the modes $`{00}^{\mathsf{m}}`$ and $`{01}^{\mathsf{m}}`$, and one of the mode $`{11}^{\mathsf{m}}`$ in every mode.
 A sort uses no variable:
 
 ```math
@@ -34,7 +34,7 @@ A sort uses no variable:
 \end{gathered}
 ```
 
-An instance of a declared type uses the variables of its arguments as many times as its type uses its parameters, as its grades $`\zeta`$ at the instance say, each argument checked in the mode of its grade, as the application of a second-order variable uses its arguments; a constructor uses the variables of its fields as the arguments of its telescope at the instance do, and the instance that it carries uses none; the abstraction $`\bar x.\, B`$ for a second-order parameter uses the variables $`\bar x`$ of its telescope as their grades allow, in the mode of its term:
+An instance of a declared type uses the variables of its arguments as many times as its type uses its parameters, as its grades $`\zeta`$ at the instance say, each argument checked in the mode of its grade, as the application of a second-order variable uses its arguments; a constructor uses the variables of its fields as the arguments of its telescope at the instance do, and the instance that it carries uses none; the abstraction $`{\bar x.\, B}`$ for a second-order parameter uses the variables $`\bar x`$ of its telescope as their grades allow, in the mode of its term:
 
 ```math
 \begin{gathered}
@@ -46,9 +46,9 @@ An instance of a declared type uses the variables of its arguments as many times
 \end{gathered}
 ```
 
-A recursor, written as in its [typing](14-typing.md#terms), uses the variables of its term $`r`$ times, the term checked in the mode $`m \odot r`$, and those of its branches, as the eliminations of the pairs and of the natural numbers without $`\mathsf{nr}`$ of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda) do.
+A recursor, written as in its [typing](14-typing.md#terms), uses the variables of its term $`r`$ times, the term checked in the mode $`{m \odot r}`$, and those of its branches, as the eliminations of the pairs and of the natural numbers without $`\mathsf{nr}`$ of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda) do.
 Each branch uses the variables of the scope as $`\delta_{ji}`$, the variable of its field $`x_{jil}`$ with the grade $`g_{jil}`$ and that of the recursive result of a recursive field with the grade $`e_{jil}`$ that the branch gives it in its grades $`\bar e_{ji}`$, those of the recursive fields in order, the grade $`e_{jil}`$ of a field that is not recursive being $`0`$.
-A use of the recursive result of a field runs the recursor on the field again, which uses the field $`r`$ times and the variables of the scope as $`\chi`$: the uses of a field and of its recursive result must cover $`\ulcorner m \urcorner \cdot r`$ times the grade of the field, and $`\chi`$ the uses of each branch and of its recursive results, since one branch runs at each step.
+A use of the recursive result of a field runs the recursor on the field again, which uses the field $`r`$ times and the variables of the scope as $`\chi`$: the uses of a field and of its recursive result must cover $`{\ulcorner m \urcorner \cdot r}`$ times the grade of the field, and $`\chi`$ the uses of each branch and of its recursive results, since one branch runs at each step.
 Its motives, which are types, use no variable, checked in the mode $`{00}^{\mathsf{m}}`$; in the mode $`{11}^{\mathsf{m}}`$, a recursor on a block of which a type has two constructors or more uses its term at run time, since the constructor of the term chooses the branch that runs:
 
 ```math
@@ -61,9 +61,9 @@ An observation, written as in its [typing](14-typing.md#terms), uses the variabl
 \frac{\begin{gathered}{}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \bar d;\ \dots) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \bar d[\bar s' / \bar s,\ \bar p' / \bar p] = (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d_2) \\ \Theta \text{ has the grades } p_1, \dots, p_n \\ \Sigma;\ \gamma \vdash t \mathrel{▶} m \\ \Sigma;\ \delta \vdash \bar t \mathrel{▶} p_1, \dots, p_n;\ m \\ m \cdot^{\mathsf{m}} \llcorner p \lrcorner = m\end{gathered}}{\Sigma;\ \gamma +^{\gamma} \delta \vdash t.((D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).d)(\bar t) \mathrel{▶} m}\;(d_{▶})
 ```
 
-A corecursor, written as in its [typing](14-typing.md#terms), uses the variables of its state $`r`$ times, the state checked in the mode $`m \odot r`$ as arguments of the state of its type, and those of its branches, each checked in the mode $`m_{ji} = m \odot p_{ji}`$ of the grade of its destructor, with uses $`\delta_{ji}`$ counted $`p_{ji}`$ times: an observation runs one branch, so that the corecursor uses the variables as a lower bound $`\delta`$ of these uses allows, as the eliminations of the pairs of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda) share the uses of their branches.
+A corecursor, written as in its [typing](14-typing.md#terms), uses the variables of its state $`r`$ times, the state checked in the mode $`{m \odot r}`$ as arguments of the state of its type, and those of its branches, each checked in the mode $`{m_{ji} = m \odot p_{ji}}`$ of the grade of its destructor, with uses $`\delta_{ji}`$ counted $`p_{ji}`$ times: an observation runs one branch, so that the corecursor uses the variables as a lower bound $`\delta`$ of these uses allows, as the eliminations of the pairs of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda) share the uses of their branches.
 An observation of a [recursive](14-typing.md#destructors-of-a-block) destructor resumes the [position](19-prelude.md#positions) that its branch gives into the corecursor, which uses the variables again, or gives the term already built, so that $`\delta`$ is also a lower bound of the uses of the branch plus those of the corecursor, both counted $`p_{ji}`$ times, as the eliminator of the natural numbers of Abel, Danielsson and Eriksson bounds its uses by those of its branch for the successor plus its own uses again.
-Each branch uses the variable of an entry of the state as $`\ulcorner m_{ji} \urcorner \cdot r`$ times the grade of the entry allows, and that of an argument as $`\ulcorner m_{ji} \urcorner`$ times the grade of its entry allows, as the result of a destructor uses its arguments; its states, which are types, use no variable, checked in the mode $`{00}^{\mathsf{m}}`$, and the instance it carries uses none:
+Each branch uses the variable of an entry of the state as $`{\ulcorner m_{ji} \urcorner \cdot r}`$ times the grade of the entry allows, and that of an argument as $`\ulcorner m_{ji} \urcorner`$ times the grade of its entry allows, as the result of a destructor uses its arguments; its states, which are types, use no variable, checked in the mode $`{00}^{\mathsf{m}}`$, and the instance it carries uses none:
 
 ```math
 \frac{\begin{gathered}{}\mathcal{D} = (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k) \in \Sigma \\ \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\ \forall j.\ \Sigma;\ {00}^{\gamma} \vdash \Theta_j \mathrel{▶} {00}^{\mathsf{m}} \\ \forall j.\ \Theta_j \text{ has the grades } q_{j1}, \dots, q_{jn_j} \\ \Sigma;\ \gamma \vdash \bar t \mathrel{▶} q_{h1}, \dots, q_{hn_h};\ m \odot r \\ \forall j, i.\ \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] = (\bar d_{ji,1} \mid d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q'_{ji} \mid \bar d_{ji,2}) \\ \forall j, i.\ \Theta_{ji} \text{ has the grades } p_{ji1}, \dots, p_{jia_{ji}} \\ \forall j, i.\ \Sigma;\ \delta_{ji} \bullet (\ulcorner m_{ji} \urcorner \cdot r \cdot q_{j1}) \bullet \dots \bullet (\ulcorner m_{ji} \urcorner \cdot r \cdot q_{jn_j}) \bullet (\ulcorner m_{ji} \urcorner \cdot p_{ji1}) \bullet \dots \bullet (\ulcorner m_{ji} \urcorner \cdot p_{jia_{ji}}) \vdash g_{ji} \mathrel{▶} m_{ji} \\ \forall j, i.\ \delta \le^{\gamma} p_{ji} \cdot^{\gamma} \delta_{ji} \\ \forall j, i.\ \mathsf{rec}_{\mathcal{D}}(B_{ji}) \ne \bot \implies \delta \le^{\gamma} (p_{ji} \cdot^{\gamma} \delta_{ji}) +^{\gamma} (p_{ji} \cdot^{\gamma} \delta)\end{gathered}}{\Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash \mathsf{corec}_r\ (D_h.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \mathrel{▶} m}\;(\mathsf{corec}_{▶})
@@ -75,7 +75,7 @@ A term may be given grades lower than its uses:
 \frac{\begin{gathered}{}\Sigma;\ \gamma \vdash t \mathrel{▶} m \\ \delta \le^{\gamma} \gamma\end{gathered}}{\Sigma;\ \delta \vdash t \mathrel{▶} m}\;(\mathsf{sub}_{▶})
 ```
 
-The types of a telescope use the variables of its scope as the types of the functions and of the pairs of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda#L363) do, entry by entry: the type of an entry counts its uses as many times as the grade $`p`$ of the entry says, checked in the mode $`m \odot p`$, and the types after it use the variable of the entry as $`\ulcorner m \urcorner \cdot q`$ allows, $`q`$ being its grade in these types; a telescope may be given grades lower than its uses, without which $`q`$ would have to be exactly the uses of the variable:
+The types of a telescope use the variables of its scope as the types of the functions and of the pairs of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda#L363) do, entry by entry: the type of an entry counts its uses as many times as the grade $`p`$ of the entry says, checked in the mode $`{m \odot p}`$, and the types after it use the variable of the entry as $`{\ulcorner m \urcorner \cdot q}`$ allows, $`q`$ being its grade in these types; a telescope may be given grades lower than its uses, without which $`q`$ would have to be exactly the uses of the variable:
 
 ```math
 \begin{gathered}
@@ -94,7 +94,7 @@ The constructors $`\bar c`$ of a data type, $`c_1 : \Theta_1 \mid \dots \mid c_n
 \end{gathered}
 ```
 
-The destructors $`\bar d`$ of a codata type, $`d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n`$, or $`\varepsilon`$ when there is none, use the variables as the entries of a telescope do, each destructor as one entry: its arguments and its result count their uses as many times as its grade $`p`$ says, checked in the mode $`m' = m \odot p`$, its result using each argument $`x_i`$ of $`\Theta`$ as $`\ulcorner m' \urcorner \cdot q_i`$ allows, as the types after the entry of $`x_i`$ do, and the destructors after it use $`d`$ as $`\ulcorner m \urcorner \cdot q`$ allows; destructors may be given grades lower than their uses, as a telescope may:
+The destructors $`\bar d`$ of a codata type, $`{d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n}`$, or $`\varepsilon`$ when there is none, use the variables as the entries of a telescope do, each destructor as one entry: its arguments and its result count their uses as many times as its grade $`p`$ says, checked in the mode $`{m' = m \odot p}`$, its result using each argument $`x_i`$ of $`\Theta`$ as $`{\ulcorner m' \urcorner \cdot q_i}`$ allows, as the types after the entry of $`x_i`$ do, and the destructors after it use $`d`$ as $`{\ulcorner m \urcorner \cdot q}`$ allows; destructors may be given grades lower than their uses, as a telescope may:
 
 ```math
 \begin{gathered}
@@ -105,7 +105,7 @@ The destructors $`\bar d`$ of a codata type, $`d_1 : (\Theta_1 \vdash B_1 \mathr
 ```
 
 The entries of a signature use the variables as their grades allow when, at each instance of its sort and grade variables, the body of each constant definition uses no variable, in the mode of the definition, and, at each instance that the constraint $`C`$ of a type declaration admits, the constructors $`\bar c_j`$ or the destructors $`\bar d_j`$ of each of its types $`D_j`$ use the parameters as the grades $`\zeta_j`$ of the type allow, the uses of all of them added, as their usage adds them.
-Each entry is checked in the signature before it, as its [formation](14-typing.md#signatures-and-entries) is, and the constructors or the destructors of a type declaration in the signature $`\Sigma,\ \mathcal{D}`$, which reads the grades of the types of the block:
+Each entry is checked in the signature before it, as its [formation](14-typing.md#signatures-and-entries) is, and the constructors or the destructors of a type declaration in the signature $`{\Sigma,\ \mathcal{D}}`$, which reads the grades of the types of the block:
 
 ```math
 \begin{gathered}

@@ -10,9 +10,9 @@ This section defines the objects in the order in which they build on each other:
 ### Variables
 
 A variable is named, and an object that binds variables is the same object whatever names its bound variables take, as long as they stay distinct from the names it uses free.
-A variable has a telescope, whose entries say how many arguments the variable is applied to: a variable $`x : A`$ of a context has an empty one, and a second-order variable $`X : (\Theta \vdash A \mathrel{◀} \psi)`$ has $`\Theta`$, so that it stands for a term of type $`A`$ under the variables of $`\Theta`$, as the contextual types of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591) do for their metavariables.
+A variable has a telescope, whose entries say how many arguments the variable is applied to: a variable $`x : A`$ of a context has an empty one, and a second-order variable $`{X : (\Theta \vdash A \mathrel{◀} \psi)}`$ has $`\Theta`$, so that it stands for a term of type $`A`$ under the variables of $`\Theta`$, as the contextual types of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591) do for their metavariables.
 
-The scope of a term is the sequence of the variables it may use, each with its signature: the grades $`p_1, \dots, p_k`$ and the requirements $`r_1, \dots, r_k`$ of the entries of its telescope, and the ownership $`\psi`$ of its result, with which the usage and the ownership of an application of the variable read its arguments.
+The scope of a term is the sequence of the variables it may use, each with its signature: the grades $`{p_1, \dots, p_k}`$ and the requirements $`{r_1, \dots, r_k}`$ of the entries of its telescope, and the ownership $`\psi`$ of its result, with which the usage and the ownership of an application of the variable read its arguments.
 A term uses only the variables of its scope, each applied to an argument for each entry of its telescope.
 
 ### Terms
@@ -39,16 +39,16 @@ The cases are:
 
 - A variable $`x`$ of the scope applied to arguments $`\bar t`$ in the scope, one for each entry of its telescope, written $`x[\bar t]`$, and $`x`$ alone when its telescope is empty.
 - A sort $`\kappa`$.
-- An instance $`f.\{\bar s;\ \bar l;\ \bar p\}`$ of the constant $`f`$, defined or declared, in which $`\bar s`$ are qualities, $`\bar l`$ levels and $`\bar p`$ grades, one for each variable of each kind of the entry.
-- An instance $`D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$ of the declared type $`D`$, whose arguments $`\bar a`$ are in the scope, one for each parameter of its type declaration.
-- A constructor $`c`$ of the data type of an instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, applied to arguments $`\bar t`$, a term for each of its fields, written $`T.c(\bar t)`$: the constructor carries its instance, so that the term determines its type.
-- A recursor $`\mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u`$, which eliminates the term $`t`$ of the instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, used with the grade $`r`$, with motives $`\bar C`$, one for each type of the block of $`t`$, and branches $`\bar u`$, one for each constructor of each type of the block, in the order of the declaration: the recursor carries the instance of the term it eliminates, so that its usage and its ownership read the grades and the requirements of the fields at this instance.
-- An observation $`t.(T.d)(\bar t)`$ of the term $`t`$ of the instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$ by its destructor $`d`$, applied to arguments $`\bar t`$, a term for each argument of the destructor, written $`t.(T.d)`$ when the destructor has no argument: the observation carries the instance of its term, as the recursor does, so that its usage and its ownership read the grades and the requirements of the destructor at this instance.
-- A corecursor $`\mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g`$, which builds a term of the instance $`T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$ from the state $`\bar t`$, used with the grade $`r`$, with states $`\bar\Theta`$, one for each type of the block of $`D`$, and branches $`\bar g`$, one for each destructor of each type of the block, in the order of the declaration: the corecursor carries its instance, as a constructor does, so that the term determines its type.
+- An instance $`{f.\{\bar s;\ \bar l;\ \bar p\}}`$ of the constant $`f`$, defined or declared, in which $`\bar s`$ are qualities, $`\bar l`$ levels and $`\bar p`$ grades, one for each variable of each kind of the entry.
+- An instance $`{D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ of the declared type $`D`$, whose arguments $`\bar a`$ are in the scope, one for each parameter of its type declaration.
+- A constructor $`c`$ of the data type of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, applied to arguments $`\bar t`$, a term for each of its fields, written $`T.c(\bar t)`$: the constructor carries its instance, so that the term determines its type.
+- A recursor $`{\mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u}`$, which eliminates the term $`t`$ of the instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, used with the grade $`r`$, with motives $`\bar C`$, one for each type of the block of $`t`$, and branches $`\bar u`$, one for each constructor of each type of the block, in the order of the declaration: the recursor carries the instance of the term it eliminates, so that its usage and its ownership read the grades and the requirements of the fields at this instance.
+- An observation $`t.(T.d)(\bar t)`$ of the term $`t`$ of the instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ by its destructor $`d`$, applied to arguments $`\bar t`$, a term for each argument of the destructor, written $`t.(T.d)`$ when the destructor has no argument: the observation carries the instance of its term, as the recursor does, so that its usage and its ownership read the grades and the requirements of the destructor at this instance.
+- A corecursor $`{\mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g}`$, which builds a term of the instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ from the state $`\bar t`$, used with the grade $`r`$, with states $`\bar\Theta`$, one for each type of the block of $`D`$, and branches $`\bar g`$, one for each destructor of each type of the block, in the order of the declaration: the corecursor carries its instance, as a constructor does, so that the term determines its type.
 
 The levels of a term use only the level variables of the entry of the signature in which it appears, and none when it appears in no entry.
 
-The arguments $`\bar t`$ of a telescope are a term for each of its entries, the first one first: they are either empty, written $`()`$, or an argument $`t`$ followed by arguments $`\bar t`$, written $`(t,\ \bar t)`$:
+The arguments $`\bar t`$ of a telescope are a term for each of its entries, the first one first: they are either empty, written $`()`$, or an argument $`t`$ followed by arguments $`\bar t`$, written $`{(t,\ \bar t)}`$:
 
 ```math
 \begin{aligned}
@@ -56,7 +56,7 @@ The arguments $`\bar t`$ of a telescope are a term for each of its entries, the 
 \end{aligned}
 ```
 
-The arguments $`\bar a`$ of an instance are an abstraction for each parameter, the last one last: they are either empty, written $`()`$, or arguments $`\bar a`$ followed by an abstraction $`\bar x.\, B`$, written $`(\bar a,\ \bar x.\, B)`$:
+The arguments $`\bar a`$ of an instance are an abstraction for each parameter, the last one last: they are either empty, written $`()`$, or arguments $`\bar a`$ followed by an abstraction $`{\bar x.\, B}`$, written $`{(\bar a,\ \bar x.\, B)}`$:
 
 ```math
 \begin{aligned}
@@ -66,7 +66,7 @@ The arguments $`\bar a`$ of an instance are an abstraction for each parameter, t
 
 The abstraction for a parameter binds the variables $`\bar x`$, one for each entry of the telescope of the parameter, each with an empty telescope, and its term $`B`$ is in the scope extended by them; for a parameter with an empty telescope, $`\bar x`$ is empty and the abstraction is the term $`B`$.
 
-The motives $`\bar C`$ of a recursor are a motive for each type of the block, the first one first: they are either empty, written $`()`$, or a motive $`(\bar x,\ z).\, C`$ followed by motives $`\bar C`$, written $`((\bar x,\ z).\, C,\ \bar C)`$:
+The motives $`\bar C`$ of a recursor are a motive for each type of the block, the first one first: they are either empty, written $`()`$, or a motive $`{(\bar x,\ z).\, C}`$ followed by motives $`\bar C`$, written $`{((\bar x,\ z).\, C,\ \bar C)}`$:
 
 ```math
 \begin{aligned}
@@ -76,7 +76,7 @@ The motives $`\bar C`$ of a recursor are a motive for each type of the block, th
 
 The motive of a type binds the variables $`\bar x`$, one for each non-uniform parameter of the type, and the variable $`z`$, the term eliminated, each with an empty telescope, and its term $`C`$ is in the scope extended by them.
 
-The branches $`\bar u`$ of a recursor are a branch for each constructor, the first one first: they are either empty, written $`()`$, or a branch $`(\bar x;\ \bar y \mathrel{▶} \bar e).\, u`$ followed by branches $`\bar u`$, written $`((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u)`$:
+The branches $`\bar u`$ of a recursor are a branch for each constructor, the first one first: they are either empty, written $`()`$, or a branch $`{(\bar x;\ \bar y \mathrel{▶} \bar e).\, u}`$ followed by branches $`\bar u`$, written $`{((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u)}`$:
 
 ```math
 \begin{aligned}
@@ -84,10 +84,10 @@ The branches $`\bar u`$ of a recursor are a branch for each constructor, the fir
 \end{aligned}
 ```
 
-The branch of a constructor binds the variables $`\bar x`$, one for each field of the constructor, then the variables $`\bar y`$, one for each recursive result, each with an empty telescope and with the grade $`e`$ of $`\bar e`$ with which the branch uses it, written $`y_1 \mathrel{▶} e_1, \dots, y_n \mathrel{▶} e_n`$, and its term $`u`$ is in the scope extended by them; the branch of the constructor $`c`$ of the type $`D`$ is written $`D.c(\bar x;\ \bar y \mathrel{▶} \bar e) \Rightarrow u`$, without the semicolon when it binds no recursive result.
+The branch of a constructor binds the variables $`\bar x`$, one for each field of the constructor, then the variables $`\bar y`$, one for each recursive result, each with an empty telescope and with the grade $`e`$ of $`\bar e`$ with which the branch uses it, written $`{y_1 \mathrel{▶} e_1, \dots, y_n \mathrel{▶} e_n}`$, and its term $`u`$ is in the scope extended by them; the branch of the constructor $`c`$ of the type $`D`$ is written $`{D.c(\bar x;\ \bar y \mathrel{▶} \bar e) \Rightarrow u}`$, without the semicolon when it binds no recursive result.
 The branch carries the grades of its recursive results, as a telescope carries the grades of its entries, so that the usage and the ownership read them.
 
-The states $`\bar\Theta`$ of a corecursor are a state for each type of the block, the first one first: they are either empty, written $`()`$, or a state $`\bar x.\, \Theta : \bar\kappa`$ followed by states $`\bar\Theta`$, written $`(\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)`$:
+The states $`\bar\Theta`$ of a corecursor are a state for each type of the block, the first one first: they are either empty, written $`()`$, or a state $`{\bar x.\, \Theta : \bar\kappa}`$ followed by states $`\bar\Theta`$, written $`{(\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)}`$:
 
 ```math
 \begin{aligned}
@@ -97,7 +97,7 @@ The states $`\bar\Theta`$ of a corecursor are a state for each type of the block
 
 The state of a type binds the variables $`\bar x`$, one for each non-uniform parameter of the type, each with an empty telescope, and its telescope $`\Theta`$ is in the scope extended by them; it carries the sorts $`\bar\kappa`$ of the entries of $`\Theta`$, one for each entry, which the [packing](19-prelude.md#packing) of the state needs and the telescope does not give.
 
-The branches $`\bar g`$ of a corecursor are a branch for each destructor, the first one first: they are either empty, written $`()`$, or a branch $`(\bar x;\ \bar y;\ \bar z).\, g`$ followed by branches $`\bar g`$, written $`((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)`$:
+The branches $`\bar g`$ of a corecursor are a branch for each destructor, the first one first: they are either empty, written $`()`$, or a branch $`{(\bar x;\ \bar y;\ \bar z).\, g}`$ followed by branches $`\bar g`$, written $`{((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)}`$:
 
 ```math
 \begin{aligned}
@@ -105,11 +105,11 @@ The branches $`\bar g`$ of a corecursor are a branch for each destructor, the fi
 \end{aligned}
 ```
 
-The branch of a destructor binds the variables $`\bar x`$, one for each non-uniform parameter of its type, then the variables $`\bar y`$, one for each entry of the state of its type, then the variables $`\bar z`$, one for each argument of the destructor, each with an empty telescope, and its term $`g`$, the result of the observation, is in the scope extended by them; the branch of the destructor $`d`$ of the type $`D`$ is written $`D.d(\bar x;\ \bar y;\ \bar z) \Rightarrow g`$.
+The branch of a destructor binds the variables $`\bar x`$, one for each non-uniform parameter of its type, then the variables $`\bar y`$, one for each entry of the state of its type, then the variables $`\bar z`$, one for each argument of the destructor, each with an empty telescope, and its term $`g`$, the result of the observation, is in the scope extended by them; the branch of the destructor $`d`$ of the type $`D`$ is written $`{D.d(\bar x;\ \bar y;\ \bar z) \Rightarrow g}`$.
 
 ### Telescopes and Contexts
 
-A telescope in a scope is either empty, written $`\varepsilon`$, or an entry followed by a telescope, written $`(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)`$, in which $`A`$ is a term in the scope and $`\Theta`$ a telescope in the scope extended by $`x`$, with an empty telescope:
+A telescope in a scope is either empty, written $`\varepsilon`$, or an entry followed by a telescope, written $`{(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)}`$, in which $`A`$ is a term in the scope and $`\Theta`$ a telescope in the scope extended by $`x`$, with an empty telescope:
 
 ```math
 \begin{aligned}
@@ -117,9 +117,9 @@ A telescope in a scope is either empty, written $`\varepsilon`$, or an entry fol
 \end{aligned}
 ```
 
-The entry $`x : A \mathrel{▶} p;\ q \mathrel{◀} r`$ is used with the grade $`p`$, requires of its argument the ownership $`r`$, and its variable is used with the grade $`q`$ by the types after it; the grades of a telescope are the grades $`p`$ of its entries, in order, and its requirements their ownerships $`r`$.
+The entry $`{x : A \mathrel{▶} p;\ q \mathrel{◀} r}`$ is used with the grade $`p`$, requires of its argument the ownership $`r`$, and its variable is used with the grade $`q`$ by the types after it; the grades of a telescope are the grades $`p`$ of its entries, in order, and its requirements their ownerships $`r`$.
 
-A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ extended by a variable, written $`\Gamma,\ x : A`$, or by a second-order variable, written $`\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi)`$, in which $`A`$ and $`\Theta`$ are in the scope of $`\Gamma`$, and in $`X : (\Theta \vdash A \mathrel{◀} \psi)`$, $`A`$ is in the scope of $`\Gamma`$ extended by the variables of $`\Theta`$:
+A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ extended by a variable, written $`{\Gamma,\ x : A}`$, or by a second-order variable, written $`{\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi)}`$, in which $`A`$ and $`\Theta`$ are in the scope of $`\Gamma`$, and in $`{X : (\Theta \vdash A \mathrel{◀} \psi)}`$, $`A`$ is in the scope of $`\Gamma`$ extended by the variables of $`\Theta`$:
 
 ```math
 \begin{aligned}
@@ -127,7 +127,7 @@ A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ exte
 \end{aligned}
 ```
 
-The ownership $`\psi`$ of the result of $`X : (\Theta \vdash A \mathrel{◀} \psi)`$ is the meet of a grade $`\chi_0`$, its constant, and of factors $`x_j \cdot \chi_j`$, each scaling a variable $`x_j`$ of $`\Theta`$ by its coefficient $`\chi_j`$; the constant and each factor are optional, each variable has one factor at most, in the order of $`\Theta`$, and the factor $`x_j \cdot {11}^{\mathsf{p}}`$ is written $`x_j`$:
+The ownership $`\psi`$ of the result of $`{X : (\Theta \vdash A \mathrel{◀} \psi)}`$ is the meet of a grade $`\chi_0`$, its constant, and of factors $`{x_j \cdot \chi_j}`$, each scaling a variable $`x_j`$ of $`\Theta`$ by its coefficient $`\chi_j`$; the constant and each factor are optional, each variable has one factor at most, in the order of $`\Theta`$, and the factor $`{x_j \cdot {11}^{\mathsf{p}}}`$ is written $`x_j`$:
 
 ```math
 \begin{aligned}
@@ -138,7 +138,7 @@ The ownership $`\psi`$ of the result of $`X : (\Theta \vdash A \mathrel{◀} \ps
 The variables $`x_j`$ stand for the ownerships of the arguments of $`X`$, and $`\psi`$ for the ownership of its result: $`X`$ stands for a term whose value, given arguments of these ownerships, has the ownership $`\psi`$.
 
 The scope of a context is its variables, the last one last, each with its signature.
-A variable $`x : A`$ and a second-order variable $`X : (\varepsilon \vdash A \mathrel{◀} \psi)`$ both have an empty telescope, and only their entries in the context tell them apart.
+A variable $`x : A`$ and a second-order variable $`{X : (\varepsilon \vdash A \mathrel{◀} \psi)}`$ both have an empty telescope, and only their entries in the context tell them apart.
 
 ### Entries and Signatures
 
@@ -167,15 +167,15 @@ An entry is one of three cases, the last of which, a type declaration $`\mathcal
 
 The cases are:
 
-- A constant definition $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, the ownership $`p`$ of its value, which its body must have, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
-- A constant declaration $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses, and whose ownership $`p`$, which no body checks, is the one of the value it stands for.
-- A type declaration $`\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots`$, a block of data types declared together, which has sort, level and grade variables, the constraint $`C`$ on the instances of its sort and grade variables, the names $`D_1, \dots, D_k`$ of its types, and, for each instance of $`\bar s`$ and $`\bar p`$ that $`C`$ admits, the parameters $`\Delta`$, a context, the sort $`\kappa`$ of its types and their bodies: each type $`D_j`$ has the grades $`\zeta_j`$ with which it uses the parameters, a vector of grades over the scope of $`\Delta`$, and its constructors $`c_{j1}, \dots, c_{j n_j}`$, in order, and each constructor $`c_{ji}`$ the telescope $`\Theta_{ji}`$ of its fields, in the scope of $`\Delta`$.
-- A type declaration $`\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots`$, a block of codata types declared together, which has the same form, except that each type $`D_j`$ has destructors $`d_{j1}, \dots, d_{j n_j}`$, in order, rather than constructors: the destructor $`d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji}`$ has the telescope $`\Theta_{ji}`$ of its arguments and its result type $`B_{ji}`$, in the scope of $`\Delta`$ extended by the destructors before it and, for $`B_{ji}`$, by the variables of $`\Theta_{ji}`$; its result has the ownership $`\psi_{ji}`$ and is used with the grade $`p_{ji}`$, and the destructor is used with the grade $`q_{ji}`$ by the types of the destructors after it, in whose scope it is a second-order variable $`d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji})`$, so that a destructor may depend on the observations before it.
+- A constant definition $`{f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t}`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, the ownership $`p`$ of its value, which its body must have, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
+- A constant declaration $`{f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p}`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses, and whose ownership $`p`$, which no body checks, is the one of the value it stands for.
+- A type declaration $`{\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots}`$, a block of data types declared together, which has sort, level and grade variables, the constraint $`C`$ on the instances of its sort and grade variables, the names $`{D_1, \dots, D_k}`$ of its types, and, for each instance of $`\bar s`$ and $`\bar p`$ that $`C`$ admits, the parameters $`\Delta`$, a context, the sort $`\kappa`$ of its types and their bodies: each type $`D_j`$ has the grades $`\zeta_j`$ with which it uses the parameters, a vector of grades over the scope of $`\Delta`$, and its constructors $`{c_{j1}, \dots, c_{j n_j}}`$, in order, and each constructor $`c_{ji}`$ the telescope $`\Theta_{ji}`$ of its fields, in the scope of $`\Delta`$.
+- A type declaration $`{\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots}`$, a block of codata types declared together, which has the same form, except that each type $`D_j`$ has destructors $`{d_{j1}, \dots, d_{j n_j}}`$, in order, rather than constructors: the destructor $`{d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji}}`$ has the telescope $`\Theta_{ji}`$ of its arguments and its result type $`B_{ji}`$, in the scope of $`\Delta`$ extended by the destructors before it and, for $`B_{ji}`$, by the variables of $`\Theta_{ji}`$; its result has the ownership $`\psi_{ji}`$ and is used with the grade $`p_{ji}`$, and the destructor is used with the grade $`q_{ji}`$ by the types of the destructors after it, in whose scope it is a second-order variable $`{d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji})}`$, so that a destructor may depend on the observations before it.
 
 A block is a block of data types or a block of codata types, never both, so that each of its types is known by its constructors or by its destructors alike.
 
 The names of the constructors and of the destructors are not names of the signature: a constructor is named within its type, as $`D.c`$, and a destructor as $`D.d`$, so that two types may have constructors or destructors of the same name, while the constructors or the destructors of one type have distinct names.
-The names that an entry introduces are $`D_1, \dots, D_k`$ for a type declaration, and $`f`$ for a constant definition or declaration:
+The names that an entry introduces are $`{D_1, \dots, D_k}`$ for a type declaration, and $`f`$ for a constant definition or declaration:
 
 ```math
 \begin{aligned}
@@ -186,7 +186,7 @@ The names that an entry introduces are $`D_1, \dots, D_k`$ for a type declaratio
 \end{aligned}
 ```
 
-A signature is either empty, written $`\varnothing`$, or a signature $`\Sigma`$ extended by an entry $`e`$, written $`\Sigma,\ e`$:
+A signature is either empty, written $`\varnothing`$, or a signature $`\Sigma`$ extended by an entry $`e`$, written $`{\Sigma,\ e}`$:
 
 ```math
 \begin{aligned}
@@ -194,7 +194,7 @@ A signature is either empty, written $`\varnothing`$, or a signature $`\Sigma`$ 
 \end{aligned}
 ```
 
-A signature has the entries $`e \in \Sigma`$ that extend it, its last entry and those of the signature it extends:
+A signature has the entries $`{e \in \Sigma}`$ that extend it, its last entry and those of the signature it extends:
 
 ```math
 \begin{gathered}
@@ -203,7 +203,7 @@ A signature has the entries $`e \in \Sigma`$ that extend it, its last entry and 
 \end{gathered}
 ```
 
-A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p`$, written $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$, the ownership $`p`$ and the type $`A`$, which the rules of the defined and of the declared constants share:
+A signature has a constant $`{f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p}`$, written $`{f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma}`$, when one of its entries is a constant definition or declaration of $`f`$, with these variables, the mode $`m`$, the ownership $`p`$ and the type $`A`$, which the rules of the defined and of the declared constants share:
 
 ```math
 \begin{aligned}
@@ -215,7 +215,7 @@ A signature has a constant $`f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m 
 \end{aligned}
 ```
 
-A signature has a declared type $`D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \mathrel{▶} \zeta`$, written $`D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma`$, when one of its entries is a block of data types or of codata types that declares $`D`$, with these variables, the constraint $`C`$, the parameters $`\Delta`$, the sort $`\kappa`$ and the grades $`\zeta`$ of $`D`$, which the rules of the instances share; the rules of the constructors and of the recursors read the block of data types itself:
+A signature has a declared type $`{D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \mathrel{▶} \zeta}`$, written $`{D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma}`$, when one of its entries is a block of data types or of codata types that declares $`D`$, with these variables, the constraint $`C`$, the parameters $`\Delta`$, the sort $`\kappa`$ and the grades $`\zeta`$ of $`D`$, which the rules of the instances share; the rules of the constructors and of the recursors read the block of data types itself:
 
 ```math
 \begin{aligned}
