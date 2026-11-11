@@ -133,7 +133,7 @@ A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`
 
 ### Renamings
 
-A renaming $`\xi`$ of a scope $`\Gamma`$ in a scope $`\Gamma'`$ gives each variable $`x`$ of $`\Gamma`$ a variable $`\xi(x)`$ of $`\Gamma'`$ with the same telescope, and renames a term $`t`$ to $`t[\xi]`$, the substitution of the second order that gives each variable $`x`$ the abstraction $`\bar y.\, \xi(x)[\bar y]`$.
+A renaming $`\alpha`$ of a scope $`\Gamma`$ in a scope $`\Gamma'`$ gives each variable $`x`$ of $`\Gamma`$ a variable $`\alpha(x)`$ of $`\Gamma'`$ with the same telescope, and renames a term $`t`$ to $`t[\alpha]`$, the substitution of the second order that gives each variable $`x`$ the abstraction $`\bar y.\, \alpha(x)[\bar y]`$.
 It may rename two variables to the same one.
 
 ### Closed Substitutions

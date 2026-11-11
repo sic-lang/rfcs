@@ -123,9 +123,9 @@ Usage is stable under the [renamings](09-substitution.md#renamings): renamed, a 
 
 ```math
 \begin{aligned}
-& \Sigma;\ \gamma \vdash t \mathrel{▶} m \implies \Sigma;\ \gamma[\xi] \vdash t[\xi] \mathrel{▶} m &&(\mathsf{ren}_{▶}.t) \\[1em]
-& \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \implies \Sigma;\ \gamma[\xi] \vdash \bar t[\xi] \mathrel{▶} \bar p;\ m &&(\mathsf{ren}_{▶}.\bar t) \\[1em]
-& \Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \implies \Sigma;\ \gamma[\xi] \vdash \bar a[\xi] \mathrel{▶} \zeta;\ m &&(\mathsf{ren}_{▶}.\bar a) \\[1em]
-& \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \implies \Sigma;\ \gamma[\xi] \vdash \Theta[\xi] \mathrel{▶} m &&(\mathsf{ren}_{▶}.\Theta)
+& \Sigma;\ \gamma \vdash t \mathrel{▶} m \implies \Sigma;\ \gamma[\alpha] \vdash t[\alpha] \mathrel{▶} m &&(\mathsf{ren}_{▶}.t) \\[1em]
+& \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \implies \Sigma;\ \gamma[\alpha] \vdash \bar t[\alpha] \mathrel{▶} \bar p;\ m &&(\mathsf{ren}_{▶}.\bar t) \\[1em]
+& \Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \implies \Sigma;\ \gamma[\alpha] \vdash \bar a[\alpha] \mathrel{▶} \zeta;\ m &&(\mathsf{ren}_{▶}.\bar a) \\[1em]
+& \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \implies \Sigma;\ \gamma[\alpha] \vdash \Theta[\alpha] \mathrel{▶} m &&(\mathsf{ren}_{▶}.\Theta)
 \end{aligned}
 ```

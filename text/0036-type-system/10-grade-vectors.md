@@ -109,11 +109,11 @@ A vector of grades $`\gamma`$ over a scope is a vector over its variables, whate
 
 Its operations, its order, its extension and its update are those of the vectors, written $`+^{\gamma}`$, $`\cdot^{\gamma}`$, $`\wedge^{\gamma}`$, $`\le^{\gamma}`$, $`\gamma \bullet p`$ and $`(\gamma,\ x \mathrel{≔} p)`$, the extension giving its grade to the variable that extends the scope, and they satisfy the properties of the vectors, at the modality of the grades.
 
-The vector $`\gamma[\xi]`$, renamed by a [renaming](09-substitution.md#renamings) $`\xi`$ of the scope of $`\gamma`$, gives each variable $`y`$ the sum of the grades of the variables that $`\xi`$ renames to $`y`$, the grade $`{00}^{\mathsf{p}}`$ when there is none, so that the uses of two variables renamed to the same one add up:
+The vector $`\gamma[\alpha]`$, renamed by a [renaming](09-substitution.md#renamings) $`\alpha`$ of the scope of $`\gamma`$, gives each variable $`y`$ the sum of the grades of the variables that $`\alpha`$ renames to $`y`$, the grade $`{00}^{\mathsf{p}}`$ when there is none, so that the uses of two variables renamed to the same one add up:
 
 ```math
 \begin{aligned}
-& \gamma[\xi](y) = \sum_{\xi(x) = y} \gamma(x) &&(\mathsf{ren}_\gamma)
+& \gamma[\alpha](y) = \sum_{\alpha(x) = y} \gamma(x) &&(\mathsf{ren}_\gamma)
 \end{aligned}
 ```
 
@@ -125,11 +125,11 @@ The renaming commutes with the operations and keeps the order; under the variabl
 
 ```math
 \begin{aligned}
-& {00}^{\gamma}[\xi] = {00}^{\gamma} &&(\mathsf{ren}_\gamma.{00}) \\[1em]
-& (\gamma_1 +^{\gamma} \gamma_2)[\xi] = \gamma_1[\xi] +^{\gamma} \gamma_2[\xi] &&(\mathsf{ren}_\gamma.{+}) \\[1em]
-& (p \cdot^{\gamma} \gamma)[\xi] = p \cdot^{\gamma} \gamma[\xi] &&(\mathsf{ren}_\gamma.{\cdot}) \\[1em]
-& \gamma_1 \le^{\gamma} \gamma_2 \implies \gamma_1[\xi] \le^{\gamma} \gamma_2[\xi] &&(\mathsf{ren}_\gamma.{\le}) \\[1em]
-& ({00}^{\gamma},\ x \mathrel{≔} p)[\xi] = ({00}^{\gamma},\ \xi(x) \mathrel{≔} p) &&(\mathsf{ren}_\gamma.\mathsf{update}) \\[1em]
-& (\gamma \bullet p)[\xi] = \gamma[\xi] \bullet p &&(\mathsf{ren}_\gamma.{\bullet})
+& {00}^{\gamma}[\alpha] = {00}^{\gamma} &&(\mathsf{ren}_\gamma.{00}) \\[1em]
+& (\gamma_1 +^{\gamma} \gamma_2)[\alpha] = \gamma_1[\alpha] +^{\gamma} \gamma_2[\alpha] &&(\mathsf{ren}_\gamma.{+}) \\[1em]
+& (p \cdot^{\gamma} \gamma)[\alpha] = p \cdot^{\gamma} \gamma[\alpha] &&(\mathsf{ren}_\gamma.{\cdot}) \\[1em]
+& \gamma_1 \le^{\gamma} \gamma_2 \implies \gamma_1[\alpha] \le^{\gamma} \gamma_2[\alpha] &&(\mathsf{ren}_\gamma.{\le}) \\[1em]
+& ({00}^{\gamma},\ x \mathrel{≔} p)[\alpha] = ({00}^{\gamma},\ \alpha(x) \mathrel{≔} p) &&(\mathsf{ren}_\gamma.\mathsf{update}) \\[1em]
+& (\gamma \bullet p)[\alpha] = \gamma[\alpha] \bullet p &&(\mathsf{ren}_\gamma.{\bullet})
 \end{aligned}
 ```

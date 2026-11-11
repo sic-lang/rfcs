@@ -32,7 +32,7 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`\Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa`$ | The destructors $`\bar d`$ of a codata type of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
 | $`\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k`$ | The type declaration is well formed |
 | $`\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar d_k`$ | The type declaration is well formed |
-| $`\Sigma;\ \Gamma' \vdash \xi : \Gamma`$ | $`\xi`$ is a renaming of the context $`\Gamma`$ in the context $`\Gamma'`$ |
+| $`\Sigma;\ \Gamma' \vdash \alpha : \Gamma`$ | $`\alpha`$ is a renaming of the context $`\Gamma`$ in the context $`\Gamma'`$ |
 | $`\Sigma;\ \Gamma' \vdash \sigma : \Gamma`$ | $`\sigma`$ is a substitution of the first order of the context $`\Gamma`$ in the context $`\Gamma'`$ |
 
 The judgments are defined together, except the last five, which build on the others.
@@ -368,10 +368,10 @@ The arguments of the destructors and the results of those that are not recursive
 
 ### Renamings
 
-A [renaming](09-substitution.md#renamings) $`\xi`$ of the scope of a context $`\Gamma`$ in the scope of a context $`\Gamma'`$ is typed when $`\Gamma'`$ is a well-formed context that has the image of each variable of $`\Gamma`$, with its type and its telescope renamed:
+A [renaming](09-substitution.md#renamings) $`\alpha`$ of the scope of a context $`\Gamma`$ in the scope of a context $`\Gamma'`$ is typed when $`\Gamma'`$ is a well-formed context that has the image of each variable of $`\Gamma`$, with its type and its telescope renamed:
 
 ```math
-\frac{\begin{gathered}{}\Sigma \vdash \Gamma' \\ \forall x : A \in \Gamma.\ \xi(x) : A[\xi] \in \Gamma' \\ \forall X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma.\ \xi(X) : (\Theta[\xi] \vdash A[\xi] \mathrel{◀} \psi) \in \Gamma'\end{gathered}}{\Sigma;\ \Gamma' \vdash \xi : \Gamma}\;(\mathsf{ren}_\vdash)
+\frac{\begin{gathered}{}\Sigma \vdash \Gamma' \\ \forall x : A \in \Gamma.\ \alpha(x) : A[\alpha] \in \Gamma' \\ \forall X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma.\ \alpha(X) : (\Theta[\alpha] \vdash A[\alpha] \mathrel{◀} \psi) \in \Gamma'\end{gathered}}{\Sigma;\ \Gamma' \vdash \alpha : \Gamma}\;(\mathsf{ren}_\vdash)
 ```
 
 ### Substitutions of the First Order
@@ -432,17 +432,17 @@ Every judgment in a context holds in every context in which a renaming of it is 
 
 ```math
 \begin{aligned}
-& \Sigma;\ \Gamma \vdash A \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\xi] &&(\mathsf{ren}_\vdash.A) \\[1em]
-& \Sigma;\ \Gamma \vdash A \equiv B \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\xi] \equiv B[\xi] &&(\mathsf{ren}_\vdash.A_\equiv) \\[1em]
-& \Sigma;\ \Gamma \vdash t : A \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\xi] : A[\xi] &&(\mathsf{ren}_\vdash.t) \\[1em]
-& \Sigma;\ \Gamma \vdash t \equiv u : A \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\xi] \equiv u[\xi] : A[\xi] &&(\mathsf{ren}_\vdash.t_\equiv) \\[1em]
-& \Sigma;\ \Gamma \vdash \bar t : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\xi] : \Theta[\xi] &&(\mathsf{ren}_\vdash.\bar t) \\[1em]
-& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\xi] \equiv \bar u[\xi] : \Theta[\xi] &&(\mathsf{ren}_\vdash.\bar t_\equiv) \\[1em]
-& \Sigma;\ \Gamma \vdash \bar a : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a[\xi] : \Delta &&(\mathsf{ren}_\vdash.\bar a) \\[1em]
-& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a_1[\xi] \equiv \bar a_2[\xi] : \Delta &&(\mathsf{ren}_\vdash.\bar a_\equiv) \\[1em]
-& \Sigma;\ \Gamma \vdash \Theta : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\xi] : \kappa &&(\mathsf{ren}_\vdash.\Theta) \\[1em]
-& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\xi] : \bar\kappa \le l &&(\mathsf{ren}_\vdash.\Theta_{\bar\kappa}) \\[1em]
-& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \xi : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta_1[\xi] \equiv \Theta_2[\xi] : \kappa &&(\mathsf{ren}_\vdash.\Theta_\equiv)
+& \Sigma;\ \Gamma \vdash A \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\alpha] &&(\mathsf{ren}_\vdash.A) \\[1em]
+& \Sigma;\ \Gamma \vdash A \equiv B \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\alpha] \equiv B[\alpha] &&(\mathsf{ren}_\vdash.A_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\alpha] : A[\alpha] &&(\mathsf{ren}_\vdash.t) \\[1em]
+& \Sigma;\ \Gamma \vdash t \equiv u : A \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\alpha] \equiv u[\alpha] : A[\alpha] &&(\mathsf{ren}_\vdash.t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\alpha] : \Theta[\alpha] &&(\mathsf{ren}_\vdash.\bar t) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\alpha] \equiv \bar u[\alpha] : \Theta[\alpha] &&(\mathsf{ren}_\vdash.\bar t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a[\alpha] : \Delta &&(\mathsf{ren}_\vdash.\bar a) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a_1[\alpha] \equiv \bar a_2[\alpha] : \Delta &&(\mathsf{ren}_\vdash.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\alpha] : \kappa &&(\mathsf{ren}_\vdash.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\alpha] : \bar\kappa \le l &&(\mathsf{ren}_\vdash.\Theta_{\bar\kappa}) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta_1[\alpha] \equiv \Theta_2[\alpha] : \kappa &&(\mathsf{ren}_\vdash.\Theta_\equiv)
 \end{aligned}
 ```
 
