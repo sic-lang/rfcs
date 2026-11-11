@@ -80,7 +80,7 @@ A term of the packing unpacks, by a recursor on each pair and then on the unit, 
 ### Reduction and Erasure
 
 The [reduction](0036-type-system/14-reduction.md) is the computation of the type theory: one step of weak head reduction, untyped and defined on the terms of every scope, which unfolds a constant definition to its body at its instance and applies the computations that the kinds of type declarations give to their terms.
-A closed term computes to a head normal form and stops there, without reducing its parts: the computation is lazy, as the meaning explanations of Martin-Löf type theory that [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present, and tells what a term is, not how a program runs, whose evaluation order the RFC of the calling convention fixes.
+A closed term computes to a head normal form and stops there, without reducing its parts: the computation is lazy, as the meaning explanations of Martin-Löf type theory that [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present, and tells what a term is, not how a program runs, whose evaluation order a later step of this RFC fixes, with the calling convention.
 
 The [erasure](0036-type-system/15-erasure.md) compiles a term to an untyped target language, and replaces with a value $`\text{↯}`$ the parts whose grade is in a set of grades.
 The set of the grades that a mode does not count gives, for the mode of run time, the program that runs, without its proofs and its specifications, as the extraction of Abel, Danielsson and Eriksson, and, for the mode of the proofs, the program that the proofs see, with its ghost code.
@@ -97,7 +97,7 @@ Each entry of a signature is meaningful in the whole signature, since a type dec
 A constant declaration has no body to compute: the meaning takes an interpretation, which gives each constant declaration a term, and computes in the signature where the declarations become definitions with these terms.
 The typing is sound: under an interpretation that gives each constant declaration a term of its type, every judgment that the rules derive is true, so that the axioms and the foreign constants of a program are the hypotheses of its guarantees.
 
-What the usage and the ownership of a term guarantee of its erasure when it runs, and the soundness of the erasure, are not stated yet: they need the evaluation order that the RFC of the calling convention fixes.
+What the usage and the ownership of a term guarantee of its erasure when it runs, and the soundness of the erasure, are not stated yet: they need the evaluation order that a later step of this RFC fixes, with the calling convention.
 
 ### Annexes
 
@@ -135,7 +135,7 @@ The type system has these drawbacks:
 - The constant definitions are transparent: a library cannot hide the body of a definition from the equality, until the modules of a later RFC give a way to hide it.
 - A constant whose body checks a position with a grade variable is compiled once for each instance of its grades that a program uses, which enlarges the program, as the monomorphization of Rust does.
 - The soundness holds under an interpretation of the constant declarations: a signature whose axioms contradict each other has none, so that its programs get no guarantee, and the type system does not check that the axioms of a program have an interpretation.
-- The meaning of the grades counts the uses that a term makes, not those that a program makes when it runs, which depend on the evaluation order; the run-time multiplicities $`1`$ and $`\omega`$ wait for the RFC of the calling convention to mean a number of uses.
+- The meaning of the grades counts the uses that a term makes, not those that a program makes when it runs, which depend on the evaluation order; the run-time multiplicities $`1`$ and $`\omega`$ wait for the calling convention, which a later step of this RFC fixes, to mean a number of uses.
 
 ## Rationale and Alternatives
 
@@ -206,7 +206,7 @@ The judgments, the usage and the ownership are settled by the following choices:
 - The propositions are strict, as the `Prop` of [Agda](https://agda.readthedocs.io/en/latest/language/prop.html), from [Gilbert, Cockx, Sozeau and Tabareau](https://doi.org/10.1145/3290316): a proof carries no information but its existence, so that two proofs of a proposition are equal by definition, and a proof is never needed at run time.
 - The ownership is a judgment of its own, rather than an attribute of the types, as the unique types of [Marshall, Vollmer and Orchard](https://doi.org/10.1007/978-3-030-99336-8_13) and the uniqueness mode of [Lorenzen, White, Dolan, Eisenberg and Lindley](https://doi.org/10.1145/3674642): the typing and the equality carry no grade, as for the usage, and the ownership counts with the grades of the usage, so that it adds no structure on the grades.
 - The ownership counts the uses of a value during a whole run, rather than its past uses only, as uniqueness does, or its future uses only, as linearity does, which Marshall, Vollmer and Orchard tell apart: one grade states both, and the judgment follows no order of the uses.
-  A program passes a value from one use to the next, as a read that returns the value it reads, so that the order of the uses is that of the data, and the ownership depends on no order of evaluation, which the RFC of the calling convention fixes; a value used before a use that requires it alone, without being passed from one to the other, is rejected, although the earlier use is over.
+  A program passes a value from one use to the next, as a read that returns the value it reads, so that the order of the uses is that of the data, and the ownership depends on no order of evaluation, which a later step of this RFC fixes; a value used before a use that requires it alone, without being passed from one to the other, is rejected, although the earlier use is over.
 - The ownership of the variables is the same in every premise of a rule, as the context of the typing, rather than computed by each premise and added, as the vector of the usage: the ownership of a variable comes from the argument that its binder receives, while its usage comes from the term that uses it.
 - Each entry of a telescope has a requirement of its own, rather than the telescope one relation on the ownerships of all its arguments, so that each argument is checked alone, as the usage checks it with the grade of its entry.
 - The ownership of the result of a second-order variable is a meet of an optional constant and of optional factors, rather than one grade or one argument whose ownership it takes: a result may be an alias of an argument in one branch and a fresh value in another, and the coefficient of a factor scales the ownership of the argument, as for an alias that a proof also mentions.
@@ -267,7 +267,7 @@ The reduction and the erasure are settled by the following choices:
 
 - The reduction is weak head, rather than to full normal forms: the meaning of a closed term and the comparison of two terms need only their heads, as in the decision procedure for the equality of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111), which the formalization of Abel, Danielsson and Eriksson extends; it is untyped, so that a step needs no typing, and that a step keeps the type of a term is a property of the reduction, not a condition of its steps.
 - The reduction is the computation of the type theory, not the evaluation of a program: the computation is deterministic, and the guarantees of the system hold whatever the order in which a program runs.
-  The costs, the order of the foreign effects and the evaluation of the parts of a term that are taken one at a time belong to the RFC of the calling convention, whose direction is the call-by-push-value of [Levy](https://doi.org/10.1007/978-94-007-0954-6), by polarity, as [Downen, Sullivan, Ariola and Peyton Jones](https://doi.org/10.1007/978-3-030-17184-1_5) evaluate data by value and codata on observation; that RFC has to check again, on the machine it chooses, the resource correctness of the usage of recursion, which [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) prove for a call-by-name machine.
+  The costs, the order of the foreign effects and the evaluation of the parts of a term that are taken one at a time belong to the calling convention, which a later step of this RFC fixes, and whose direction is the call-by-push-value of [Levy](https://doi.org/10.1007/978-94-007-0954-6), by polarity, as [Downen, Sullivan, Ariola and Peyton Jones](https://doi.org/10.1007/978-3-030-17184-1_5) evaluate data by value and codata on observation; that step has to check again, on the machine it chooses, the resource correctness of the usage of recursion, which [Eriksson, Abel and Danielsson](https://doi.org/10.1145/3828677) prove for a call-by-name machine.
 - The computation of an observation of a corecursor is named $`(\beta)`$, rather than after the projections or the observations: the functions are codata types, whose one destructor is the application, so that the $`\beta`$ rule of the λ-calculus is an instance of it, as the computation of a recursor on a constructor is named $`(\iota)`$ after the rule of the inductive types.
 - One erasure, parametrized by the set of grades it erases, rather than an erasure for the run time and another for the proofs, each with clauses of its own: each kind of type declaration gives the clauses of its terms once, and the erasure of each mode is an instance.
 - The erasures by two sets are compared by an order on the target language, in which a term is less defined than another when it has $`\text{↯}`$ in place of some of its parts, rather than by erasing an erased term again, which would need grades in the target language.
@@ -289,7 +289,7 @@ The meaning is settled by the following choices:
 - The meaning of the destructors of a block is stated at two closed substitutions of their scope, as that of the fields at two arguments of the parameters, rather than in a context extended by each destructor: the destructors after a recursive destructor do not depend on it, which the meaning states by quantifying over every abstraction for it, while a context extended by it would give it the meaning of the instance of the block, which the meaning of the block defines.
 - Each entry is meaningful in the whole signature, rather than in the signature before it: a data type quantifies over the closed terms of its fields, which a larger signature may add, so that the meaning of an entry in the signature before it would not carry to the whole signature, where the entry is used.
 - The closed judgments require the names of their signature to be distinct, which makes the computation deterministic, rather than the signature to be meaningful, which they do not use.
-- What the usage and the ownership guarantee at run time, and the soundness of the erasure, wait for the evaluation order that the RFC of the calling convention fixes, rather than being stated for an order chosen here, which that RFC could contradict.
+- What the usage and the ownership guarantee at run time, and the soundness of the erasure, wait for the calling convention, which a later step of this RFC fixes, and are then stated for this convention only, rather than for every evaluation order, a generality that no program of Sic would use.
 
 ### One RFC
 
@@ -319,9 +319,9 @@ These questions remain open:
 
 - The annexes are written as the system is settled, subject by subject, so that the list above grows with them.
 - What do the run-time multiplicities $`1`$ and $`\omega`$ mean for a program that runs?
-  The meaning of the grades counts the uses that a term makes, and the uses made when it runs depend on the evaluation order, which the RFC of the calling convention fixes.
+  The meaning of the grades counts the uses that a term makes, and the uses made when it runs depend on the evaluation order, which a later step of this RFC fixes.
 - What do the usage and the ownership of a term guarantee of its erasure when it runs, and is the erasure sound for the meaning?
-  Every closed term of the core computes to a sort, whose erasure is $`\text{↯}`$: the statements need the terms that the kinds of type declarations bring, and the evaluation order that the RFC of the calling convention fixes.
+  The statements need the evaluation order, which a later step of this RFC fixes, with the calling convention.
 - Does the type system embrace duality all the way, and which statements would show it?
   Three statements together would answer, once the annexes define the data and codata types:
   - The rules are closed under an involution that exchanges each construct with its dual, the data and the codata types, their introductions and their eliminations, the recursor and the corecursor: the dual of every rule is a rule of the system.
