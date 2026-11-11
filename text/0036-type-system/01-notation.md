@@ -16,7 +16,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\pi`$ | Multiplicities |
 | $`S`$ | Sets of numbers of uses, of pairs of numbers of uses, or of grades |
 | $`p, q, r`$ | Grades |
-| $`I`$ | Sets of indices, which index a family of grades |
+| $`I`$ | Sets of indices, which index a family of grades or the elements of a vector |
 | $`m`$ | Modes |
 | $`l`$ | Levels |
 | $`\rho`$ | Assignments of the level variables |
@@ -42,6 +42,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\iota`$ | Interpretations of the constant declarations |
 | $`\sigma, \tau`$ | Substitutions of the first order |
 | $`\theta`$ | Substitutions of the second order |
+| $`\mu, \nu`$ | Vectors of elements of a modality, one element per index |
 | $`\gamma, \delta, \zeta`$ | Vectors of grades, one grade per variable of a scope, $`\zeta`$ being the grades with which a declared type uses its parameters |
 | $`\varphi`$ | Ownerships of the variables of a scope, one grade per variable whose telescope is empty |
 | $`o`$ | Ownerships of the arguments of a second-order variable |
@@ -50,8 +51,8 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`b`$ | Truth values of the propositions |
 | $`M, N, P`$ | Terms of the target language of the erasure, $`N`$ being a branch of a recursor and $`P`$ a branch of a corecursor |
 
-No digit is double-struck: the zero and the unit of a modality, a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\xi`$ for a modality, $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, and $`\gamma`$ for a vector of grades.
-An operation on the modes or on the vectors of grades carries the same exponent, as $`\cdot^{\mathsf{m}}`$ and $`+^{\gamma}`$, so that it is told apart from the operation of the grades.
+No digit is double-struck: the zero and the unit of a modality, a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\xi`$ for a modality, $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, $`\mu`$ for a vector and $`\gamma`$ for a vector of grades.
+An operation on the modes, on the vectors or on the vectors of grades carries the same exponent, as $`\cdot^{\mathsf{m}}`$, $`+^{\mu}`$ and $`+^{\gamma}`$, so that it is told apart from the operation of the grades.
 
 ## Types, Usage and Ownership
 
@@ -76,7 +77,7 @@ Rules and formulas are named as follows:
 - A formula is named in its last column.
 - The laws of a group, such as the laws of a semiring or the presuppositions of the judgments, and the parts of a definition made of several, such as the operations of the multiplicities or the substitution in each kind of object, are formulas or rules of their own, each named after the group or the definition, then after the law or the part, separated by a dot, as $`(\mathsf{semiring}_\xi.\mathsf{assoc}_{+})`$ and $`(\mathsf{op}_\pi.{+})`$.
 - A formula that defines an object is named after what it defines: $`\mathsf{syntax}`$ for the objects themselves, given by a grammar or by a condition, $`\mathsf{op}`$ for its operations and $`\mathsf{order}`$ for its order.
-- The name of a formula is indexed by the letter of the kind of objects it is about: $`\xi`$ for the elements of a modality, $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`t`$ for the terms, $`\bar t`$ and $`\bar a`$ for the arguments of the telescopes and of the instances, $`\bar C`$ and $`\bar u`$ for the motives and the branches of the recursors, $`\bar\Theta`$ and $`\bar g`$ for the states and the branches of the corecursors, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\psi`$ for the ownerships of the results of the second-order variables, $`e`$ for the entries of the signatures, $`\mathcal{D}`$ for the type declarations, $`f`$ for the constants, $`c`$ and $`d`$ for the constructors and the destructors, $`D`$ for the declared types, $`\Sigma`$ for the signatures, $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order, $`\gamma`$ for the vectors of grades, $`S`$ for the sets of grades, $`M`$ for the terms of the target language of the erasure, and $`\bar M`$, $`\bar N`$ and $`\bar P`$ for its arguments and the branches of its recursors and of its corecursors.
+- The name of a formula is indexed by the letter of the kind of objects it is about: $`\xi`$ for the elements of a modality, $`\pi`$ for the multiplicities, $`p`$ for the grades, $`m`$ for the modes, $`l`$ for the levels, $`s`$ for the qualities, $`\kappa`$ for the sorts, $`t`$ for the terms, $`\bar t`$ and $`\bar a`$ for the arguments of the telescopes and of the instances, $`\bar C`$ and $`\bar u`$ for the motives and the branches of the recursors, $`\bar\Theta`$ and $`\bar g`$ for the states and the branches of the corecursors, $`\Theta`$ for the telescopes, $`\Gamma`$ for the contexts, $`\psi`$ for the ownerships of the results of the second-order variables, $`e`$ for the entries of the signatures, $`\mathcal{D}`$ for the type declarations, $`f`$ for the constants, $`c`$ and $`d`$ for the constructors and the destructors, $`D`$ for the declared types, $`\Sigma`$ for the signatures, $`\sigma`$ and $`\theta`$ for the substitutions of the first and of the second order, $`\mu`$ for the vectors, $`\gamma`$ for the vectors of grades, $`S`$ for the sets of grades, $`M`$ for the terms of the target language of the erasure, and $`\bar M`$, $`\bar N`$ and $`\bar P`$ for its arguments and the branches of its recursors and of its corecursors.
 - The name of a formula of a meaning has a prefix that says what it states: $`\vDash`$ for the meaning of a judgment, named after the rule it interprets, and $`\mathsf{eq}`$ for a clause of the equality of a canonical type.
 - Every name designates one rule or one formula in all the annexes.
 
