@@ -58,7 +58,7 @@ The position $`\mathsf{position}_\Sigma(D)`$ of the declared type $`D`$ is its i
 ```
 
 The sorts and the instances have no representation in the target language, and are erased.
-A constructor keeps its fields, each erased at the grade of its field, and a field whose grade the signature does not give, in a term that no rule types, is erased; a recursor keeps its term, erased at its grade $`r`$, and its branches, and loses its instance and its motives, which are types.
+A constructor keeps its fields, each erased at the grade of its field, and a field whose grade the signature does not give, in a term that no rule types, is erased; a recursor keeps its term, erased at its grade $`r`$, and its branches, which lose the grades of their recursive results, and loses its instance and its motives, which are types.
 An observation keeps its term and its arguments, each erased at the grade of its argument, and a corecursor keeps its state, each entry erased at its grade times the grade $`r`$ of the corecursor, since every observation that reaches the state uses it $`r`$ times, and its branches, each erased at the grade of its destructor, since its usage checks it in the mode of this grade, and loses its instance and its states, which are types; the grades of the entries of the state are those of the state $`\Theta_h`$ of the type $`D_h`$ of its instance, with $`h = \mathsf{position}_\Sigma(D)`$, and an entry whose grade is not given, in a term that no rule types, is erased.
 The erasure $`\lfloor t \rfloor_{S, p}`$ of a position of grade $`p`$ is $`\text{↯}`$ when $`p \in S`$, and $`\lfloor t \rfloor_S`$ otherwise:
 
@@ -79,7 +79,7 @@ The erasure $`\lfloor t \rfloor_{S, p}`$ of a position of grade $`p`$ is $`\text
 & \lfloor (t,\ \bar t) \rfloor_{S, ()} = (\text{↯},\ \lfloor \bar t \rfloor_{S, ()}) \\
 & \lfloor (t,\ \bar t) \rfloor_{S, (p,\ \bar p)} = (\lfloor t \rfloor_{S, p},\ \lfloor \bar t \rfloor_{S, \bar p}) \\[1em]
 & \lfloor () \rfloor_S = () &&(\mathsf{erase}_{\bar u}) \\
-& \lfloor ((\bar x;\ \bar y).\, u,\ \bar u) \rfloor_S = ((\bar x;\ \bar y).\, \lfloor u \rfloor_S,\ \lfloor \bar u \rfloor_S) \\[1em]
+& \lfloor ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u) \rfloor_S = ((\bar x;\ \bar y).\, \lfloor u \rfloor_S,\ \lfloor \bar u \rfloor_S) \\[1em]
 & \lfloor () \rfloor_{S, \bar p} = () &&(\mathsf{erase}_{\bar g}) \\
 & \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, ()} = ((\bar x;\ \bar y;\ \bar z).\, \text{↯},\ \lfloor \bar g \rfloor_{S, ()}) \\
 & \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, (p,\ \bar p)} = ((\bar x;\ \bar y;\ \bar z).\, \lfloor g \rfloor_{S, p},\ \lfloor \bar g \rfloor_{S, \bar p})

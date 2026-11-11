@@ -76,15 +76,16 @@ The motives $`\bar C`$ of a recursor are a motive for each type of the block, th
 
 The motive of a type binds the variables $`\bar x`$, one for each non-uniform parameter of the type, and the variable $`z`$, the term eliminated, each with an empty telescope, and its term $`C`$ is in the scope extended by them.
 
-The branches $`\bar u`$ of a recursor are a branch for each constructor, the first one first: they are either empty, written $`()`$, or a branch $`(\bar x;\ \bar y).\, u`$ followed by branches $`\bar u`$, written $`((\bar x;\ \bar y).\, u,\ \bar u)`$:
+The branches $`\bar u`$ of a recursor are a branch for each constructor, the first one first: they are either empty, written $`()`$, or a branch $`(\bar x;\ \bar y \mathrel{▶} \bar e).\, u`$ followed by branches $`\bar u`$, written $`((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u)`$:
 
 ```math
 \begin{aligned}
-& \bar u \mathrel{::=} () \mid ((\bar x;\ \bar y).\, u,\ \bar u) &&(\mathsf{syntax}_{\bar u})
+& \bar u \mathrel{::=} () \mid ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u) &&(\mathsf{syntax}_{\bar u})
 \end{aligned}
 ```
 
-The branch of a constructor binds the variables $`\bar x`$, one for each field of the constructor, then the variables $`\bar y`$, one for each recursive result, each with an empty telescope, and its term $`u`$ is in the scope extended by them; the branch of the constructor $`c`$ of the type $`D`$ is written $`D.c(\bar x;\ \bar y) \Rightarrow u`$, without the semicolon when it binds no recursive result.
+The branch of a constructor binds the variables $`\bar x`$, one for each field of the constructor, then the variables $`\bar y`$, one for each recursive result, each with an empty telescope and with the grade $`e`$ of $`\bar e`$ with which the branch uses it, written $`y_1 \mathrel{▶} e_1, \dots, y_n \mathrel{▶} e_n`$, and its term $`u`$ is in the scope extended by them; the branch of the constructor $`c`$ of the type $`D`$ is written $`D.c(\bar x;\ \bar y \mathrel{▶} \bar e) \Rightarrow u`$, without the semicolon when it binds no recursive result.
+The branch carries the grades of its recursive results, as a telescope carries the grades of its entries, so that the usage and the ownership read them.
 
 The states $`\bar\Theta`$ of a corecursor are a state for each type of the block, the first one first: they are either empty, written $`()`$, or a state $`\bar x.\, \Theta : \bar\kappa`$ followed by states $`\bar\Theta`$, written $`(\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)`$:
 
