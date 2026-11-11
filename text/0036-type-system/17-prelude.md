@@ -197,3 +197,33 @@ In a signature that holds the prelude, the unpacking uses the variables of its t
 & \quad \Sigma;\ \varphi \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \mathrel{◀} p;\ m
 \end{aligned}
 ```
+
+In a signature that holds the prelude, the resumption of a position $`v`$ by a corecursor of the grade $`r`$ of the instance $`T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a`$, of the sort $`\kappa`$ of the quality $`s`$, uses the variables of $`v`$ and those of the corecursor from the variables $`\bar y_j`$ of the state $`\Theta_j`$, which it uses $`\ulcorner m \urcorner \cdot r`$ times their grades, as a lower bound $`\eta`$ of the uses $`\delta`$ of the corecursor and of no use allows, in a mode that allows the grade $`q_s`$ of a term already built, since a position resumes the corecursor or gives a term already built, as a [recursor](11-usage.md) shares the uses of its branches; and it has every ownership $`p`$ below the ownership $`{11}^{\mathsf{p}}`$ of the corecursor, a new value, and below the ownership $`o \cdot \chi \cdot (\ulcorner m \urcorner \cdot q_s)`$ that a [recursor](12-ownership.md) gives the term already built, of the requirement $`\chi`$ and of the grade $`q_s`$, in a position of the ownership $`o`$, so that it has the ownership $`\chi`$ of the result of a recursive destructor, at run time, when the position is owned alone and $`\chi \le {11}^{\mathsf{p}}`$:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{resume}_{▶}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ {00}^{\gamma} \vdash T \mathrel{▶} {00}^{\mathsf{m}} \\
+& \qquad \Sigma;\ \gamma \vdash v \mathrel{▶} m \\
+& \qquad \Theta_j \text{ has the grades } q_1, \dots, q_n \\
+& \qquad \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot r \cdot q_1) \bullet \dots \bullet (\ulcorner m \urcorner \cdot r \cdot q_n) \vdash \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \mathrel{▶} m \\
+& \qquad m \cdot^{\mathsf{m}} \llcorner q_s \lrcorner = m \\
+& \qquad \eta \le^{\gamma} \delta \\
+& \qquad \eta \le^{\gamma} {00}^{\gamma} \\
+& \quad \Sigma;\ \gamma +^{\gamma} \eta \vdash \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) \mathrel{▶} m \\[1em]
+& \text{⟹} &&(\mathsf{resume}_{◀}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \varphi \vdash v \mathrel{◀} o;\ m \\
+& \qquad \text{the entries of } \Theta_j \text{ require } r_1, \dots, r_n \\
+& \qquad \Theta_j \text{ has the grades } q_1, \dots, q_n \\
+& \qquad \Sigma;\ \varphi,\ y_{j1} \mathrel{◀} o \cdot (\ulcorner m \urcorner \cdot r) \cdot r_1 \cdot (\ulcorner m \urcorner \cdot r \cdot q_1), \dots, y_{jn} \mathrel{◀} o \cdot (\ulcorner m \urcorner \cdot r) \cdot r_n \cdot (\ulcorner m \urcorner \cdot r \cdot q_n) \vdash \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \mathrel{◀} {11}^{\mathsf{p}};\ m \\
+& \qquad p \le {11}^{\mathsf{p}} \\
+& \qquad p \le o \cdot \chi \cdot (\ulcorner m \urcorner \cdot q_s) \\
+& \quad \Sigma;\ \varphi \vdash \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) \mathrel{◀} p;\ m
+\end{aligned}
+```
+
+These properties show what the rules of a corecursor require of the branch of a recursive destructor, whose observation resumes its position: the usage of the corecursor bounds its uses by those of the branch plus its own, as the uses of the corecursor resumed, and the ownership checks the branch with the ownership $`{11}^{\mathsf{p}}`$ of a new value, which the term already built of a position needs to keep the ownership $`\chi`$.
