@@ -1,6 +1,6 @@
 # Evaluation
 
-This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, and its properties.
+This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, and its properties.
 It builds on the [syntax](08-syntax.md), the [erasure](16-erasure.md) and the [type of positions](19-prelude.md#positions) of the prelude.
 
 ## Definitions
@@ -74,6 +74,15 @@ The judgment $`{H \vdash \mathsf{unpack}_k(\ell) = \bar\ell}`$ reads: the value 
 \end{gathered}
 ```
 
+The evaluation only allocates, at the end of the heap, and never changes a value, so that the heap at a later point of a run extends the heap at an earlier point.
+A heap $`H'`$ extends a heap $`H`$, written $`{H \sqsubseteq H'}`$, when $`H`$ is a prefix of $`H'`$, which keeps the value at each address of $`H`$:
+
+```math
+\begin{aligned}
+& H \sqsubseteq H' \iff \exists \bar V.\ H' = (H,\ \bar V) &&(\sqsubseteq_H)
+\end{aligned}
+```
+
 ## Properties
 
 The evaluation is deterministic: a term evaluates to one address, in one heap, whatever the program:
@@ -87,6 +96,21 @@ The evaluation is deterministic: a term evaluates to one address, in one heap, w
 & \quad \text{and} \\
 & \qquad \ell_1 = \ell_2 \\
 & \qquad H_1 = H_2
+\end{aligned}
+```
+
+The extension of the heaps keeps the values, and the evaluation extends the heap:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\sqsubseteq_H.\mathsf{get}) \\
+& \quad \text{and} \\
+& \qquad H \sqsubseteq H' \\
+& \qquad H(\ell) = V \\
+& \quad H'(\ell) = V \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\Downarrow) \\
+& \quad \mathcal{P};\ H;\ E \vdash M \Downarrow \ell;\ H' \\
+& \quad H \sqsubseteq H'
 \end{aligned}
 ```
 
