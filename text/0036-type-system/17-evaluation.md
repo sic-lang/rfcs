@@ -60,18 +60,18 @@ The branch of the case of the constructor evaluates, with the addresses of its f
 ```
 
 The judgment $`{\mathcal{P};\ H \vdash \ell.d_i(\bar\ell) \Downarrow \ell';\ H'}`$ reads: the observation by the destructor of the case $`i`$, applied to the arguments at the addresses $`\bar\ell`$, of the value at the address $`\ell`$, a closure, evaluates to the address $`\ell'`$.
-The branch of the case evaluates in the environment of the closure, with the addresses of its state and of the arguments, and its value is resumed, which the judgment $`{H \vdash \langle E;\ \bar P \rangle \circlearrowleft_k \ell \Downarrow \ell';\ H'}`$ gives: the value at the address $`\ell`$ itself when the branch resumes no state, $`{k = \bot}`$, a new closure of the same environment and branches from the state of $`k`$ entries that $`\mathsf{next}`$ packs, or the term already built that $`\mathsf{done}`$ holds, these constructors being the cases $`1`$ and $`2`$ of the type of positions.
-The judgment $`{H \vdash \mathsf{unpack}_k(\ell) = \bar\ell}`$ reads: the value at the address $`\ell`$ packs the $`k`$ entries at the addresses $`\bar\ell`$, the first fields of $`k`$ nested pairs, each the case $`1`$ of the pair, or is $`\text{↯}`$, whose $`k`$ entries are $`\text{↯}`$ at its own address, $`\ell^k`$ being $`k`$ times $`\ell`$:
+The branch of the case evaluates in the environment of the closure, with the addresses of its state and of the arguments, and its value is resumed, which the judgment $`{H \vdash \langle E;\ \bar P \rangle \circlearrowleft_k \ell \Downarrow \ell';\ H'}`$ gives: the value at the address $`\ell`$ itself when the branch resumes no state, $`{k = \bot}`$, a new closure of the same environment and branches from the state of $`n`$ entries that $`\mathsf{next}`$ packs, $`{k = n}`$, or from $`n`$ erased entries, $`{k = \text{↯}_n}`$, which stand at the address $`\ell_1`$ of the new state without reading it, $`\ell_1^n`$ being $`n`$ times $`\ell_1`$, or the term already built that $`\mathsf{done}`$ holds, these constructors being the cases $`1`$ and $`2`$ of the type of positions.
+The judgment $`{H \vdash \mathsf{unpack}_k(\ell) = \bar\ell}`$ reads: the value at the address $`\ell`$ packs the $`k`$ entries at the addresses $`\bar\ell`$, the first fields of $`k`$ nested pairs, each the case $`1`$ of the pair:
 
 ```math
 \begin{gathered}
 \frac{\begin{gathered}{}H_1(\ell) = \langle E;\ \bar P;\ \bar\ell_1 \rangle \\ \text{the branch } i \text{ of } \bar P \text{ is } (\bar y;\ \bar z \circlearrowleft k).\, P \\ \bar\ell_1 \text{ and } \bar y \text{ are as many} \\ \bar\ell_2 \text{ and } \bar z \text{ are as many} \\ \mathcal{P};\ H_1;\ E,\ \bar y \mapsto \bar\ell_1,\ \bar z \mapsto \bar\ell_2 \vdash P \Downarrow \ell_3;\ H_2 \\ H_2 \vdash \langle E;\ \bar P \rangle \circlearrowleft_k \ell_3 \Downarrow \ell';\ H_3\end{gathered}}{\mathcal{P};\ H_1 \vdash \ell.d_i(\bar\ell_2) \Downarrow \ell';\ H_3}\;(\beta_\Downarrow) \\[1em]
 \frac{}{H \vdash \langle E;\ \bar P \rangle \circlearrowleft_\bot \ell \Downarrow \ell;\ H}\;(\mathsf{resume}_\Downarrow.\bot) \\[1em]
-\frac{\begin{gathered}{}k \ne \bot \\ H(\ell) = c_1(\ell_1) \\ H \vdash \mathsf{unpack}_k(\ell_1) = \bar\ell\end{gathered}}{H \vdash \langle E;\ \bar P \rangle \circlearrowleft_k \ell \Downarrow |H| + 1;\ (H,\ \langle E;\ \bar P;\ \bar\ell \rangle)}\;(\mathsf{resume}_\Downarrow.\mathsf{next}) \\[1em]
+\frac{\begin{gathered}{}H(\ell) = c_1(\ell_1) \\ H \vdash \mathsf{unpack}_n(\ell_1) = \bar\ell\end{gathered}}{H \vdash \langle E;\ \bar P \rangle \circlearrowleft_n \ell \Downarrow |H| + 1;\ (H,\ \langle E;\ \bar P;\ \bar\ell \rangle)}\;(\mathsf{resume}_\Downarrow.\mathsf{next}) \\[1em]
+\frac{H(\ell) = c_1(\ell_1)}{H \vdash \langle E;\ \bar P \rangle \circlearrowleft_{\text{↯}_n} \ell \Downarrow |H| + 1;\ (H,\ \langle E;\ \bar P;\ \ell_1^n \rangle)}\;(\mathsf{resume}_\Downarrow.\text{↯}) \\[1em]
 \frac{\begin{gathered}{}k \ne \bot \\ H(\ell) = c_2(\ell_1)\end{gathered}}{H \vdash \langle E;\ \bar P \rangle \circlearrowleft_k \ell \Downarrow \ell_1;\ H}\;(\mathsf{resume}_\Downarrow.\mathsf{done}) \\[1em]
 \frac{}{H \vdash \mathsf{unpack}_0(\ell) = ()}\;(\mathsf{unpack}_\Downarrow.0) \\[1em]
-\frac{\begin{gathered}{}H(\ell) = c_1(\ell_1,\ \ell_2) \\ H \vdash \mathsf{unpack}_k(\ell_2) = \bar\ell\end{gathered}}{H \vdash \mathsf{unpack}_{k + 1}(\ell) = (\ell_1,\ \bar\ell)}\;(\mathsf{unpack}_\Downarrow.{,}) \\[1em]
-\frac{H(\ell) = \text{↯}}{H \vdash \mathsf{unpack}_k(\ell) = \ell^k}\;(\mathsf{unpack}_\Downarrow.\text{↯})
+\frac{\begin{gathered}{}H(\ell) = c_1(\ell_1,\ \ell_2) \\ H \vdash \mathsf{unpack}_k(\ell_2) = \bar\ell\end{gathered}}{H \vdash \mathsf{unpack}_{k + 1}(\ell) = (\ell_1,\ \bar\ell)}\;(\mathsf{unpack}_\Downarrow.{,})
 \end{gathered}
 ```
 

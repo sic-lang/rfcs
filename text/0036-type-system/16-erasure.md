@@ -12,12 +12,13 @@ The target language has variables, all of the first order, the constants at the 
 & M \mathrel{::=} x \mid f.\{\bar s;\ \bar p\} \mid \text{↯} \mid c_i(\bar M) \mid \mathsf{rec}\ M\ \mathsf{with}\ \bar N \mid M.d_i(\bar M) \mid \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P &&(\mathsf{syntax}_M) \\[1em]
 & \bar M \mathrel{::=} () \mid (M,\ \bar M) &&(\mathsf{syntax}_{\bar M}) \\[1em]
 & \bar N \mathrel{::=} () \mid ((\bar x;\ \bar y \leftarrow \bar k).\, N,\ \bar N) &&(\mathsf{syntax}_{\bar N}) \\[1em]
-& \bar P \mathrel{::=} () \mid ((\bar y;\ \bar z \circlearrowleft k).\, P,\ \bar P) &&(\mathsf{syntax}_{\bar P})
+& \bar P \mathrel{::=} () \mid ((\bar y;\ \bar z \circlearrowleft k).\, P,\ \bar P) &&(\mathsf{syntax}_{\bar P}) \\[1em]
+& k \mathrel{::=} \bot \mid n \mid \text{↯}_n &&(\mathsf{syntax}_k)
 \end{aligned}
 ```
 
 A branch $`{(\bar x;\ \bar y \leftarrow \bar k).\, N}`$ binds the variables $`\bar x`$ of the fields and $`\bar y`$ of the recursive results, as a branch of a recursor does, and $`\bar k`$ gives each recursive result the position of its field among $`\bar x`$, the first one at $`1`$, or $`\bot`$ when the result is erased, so that it is not computed.
-A branch $`{(\bar y;\ \bar z \circlearrowleft k).\, P}`$ binds the variables $`\bar y`$ of the state and $`\bar z`$ of the arguments, as a branch of a corecursor does, and $`k`$ is the number of the entries of the state that the branch resumes, when its destructor is recursive, or $`\bot`$.
+A branch $`{(\bar y;\ \bar z \circlearrowleft k).\, P}`$ binds the variables $`\bar y`$ of the state and $`\bar z`$ of the arguments, as a branch of a corecursor does, and $`k`$ is its resumption: $`\bot`$ when its destructor is not recursive, the number $`n`$ of the entries of the state that the branch resumes, which the evaluation unpacks from the new state, or $`\text{↯}_n`$ when these $`n`$ entries are erased, so that the evaluation does not read the new state.
 The target language keeps only what its [evaluation](17-evaluation.md) reads: a case chooses a branch, since the names of the constructors and of the destructors are distinct only in their type, and a branch does not bind the non-uniform parameters, which the corecursors do not have yet.
 
 The erasure $`\lfloor t \rfloor_S`$ of a term $`t`$ replaces with $`\text{↯}`$ each position of $`t`$ whose grade is in the set $`S`$, a position being a subterm that a rule of usage checks with a grade of its own, as an argument $`t_j`$ of an entry of grade $`p_j`$ in $`{(\mathsf{tel}_{,▶})}`$.
@@ -134,7 +135,7 @@ The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\te
 \end{aligned}
 ```
 
-In the erasure of a corecursor, $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, $`{\bar\Theta = (\bar x_1.\, \Theta_1 : \bar\kappa_1,\ \dots,\ \bar x_n.\, \Theta_n : \bar\kappa_n)}`$, $`{r \cdot \bar q}`$ multiplies each grade of $`\bar q`$ by $`r`$ on the left, and $`\bar k`$ gives each element $`h`$ of $`\mathsf{resumed}_\Sigma(T)`$ the number of the entries of $`\Theta_h`$ when $`\bar x_h`$ is empty, and $`\bot`$ otherwise.
+In the erasure of a corecursor, $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, $`{\bar\Theta = (\bar x_1.\, \Theta_1 : \bar\kappa_1,\ \dots,\ \bar x_n.\, \Theta_n : \bar\kappa_n)}`$, $`{r \cdot \bar q}`$ multiplies each grade of $`\bar q`$ by $`r`$ on the left, and $`\bar k`$ gives each element $`h`$ of $`\mathsf{resumed}_\Sigma(T)`$ the number $`n`$ of the entries of $`\Theta_h`$ when $`\bar x_h`$ is empty and $`{r \notin S}`$, $`\text{↯}_n`$ when $`\bar x_h`$ is empty and $`{r \in S}`$, since the new state, a field of the grade $`r`$ of a position, is then erased, as are its entries, of the grades $`r \cdot \bar q`$, and $`\bot`$ otherwise.
 A double bar marks a sequence of sequences: in the erasure of the branches of a recursor, $`\bar k`$ is the first sequence of $`\bar{\bar k}`$, or $`()`$ when it has none, $`\bar{\bar k}'`$ the others, and $`k'_j`$ is $`\bot`$ when $`{e_j \in S}`$, and the $`j`$-th element of $`\bar k`$ otherwise, or $`\bot`$ when it has none; in the erasure of the branches of a corecursor, $`k`$ is the first element of $`\bar k`$, or $`\bot`$ when it has none, and $`\bar k'`$ and $`\bar p'`$ are the others.
 A branch of a corecursor with non-uniform parameters, which the corecursors do not have yet, has no variables for them in the target language, and is erased.
 
@@ -198,7 +199,7 @@ The judgment $`{M \sqsubseteq N}`$ reads: the term $`M`$ of the target language 
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar N}.\varepsilon) \\[1em]
 \frac{\begin{gathered}{}\forall j.\ k_{1j} = \bot \text{ or } k_{1j} = k_{2j} \\ N_1 \sqsubseteq N_2 \\ \bar N_1 \sqsubseteq \bar N_2\end{gathered}}{((\bar x;\ \bar y \leftarrow \bar k_1).\, N_1,\ \bar N_1) \sqsubseteq ((\bar x;\ \bar y \leftarrow \bar k_2).\, N_2,\ \bar N_2)}\;({\sqsubseteq}_{\bar N}.{,}) \\[1em]
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar P}.\varepsilon) \\[1em]
-\frac{P_1 \sqsubseteq P_2 \quad \bar P_1 \sqsubseteq \bar P_2}{((\bar y;\ \bar z \circlearrowleft k).\, P_1,\ \bar P_1) \sqsubseteq ((\bar y;\ \bar z \circlearrowleft k).\, P_2,\ \bar P_2)}\;({\sqsubseteq}_{\bar P}.{,})
+\frac{\begin{gathered}{}k_1 = k_2 \text{ or } k_1 = \text{↯}_n \text{ and } k_2 = n \\ P_1 \sqsubseteq P_2 \\ \bar P_1 \sqsubseteq \bar P_2\end{gathered}}{((\bar y;\ \bar z \circlearrowleft k_1).\, P_1,\ \bar P_1) \sqsubseteq ((\bar y;\ \bar z \circlearrowleft k_2).\, P_2,\ \bar P_2)}\;({\sqsubseteq}_{\bar P}.{,})
 \end{gathered}
 ```
 
