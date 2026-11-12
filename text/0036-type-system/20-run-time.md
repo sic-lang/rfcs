@@ -6,11 +6,18 @@ It builds on the [erasure](16-erasure.md), the [evaluation](17-evaluation.md) an
 ## Definitions
 
 The relation of run time relates a closed term of a closed type to the address of a value of the target language in a heap, when the value is what the erasure by $`S^{{11}^{\mathsf{m}}}`$ of the term computes.
-A closed term is related to an address at a closed type when the type computes to a type or a proposition whose relation relates the term to the address:
+A closed term is related to an address at a closed type when the type computes to a proposition, whose proofs are related to every address without computing, as $`(\mathsf{rt}_\Downarrow)`$ relates the terms of a field, or to a type whose relation relates what the term computes to the address:
 
 ```math
 \begin{aligned}
-& t \circledR_H \ell : A \iff \exists v.\ A \Downarrow v \text{ and } (H,\ t,\ \ell) \in \circledR_\Downarrow(\circledR(v)) &&(\circledR_A)
+& \text{⟺} &&(\circledR_A) \\
+& \quad t \circledR_H \ell : A \\
+& \quad \exists v. \\
+& \qquad \text{and} \\
+& \qquad\quad A \Downarrow v \\
+& \qquad\quad \text{or} \\
+& \qquad\qquad v \text{ is a proposition} \\
+& \qquad\qquad (H,\ t,\ \ell) \in \circledR_\Downarrow(\circledR(v))
 \end{aligned}
 ```
 
