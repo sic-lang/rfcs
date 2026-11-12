@@ -4,7 +4,7 @@ This annex defines the meaning of the judgments of the typing, with the interpre
 It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [typing](14-typing.md), the [reduction](15-reduction.md), the [erasure](16-erasure.md) and the [evaluation](17-evaluation.md).
 
 The judgments mean what the meaning explanations of Martin-Löf type theory say of them, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them: a judgment is true when its terms compute as it says.
-The meaning of the judgments ignores the grades, the modes and the ownerships, as the typing does outside the judgments of usage and of ownership that the rule of the constant definitions reads; only the relations of run time read the grades, to tell which positions the erasure keeps.
+The meaning of the judgments ignores the grades, the modes and the ownerships, as the typing does outside the judgments of usage and of ownership that the rule of the constant definitions reads; only the relations of run time read the grades, to tell which positions the erasure keeps, and the equality of the types compares them, so that two instances of a declared type at grades that erase a field in one and keep it in the other are different types.
 What the usage and the ownership of a term guarantee of its erasure when it runs is stated by the [run time](20-run-time.md), on these relations.
 
 ## Definitions
@@ -45,7 +45,7 @@ The computation, the equality $`\mathsf{eq}`$ and the meaning of the judgments a
 
 A closed canonical type $`v`$ is known by its canonical terms and by their equality $`\mathsf{eq}(v)`$, a relation between closed terms, which the sorts, the data types and the codata types give, together with the types themselves.
 The graph $`\mathsf{ty}(U_n)`$ of the universe $`U_n`$ relates each of its types $`v`$ to the equality $`R`$ of its canonical terms, written $`{(v,\ R) \in \mathsf{ty}(U_n)}`$, and the graph $`\mathsf{ty}(\Omega_n)`$ of the universe of propositions $`\Omega_n`$ relates each of its propositions $`v`$ to its truth $`b`$, written $`{(v,\ b) \in \mathsf{ty}(\Omega_n)}`$.
-A graph gives one type at a time, and two types are equal when they have the same equality of terms, so that two types that the typing does not equate may be equal in the meaning, such as two data types without constructors.
+A graph gives one type at a time, and two types are equal when they have the same equality of terms and, in each program, the same relations of run time, which the graph $`\mathsf{rt}_{\mathcal{P}}(U_n)`$ of the [relations of run time](#relations-of-run-time) in the program $`\mathcal{P}`$ gives at each level together with $`\mathsf{ty}(U_n)`$, so that two types that the typing does not equate may be equal in the meaning, such as two data types without constructors.
 The value $`[\![l]\!]`$ of a level $`l`$ without variables is its [value](06-levels.md) under any assignment.
 
 The closed terms of a type that is not a proposition are equal when they compute to canonical terms that the equality of its canonical terms relates, and those of a proposition when it is true:
@@ -58,12 +58,15 @@ The closed terms of a type that is not a proposition are equal when they compute
 \end{aligned}
 ```
 
-A universe is a type of the universe above its level, whose terms are the types of the universe below, equal when they have the same equality of terms, and a universe of propositions one whose terms are the propositions of the universe below, equal when they have the same truth:
+A universe is a type of the universe above its level, whose terms are the types of the universe below, equal when they have the same equality of terms and, in each program, a common relation of run time, and a universe of propositions one whose terms are the propositions of the universe below, equal when they have the same truth:
 
 ```math
 \begin{aligned}
 & \in &&(\mathsf{ty}_U) \\
-& \quad (U_l,\ \{(A,\ B) \mid \exists R.\ (A,\ R) \in \mathsf{ty}(U_{n - 1}) \text{ and } (B,\ R) \in \mathsf{ty}(U_{n - 1})\}) \\
+& \quad (U_l,\ \{(A,\ B) \mid \\
+& \qquad \text{and} \\
+& \qquad \quad \exists R.\ (A,\ R) \in \mathsf{ty}(U_{n - 1}) \text{ and } (B,\ R) \in \mathsf{ty}(U_{n - 1}) \\
+& \qquad \quad \forall \mathcal{P}.\ \exists Q.\ (A,\ Q) \in \mathsf{rt}_{\mathcal{P}}(U_{n - 1}) \text{ and } (B,\ Q) \in \mathsf{rt}_{\mathcal{P}}(U_{n - 1})\}) \\
 & \quad \mathsf{ty}(U_n) \text{ if } [\![l]\!] + 1 = n \\[1em]
 & \in &&(\mathsf{ty}_\Omega) \\
 & \quad (\Omega_l,\ \{(A,\ B) \mid \exists b_1,\ b_2.\ (A,\ b_1) \in \mathsf{ty}(\Omega_{n - 1}),\ (B,\ b_2) \in \mathsf{ty}(\Omega_{n - 1}) \text{ and } b_1 \iff b_2\}) \\
@@ -242,6 +245,7 @@ The relation $`\mathsf{eq}(v)`$ is defined only for the closed canonical types t
 The relation of run time of a closed type relates its closed terms to the addresses of values of the [target language](16-erasure.md) in a heap, when the value is what the erasure by $`S^{{11}^{\mathsf{m}}}`$ of the term computes; it states what the [run time](20-run-time.md) guarantees of the erasure of a term.
 It is defined on the heaps that the [evaluation](17-evaluation.md) extends, by the graph of the relations of the types of each level, as the equality of the terms of each type is.
 It is stated in a program $`\mathcal{P}`$, which gives the constants of the target language their bodies, and in the interpretation of the constant declarations, which the computations $`t \Downarrow v`$ of the closed terms use.
+The notation omits the program, except where the meaning quantifies over the programs, as the equality of the types does, which writes $`\mathsf{rt}_{\mathcal{P}}`$ and $`\circledR_{\mathcal{P}}`$.
 
 A relation of run time $`R`$ is a set of triples $`(H,\ t,\ \ell)`$ of a heap, a closed term and an address.
 A closed term is related by $`{\circledR_\Downarrow(R)}`$ to an address when it computes to a canonical term that $`R`$ relates to it, and a position of the grade $`p`$ is related by $`R^p`$, which relates every term to every address when $`p`$ has no use at run time, since the erasure replaces such a position by $`\text{↯}`$:
@@ -407,7 +411,7 @@ A closed canonical type has the relation of run time that a universe gives it, a
 ### Closed Judgments
 
 A closed judgment requires the names of its signature to be distinct, as every judgment of the typing implies that its signature is well formed, whose names are distinct, so that a closed term computes to one canonical term at most.
-Two closed types are equal when they compute to canonical types with the same equality of terms, and two closed terms are equal terms of a type that does not compute to a proposition when they compute to canonical terms that its equality relates; the terms of a proposition need not compute, since its equality relates the terms themselves:
+Two closed types are equal when they compute to canonical types with the same equality of terms and, in each program $`\mathcal{P}`$, the same relations of run time $`\circledR_{\mathcal{P}}`$, and two closed terms are equal terms of a type that does not compute to a proposition when they compute to canonical terms that its equality relates; the terms of a proposition need not compute, since its equality relates the terms themselves:
 
 ```math
 \begin{aligned}
@@ -415,7 +419,10 @@ Two closed types are equal when they compute to canonical types with the same eq
 & \quad \Sigma \vDash A \equiv B \\
 & \quad \text{and} \\
 & \qquad \text{the names of } \Sigma \text{ are distinct} \\
-& \qquad \exists v_1,\ v_2,\ R.\ A \Downarrow v_1,\ B \Downarrow v_2,\ \mathsf{eq}(v_1) = R \text{ and } \mathsf{eq}(v_2) = R \\[1em]
+& \qquad \exists v_1,\ v_2,\ R. \\
+& \qquad \quad \text{and} \\
+& \qquad \qquad A \Downarrow v_1,\ B \Downarrow v_2,\ \mathsf{eq}(v_1) = R \text{ and } \mathsf{eq}(v_2) = R \\
+& \qquad \qquad \forall \mathcal{P},\ Q.\ \circledR_{\mathcal{P}}(v_1) = Q \iff \circledR_{\mathcal{P}}(v_2) = Q \\[1em]
 & \Sigma \vDash A \iff \Sigma \vDash A \equiv A &&(\vDash_{\mathsf{type}}) \\[1em]
 & \text{⟺ if } A \text{ does not compute to a proposition} &&(\vDash_\equiv) \\
 & \quad \Sigma \vDash t \equiv u : A \\
