@@ -125,7 +125,7 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Evaluation](0036-type-system/17-evaluation.md): the calling convention, the call by value with closures for the corecursors, as a big-step evaluation of the target language in a heap, the program of a signature, its determinism, and the extension of the heaps.
 - [Meaning](0036-type-system/18-meaning.md): the meaning of the judgments of the typing, the interpretation of the constant declarations, the equality of the canonical terms of the sorts and of the data types, the relations of run time of the types, by the graph of the relations of the types of each level, the exactness of the meaning for the proofs, and the soundness of the typing under an interpretation of the constant declarations.
 - [Prelude](0036-type-system/19-prelude.md): the unit, the pair and the type of positions that the type system declares for its own needs, the packing of a telescope and of its arguments, the unpacking of a term of a packing, and their properties.
-- [Run time](0036-type-system/20-run-time.md): the relation of run time between the closed terms of a closed type and the values that their erasure computes, and its monotonicity in the heap.
+- [Run time](0036-type-system/20-run-time.md): the relation of run time between the closed terms of a closed type and the values that their erasure computes, its monotonicity in the heap, and the validity at run time of a term in a context, with its subsumption.
 
 ## Drawbacks
 
