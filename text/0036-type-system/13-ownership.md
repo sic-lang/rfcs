@@ -26,12 +26,12 @@ The variables are read in order, and $`\psi'`$ is $`\psi`$ without the factor of
 ```
 
 A variable whose telescope is empty has the ownership that $`\varphi`$ gives it.
-An application $`X[\bar t]`$ of a second-order variable has the value of the ownership of its result, when it is defined, given the ownerships of its arguments; each argument $`t_j`$ is checked in the mode $`{m \odot p_j}`$ of the grade $`p_j`$ of its entry, as for the usage, and its ownership satisfies the requirement $`r_j`$ of its entry unless this mode is $`{00}^{\mathsf{m}}`$, in which the argument is not used:
+An application $`X[\bar t]`$ of a second-order variable has the value of the ownership of its result, when it is defined, given the ownerships of its arguments; each argument $`t_j`$ is checked in the mode $`{m \odot p_j}`$ of the grade $`p_j`$ of its entry, as for the usage, and its ownership satisfies the requirement $`r_j`$ of its entry unless this mode is $`{00}^{\mathsf{m}}`$, in which the argument is not used; each argument on whose variable $`\psi`$ has a factor is checked in the mode $`m`$ of the application, $`{m \odot p_j = m}`$, as for an observation, below:
 
 ```math
 \begin{gathered}
 \frac{}{\Sigma;\ \varphi \vdash x \mathrel{◀} \varphi(x);\ m}\;(\mathsf{var}_{◀}) \\[1em]
-\frac{\begin{gathered}{}X \text{ has the telescope } \Theta \text{ and the ownership } \psi \text{ in the scope of } X[\bar t] \\ \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \\ \psi[\bar o / \bar x] = p\end{gathered}}{\Sigma;\ \varphi \vdash X[\bar t] \mathrel{◀} p;\ m}\;(\mathsf{var}_{X◀}) \\[1em]
+\frac{\begin{gathered}{}X \text{ has the telescope } \Theta \text{ and the ownership } \psi \text{ in the scope of } X[\bar t] \\ \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \\ \psi[\bar o / \bar x] = p \\ \Theta \text{ has the grades } p_1, \dots, p_n \\ \forall j.\ \psi \text{ has a factor of } x_j \implies m \odot p_j = m\end{gathered}}{\Sigma;\ \varphi \vdash X[\bar t] \mathrel{◀} p;\ m}\;(\mathsf{var}_{X◀}) \\[1em]
 \frac{}{\Sigma;\ \varphi \vdash () \mathrel{◀} ();\ \varepsilon;\ m}\;(\mathsf{tel}_{\varepsilon◀}) \\[1em]
 \frac{\begin{gathered}{}\Sigma;\ \varphi \vdash t \mathrel{◀} o;\ m \odot p \\ \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \\ r \le o \text{ if } m \odot p \ne {00}^{\mathsf{m}}\end{gathered}}{\Sigma;\ \varphi \vdash (t,\ \bar t) \mathrel{◀} (o,\ \bar o);\ (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta);\ m}\;(\mathsf{tel}_{,◀})
 \end{gathered}
