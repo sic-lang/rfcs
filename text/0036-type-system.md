@@ -98,7 +98,8 @@ Each entry of a signature is meaningful in the whole signature, since a type dec
 A constant declaration has no body to compute: the meaning takes an interpretation, which gives each constant declaration a term, and computes in the signature where the declarations become definitions with these terms.
 The typing is sound: under an interpretation that gives each constant declaration a term of its type, every judgment that the rules derive is true, so that the axioms and the foreign constants of a program are the hypotheses of its guarantees.
 
-What the usage and the ownership of a term guarantee of its erasure when it runs, and the soundness of the erasure, are not stated yet: they need the evaluation order that a later step of this RFC fixes, with the calling convention.
+The usage of a term guarantees what its erasure computes when it runs, by the [evaluation](0036-type-system/17-evaluation.md) of the target language: under a program that holds the erasure of the signature and realizes its constant declarations of the mode $`{11}^{\mathsf{m}}`$, the erasure of a term typed and used in this mode computes a value that the relation of run time of its type relates to the term, which is the fundamental lemma of the run time.
+What the ownership of a term guarantees of its erasure when it runs is not stated yet.
 
 ### Annexes
 
@@ -125,7 +126,7 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Evaluation](0036-type-system/17-evaluation.md): the calling convention, the call by value with closures for the corecursors, as a big-step evaluation of the target language in a heap, the program of a signature, its determinism, and the extension of the heaps.
 - [Meaning](0036-type-system/18-meaning.md): the meaning of the judgments of the typing, the interpretation of the constant declarations, the equality of the canonical terms of the sorts and of the data types, the relations of run time of the types, by the graph of the relations of the types of each level, the exactness of the meaning for the proofs, and the soundness of the typing under an interpretation of the constant declarations.
 - [Prelude](0036-type-system/19-prelude.md): the unit, the pair and the type of positions that the type system declares for its own needs, the packing of a telescope and of its arguments, the unpacking of a term of a packing, and their properties.
-- [Run time](0036-type-system/20-run-time.md): the relation of run time between the closed terms of a closed type and the values that their erasure computes, its monotonicity in the heap, and the validity at run time of a term in a context, with its subsumption.
+- [Run time](0036-type-system/20-run-time.md): the relation of run time between the closed terms of a closed type and the values that their erasure computes, its monotonicity in the heap, the validity at run time of a term in a context, with its subsumption, the programs that realize a signature, and the fundamental lemma of the run time.
 
 ## Drawbacks
 
@@ -296,7 +297,7 @@ The meaning is settled by the following choices:
 - The meaning of the destructors of a block is stated at two closed substitutions of their scope, as that of the fields at two arguments of the parameters, rather than in a context extended by each destructor: the destructors after a recursive destructor do not depend on it, which the meaning states by quantifying over every abstraction for it, while a context extended by it would give it the meaning of the instance of the block, which the meaning of the block defines.
 - Each entry is meaningful in the whole signature, rather than in the signature before it: a data type quantifies over the closed terms of its fields, which a larger signature may add, so that the meaning of an entry in the signature before it would not carry to the whole signature, where the entry is used.
 - The closed judgments require the names of their signature to be distinct, which makes the computation deterministic, rather than the signature to be meaningful, which they do not use.
-- What the usage and the ownership guarantee at run time, and the soundness of the erasure, wait for the calling convention, which a later step of this RFC fixes, and are then stated for this convention only, rather than for every evaluation order, a generality that no program of Sic would use.
+- What the usage and the ownership guarantee at run time is stated for the evaluation of the target language only, rather than for every evaluation order, a generality that no program of Sic would use.
 
 ### Choices on the Run Time
 
@@ -311,6 +312,7 @@ The relation of run time is settled by the following choices:
 - A proof is related to every address without computing, whether it is a field or a term of its own, rather than once it computes, as the types are: the meaning of a proposition tells only that its proofs are equal, and never that they compute, so that the fundamental lemma could relate neither a proof, which it cannot show to compute, nor a substitution that gives a variable of a proposition a field of a constructor.
 - The grades that decide whether a field or a destructor is related at run time are those of the instance of the type, rather than those that the term carries: the typing gives a constructor the instance of its type, and the equality of two instances keeps their grades.
 - The relation is written with $`\circledR`$, after the relation of Abel, Danielsson and Eriksson, rather than with $`\mathsf{run}`$, which already names the run-time multiplicity of a grade.
+- A program realizes a signature when it holds the erasure of the signature and realizes its constant declarations of the mode $`{11}^{\mathsf{m}}`$, rather than when it realizes each of its constants: the fundamental lemma realizes each constant definition by the erasure of its body, so that the declarations of the mode $`{11}^{\mathsf{m}}`$, the axioms and the foreign constants that run, are the only hypotheses of the run time, as the constant declarations are of the meaning through the interpretation.
 
 ### One RFC
 
@@ -341,8 +343,8 @@ These questions remain open:
 - The annexes are written as the system is settled, subject by subject, so that the list above grows with them.
 - What do the run-time multiplicities $`1`$ and $`\omega`$ mean for a program that runs?
   The meaning of the grades counts the uses that a term makes, and the uses made when it runs depend on the evaluation order, which a later step of this RFC fixes.
-- What do the usage and the ownership of a term guarantee of its erasure when it runs, and is the erasure sound for the meaning?
-  The statements need the evaluation order, which a later step of this RFC fixes, with the calling convention.
+- What does the ownership of a term guarantee of its erasure when it runs?
+  The fundamental lemma of the run time states what the usage guarantees, by the evaluation of the target language, and the ownership needs a statement of its own.
 - Does the type system embrace duality all the way, and which statements would show it?
   Three statements together would answer, once the annexes define the data and codata types:
   - The rules are closed under an involution that exchanges each construct with its dual, the data and the codata types, their introductions and their eliminations, the recursor and the corecursor: the dual of every rule is a rule of the system.

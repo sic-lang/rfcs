@@ -1,7 +1,7 @@
 # Run Time
 
-This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, and their properties.
-It builds on the [erasure](16-erasure.md), the [evaluation](17-evaluation.md) and the [meaning](18-meaning.md), which gives each closed canonical type its [relation of run time](18-meaning.md#relations-of-run-time).
+This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, the programs that realize a signature, and their properties, among them the fundamental lemma of the run time, by which a term typed and used in the mode $`{11}^{\mathsf{m}}`$ is valid at run time.
+It builds on the [usage](12-usage.md), the [typing](14-typing.md), the [erasure](16-erasure.md), the [evaluation](17-evaluation.md) and the [meaning](18-meaning.md), which gives each closed canonical type its [relation of run time](18-meaning.md#relations-of-run-time).
 
 ## Definitions
 
@@ -53,6 +53,51 @@ A term is valid at run time with the grades $`\gamma`$ in a context whose variab
 \end{aligned}
 ```
 
+Closed arguments $`\bar t`$ of a closed telescope are related to addresses $`\bar\ell`$ in a heap at grades $`\bar p`$, one for each argument, when each argument whose grade is not in $`S^{{11}^{\mathsf{m}}}`$, so that the erasure keeps it, is related to its address at the type of its entry, in which the arguments before it are substituted:
+
+```math
+\begin{aligned}
+& () \circledR_H^{()} () : \varepsilon &&(\circledR_{\bar t\varepsilon}) \\[1em]
+& \text{⟺} &&(\circledR_{\bar t,}) \\
+& \quad (t,\ \bar t) \circledR_H^{(p,\ \bar p)} (\ell,\ \bar\ell) : (x : A \mathrel{▶} p';\ q \mathrel{◀} r,\ \Theta) \\
+& \quad \text{and} \\
+& \qquad p \notin S^{{11}^{\mathsf{m}}} \implies t \circledR_H \ell : A \\
+& \qquad \bar t \circledR_H^{\bar p} \bar\ell : \Theta[t / x]
+\end{aligned}
+```
+
+Arguments of a telescope $`\Theta`$, whose entries have the grades $`\bar p`$, are valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution that the meaning relates to itself and each environment that is related to it in a heap, their erasure at the grades $`\bar p`$ evaluates, the first one first, to addresses in a heap that extends this heap, to which the substituted arguments are related at the substituted telescope:
+
+```math
+\begin{aligned}
+& \text{⟺} &&({\vDash}^{\circledR}_{\bar t}) \\
+& \quad \Sigma;\ \gamma;\ \Gamma \vDash^{\circledR} \bar t : \Theta \\
+& \quad \forall \theta, H, E. \\
+& \qquad \text{⟹} \\
+& \qquad\quad \text{and} \\
+& \qquad\qquad (\theta,\ \theta) \in \mathsf{eq}(\Gamma) \\
+& \qquad\qquad (\theta,\ E) \in \circledR_H(\Gamma;\ \gamma) \\
+& \qquad\quad \exists \bar\ell, H'. \\
+& \qquad\qquad \text{and} \\
+& \qquad\qquad\quad \mathcal{P};\ H;\ E \vdash \lfloor \bar t \rfloor_{S^{{11}^{\mathsf{m}}}, \bar p} \Downarrow \bar\ell;\ H' \\
+& \qquad\qquad\quad H \sqsubseteq H' \\
+& \qquad\qquad\quad \bar t[\theta] \circledR_{H'}^{\bar p} \bar\ell : \Theta[\theta]
+\end{aligned}
+```
+
+A program realizes a signature when it gives each constant that the [program of the signature](17-evaluation.md) erased by $`S^{{11}^{\mathsf{m}}}`$ gives a body the same body, and when each constant declaration of the mode $`{11}^{\mathsf{m}}`$, which has no body, is valid at run time in the empty context at each instance of its variables whose levels have no variables, as an [interpretation interprets a signature](18-meaning.md#interpretations-of-a-signature) in the meaning:
+
+```math
+\begin{aligned}
+& \text{⟺} &&(\mathsf{hyp}_{\mathcal{P}}) \\
+& \quad \mathcal{P} \text{ realizes } \Sigma \\
+& \quad \text{and} \\
+& \qquad \forall f.\{\bar s';\ \bar p'\}.\ \lfloor \Sigma \rfloor_{S^{{11}^{\mathsf{m}}}}(f.\{\bar s';\ \bar p'\}) = M \implies \mathcal{P}(f.\{\bar s';\ \bar p'\}) = M \\
+& \qquad \forall (f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} {11}^{\mathsf{m}} \mathrel{◀} p) \in \Sigma.\ \forall \bar s', \bar l', \bar p'. \\
+& \qquad\quad \Sigma;\ {00}^{\gamma};\ \varepsilon \vDash^{\circledR} f.\{\bar s';\ \bar l';\ \bar p'\} : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]
+\end{aligned}
+```
+
 ## Properties
 
 A term related to an address in a heap stays related to it in each heap that extends it, since the relations of the data types read only values that the heap keeps, and those of the codata types relate the observations in each heap that extends it:
@@ -77,5 +122,31 @@ A term valid at run time with some grades is valid with lower grades, as the rul
 & \qquad \delta \le^{\gamma} \gamma \\
 & \qquad \Sigma;\ \gamma;\ \Gamma \vDash^{\circledR} t : A \\
 & \quad \Sigma;\ \delta;\ \Gamma \vDash^{\circledR} t : A
+\end{aligned}
+```
+
+A term typed and used in the mode $`{11}^{\mathsf{m}}`$, in a context whose variables are all of the first order, is valid at run time with the grades of its usage, at every assignment of its level variables, when an interpretation interprets its signature, whose entries use their variables as their grades allow, and a program realizes it; so are the arguments of a telescope, at the grades of its entries.
+This is the fundamental lemma of the run time: what the erasure of the term computes when it runs is what the term computes, as the relation of run time of its type relates them:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{fund}_t) \\
+& \quad \text{and} \\
+& \qquad \iota \text{ interprets } \Sigma \\
+& \qquad \mathcal{P} \text{ realizes } \Sigma \\
+& \qquad \vdash \Sigma \mathrel{▶} \\
+& \qquad \text{the variables of } \Gamma \text{ are all of the first order} \\
+& \qquad \Sigma;\ \Gamma \vdash t : A \\
+& \qquad \Sigma;\ \gamma \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
+& \quad \forall \rho.\ \Sigma;\ \gamma;\ \Gamma[\rho] \vDash^{\circledR} t[\rho] : A[\rho] \\[1em]
+& \text{⟹} &&(\mathsf{fund}_{\bar t}) \\
+& \quad \text{and} \\
+& \qquad \iota \text{ interprets } \Sigma \\
+& \qquad \mathcal{P} \text{ realizes } \Sigma \\
+& \qquad \vdash \Sigma \mathrel{▶} \\
+& \qquad \text{the variables of } \Gamma \text{ are all of the first order} \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \qquad \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ {11}^{\mathsf{m}} \text{ where } \bar p \text{ are the grades of the entries of } \Theta \\
+& \quad \forall \rho.\ \Sigma;\ \gamma;\ \Gamma[\rho] \vDash^{\circledR} \bar t[\rho] : \Theta[\rho]
 \end{aligned}
 ```
