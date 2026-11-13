@@ -1,6 +1,6 @@
 # Grade Vectors
 
-This annex defines the vectors of the elements of a modality, with their operations, their order and their properties, then the vectors of grades, which give a grade to each variable of a scope, with their renaming.
+This annex defines the vectors of the elements of a modality, with their operations, their order and their properties, then the vectors of grades, which give a grade to each variable of a scope, with their renaming, and the vectors of multiplicities, which give a multiplicity to each variable of a term of the target language, with the projection of a vector of grades on its multiplicities at run time.
 It builds on the [modalities](02-modalities.md), the [grades](04-grades.md), the [syntax](08-syntax.md) and the [substitution](09-substitution.md).
 
 ## Vectors
@@ -131,5 +131,39 @@ The renaming commutes with the operations and keeps the order; under the variabl
 & \gamma_1 \le^{\gamma} \gamma_2 \implies \gamma_1[\alpha] \le^{\gamma} \gamma_2[\alpha] &&(\mathsf{ren}_\gamma.{\le}) \\[1em]
 & ({00}^{\gamma},\ x \mathrel{≔} p)[\alpha] = ({00}^{\gamma},\ \alpha(x) \mathrel{≔} p) &&(\mathsf{ren}_\gamma.\mathsf{update}) \\[1em]
 & (\gamma \bullet p)[\alpha] = \gamma[\alpha] \bullet p &&(\mathsf{ren}_\gamma.{\bullet})
+\end{aligned}
+```
+
+## Vectors of Multiplicities
+
+This section defines the vectors of multiplicities, the vectors that the [usage of the target language](16-erasure.md#definitions) computes, and the projection of a vector of grades on its multiplicities at run time, then states how the projection acts on their operations.
+
+### Definitions of the Vectors of Multiplicities
+
+A vector of multiplicities $`\nu`$ over the variables of a term of the target language is a vector whose elements are [multiplicities](03-multiplicities.md), which form a modality; its zero $`0^{\nu}`$ gives each variable the multiplicity $`0`$, and its operations, its order, its extension and its update are those of the vectors, written $`{+^{\nu}}`$, $`{\cdot^{\nu}}`$, $`{\le^{\nu}}`$, $`\nu \bullet \pi`$ and $`{(\nu,\ x \mathrel{≔} \pi)}`$.
+The vector $`\mathsf{run}(\gamma)`$ gives each variable the [run-time multiplicity](04-grades.md) of its grade in $`\gamma`$:
+
+```math
+\begin{aligned}
+& \nu(x) \text{ is a multiplicity for every variable } x &&(\mathsf{vector}_\nu) \\[1em]
+& 0^{\nu}(x) = 0 &&(\mathsf{zero}_\nu) \\[1em]
+& \mathsf{run}(\gamma)(x) = \mathsf{run}(\gamma(x)) &&(\mathsf{run}_\gamma)
+\end{aligned}
+```
+
+### Properties of the Vectors of Multiplicities
+
+This section states how the projection acts on the operations of the vectors.
+
+The projection commutes with the operations, the multiplication by a grade becoming the multiplication by its run-time multiplicity, and keeps the order, as the projection of the grades does:
+
+```math
+\begin{aligned}
+& \mathsf{run}({00}^{\gamma}) = 0^{\nu} &&(\mathsf{run}_\gamma.{00}) \\[1em]
+& \mathsf{run}(\gamma_1 +^{\gamma} \gamma_2) = \mathsf{run}(\gamma_1) +^{\nu} \mathsf{run}(\gamma_2) &&(\mathsf{run}_\gamma.{+}) \\[1em]
+& \mathsf{run}(p \cdot^{\gamma} \gamma) = \mathsf{run}(p) \cdot^{\nu} \mathsf{run}(\gamma) &&(\mathsf{run}_\gamma.{\cdot}) \\[1em]
+& \gamma_1 \le^{\gamma} \gamma_2 \implies \mathsf{run}(\gamma_1) \le^{\nu} \mathsf{run}(\gamma_2) &&(\mathsf{run}_\gamma.{\le}) \\[1em]
+& \mathsf{run}((\gamma,\ x \mathrel{≔} p)) = (\mathsf{run}(\gamma),\ x \mathrel{≔} \mathsf{run}(p)) &&(\mathsf{run}_\gamma.\mathsf{update}) \\[1em]
+& \mathsf{run}(\gamma \bullet p) = \mathsf{run}(\gamma) \bullet \mathsf{run}(p) &&(\mathsf{run}_\gamma.{\bullet})
 \end{aligned}
 ```

@@ -1,7 +1,7 @@
 # Erasure
 
-This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, and its properties.
-It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [sets of grades](11-grade-sets.md), the [usage](12-usage.md) and the fields of a block, which the [typing](14-typing.md#fields-of-a-block) marks.
+This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, the usage of the target language, and their properties.
+It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [vectors of multiplicities](10-grade-vectors.md#vectors-of-multiplicities), the [sets of grades](11-grade-sets.md), the [usage](12-usage.md) and the fields of a block, which the [typing](14-typing.md#fields-of-a-block) marks.
 
 ## Definitions
 
@@ -233,6 +233,38 @@ The judgment $`{M \sqsubseteq N}`$ reads: the term $`M`$ of the target language 
 \end{gathered}
 ```
 
+The judgment $`{\nu \vdash M \mathrel{▶}}`$ reads: the term $`M`$ of the target language reads its variables as the [vector of multiplicities](10-grade-vectors.md#vectors-of-multiplicities) $`\nu`$ allows, as the [evaluation](17-evaluation.md) runs it.
+A variable reads itself once, a constant and $`\text{↯}`$ read no variable, and a constructor, an observation and terms read the variables of their subterms, added.
+A recursor evaluates its term once and runs a branch, which reads the variables of the scope as some $`\delta`$ allows, and its new variables as their binders allow; each recursive result that the branch computes, at the positions $`{k_j \ne \bot}`$, runs the recursor again, which reads the variables of the scope as $`\chi`$ allows again, so that $`\chi`$ bounds $`\delta`$ plus $`\chi`$ for each of them, $`\mathsf{recursions}(\bar k)`$ times, as the [usage](12-usage.md#definitions) bounds the uses of the branches of a recursor.
+A corecursor evaluates its state once and captures its scope in a closure, each observation of which runs one branch, which reads the variables of the scope as some $`\delta_i`$ allows and its new variables as their binders allow, and a branch that resumes the corecursor, $`{k \ne \bot}`$, captures the scope again in a new closure, so that $`\delta`$ bounds $`\delta_i`$, and $`\delta_i`$ plus $`\delta`$ for such a branch.
+In the rules, $`{\nu \bullet \bar\pi \bullet \bar\pi'}`$ extends $`\nu`$ by the multiplicities of the variables that a branch binds, in order, and $`\mathsf{recursions}(\bar k)`$ counts the recursive results that a branch computes:
+
+```math
+\begin{aligned}
+& \nu \bullet (\pi_1, \dots, \pi_a) \bullet (\pi'_1, \dots, \pi'_b) = \nu \bullet \pi_1 \bullet \dots \bullet \pi_a \bullet \pi'_1 \bullet \dots \bullet \pi'_b &&(\bullet_\nu) \\[1em]
+& \mathsf{recursions}(k_1, \dots, k_b) = \pi_1 + \dots + \pi_b \text{ where } \pi_j = 1 \text{ if } k_j \ne \bot \text{ and } \pi_j = 0 \text{ otherwise} &&(\mathsf{recursions}_{\bar k})
+\end{aligned}
+```
+
+```math
+\begin{gathered}
+\frac{}{(0^{\nu},\ x \mathrel{≔} 1) \vdash x \mathrel{▶}}\;(\mathsf{usage}_M.x) \\[1em]
+\frac{}{0^{\nu} \vdash f.\{\bar s;\ \bar p\} \mathrel{▶}}\;(\mathsf{usage}_M.f) \\[1em]
+\frac{}{0^{\nu} \vdash \text{↯} \mathrel{▶}}\;(\mathsf{usage}_M.\text{↯}) \\[1em]
+\frac{\nu \vdash \bar M \mathrel{▶}}{\nu \vdash c_i(\bar M) \mathrel{▶}}\;(\mathsf{usage}_M.c) \\[1em]
+\frac{\nu \vdash M \mathrel{▶} \quad \chi \vdash \bar N \mathrel{▶}}{\nu +^{\nu} \chi \vdash \mathsf{rec}\ M\ \mathsf{with}\ \bar N \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{rec}) \\[1em]
+\frac{\nu_1 \vdash M \mathrel{▶} \quad \nu_2 \vdash \bar M \mathrel{▶}}{\nu_1 +^{\nu} \nu_2 \vdash M.d_i(\bar M) \mathrel{▶}}\;(\mathsf{usage}_M.d) \\[1em]
+\frac{\nu \vdash \bar M \mathrel{▶} \quad \delta \vdash \bar P \mathrel{▶}}{\nu +^{\nu} \delta \vdash \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{corec}) \\[1em]
+\frac{\nu \vdash M \mathrel{▶} \quad \mu \le^{\nu} \nu}{\mu \vdash M \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{sub}) \\[1em]
+\frac{}{0^{\nu} \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.\varepsilon) \\[1em]
+\frac{\nu_1 \vdash M \mathrel{▶} \quad \nu_2 \vdash \bar M \mathrel{▶}}{\nu_1 +^{\nu} \nu_2 \vdash (M,\ \bar M) \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.{,}) \\[1em]
+\frac{}{\chi \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.\varepsilon) \\[1em]
+\frac{\begin{gathered}{}\delta \bullet \bar\pi \bullet \bar\pi' \vdash N \mathrel{▶} \\ \chi \le^{\nu} \delta +^{\nu} \mathsf{recursions}(\bar k) \cdot^{\nu} \chi \\ \chi \vdash \bar N \mathrel{▶}\end{gathered}}{\chi \vdash ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.{,}) \\[1em]
+\frac{}{\delta \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar P}.\varepsilon) \\[1em]
+\frac{\begin{gathered}{}\delta_i \bullet \bar\pi \bullet \bar\pi' \vdash P \mathrel{▶} \\ \delta \le^{\nu} \delta_i \\ k \ne \bot \implies \delta \le^{\nu} \delta_i +^{\nu} \delta \\ \delta \vdash \bar P \mathrel{▶}\end{gathered}}{\delta \vdash ((\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k).\, P,\ \bar P) \mathrel{▶}}\;(\mathsf{usage}_{\bar P}.{,})
+\end{gathered}
+```
+
 ## Properties
 
 A variable whose grade is in a set $`S`$ is absent from the erasure by $`S`$ of a term checked in a mode whose uses $`S`$ does not erase, in a signature whose names are distinct, so that the usage and the erasure of a constructor read the grades of its fields in the same entry, and the erasure by a larger set is less defined, so that the extraction is the program that the proofs see with more parts erased:
@@ -251,5 +283,20 @@ A variable whose grade is in a set $`S`$ is absent from the erasure by $`S`$ of 
 ```
 
 The condition on the mode is needed: the variable $`x`$ checked in the mode $`{01}^{\mathsf{m}}`$ uses itself with the grade $`{01}^{\mathsf{p}}`$, which is in $`S^{{11}^{\mathsf{m}}}`$, but $`{\lfloor x \rfloor_{S^{{11}^{\mathsf{m}}}} = x}`$; Abel, Danielsson and Eriksson likewise state the absence for their mode `𝟙ᵐ` only, as [`erased-hasX`](https://github.com/graded-type-theory/graded-type-theory/blob/master/Graded/Erasure/Extraction/Properties/Usage.agda).
+
+The erasure at run time keeps the usage: a term checked in the mode $`{11}^{\mathsf{m}}`$ in a signature whose names are distinct, so that the usage and the erasure read the grades of the fields, of the arguments and of the branches in the same entry, has an erasure that reads its variables as the run-time multiplicities of their grades allow:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{erase}_{▶}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \Sigma;\ \gamma \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
+& \quad \mathsf{run}(\gamma) \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \mathrel{▶}
+\end{aligned}
+```
+
+The erasure removes the positions whose grade has no use at run time, which the usage counts $`0`$ times at run time, and keeps the others, which a term checked in the mode $`{11}^{\mathsf{m}}`$ checks in this mode again, at grades whose run-time multiplicity is $`1`$ or $`\omega`$, below $`1`$; it gives each binder the multiplicity that the usage gives its variable at run time, except the variable of a field of a branch of a recursor, whose multiplicity is the least that the bound on its grade allows, below this grade.
+An instance, which the erasure replaces by $`\text{↯}`$, needs its [usage](12-usage.md#definitions) as a position of the grade $`{01}^{\mathsf{p}}`$, which uses no variable at run time, and a branch of a corecursor of a destructor without use at run time, whose term is $`\text{↯}`$, needs the multiplicity $`0`$ of its variables, while the usage already bounds the uses of the scope by none at run time, $`{\delta \le p \cdot \delta_i}`$ with $`\mathsf{run}(p) = 0`$.
 
 The erasure states nothing on the ownership: it follows the grades of the usage alone, which the ownership reads without deciding what is erased, and what the ownership of a term guarantees of its erasure, the uses of a value during a run, needs the [evaluation](17-evaluation.md) of the target language.
