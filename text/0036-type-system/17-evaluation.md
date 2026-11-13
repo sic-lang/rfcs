@@ -1,7 +1,7 @@
 # Evaluation
 
-This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, and its properties.
-It builds on the [syntax](08-syntax.md), the [erasure](16-erasure.md) and the [type of positions](19-prelude.md#positions) of the prelude.
+This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands of the values and of the environments, and their properties.
+It builds on the [vectors](10-grade-vectors.md#vectors), the [syntax](08-syntax.md), the [erasure](16-erasure.md) and its [usage](16-erasure.md#definitions), and the [type of positions](19-prelude.md#positions) of the prelude.
 
 ## Definitions
 
@@ -102,6 +102,35 @@ A heap $`H'`$ extends a heap $`H`$, written $`{H \sqsubseteq H'}`$, when $`H`$ i
 \end{aligned}
 ```
 
+The guarantees on the uses at run time compare the cells that a run reads with a demand, the reads that remain to be done.
+A demand $`D`$ is a vector over the addresses of the heaps whose elements are [multiplicities](03-multiplicities.md), $`D(c)`$ bounding the reads of the cell at the address $`c`$; its zero $`0^D`$ gives each address the multiplicity $`0`$, and its operations and its order are those of the vectors, written $`{+^D}`$, $`{\cdot^D}`$ and $`{\le^D}`$.
+The demand $`[c]`$ is one read of the cell at the address $`c`$, and the uses $`\#R`$ of a trace $`R`$ give each address the multiplicity of the number of its reads in $`R`$, $`\omega`$ for more than one:
+
+```math
+\begin{aligned}
+& D(c) \text{ is a multiplicity for every address } c &&(\mathsf{demand}_D) \\[1em]
+& [c](c) = 1 \text{ and } [c](c') = 0 \text{ if } c' \ne c &&(\mathsf{unit}_D) \\[1em]
+& \#R(c) = 0,\ 1 \text{ or } \omega \text{ if } c \text{ occurs no time, once or more than once in } R &&(\mathsf{uses}_R)
+\end{aligned}
+```
+
+The judgment $`{H \vdash \ell \mathrel{▶} D}`$ reads: a use of the value at the address $`\ell`$ of the heap $`H`$ reads the cells as the demand $`D`$ allows.
+The judgment $`{H \vdash \bar\ell \mathrel{▶} \bar\pi \mathrel{▶} D}`$ reads: the values at the addresses $`\bar\ell`$, each used as many times as its multiplicity in $`\bar\pi`$, read the cells as $`D`$ allows.
+The judgment $`{H \vdash E \mathrel{▶}_\nu D}`$ reads: a term that reads the variables of the environment $`E`$ as the [vector of multiplicities](10-grade-vectors.md#vectors-of-multiplicities) $`\nu`$ allows reads the cells as $`D`$ allows, $`\nu(x)`$ reads of the cell of each variable $`x`$, each using its value.
+The value $`\text{↯}`$ reads no cell, a constructor passes on the reads of its fields, each as many times as its multiplicity, and a closure does the reads of its branches, which read the variables of its scope as some $`\delta`$ that the usage of its branches allows, and passes on those of its state, each entry as many times as its multiplicity; a value may have several demands, one for each choice of $`\delta`$ in each closure that it reaches:
+
+```math
+\begin{gathered}
+\frac{H(\ell) = \text{↯}}{H \vdash \ell \mathrel{▶} 0^D}\;(\mathsf{demand}_\ell.\text{↯}) \\[1em]
+\frac{H(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi) \quad H \vdash \bar\ell \mathrel{▶} \bar\pi \mathrel{▶} D}{H \vdash \ell \mathrel{▶} D}\;(\mathsf{demand}_\ell.c) \\[1em]
+\frac{\begin{gathered}{}H(\ell) = \langle E;\ \bar P;\ \bar\ell \mathrel{▶} \bar\pi \rangle \\ \delta \vdash \bar P \mathrel{▶} \\ H \vdash E \mathrel{▶}_\delta D_1 \\ H \vdash \bar\ell \mathrel{▶} \bar\pi \mathrel{▶} D_2\end{gathered}}{H \vdash \ell \mathrel{▶} D_1 +^D D_2}\;(\mathsf{demand}_\ell.\mathsf{corec}) \\[1em]
+\frac{}{H \vdash () \mathrel{▶} () \mathrel{▶} 0^D}\;(\mathsf{demand}_{\bar\ell}.\varepsilon) \\[1em]
+\frac{H \vdash \ell \mathrel{▶} D_1 \quad H \vdash \bar\ell \mathrel{▶} \bar\pi \mathrel{▶} D_2}{H \vdash (\ell,\ \bar\ell) \mathrel{▶} (\pi,\ \bar\pi) \mathrel{▶} \pi \cdot^D D_1 +^D D_2}\;(\mathsf{demand}_{\bar\ell}.{,}) \\[1em]
+\frac{}{H \vdash \varepsilon \mathrel{▶}_\nu 0^D}\;(\mathsf{demand}_E.\varepsilon) \\[1em]
+\frac{H(c) = \mathsf{bind}_\pi(\ell) \quad H \vdash \ell \mathrel{▶} D_1 \quad H \vdash E \mathrel{▶}_\nu D_2}{H \vdash (E,\ x \mapsto c) \mathrel{▶}_{\nu \bullet \pi'} \pi' \cdot^D ([c] +^D D_1) +^D D_2}\;(\mathsf{demand}_E.{,})
+\end{gathered}
+```
+
 ## Properties
 
 The evaluation is deterministic: a term evaluates to one address, in one heap, reading the same cells, whatever the program:
@@ -131,6 +160,63 @@ The extension of the heaps keeps the values, and the evaluation extends the heap
 & \text{⟹} &&(\mathsf{ext}_\Downarrow) \\
 & \quad \mathcal{P};\ H;\ E \vdash M \Downarrow \ell;\ H';\ R \\
 & \quad H \sqsubseteq H'
+\end{aligned}
+```
+
+The uses of a trace add along its parts, and the uses of one read are its demand:
+
+```math
+\begin{aligned}
+& \#(R_1 \cdot R_2) = \#R_1 +^D \#R_2 &&(\mathsf{uses}_R.{\cdot}) \\[1em]
+& \#(c) = [c] &&(\mathsf{uses}_R.\mathsf{unit})
+\end{aligned}
+```
+
+The demands hold in each heap that extends their heap:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{demand}_\ell.{\sqsubseteq}) \\
+& \quad \text{and} \\
+& \qquad H \sqsubseteq H' \\
+& \qquad H \vdash \ell \mathrel{▶} D \\
+& \quad H' \vdash \ell \mathrel{▶} D \\[1em]
+& \text{⟹} &&(\mathsf{demand}_E.{\sqsubseteq}) \\
+& \quad \text{and} \\
+& \qquad H \sqsubseteq H' \\
+& \qquad H \vdash E \mathrel{▶}_\nu D \\
+& \quad H' \vdash E \mathrel{▶}_\nu D
+\end{aligned}
+```
+
+The demand of an environment follows the operations of the usage on its vector, keeping the demands of the values that it chose: the vector $`0^{\nu}`$ has the demand $`0^D`$, and the demand for a sum, a product or a higher vector splits into, factors through or is below a demand for each part, rather than adding two demands, whose choices of the demands of the values may differ:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{demand}_E.0) \\
+& \quad H \vdash E \mathrel{▶}_\nu D \\
+& \quad H \vdash E \mathrel{▶}_{0^{\nu}} 0^D \\[1em]
+& \text{⟹} &&(\mathsf{demand}_E.{+}) \\
+& \quad H \vdash E \mathrel{▶}_{\nu_1 +^{\nu} \nu_2} D \\
+& \quad \exists D_1, D_2. \\
+& \qquad \text{and} \\
+& \qquad\quad D = D_1 +^D D_2 \\
+& \qquad\quad H \vdash E \mathrel{▶}_{\nu_1} D_1 \\
+& \qquad\quad H \vdash E \mathrel{▶}_{\nu_2} D_2 \\[1em]
+& \text{⟹} &&(\mathsf{demand}_E.{\cdot}) \\
+& \quad H \vdash E \mathrel{▶}_{\pi \cdot^{\nu} \nu} D \\
+& \quad \exists D'. \\
+& \qquad \text{and} \\
+& \qquad\quad D = \pi \cdot^D D' \\
+& \qquad\quad H \vdash E \mathrel{▶}_\nu D' \\[1em]
+& \text{⟹} &&(\mathsf{demand}_E.{\le}) \\
+& \quad \text{and} \\
+& \qquad H \vdash E \mathrel{▶}_\mu D \\
+& \qquad \mu \le^{\nu} \nu \\
+& \quad \exists D'. \\
+& \qquad \text{and} \\
+& \qquad\quad D \le^D D' \\
+& \qquad\quad H \vdash E \mathrel{▶}_\nu D'
 \end{aligned}
 ```
 

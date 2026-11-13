@@ -9,7 +9,7 @@ This section defines the vectors over any modality, whose operations act on each
 
 ### Definitions of the Vectors
 
-A vector $`\mu`$ over a finite set of indices $`I`$ gives an element $`\mu(i)`$ of a [modality](02-modalities.md) $`\mathcal{M}`$ to each index $`i`$ of $`I`$, and two vectors over $`I`$ are equal when they give each index the same element:
+A vector $`\mu`$ over a set of indices $`I`$, finite for the variables of a scope, or the addresses of the heaps for the [demands](17-evaluation.md#definitions) of the evaluation, gives an element $`\mu(i)`$ of a [modality](02-modalities.md) $`\mathcal{M}`$ to each index $`i`$ of $`I`$, and two vectors over $`I`$ are equal when they give each index the same element:
 
 ```math
 \begin{aligned}
@@ -83,7 +83,7 @@ The extension commutes with the operations, whatever the laws of the modality:
 \end{aligned}
 ```
 
-The equality and the order of two vectors are decidable when the equality of the modality is, since a vector has finitely many indices and the order of the modality is an equality:
+The equality and the order of two vectors over a finite set of indices are decidable when the equality of the modality is, since the order of the modality is an equality:
 
 ```math
 \begin{aligned}
