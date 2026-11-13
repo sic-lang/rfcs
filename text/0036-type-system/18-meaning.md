@@ -297,15 +297,15 @@ The relations of the instances of the types of a block of codata types are the g
 \end{aligned}
 ```
 
-A closed abstraction $`f`$ for the destructor of the case $`i`$, whose arguments have the grades $`\bar q`$ and the relation $`S_\Theta`$ and whose result type has the relation $`F(\bar t)`$ at the arguments $`\bar t`$, is related to the value at the address $`\ell`$ when, in each heap that extends $`H`$, its observation at arguments that $`S_\Theta`$ relates to addresses, passed at the multiplicities at run time of their grades, gives a value, reading some cells, that $`F`$ relates to the result of $`f`$; the heap of the observation extends $`H`$, since the arguments may be computed after the value at $`\ell`$:
+A closed abstraction $`f`$ for the destructor of the case $`i`$, whose arguments have the grades $`\bar q`$ and the relation $`S_\Theta`$ and whose result type has the relation $`F(\bar t)`$ at the arguments $`\bar t`$, is related to the value at the address $`\ell`$ when, in each heap that extends $`H`$, its observation at arguments that $`S_\Theta`$ relates to addresses, passed at the multiplicities at run time of their grades, gives, at each weight, a value, reading some cells, that $`F`$ relates to the result of $`f`$; the heap of the observation extends $`H`$, since the arguments may be computed after the value at $`\ell`$:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&(\circledR_{\bar x}) \\
 & \quad (H,\ f,\ \ell) \in \circledR_{\bar x}(i,\ \bar q,\ S_\Theta,\ F) \\
-& \quad \forall H' \sqsupseteq H.\ \forall (H',\ \bar t,\ \bar\ell) \in S_\Theta.\ \exists \ell',\ H'',\ R. \\
+& \quad \forall H' \sqsupseteq H.\ \forall (H',\ \bar t,\ \bar\ell) \in S_\Theta.\ \forall \varpi.\ \exists \ell',\ H'',\ R. \\
 & \qquad \text{and} \\
-& \qquad \quad \mathcal{P};\ H' \vdash \ell.d_i(\bar\ell \mathrel{▶} \mathsf{run}(\bar q)) \Downarrow \ell';\ H'';\ R \\
+& \qquad \quad \mathcal{P};\ \varpi;\ H' \vdash \ell.d_i(\bar\ell \mathrel{▶} \mathsf{run}(\bar q)) \Downarrow \ell';\ H'';\ R \\
 & \qquad \quad (H'',\ f[\bar t / \bar x],\ \ell') \in F(\bar t)
 \end{aligned}
 ```

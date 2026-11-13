@@ -34,13 +34,13 @@ A closed substitution $`\theta`$ of a context whose variables are all of the fir
 \end{aligned}
 ```
 
-A term is valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution $`\theta`$ that the meaning relates to itself and each environment whose [cells](17-evaluation.md#definitions) bind, in a heap, addresses related to it, its erasure by $`S^{{11}^{\mathsf{m}}}`$ evaluates, reading some cells, to an address in a heap that extends this heap, to which the substituted term is related at the substituted type:
+A term is valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution $`\theta`$ that the meaning relates to itself and each environment whose [cells](17-evaluation.md#definitions) bind, in a heap, addresses related to it, its erasure by $`S^{{11}^{\mathsf{m}}}`$ evaluates, at each weight, reading some cells, to an address in a heap that extends this heap, to which the substituted term is related at the substituted type:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&({\vDash}^{\circledR}) \\
 & \quad \Sigma;\ \gamma;\ \Gamma \vDash^{\circledR} t : A \\
-& \quad \forall \theta, H, E, V. \\
+& \quad \forall \varpi, \theta, H, E, V. \\
 & \qquad \text{⟹} \\
 & \qquad\quad \text{and} \\
 & \qquad\qquad (\theta,\ \theta) \in \mathsf{eq}(\Gamma) \\
@@ -48,7 +48,7 @@ A term is valid at run time with the grades $`\gamma`$ in a context whose variab
 & \qquad\qquad (\theta,\ V) \in \circledR_H(\Gamma;\ \gamma) \\
 & \qquad\quad \exists \ell, H', R. \\
 & \qquad\qquad \text{and} \\
-& \qquad\qquad\quad \mathcal{P};\ H;\ E \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H';\ R \\
+& \qquad\qquad\quad \mathcal{P};\ \varpi;\ H;\ E \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H';\ R \\
 & \qquad\qquad\quad H \sqsubseteq H' \\
 & \qquad\qquad\quad t[\theta] \circledR_{H'} \ell : A[\theta]
 \end{aligned}
@@ -67,13 +67,13 @@ Closed arguments $`\bar t`$ of a closed telescope are related to addresses $`\ba
 \end{aligned}
 ```
 
-Arguments of a telescope $`\Theta`$, whose entries have the grades $`\bar p`$, are valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution that the meaning relates to itself and each environment whose cells bind, in a heap, addresses related to it, their erasure at the grades $`\bar p`$ evaluates, the first one first, to addresses in a heap that extends this heap, to which the substituted arguments are related at the substituted telescope:
+Arguments of a telescope $`\Theta`$, whose entries have the grades $`\bar p`$, are valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution that the meaning relates to itself and each environment whose cells bind, in a heap, addresses related to it, their erasure at the grades $`\bar p`$ evaluates, at each weight, the first one first, to addresses in a heap that extends this heap, to which the substituted arguments are related at the substituted telescope:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&({\vDash}^{\circledR}_{\bar t}) \\
 & \quad \Sigma;\ \gamma;\ \Gamma \vDash^{\circledR} \bar t : \Theta \\
-& \quad \forall \theta, H, E, V. \\
+& \quad \forall \varpi, \theta, H, E, V. \\
 & \qquad \text{⟹} \\
 & \qquad\quad \text{and} \\
 & \qquad\qquad (\theta,\ \theta) \in \mathsf{eq}(\Gamma) \\
@@ -81,7 +81,7 @@ Arguments of a telescope $`\Theta`$, whose entries have the grades $`\bar p`$, a
 & \qquad\qquad (\theta,\ V) \in \circledR_H(\Gamma;\ \gamma) \\
 & \qquad\quad \exists \bar\ell, H', R. \\
 & \qquad\qquad \text{and} \\
-& \qquad\qquad\quad \mathcal{P};\ H;\ E \vdash \lfloor \bar t \rfloor_{S^{{11}^{\mathsf{m}}}, \bar p} \Downarrow \bar\ell;\ H';\ R \\
+& \qquad\qquad\quad \mathcal{P};\ \varpi;\ H;\ E \vdash \lfloor \bar t \rfloor_{S^{{11}^{\mathsf{m}}}, \bar p} \Downarrow \bar\ell;\ H';\ R \\
 & \qquad\qquad\quad H \sqsubseteq H' \\
 & \qquad\qquad\quad \bar t[\theta] \circledR_{H'}^{\bar p} \bar\ell : \Theta[\theta]
 \end{aligned}
@@ -153,7 +153,7 @@ This is the fundamental lemma of the run time: what the erasure of the term comp
 \end{aligned}
 ```
 
-The soundness of the extraction is the fundamental lemma for a closed term, run in the empty heap and the empty environment: its erasure by $`S^{{11}^{\mathsf{m}}}`$ evaluates to an address in a heap, to which the term is related at its type; when its type computes to an instance of a data type that is not a proposition, the value at this address is the constructor of the target language of the case of the constructor that the term computes, by $`(\circledR_c)`$, as the relation $`(\circledR_\mu)`$ is the least one closed under it:
+The soundness of the extraction is the fundamental lemma for a closed term, run at the weight $`1`$, its value being used once, in the empty heap and the empty environment: its erasure by $`S^{{11}^{\mathsf{m}}}`$ evaluates to an address in a heap, to which the term is related at its type; when its type computes to an instance of a data type that is not a proposition, the value at this address is the constructor of the target language of the case of the constructor that the term computes, by $`(\circledR_c)`$, as the relation $`(\circledR_\mu)`$ is the least one closed under it:
 
 ```math
 \begin{aligned}
@@ -166,7 +166,7 @@ The soundness of the extraction is the fundamental lemma for a closed term, run 
 & \qquad \Sigma;\ \varepsilon \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
 & \quad \forall \rho.\ \exists \ell, H, R. \\
 & \qquad \text{and} \\
-& \qquad\quad \mathcal{P};\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
+& \qquad\quad \mathcal{P};\ 1;\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
 & \qquad\quad t[\rho] \circledR_H \ell : A[\rho] \\[1em]
 & \text{⟹} &&(\mathsf{sound}_c) \\
 & \quad \text{and} \\
@@ -180,7 +180,7 @@ The soundness of the extraction is the fundamental lemma for a closed term, run 
 & \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \text{ is not a proposition} \\
 & \quad \exists \ell, H, R, T, c, \bar t, \bar\ell, \bar\pi. \\
 & \qquad \text{and} \\
-& \qquad\quad \mathcal{P};\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
+& \qquad\quad \mathcal{P};\ 1;\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
 & \qquad\quad T \text{ is an instance of } D \\
 & \qquad\quad t[\rho] \Downarrow T.c(\bar t) \\
 & \qquad\quad H(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi) \text{ with } i = \mathsf{case}_\Sigma(D.c)
