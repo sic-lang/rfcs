@@ -5,12 +5,12 @@ It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](
 
 ## Definitions
 
-The target language has variables, all of the first order, the constants at the qualities and the grades of their instances, a value $`\text{↯}`$ that stands for what was erased, the constructors, by their case in their block, applied to terms for their fields, the recursors, with a branch for each constructor, the observations by a destructor, by its case in its block, applied to terms for its arguments, and the corecursors, with a state and a branch for each destructor:
+The target language has variables, all of the first order, the constants at the qualities and the grades of their instances, a value $`\text{↯}`$ that stands for what was erased, the constructors, by their case in their block, applied to terms for their fields, the recursors, at a multiplicity, with a branch for each constructor, the observations by a destructor, by its case in its block, applied to terms for its arguments, and the corecursors, with a state and a branch for each destructor, each term of the fields, of the arguments and of the state at a multiplicity:
 
 ```math
 \begin{aligned}
-& M \mathrel{::=} x \mid f.\{\bar s;\ \bar p\} \mid \text{↯} \mid c_i(\bar M) \mid \mathsf{rec}\ M\ \mathsf{with}\ \bar N \mid M.d_i(\bar M) \mid \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P &&(\mathsf{syntax}_M) \\[1em]
-& \bar M \mathrel{::=} () \mid (M,\ \bar M) &&(\mathsf{syntax}_{\bar M}) \\[1em]
+& M \mathrel{::=} x \mid f.\{\bar s;\ \bar p\} \mid \text{↯} \mid c_i(\bar M) \mid \mathsf{rec}_\rho\ M\ \mathsf{with}\ \bar N \mid M.d_i(\bar M) \mid \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P &&(\mathsf{syntax}_M) \\[1em]
+& \bar M \mathrel{::=} () \mid (M \mathrel{▶} \pi,\ \bar M) &&(\mathsf{syntax}_{\bar M}) \\[1em]
 & \bar N \mathrel{::=} () \mid ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) &&(\mathsf{syntax}_{\bar N}) \\[1em]
 & \bar P \mathrel{::=} () \mid ((\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k).\, P,\ \bar P) &&(\mathsf{syntax}_{\bar P}) \\[1em]
 & k \mathrel{::=} \bot \mid n \mid \text{↯}_n &&(\mathsf{syntax}_k)
@@ -19,7 +19,17 @@ The target language has variables, all of the first order, the constants at the 
 
 A branch $`{(\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N}`$ binds the variables $`\bar x`$ of the fields and $`\bar y`$ of the recursive results, as a branch of a recursor does, at the [multiplicities](03-multiplicities.md) $`\bar\pi`$ and $`\bar\pi'`$, which count their uses at run time, and $`\bar k`$ gives each recursive result the position of its field among $`\bar x`$, the first one at $`1`$, or $`\bot`$ when the result is erased, so that it is not computed.
 A branch $`{(\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k).\, P}`$ binds the variables $`\bar y`$ of the state and $`\bar z`$ of the arguments, as a branch of a corecursor does, at the multiplicities $`\bar\pi`$ and $`\bar\pi'`$, and $`k`$ is its resumption: $`\bot`$ when its destructor is not recursive, the number $`n`$ of the entries of the state that the branch resumes, which the evaluation unpacks from the new state, or $`\text{↯}_n`$ when these $`n`$ entries are erased, so that the evaluation does not read the new state.
-The target language keeps only what its [evaluation](17-evaluation.md) reads: the multiplicity of a binder goes with each variable that the evaluation binds, a case chooses a branch, since the names of the constructors and of the destructors are distinct only in their type, and a branch does not bind the non-uniform parameters, which the corecursors do not have yet.
+A term $`{M \mathrel{▶} \pi}`$ of a field, of an argument or of the state is stored at the multiplicity $`\pi`$ of its position, which bounds the uses of its value through this position, and a recursor $`{\mathsf{rec}_\rho\ M\ \mathsf{with}\ \bar N}`$ uses the value of $`M`$ at the multiplicity $`\rho`$, so that a branch reads each field within $`\rho`$ times its multiplicity: a value is computed once, but a cell of the multiplicity $`\omega`$ may read it several times, and each observation of a closure runs a branch again, which the multiplicities of the positions bound.
+The multiplicities $`\bar\pi(\bar M)`$ of terms are those at which they are stored, in order:
+
+```math
+\begin{aligned}
+& \bar\pi(()) = () &&(\mathsf{multiplicities}_{\bar M}) \\
+& \bar\pi((M \mathrel{▶} \pi,\ \bar M)) = (\pi,\ \bar\pi(\bar M))
+\end{aligned}
+```
+
+The target language keeps only what its [evaluation](17-evaluation.md) reads: the multiplicity of a binder goes with each variable that the evaluation binds, the multiplicity of a position with each value that the evaluation stores, a case chooses a branch, since the names of the constructors and of the destructors are distinct only in their type, and a branch does not bind the non-uniform parameters, which the corecursors do not have yet.
 
 The erasure $`\lfloor t \rfloor_S`$ of a term $`t`$ replaces with $`\text{↯}`$ each position of $`t`$ whose grade is in the set $`S`$, a position being a subterm that a rule of usage checks with a grade of its own, as an argument $`t_j`$ of an entry of grade $`p_j`$ in $`{(\mathsf{tel}_{,▶})}`$.
 It is defined on the terms whose scope has no second-order variable: a program is closed, and the motives and the branches of a recursor and the states and the branches of a corecursor bind variables only, while a second-order variable exists only in the contexts in which a declaration is checked, so that a variable has no arguments, and the target language no second-order variables.
@@ -105,7 +115,7 @@ The arguments $`\mathsf{arguments}_\Sigma(T.\bar g)`$ of the branches of a corec
 \end{aligned}
 ```
 
-The skeleton $`\mathsf{skeleton}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ is the term of the target language that the type $`D`$ gives to its closed terms when each type of its block has one constructor at most: the constructor of the case of the only constructor of $`D`$, applied to $`\text{↯}`$ for each field that is not recursive and to the skeleton of the type of each recursive field, and $`\text{↯}`$ when $`D`$ has no constructor or several.
+The skeleton $`\mathsf{skeleton}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ is the term of the target language that the type $`D`$ gives to its closed terms when each type of its block has one constructor at most: the constructor of the case of the only constructor of $`D`$, applied to $`\text{↯}`$ for each field that is not recursive and to the skeleton of the type of each recursive field, each at the multiplicity $`0`$, since a skeleton holds no value that a use at run time reads, and $`\text{↯}`$ when $`D`$ has no constructor or several.
 It is built within the depth $`k`$ of the number of the types of the block, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and is $`\text{↯}`$ when $`\Sigma`$ has no such entry:
 
 ```math
@@ -113,7 +123,7 @@ It is built within the depth $`k`$ of the number of the types of the block, at t
 & \mathsf{skeleton}_\Sigma(T) = \mathsf{skeleton}^k(D) \text{ if } (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \bar c_k) \text{ is this entry} &&(\mathsf{skeleton}_D) \\
 & \mathsf{skeleton}_\Sigma(T) = \text{↯} \text{ if } \Sigma \text{ has no such entry} \\[1em]
 & \mathsf{skeleton}^0(D_j) = \text{↯} \\
-& \mathsf{skeleton}^{n + 1}(D_j) = c_i(M_1, \dots, M_a) \text{ if } \bar c_j = (c : \Theta),\ i = \mathsf{case}_\Sigma(D_j.c) \text{ and } \Theta \text{ has } a \text{ entries} \\
+& \mathsf{skeleton}^{n + 1}(D_j) = c_i(M_1 \mathrel{▶} 0, \dots, M_a \mathrel{▶} 0) \text{ if } \bar c_j = (c : \Theta),\ i = \mathsf{case}_\Sigma(D_j.c) \text{ and } \Theta \text{ has } a \text{ entries} \\
 & \mathsf{skeleton}^{n + 1}(D_j) = \text{↯} \text{ otherwise}
 \end{aligned}
 ```
@@ -122,9 +132,9 @@ In the skeleton of a constructor $`{c : \Theta}`$, $`M_l`$ is $`\mathsf{skeleton
 The depth is reached only on a type without closed term: along a path of a closed term, from a term to the term of one of its recursive fields, no type of the block comes twice, since each type has one constructor, so that the term would hold a term of the same form, without end.
 
 The sorts and the instances have no representation in the target language, and are erased.
-A constructor keeps its case and its fields, each erased at the grade of its field, and a field whose grade the signature does not give, in a term that no rule types, is erased, as a constructor whose case it does not give; a recursor keeps its term when its grade $`r`$ is not in $`S`$, and the skeleton of the type of its term otherwise, and its branches, which keep, for each recursive result, the position of its field, or $`\bot`$ when its grade is in $`S`$, and loses its instance and its motives, which are types.
-An observation keeps its term, the case of its destructor and its arguments, each erased at the grade of its argument, and a corecursor keeps its state, each entry erased at its grade times the grade $`r`$ of the corecursor, since every observation that reaches the state uses it $`r`$ times, and its branches, each erased at the grade of its destructor, since its usage checks it in the mode of this grade, with the number of the entries of the state it resumes, and loses its instance and its states, which are types; the grades of the entries of the state are those of the state $`\Theta_h`$ of the type $`D_h`$ of its instance, with $`{h = \mathsf{position}_\Sigma(D)}`$, and an entry whose grade is not given, in a term that no rule types, is erased.
-The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\text{↯}`$ when $`{p \in S}`$, and $`\lfloor t \rfloor_S`$ otherwise:
+A constructor keeps its case and its fields, each erased at the grade of its field and stored at the multiplicity at run time of this grade, and a field whose grade the signature does not give, in a term that no rule types, is erased, and stored at $`\omega`$, which states nothing, as a constructor whose case it does not give is erased; a recursor keeps the multiplicity at run time of its grade $`r`$, its term when $`r`$ is not in $`S`$, and the skeleton of the type of its term otherwise, and its branches, which keep, for each recursive result, the position of its field, or $`\bot`$ when its grade is in $`S`$, and loses its instance and its motives, which are types.
+An observation keeps its term, the case of its destructor and its arguments, each erased at the grade of its argument and stored at its multiplicity at run time, and a corecursor keeps its state, each entry erased at its grade times the grade $`r`$ of the corecursor and stored at its multiplicity at run time, since every observation that reaches the state uses it $`r`$ times, and its branches, each erased at the grade of its destructor, since its usage checks it in the mode of this grade, with the number of the entries of the state it resumes, and loses its instance and its states, which are types; the grades of the entries of the state are those of the state $`\Theta_h`$ of the type $`D_h`$ of its instance, with $`{h = \mathsf{position}_\Sigma(D)}`$, and an entry whose grade is not given, in a term that no rule types, is erased.
+The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\text{↯}`$ when $`{p \in S}`$, and $`\lfloor t \rfloor_S`$ otherwise, and the erasure of terms stores each at the multiplicity $`\mathsf{run}(p)`$ of its grade:
 
 ```math
 \begin{aligned}
@@ -134,8 +144,8 @@ The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\te
 & \lfloor D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \rfloor_S = \text{↯} \\
 & \lfloor T.c(\bar t) \rfloor_S = c_i(\lfloor \bar t \rfloor_{S, \mathsf{grades}_\Sigma(T.c)}) \text{ if } i = \mathsf{case}_\Sigma(D.c) \\
 & \lfloor T.c(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\
-& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}\ \mathsf{skeleton}_\Sigma(T)\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{grades}_\Sigma(T.\bar u)} \text{ if } r \in S \\
-& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}\ \lfloor t \rfloor_S\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{grades}_\Sigma(T.\bar u)} \text{ if } r \notin S \\
+& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}_{\mathsf{run}(r)}\ \mathsf{skeleton}_\Sigma(T)\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{grades}_\Sigma(T.\bar u)} \text{ if } r \in S \\
+& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}_{\mathsf{run}(r)}\ \lfloor t \rfloor_S\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{grades}_\Sigma(T.\bar u)} \text{ if } r \notin S \\
 & \lfloor t.(T.d)(\bar t) \rfloor_S = \lfloor t \rfloor_S.d_i(\lfloor \bar t \rfloor_{S, \mathsf{grades}_\Sigma(T.d)}) \text{ if } i = \mathsf{case}_\Sigma(D.d) \\
 & \lfloor t.(T.d)(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\
 & \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, r \cdot \bar q}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g), \bar k, \bar{\bar o}} \text{ if } \bar q \text{ are the grades of } \Theta_h,\ h = \mathsf{position}_\Sigma(D) \\
@@ -143,8 +153,8 @@ The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\te
 & \lfloor t \rfloor_{S, p} = \text{↯} \text{ if } p \in S \\
 & \lfloor t \rfloor_{S, p} = \lfloor t \rfloor_S \text{ if } p \notin S \\[1em]
 & \lfloor () \rfloor_{S, \bar p} = () &&(\mathsf{erase}_{\bar t}) \\
-& \lfloor (t,\ \bar t) \rfloor_{S, ()} = (\text{↯},\ \lfloor \bar t \rfloor_{S, ()}) \\
-& \lfloor (t,\ \bar t) \rfloor_{S, (p,\ \bar p)} = (\lfloor t \rfloor_{S, p},\ \lfloor \bar t \rfloor_{S, \bar p}) \\[1em]
+& \lfloor (t,\ \bar t) \rfloor_{S, ()} = (\text{↯} \mathrel{▶} \omega,\ \lfloor \bar t \rfloor_{S, ()}) \\
+& \lfloor (t,\ \bar t) \rfloor_{S, (p,\ \bar p)} = (\lfloor t \rfloor_{S, p} \mathrel{▶} \mathsf{run}(p),\ \lfloor \bar t \rfloor_{S, \bar p}) \\[1em]
 & \lfloor () \rfloor_{S, r, \bar{\bar k}, \bar{\bar q}} = () &&(\mathsf{erase}_{\bar u}) \\
 & \lfloor ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u) \rfloor_{S, r, \bar{\bar k}, \bar{\bar q}} = ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \mathsf{run}(\bar e) \leftarrow \bar k').\, \lfloor u \rfloor_S,\ \lfloor \bar u \rfloor_{S, r, \bar{\bar k}', \bar{\bar q}'}) \\[1em]
 & \lfloor () \rfloor_{S, \bar p, \bar k, \bar{\bar o}} = () &&(\mathsf{erase}_{\bar g}) \\
@@ -184,14 +194,14 @@ A variable occurs in a term of the target language when the term is the variable
 \begin{gathered}
 \frac{}{x \text{ occurs in } x}\;(\mathsf{occurs}_M.x) \\[1em]
 \frac{x \text{ occurs in } \bar M}{x \text{ occurs in } c_i(\bar M)}\;(\mathsf{occurs}_M.c) \\[1em]
-\frac{x \text{ occurs in } M}{x \text{ occurs in } \mathsf{rec}\ M\ \mathsf{with}\ \bar N}\;(\mathsf{occurs}_M.\mathsf{rec}) \\[1em]
-\frac{x \text{ occurs in } \bar N}{x \text{ occurs in } \mathsf{rec}\ M\ \mathsf{with}\ \bar N}\;(\mathsf{occurs}_M.\mathsf{with}) \\[1em]
+\frac{x \text{ occurs in } M}{x \text{ occurs in } \mathsf{rec}_\rho\ M\ \mathsf{with}\ \bar N}\;(\mathsf{occurs}_M.\mathsf{rec}) \\[1em]
+\frac{x \text{ occurs in } \bar N}{x \text{ occurs in } \mathsf{rec}_\rho\ M\ \mathsf{with}\ \bar N}\;(\mathsf{occurs}_M.\mathsf{with}) \\[1em]
 \frac{x \text{ occurs in } M}{x \text{ occurs in } M.d_i(\bar M)}\;(\mathsf{occurs}_M.\mathsf{obs}) \\[1em]
 \frac{x \text{ occurs in } \bar M}{x \text{ occurs in } M.d_i(\bar M)}\;(\mathsf{occurs}_M.\mathsf{args}) \\[1em]
 \frac{x \text{ occurs in } \bar M}{x \text{ occurs in } \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P}\;(\mathsf{occurs}_M.\mathsf{from}) \\[1em]
 \frac{x \text{ occurs in } \bar P}{x \text{ occurs in } \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P}\;(\mathsf{occurs}_M.\mathsf{with}_{\bar P}) \\[1em]
-\frac{x \text{ occurs in } M}{x \text{ occurs in } (M,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.M) \\[1em]
-\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } (M,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.\bar M) \\[1em]
+\frac{x \text{ occurs in } M}{x \text{ occurs in } (M \mathrel{▶} \pi,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.M) \\[1em]
+\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } (M \mathrel{▶} \pi,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.\bar M) \\[1em]
 \frac{x \text{ occurs in } N}{x \text{ occurs in } ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.N) \\[1em]
 \frac{x \text{ occurs in } \bar N}{x \text{ occurs in } ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.\bar N) \\[1em]
 \frac{x \text{ occurs in } P}{x \text{ occurs in } ((\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k).\, P,\ \bar P)}\;(\mathsf{occurs}_{\bar P}.P) \\[1em]
@@ -208,7 +218,7 @@ A term of the target language is a skeleton when it is built of constructors and
 \frac{}{\text{↯} \text{ is a skeleton}}\;(\mathsf{skeleton}_M.\text{↯}) \\[1em]
 \frac{\bar M \text{ are skeletons}}{c_i(\bar M) \text{ is a skeleton}}\;(\mathsf{skeleton}_M.c) \\[1em]
 \frac{}{() \text{ are skeletons}}\;(\mathsf{skeleton}_{\bar M}.\varepsilon) \\[1em]
-\frac{M \text{ is a skeleton} \quad \bar M \text{ are skeletons}}{(M,\ \bar M) \text{ are skeletons}}\;(\mathsf{skeleton}_{\bar M}.{,})
+\frac{M \text{ is a skeleton} \quad \bar M \text{ are skeletons}}{(M \mathrel{▶} \pi,\ \bar M) \text{ are skeletons}}\;(\mathsf{skeleton}_{\bar M}.{,})
 \end{gathered}
 ```
 
@@ -220,12 +230,12 @@ The judgment $`{M \sqsubseteq N}`$ reads: the term $`M`$ of the target language 
 \frac{}{x \sqsubseteq x}\;({\sqsubseteq}.x) \\[1em]
 \frac{}{f.\{\bar s;\ \bar p\} \sqsubseteq f.\{\bar s;\ \bar p\}}\;({\sqsubseteq}.f) \\[1em]
 \frac{\bar M_1 \sqsubseteq \bar M_2}{c_i(\bar M_1) \sqsubseteq c_i(\bar M_2)}\;({\sqsubseteq}.c) \\[1em]
-\frac{M_1 \sqsubseteq M_2 \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}\ M_1\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}\ M_2\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}) \\[1em]
-\frac{M_1 \text{ is a skeleton} \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}\ M_1\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}\ M_2\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}_{\mathsf{skeleton}}) \\[1em]
+\frac{M_1 \sqsubseteq M_2 \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}) \\[1em]
+\frac{M_1 \text{ is a skeleton} \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}_{\mathsf{skeleton}}) \\[1em]
 \frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{M_1.d_i(\bar M_1) \sqsubseteq M_2.d_i(\bar M_2)}\;({\sqsubseteq}.d) \\[1em]
 \frac{\bar M_1 \sqsubseteq \bar M_2 \quad \bar P_1 \sqsubseteq \bar P_2}{\mathsf{corec}\ \mathsf{from}\ \bar M_1\ \mathsf{with}\ \bar P_1 \sqsubseteq \mathsf{corec}\ \mathsf{from}\ \bar M_2\ \mathsf{with}\ \bar P_2}\;({\sqsubseteq}.\mathsf{corec}) \\[1em]
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar M}.\varepsilon) \\[1em]
-\frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{(M_1,\ \bar M_1) \sqsubseteq (M_2,\ \bar M_2)}\;({\sqsubseteq}_{\bar M}.{,}) \\[1em]
+\frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{(M_1 \mathrel{▶} \pi,\ \bar M_1) \sqsubseteq (M_2 \mathrel{▶} \pi,\ \bar M_2)}\;({\sqsubseteq}_{\bar M}.{,}) \\[1em]
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar N}.\varepsilon) \\[1em]
 \frac{\begin{gathered}{}\forall j.\ k_{1j} = \bot \text{ or } k_{1j} = k_{2j} \\ N_1 \sqsubseteq N_2 \\ \bar N_1 \sqsubseteq \bar N_2\end{gathered}}{((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k_1).\, N_1,\ \bar N_1) \sqsubseteq ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k_2).\, N_2,\ \bar N_2)}\;({\sqsubseteq}_{\bar N}.{,}) \\[1em]
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar P}.\varepsilon) \\[1em]
@@ -252,12 +262,12 @@ In the rules, $`{\nu \bullet \bar\pi \bullet \bar\pi'}`$ extends $`\nu`$ by the 
 \frac{}{0^{\nu} \vdash f.\{\bar s;\ \bar p\} \mathrel{▶}}\;(\mathsf{usage}_M.f) \\[1em]
 \frac{}{0^{\nu} \vdash \text{↯} \mathrel{▶}}\;(\mathsf{usage}_M.\text{↯}) \\[1em]
 \frac{\nu \vdash \bar M \mathrel{▶}}{\nu \vdash c_i(\bar M) \mathrel{▶}}\;(\mathsf{usage}_M.c) \\[1em]
-\frac{\nu \vdash M \mathrel{▶} \quad \chi \vdash \bar N \mathrel{▶}}{\nu +^{\nu} \chi \vdash \mathsf{rec}\ M\ \mathsf{with}\ \bar N \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{rec}) \\[1em]
+\frac{\nu \vdash M \mathrel{▶} \quad \chi \vdash \bar N \mathrel{▶}}{\nu +^{\nu} \chi \vdash \mathsf{rec}_\rho\ M\ \mathsf{with}\ \bar N \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{rec}) \\[1em]
 \frac{\nu_1 \vdash M \mathrel{▶} \quad \nu_2 \vdash \bar M \mathrel{▶}}{\nu_1 +^{\nu} \nu_2 \vdash M.d_i(\bar M) \mathrel{▶}}\;(\mathsf{usage}_M.d) \\[1em]
 \frac{\nu \vdash \bar M \mathrel{▶} \quad \delta \vdash \bar P \mathrel{▶}}{\nu +^{\nu} \delta \vdash \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{corec}) \\[1em]
 \frac{\nu \vdash M \mathrel{▶} \quad \mu \le^{\nu} \nu}{\mu \vdash M \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{sub}) \\[1em]
 \frac{}{0^{\nu} \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.\varepsilon) \\[1em]
-\frac{\nu_1 \vdash M \mathrel{▶} \quad \nu_2 \vdash \bar M \mathrel{▶}}{\nu_1 +^{\nu} \nu_2 \vdash (M,\ \bar M) \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.{,}) \\[1em]
+\frac{\nu_1 \vdash M \mathrel{▶} \quad \nu_2 \vdash \bar M \mathrel{▶}}{\nu_1 +^{\nu} \nu_2 \vdash (M \mathrel{▶} \pi,\ \bar M) \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.{,}) \\[1em]
 \frac{}{\chi \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.\varepsilon) \\[1em]
 \frac{\begin{gathered}{}\delta \bullet \bar\pi \bullet \bar\pi' \vdash N \mathrel{▶} \\ \chi \le^{\nu} \delta +^{\nu} \mathsf{recursions}(\bar k) \cdot^{\nu} \chi \\ \chi \vdash \bar N \mathrel{▶}\end{gathered}}{\chi \vdash ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.{,}) \\[1em]
 \frac{}{\delta \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar P}.\varepsilon) \\[1em]
