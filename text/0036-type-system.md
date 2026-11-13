@@ -99,6 +99,7 @@ A constant declaration has no body to compute: the meaning takes an interpretati
 The typing is sound: under an interpretation that gives each constant declaration a term of its type, every judgment that the rules derive is true, so that the axioms and the foreign constants of a program are the hypotheses of its guarantees.
 
 The usage of a term guarantees what its erasure computes when it runs, by the [evaluation](0036-type-system/17-evaluation.md) of the target language: under a program that holds the erasure of the signature and realizes its constant declarations of the mode $`{11}^{\mathsf{m}}`$, the erasure of a term typed and used in this mode computes a value that the relation of run time of its type relates to the term, which is the fundamental lemma of the run time.
+For a closed term, run in the empty heap, this is the soundness of the extraction: at an instance of a data type that is not a proposition, its erasure computes the constructor of the target language that stands for the constructor that the term computes.
 What the ownership of a term guarantees of its erasure when it runs is not stated yet.
 
 ### Annexes
@@ -126,7 +127,7 @@ The examples are in the directory `99-examples` of the annexes, one file per exa
 - [Evaluation](0036-type-system/17-evaluation.md): the calling convention, the call by value with closures for the corecursors, as a big-step evaluation of the target language in a heap, the program of a signature, its determinism, and the extension of the heaps.
 - [Meaning](0036-type-system/18-meaning.md): the meaning of the judgments of the typing, the interpretation of the constant declarations, the equality of the canonical terms of the sorts and of the data types, the relations of run time of the types, by the graph of the relations of the types of each level, the exactness of the meaning for the proofs, and the soundness of the typing under an interpretation of the constant declarations.
 - [Prelude](0036-type-system/19-prelude.md): the unit, the pair and the type of positions that the type system declares for its own needs, the packing of a telescope and of its arguments, the unpacking of a term of a packing, and their properties.
-- [Run time](0036-type-system/20-run-time.md): the relation of run time between the closed terms of a closed type and the values that their erasure computes, its monotonicity in the heap, the validity at run time of a term in a context, with its subsumption, the programs that realize a signature, and the fundamental lemma of the run time.
+- [Run time](0036-type-system/20-run-time.md): the relation of run time between the closed terms of a closed type and the values that their erasure computes, its monotonicity in the heap, the validity at run time of a term in a context, with its subsumption, the programs that realize a signature, the fundamental lemma of the run time, and the soundness of the extraction.
 
 ## Drawbacks
 

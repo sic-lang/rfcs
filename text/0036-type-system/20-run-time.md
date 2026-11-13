@@ -1,6 +1,6 @@
 # Run Time
 
-This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, the programs that realize a signature, and their properties, among them the fundamental lemma of the run time, by which a term typed and used in the mode $`{11}^{\mathsf{m}}`$ is valid at run time.
+This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, the programs that realize a signature, and their properties, among them the fundamental lemma of the run time, by which a term typed and used in the mode $`{11}^{\mathsf{m}}`$ is valid at run time, and the soundness of the extraction, by which the erasure of a closed term computes what the term computes.
 It builds on the [usage](12-usage.md), the [typing](14-typing.md), the [erasure](16-erasure.md), the [evaluation](17-evaluation.md) and the [meaning](18-meaning.md), which gives each closed canonical type its [relation of run time](18-meaning.md#relations-of-run-time).
 
 ## Definitions
@@ -148,5 +148,39 @@ This is the fundamental lemma of the run time: what the erasure of the term comp
 & \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
 & \qquad \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ {11}^{\mathsf{m}} \text{ where } \bar p \text{ are the grades of the entries of } \Theta \\
 & \quad \forall \rho.\ \Sigma;\ \gamma;\ \Gamma[\rho] \vDash^{\circledR} \bar t[\rho] : \Theta[\rho]
+\end{aligned}
+```
+
+The soundness of the extraction is the fundamental lemma for a closed term, run in the empty heap and the empty environment: its erasure by $`S^{{11}^{\mathsf{m}}}`$ evaluates to an address in a heap, to which the term is related at its type; when its type computes to an instance of a data type that is not a proposition, the value at this address is the constructor of the target language of the case of the constructor that the term computes, by $`(\circledR_c)`$, as the relation $`(\circledR_\mu)`$ is the least one closed under it:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{sound}_{\lfloor\rfloor}) \\
+& \quad \text{and} \\
+& \qquad \iota \text{ interprets } \Sigma \\
+& \qquad \mathcal{P} \text{ realizes } \Sigma \\
+& \qquad \vdash \Sigma \mathrel{▶} \\
+& \qquad \Sigma;\ \varepsilon \vdash t : A \\
+& \qquad \Sigma;\ \varepsilon \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
+& \quad \forall \rho.\ \exists \ell, H. \\
+& \qquad \text{and} \\
+& \qquad\quad \mathcal{P};\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H \\
+& \qquad\quad t[\rho] \circledR_H \ell : A[\rho] \\[1em]
+& \text{⟹} &&(\mathsf{sound}_c) \\
+& \quad \text{and} \\
+& \qquad \iota \text{ interprets } \Sigma \\
+& \qquad \mathcal{P} \text{ realizes } \Sigma \\
+& \qquad \vdash \Sigma \mathrel{▶} \\
+& \qquad \Sigma;\ \varepsilon \vdash t : A \\
+& \qquad \Sigma;\ \varepsilon \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
+& \qquad D \text{ is a data type of } \Sigma \\
+& \qquad A[\rho] \Downarrow D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \\
+& \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \text{ is not a proposition} \\
+& \quad \exists \ell, H, T, c, \bar t, \bar\ell. \\
+& \qquad \text{and} \\
+& \qquad\quad \mathcal{P};\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H \\
+& \qquad\quad T \text{ is an instance of } D \\
+& \qquad\quad t[\rho] \Downarrow T.c(\bar t) \\
+& \qquad\quad H(\ell) = c_i(\bar\ell) \text{ with } i = \mathsf{case}_\Sigma(D.c)
 \end{aligned}
 ```

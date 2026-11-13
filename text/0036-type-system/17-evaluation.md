@@ -17,7 +17,7 @@ A value is $`\text{↯}`$, the constructor of a case applied to the addresses of
 \end{aligned}
 ```
 
-A heap $`H`$ is a sequence of values, the address $`\ell`$ of a value being its position in it, the first one at $`1`$, so that $`H(\ell)`$ is the value at the address $`\ell`$, and $`{(H,\ V)}`$ allocates $`V`$ at the address $`{|H| + 1}`$, where $`|H|`$ is the number of the values of $`H`$.
+A heap $`H`$ is a sequence of values, the address $`\ell`$ of a value being its position in it, the first one at $`1`$, so that $`H(\ell)`$ is the value at the address $`\ell`$, and $`{(H,\ V)}`$ allocates $`V`$ at the address $`{|H| + 1}`$, where $`|H|`$ is the number of the values of $`H`$; $`\varepsilon`$ is the empty heap.
 An environment $`E`$ gives each variable of a scope the address of its value, $`E(x)`$, and $`{E,\ \bar x \mapsto \bar\ell}`$ extends it with the addresses $`\bar\ell`$ of the variables $`\bar x`$, as many; $`\varepsilon`$ is the environment of the empty scope.
 
 A program $`\mathcal{P}`$ gives a constant at the qualities and the grades of an instance, $`{f.\{\bar s;\ \bar p\}}`$, a closed term of the target language, its body.
