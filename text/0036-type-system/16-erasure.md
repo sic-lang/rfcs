@@ -1,7 +1,7 @@
 # Erasure
 
-This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, the usage of the target language, and their properties.
-It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [vectors of multiplicities](10-grade-vectors.md#vectors-of-multiplicities), the [sets of grades](11-grade-sets.md), the [usage](12-usage.md) and the fields of a block, which the [typing](14-typing.md#fields-of-a-block) marks.
+This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, the usage and the ownership of the target language, and their properties.
+It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [vectors of multiplicities](10-grade-vectors.md#vectors-of-multiplicities), the [sets of grades](11-grade-sets.md), the [usage](12-usage.md), the [ownership](13-ownership.md) and the fields of a block, which the [typing](14-typing.md#fields-of-a-block) marks.
 
 ## Definitions
 
@@ -281,6 +281,34 @@ In the rules, $`{\nu \bullet \bar\pi \bullet \bar\pi'}`$ extends $`\nu`$ by the 
 \end{gathered}
 ```
 
+The judgment $`{\Omega;\ \varphi \vdash M \mathrel{◀} o}`$ reads: the value of the term $`M`$ of the target language has the ownership $`o`$ at run time, a multiplicity, given the ownership $`\varphi(x)`$ of each variable $`x`$ and the ownership $`\Omega(f)`$ of each constant $`f`$; $`{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o}`$ reads: the terms $`\bar M`$ have the ownerships $`\bar o`$, each satisfying the requirement of its position.
+It follows the [ownership](13-ownership.md) on the run-time components that the target language keeps, the ownerships being multiplicities, ordered as the multiplicities are, $`\omega`$ the least, which states nothing, and the value $`\psi[\bar o]`$ of the ownership $`\psi`$ of the result of a destructor at the ownerships $`\bar o`$ of its arguments being defined as $`(\mathsf{value}_\psi)`$ defines it, on multiplicities.
+A variable has the ownership that $`\varphi`$ gives it, a constant the one that $`\Omega`$ gives it, and $`\text{↯}`$, which the evaluation never reads, every ownership; a constructor builds a new value, of the ownership $`1`$, whose fields satisfy the requirements of their positions, $`\bar\varrho(\bar M) \le \bar o`$, as an observation and a corecursor require of their arguments and of their state.
+A recursor has the ownership $`o'`$ of its branches, each checked with the ownership $`o`$ of its term times the coefficient $`\kappa`$ of each variable of a field, and $`o'`$ times the multiplicity $`\pi'`$ of each variable of a recursive result, written $`{\varphi \bullet o \cdot \bar\kappa \bullet o' \cdot \bar\pi'}`$ as $`(\bullet_\nu)`$ extends a vector; an observation has the ownership $`o`$ of its term times the value of $`\psi`$ at the ownerships of its arguments.
+A corecursor builds a new value, of the ownership $`1`$, and each branch has, for all the ownerships $`\bar o`$ of its arguments that satisfy their requirements $`\bar\varrho'`$, the value of the ownership $`\psi`$ of the result of its destructor at $`\bar o`$, or the ownership $`1`$ of a new value when it resumes the corecursor, $`{k \ne \bot}`$, given the ownership $`\varrho \cdot \pi`$ of the variable of each entry of the state, of the requirement $`\varrho`$ and the multiplicity $`\pi`$, and $`o \cdot \pi'`$ of the variable of each argument, of the ownership $`o`$ and the multiplicity $`\pi'`$, as the [ownership](13-ownership.md#definitions) of the source language checks them.
+A position satisfies its requirement in every case, without the exception of the mode $`{00}^{\mathsf{m}}`$ of the source language: the erasure replaces with $`\text{↯}`$ every position that the source language does not check, whose ownership no value of an ownership $`\psi`$ reads, since $`(d_{◀})`$ admits a factor of $`\psi`$ only on an argument checked in the mode of the observation:
+
+```math
+\begin{gathered}
+\frac{}{\Omega;\ \varphi \vdash x \mathrel{◀} \varphi(x)}\;(\mathsf{own}_M.x) \\[1em]
+\frac{}{\Omega;\ \varphi \vdash f.\{\bar s;\ \bar p\} \mathrel{◀} \Omega(f)}\;(\mathsf{own}_M.f) \\[1em]
+\frac{}{\Omega;\ \varphi \vdash \text{↯} \mathrel{◀} o}\;(\mathsf{own}_M.\text{↯}) \\[1em]
+\frac{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o}{\Omega;\ \varphi \vdash c_i(\bar M) \mathrel{◀} 1}\;(\mathsf{own}_M.c) \\[1em]
+\frac{\Omega;\ \varphi \vdash M \mathrel{◀} o \quad \Omega;\ \varphi \vdash \bar N \mathrel{◀} o;\ o'}{\Omega;\ \varphi \vdash \mathsf{rec}_\rho\ M\ \mathsf{with}\ \bar N \mathrel{◀} o'}\;(\mathsf{own}_M.\mathsf{rec}) \\[1em]
+\frac{\begin{gathered}{}\Omega;\ \varphi \vdash M \mathrel{◀} o \\ \Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o \\ \psi[\bar o] = v\end{gathered}}{\Omega;\ \varphi \vdash M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} o \cdot v}\;(\mathsf{own}_M.d) \\[1em]
+\frac{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o \quad \Omega;\ \varphi \vdash \bar P \mathrel{◀}}{\Omega;\ \varphi \vdash \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \mathrel{◀} 1}\;(\mathsf{own}_M.\mathsf{corec}) \\[1em]
+\frac{\Omega;\ \varphi \vdash M \mathrel{◀} p \quad q \le p}{\Omega;\ \varphi \vdash M \mathrel{◀} q}\;(\mathsf{own}_M.\mathsf{sub}) \\[1em]
+\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} ()}\;(\mathsf{own}_{\bar M}.\varepsilon) \\[1em]
+\frac{\begin{gathered}{}\Omega;\ \varphi \vdash M \mathrel{◀} o \\ \varrho \le o \\ \Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o\end{gathered}}{\Omega;\ \varphi \vdash (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \mathrel{◀} (o,\ \bar o)}\;(\mathsf{own}_{\bar M}.{,}) \\[1em]
+\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.\varepsilon) \\[1em]
+\frac{\begin{gathered}{}\Omega;\ \varphi \bullet o \cdot \bar\kappa \bullet o' \cdot \bar\pi' \vdash N \mathrel{◀} o' \\ \Omega;\ \varphi \vdash \bar N \mathrel{◀} o;\ o'\end{gathered}}{\Omega;\ \varphi \vdash ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.{,}) \\[1em]
+\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀}}\;(\mathsf{own}_{\bar P}.\varepsilon) \\[1em]
+\frac{\begin{gathered}{}\forall \bar o, v.\ \bar\varrho' \le \bar o \text{ and } (k = \bot \text{ and } \psi[\bar o] = v \text{ or } k \ne \bot \text{ and } v = 1) \implies \Omega;\ \varphi \bullet \bar\varrho \cdot \bar\pi \bullet \bar o \cdot \bar\pi' \vdash P \mathrel{◀} v \\ \Omega;\ \varphi \vdash \bar P \mathrel{◀}\end{gathered}}{\Omega;\ \varphi \vdash ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi).\, P,\ \bar P) \mathrel{◀}}\;(\mathsf{own}_{\bar P}.{,})
+\end{gathered}
+```
+
+In the rules, $`o \cdot \bar\kappa`$, $`\bar\varrho \cdot \bar\pi`$ and $`\bar o \cdot \bar\pi'`$ multiply the sequences element by element.
+
 ## Properties
 
 A variable whose grade is in a set $`S`$ is absent from the erasure by $`S`$ of a term checked in a mode whose uses $`S`$ does not erase, in a signature whose names are distinct, so that the usage and the erasure of a constructor read the grades of its fields in the same entry, and the erasure by a larger set is less defined, so that the extraction is the program that the proofs see with more parts erased:
@@ -312,7 +340,23 @@ The erasure at run time keeps the usage: a term checked in the mode $`{11}^{\mat
 \end{aligned}
 ```
 
+The erasure at run time keeps the ownership: a term checked in the mode $`{11}^{\mathsf{m}}`$ in a signature whose names are distinct, so that the ownership and the erasure read the parameters of the fields, of the arguments and of the branches in the same entry, has an erasure whose ownership at run time is the run-time multiplicity of its own, given the run-time multiplicities $`\mathsf{run}(\varphi)`$ of the ownerships of its variables, and ownerships $`\Omega`$ of the constants that are the run-time multiplicities of those of their entries, defined or declared:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{erase}_{◀}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \forall f,\ p'.\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p' \text{ is an entry of } \Sigma \implies \Omega(f) = \mathsf{run}(p') \\
+& \qquad \Sigma;\ \varphi \vdash t \mathrel{◀} p;\ {11}^{\mathsf{m}} \\
+& \quad \Omega;\ \mathsf{run}(\varphi) \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \mathrel{◀} \mathsf{run}(p)
+\end{aligned}
+```
+
+The erasure keeps the positions that the mode $`{11}^{\mathsf{m}}`$ checks in this mode again, which satisfy their requirements, and replaces the others with $`\text{↯}`$, which has every ownership and whose ownership no value of the ownership of a result reads; the run-time multiplicity keeps the product and the meet of the grades, so that the coefficients and the multiplicities that the erasure stores give the variables of the branches the run-time multiplicities of their ownerships, and a branch of a corecursor, checked for the ownerships of its arguments at run time, is checked by the source language for ownerships of the grades above their requirements, which have these run-time multiplicities.
+The term of a recursor whose grade has no use at run time becomes a skeleton, of the ownership $`1`$, and the variables of its fields have the ownership $`0`$, whatever the ownership of the term.
+
 The erasure removes the positions whose grade has no use at run time, which the usage counts $`0`$ times at run time, replacing them by $`\text{↯}`$, and the term of a recursor of such a grade by a skeleton, and keeps the others, which a term checked in the mode $`{11}^{\mathsf{m}}`$ checks in this mode again, at grades whose run-time multiplicity is $`1`$ or $`\omega`$, below $`1`$; it gives each binder the multiplicity that the usage gives its variable at run time, except the variable of a field of a branch of a recursor, whose multiplicity is the least that the bound on its grade allows, below this grade.
 An instance, which the erasure replaces by $`\text{↯}`$, needs its [usage](12-usage.md#definitions) as a position of the grade $`{01}^{\mathsf{p}}`$, which uses no variable at run time, and a branch of a corecursor of a destructor without use at run time, whose term is $`\text{↯}`$, needs the multiplicity $`0`$ of its variables, while the usage already bounds the uses of the scope by none at run time, $`{\delta \le p \cdot \delta_i}`$ with $`\mathsf{run}(p) = 0`$.
 
-The erasure decides what it removes by the grades of the usage alone, which the ownership reads without deciding what is erased; it keeps at run time the requirements of the positions, the coefficients and the requirements of the binders and the ownerships of the results of the destructors, which the [evaluation](17-evaluation.md) checks against the values that it stores, and what the ownership of a term guarantees of its erasure, the uses of a value during a run, needs the evaluation of the target language.
+The erasure decides what it removes by the grades of the usage alone, which the ownership reads without deciding what is erased; it keeps at run time the requirements of the positions, the coefficients and the requirements of the binders and the ownerships of the results of the destructors, which the [evaluation](17-evaluation.md) checks against the values that it stores, and which the ownership of the target language reads, $`(\mathsf{erase}_{◀})`$; what the ownership of a term guarantees of its erasure, the uses of a value during a run, needs the evaluation of the target language.
