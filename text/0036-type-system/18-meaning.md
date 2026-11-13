@@ -257,13 +257,13 @@ A closed term is related by $`{\circledR_\Downarrow(R)}`$ to an address when it 
 \end{aligned}
 ```
 
-The canonical terms of an instance of a data type are its constructors, at any instance of its type, as for their equality, and a constructor $`c_{ji}`$ is related to the constructor of its case in the target language whose fields the relation $`S_i`$ of the fields of $`c_{ji}`$ relates to its own, $`(H,\ \bar t,\ \bar\ell) \in S_i`$, and which stores them at the multiplicities at run time of their grades $`\bar q`$ at the instance $`\bar s'`$, $`\bar p'`$ of the sort and grade variables, those of the telescope $`\Theta_{ji}`$ of $`c_{ji}`$, $`\mathsf{run}(\bar q)`$ applying $`\mathsf{run}`$ to each:
+The canonical terms of an instance of a data type are its constructors, at any instance of its type, as for their equality, and a constructor $`c_{ji}`$ is related to the constructor of its case in the target language whose fields the relation $`S_i`$ of the fields of $`c_{ji}`$ relates to its own, $`(H,\ \bar t,\ \bar\ell) \in S_i`$, and which stores them at the multiplicities at run time of their grades $`\bar q`$ and at the requirements at run time of their requirements $`\bar r`$ at the instance $`\bar s'`$, $`\bar p'`$ of the sort and grade variables, the parameters $`{\bar q \mathrel{◀} \bar r}`$ of the telescope $`\Theta_{ji}`$ of $`c_{ji}`$, $`\mathsf{run}(\bar q)`$ applying $`\mathsf{run}`$ to each:
 
 ```math
 \begin{aligned}
 & = &&(\circledR_c) \\
 & \quad \circledR_c^{\bar s';\ \bar p'}(D_j,\ \bar S) \\
-& \quad \{(H,\ T.c_{ji}(\bar t),\ \ell) \mid T \text{ is an instance of } D_j,\ H(\ell) = c_{i'}(\bar\ell \mathrel{▶} \mathsf{run}(\bar q)) \text{ with } i' = \mathsf{case}_\Sigma(D_j.c_{ji}),\ \bar q \text{ the grades of } \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ and } (H,\ \bar t,\ \bar\ell) \in S_i\}
+& \quad \{(H,\ T.c_{ji}(\bar t),\ \ell) \mid T \text{ is an instance of } D_j,\ H(\ell) = c_{i'}(\bar\ell \mathrel{▶} \mathsf{run}(\bar q) \mathrel{◀} \mathsf{run}(\bar r)) \text{ with } i' = \mathsf{case}_\Sigma(D_j.c_{ji}),\ \bar q \mathrel{◀} \bar r \text{ the parameters of } \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ and } (H,\ \bar t,\ \bar\ell) \in S_i\}
 \end{aligned}
 ```
 
@@ -297,15 +297,15 @@ The relations of the instances of the types of a block of codata types are the g
 \end{aligned}
 ```
 
-A closed abstraction $`f`$ for the destructor of the case $`i`$, whose arguments have the grades $`\bar q`$ and the relation $`S_\Theta`$ and whose result type has the relation $`F(\bar t)`$ at the arguments $`\bar t`$, is related to the value at the address $`\ell`$ when, in each heap that extends $`H`$, its observation at arguments that $`S_\Theta`$ relates to addresses, passed at the multiplicities at run time of their grades, gives, at each weight, a value, reading some cells, that $`F`$ relates to the result of $`f`$; the heap of the observation extends $`H`$, since the arguments may be computed after the value at $`\ell`$:
+A closed abstraction $`f`$ for the destructor of the case $`i`$, whose arguments have the parameters $`{\bar q \mathrel{◀} \bar r}`$ and the relation $`S_\Theta`$, whose result has the ownership $`\psi`$ and whose result type has the relation $`F(\bar t)`$ at the arguments $`\bar t`$, is related to the value at the address $`\ell`$ when, in each heap that extends $`H`$, its observation at arguments that $`S_\Theta`$ relates to addresses, passed at the multiplicities at run time of their grades and at the requirements at run time of their requirements, with the ownership at run time of the result, gives, at each weight, a value, reading some cells, that $`F`$ relates to the result of $`f`$; the heap of the observation extends $`H`$, since the arguments may be computed after the value at $`\ell`$:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&(\circledR_{\bar x}) \\
-& \quad (H,\ f,\ \ell) \in \circledR_{\bar x}(i,\ \bar q,\ S_\Theta,\ F) \\
+& \quad (H,\ f,\ \ell) \in \circledR_{\bar x}(i,\ \bar q \mathrel{◀} \bar r,\ \psi,\ S_\Theta,\ F) \\
 & \quad \forall H' \sqsupseteq H.\ \forall (H',\ \bar t,\ \bar\ell) \in S_\Theta.\ \forall \varpi.\ \exists \ell',\ H'',\ R. \\
 & \qquad \text{and} \\
-& \qquad \quad \mathcal{P};\ \varpi;\ H' \vdash \ell.d_i(\bar\ell \mathrel{▶} \mathsf{run}(\bar q)) \Downarrow \ell';\ H'';\ R \\
+& \qquad \quad \mathcal{P};\ \varpi;\ H' \vdash \ell.d_i(\bar\ell \mathrel{▶} \mathsf{run}(\bar q) \mathrel{◀} \mathsf{run}(\bar r)) \mathrel{◀} \mathsf{run}(\psi) \Downarrow \ell';\ H'';\ R \\
 & \qquad \quad (H'',\ f[\bar t / \bar x],\ \ell') \in F(\bar t)
 \end{aligned}
 ```
@@ -376,10 +376,10 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 \begin{aligned}
 & (\varepsilon,\ \{(H,\ \bar f,\ \ell) \mid \bar f \text{ is a family of closed abstractions}\}) \in \mathsf{rt}_D(U_n)[\bar R] &&(\mathsf{rt}_{\bar d\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\bar d|}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (f_d,\ f_d) \in E,\ (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q',\ R_\Theta,\ R)) \text{ and } (H,\ \bar f,\ \ell) \in G(f_d)\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (f_d,\ f_d) \in E,\ (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ R_\Theta,\ R)) \text{ and } (H,\ \bar f,\ \ell) \in G(f_d)\}) \\
 & \quad \mathsf{rt}_D(U_n)[\bot,\ \bar R] \\
 & \quad \text{and} \\
-& \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \text{ the grades of } \Theta \\
+& \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \mathrel{◀} \bar r' \text{ the parameters of } \Theta \\
 & \qquad (\Theta,\ S_\Theta) \in \mathsf{ty}(U_n) \\
 & \qquad (\Theta,\ R_\Theta) \in \mathsf{rt}(U_n) \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ \exists v.\ B[\bar t / \bar x] \Downarrow v \\
@@ -388,10 +388,10 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 & \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
 & \qquad \forall (f,\ f) \in E.\ (\bar d[f / d],\ G(f)) \in \mathsf{rt}_D(U_n)[\bar R] \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\bar d\mathsf{rec}}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q',\ R_\Theta,\ \bar t \mapsto R)) \text{ and } (H,\ \bar f,\ \ell) \in G\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ R_\Theta,\ \bar t \mapsto R)) \text{ and } (H,\ \bar f,\ \ell) \in G\}) \\
 & \quad \mathsf{rt}_D(U_n)[R,\ \bar R] \\
 & \quad \text{and} \\
-& \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \text{ the grades of } \Theta \\
+& \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \mathrel{◀} \bar r' \text{ the parameters of } \Theta \\
 & \qquad (\Theta,\ R_\Theta) \in \mathsf{rt}(U_n) \\
 & \qquad \forall f.\ (\bar d[f / d],\ G) \in \mathsf{rt}_D(U_n)[\bar R]
 \end{aligned}

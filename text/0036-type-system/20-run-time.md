@@ -178,12 +178,12 @@ The soundness of the extraction is the fundamental lemma for a closed term, run 
 & \qquad D \text{ is a data type of } \Sigma \\
 & \qquad A[\rho] \Downarrow D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \\
 & \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \text{ is not a proposition} \\
-& \quad \exists \ell, H, R, T, c, \bar t, \bar\ell, \bar\pi. \\
+& \quad \exists \ell, H, R, T, c, \bar t, \bar\ell, \bar\pi, \bar\varrho. \\
 & \qquad \text{and} \\
 & \qquad\quad \mathcal{P};\ 1;\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
 & \qquad\quad T \text{ is an instance of } D \\
 & \qquad\quad t[\rho] \Downarrow T.c(\bar t) \\
-& \qquad\quad H(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi) \text{ with } i = \mathsf{case}_\Sigma(D.c)
+& \qquad\quad H(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho) \text{ with } i = \mathsf{case}_\Sigma(D.c)
 \end{aligned}
 ```
 

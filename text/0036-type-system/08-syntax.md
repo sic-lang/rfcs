@@ -117,7 +117,7 @@ A telescope in a scope is either empty, written $`\varepsilon`$, or an entry fol
 \end{aligned}
 ```
 
-The entry $`{x : A \mathrel{▶} p;\ q \mathrel{◀} r}`$ is used with the grade $`p`$, requires of its argument the ownership $`r`$, and its variable is used with the grade $`q`$ by the types after it; the grades of a telescope are the grades $`p`$ of its entries, in order, and its requirements their ownerships $`r`$.
+The entry $`{x : A \mathrel{▶} p;\ q \mathrel{◀} r}`$ is used with the grade $`p`$, requires of its argument the ownership $`r`$, and its variable is used with the grade $`q`$ by the types after it; the grades of a telescope are the grades $`p`$ of its entries, in order, its requirements their ownerships $`r`$, and its parameters the grade and the requirement of each entry, in order, written $`{\bar p \mathrel{◀} \bar r}`$.
 
 A context is either empty, written $`\varepsilon`$, or a context $`\Gamma`$ extended by a variable, written $`{\Gamma,\ x : A}`$, or by a second-order variable, written $`{\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi)}`$, in which $`A`$ and $`\Theta`$ are in the scope of $`\Gamma`$, and in $`{X : (\Theta \vdash A \mathrel{◀} \psi)}`$, $`A`$ is in the scope of $`\Gamma`$ extended by the variables of $`\Theta`$:
 
