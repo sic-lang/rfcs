@@ -15,7 +15,7 @@ A multiplicity is $`0`$, $`1`$ or $`\omega`$, where $`\omega`$ stands for any nu
 \end{aligned}
 ```
 
-The multiplicities are added, multiplied, met and subtracted by cases, $`0`$ being neutral for the addition and absorbing for the multiplication, $`1`$ neutral for the multiplication, $`0`$ absorbing on the left of the subtraction and neutral on its right, and $`\omega`$ the result of every other case:
+The multiplicities are added, multiplied, met and subtracted by cases, $`0`$ being neutral for the addition and absorbing for the multiplication, $`1`$ neutral for the multiplication, $`0`$ absorbing on the left of the subtraction and neutral on its right, and $`\omega`$ the result of every other case, and a sequence of multiplicities is summed, the first one first:
 
 ```math
 \begin{aligned}
@@ -33,7 +33,9 @@ The multiplicities are added, multiplied, met and subtracted by cases, $`0`$ bei
 & 0 - \pi = 0 &&(\mathsf{op}_\pi.{-}) \\
 & \pi - 0 = \pi \\
 & 1 - 1 = 0 \\
-& \pi_1 - \pi_2 = \omega \text{ otherwise}
+& \pi_1 - \pi_2 = \omega \text{ otherwise} \\[1em]
+& \Sigma() = 0 &&(\mathsf{op}_\pi.\Sigma) \\
+& \Sigma(\pi_1, \dots, \pi_n) = \pi_1 + \Sigma(\pi_2, \dots, \pi_n)
 \end{aligned}
 ```
 
