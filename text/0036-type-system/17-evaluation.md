@@ -237,6 +237,18 @@ The demand of an environment follows the operations of the usage on its vector, 
 \end{aligned}
 ```
 
+The program of a signature reads its variables as its usage allows, when the names of the signature are distinct and its entries use their variables as their grades allow: each of its bodies is the erasure at run time of the body of a constant definition of the mode $`{11}^{\mathsf{m}}`$, which uses no variable in the signature before it, and so in the whole signature, in which the program erases it:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{usage}_{\lfloor \Sigma \rfloor}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \vdash \Sigma \mathrel{▶} \\
+& \quad \vdash \lfloor \Sigma \rfloor_{S^{{11}^{\mathsf{m}}}} \mathrel{▶}
+\end{aligned}
+```
+
 The bindings are conserved: a run at a weight $`\varpi`$ other than $`0`$ of a term whose usage bounds its reads by $`\nu`$, in an environment of the demand $`D_E`$ for $`\nu`$, in a program whose bodies are well used, reads the cells, and allocates cells, as the demand of the environment at the weight allows, once the demand $`D`$ of its value at the weight is counted; the multiplicities of the positions of the terms and of the binders of the branches, and the checks of the recursor and of the observation, keep this balance at each step:
 
 ```math

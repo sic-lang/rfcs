@@ -129,3 +129,30 @@ Usage is stable under the [renamings](09-substitution.md#renamings): renamed, a 
 & \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \implies \Sigma;\ \gamma[\alpha] \vdash \Theta[\alpha] \mathrel{▶} m &&(\mathsf{ren}_{▶}.\Theta)
 \end{aligned}
 ```
+
+Usage holds in every signature that has the entries of its own, since it reads its signature only by the entries that it has, its constants and its declared types; the judgment $`{\vdash \Sigma \mathrel{▶}}`$ checks the body of a constant definition in the signature before it, which every later signature extends:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{ext}_{▶}.t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \gamma \vdash t \mathrel{▶} m \\
+& \quad \Sigma';\ \gamma \vdash t \mathrel{▶} m \\[1em]
+& \text{⟹} &&(\mathsf{ext}_{▶}.\bar t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \\
+& \quad \Sigma';\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \\[1em]
+& \text{⟹} &&(\mathsf{ext}_{▶}.\bar a) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \\
+& \quad \Sigma';\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \\[1em]
+& \text{⟹} &&(\mathsf{ext}_{▶}.\Theta) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \\
+& \quad \Sigma';\ \gamma \vdash \Theta \mathrel{▶} m
+\end{aligned}
+```
