@@ -15,7 +15,7 @@ A multiplicity is $`0`$, $`1`$ or $`\omega`$, where $`\omega`$ stands for any nu
 \end{aligned}
 ```
 
-The multiplicities are added, multiplied and met by cases, $`0`$ being neutral for the addition and absorbing for the multiplication, $`1`$ neutral for the multiplication, and $`\omega`$ the result of every other case:
+The multiplicities are added, multiplied, met and subtracted by cases, $`0`$ being neutral for the addition and absorbing for the multiplication, $`1`$ neutral for the multiplication, $`0`$ absorbing on the left of the subtraction and neutral on its right, and $`\omega`$ the result of every other case:
 
 ```math
 \begin{aligned}
@@ -29,7 +29,11 @@ The multiplicities are added, multiplied and met by cases, $`0`$ being neutral f
 & \omega \cdot \omega = \omega \\[1em]
 & 0 \wedge 0 = 0 &&(\mathsf{op}_\pi.{\wedge}) \\
 & 1 \wedge 1 = 1 \\
-& \pi_1 \wedge \pi_2 = \omega \text{ otherwise}
+& \pi_1 \wedge \pi_2 = \omega \text{ otherwise} \\[1em]
+& 0 - \pi = 0 &&(\mathsf{op}_\pi.{-}) \\
+& \pi - 0 = \pi \\
+& 1 - 1 = 0 \\
+& \pi_1 - \pi_2 = \omega \text{ otherwise}
 \end{aligned}
 ```
 
@@ -54,7 +58,13 @@ The same operations as tables, whose rows give the left operand:
   0 & 0 & \omega & \omega \\
   1 & \omega & 1 & \omega \\
   \omega & \omega & \omega & \omega
-\end{array} &&(\mathsf{table}_\pi.{\wedge})
+\end{array} &&(\mathsf{table}_\pi.{\wedge}) \\[1em]
+& \begin{array}{c|ccc}
+  - & 0 & 1 & \omega \\ \hline
+  0 & 0 & 0 & 0 \\
+  1 & 1 & 0 & \omega \\
+  \omega & \omega & \omega & \omega
+\end{array} &&(\mathsf{table}_\pi.{-})
 \end{aligned}
 ```
 
@@ -98,13 +108,14 @@ The best multiplicity for a set $`S`$ of numbers of uses allows all of them, and
 ```
 
 The empty set has no best multiplicity, since $`0`$ and $`1`$ both allow its elements and neither allows fewer numbers than the other, but no operation needs it.
-The operations and the order are those of the numbers of uses:
+The operations and the order are those of the numbers of uses, $`{n_1 \mathbin{\dot-} n_2}`$ being the subtraction of the numbers that gives $`0`$ when $`n_2`$ exceeds $`n_1`$:
 
 ```math
 \begin{aligned}
 & \pi_1 + \pi_2 = \mathsf{best}(\{n_1 + n_2 \mid n_1 \in \mathsf{uses}(\pi_1),\ n_2 \in \mathsf{uses}(\pi_2)\}) &&(+_\pi) \\[1em]
 & \pi_1 \cdot \pi_2 = \mathsf{best}(\{n_1 \cdot n_2 \mid n_1 \in \mathsf{uses}(\pi_1),\ n_2 \in \mathsf{uses}(\pi_2)\}) &&(\cdot_\pi) \\[1em]
 & \pi_1 \wedge \pi_2 = \mathsf{best}(\mathsf{uses}(\pi_1) \cup \mathsf{uses}(\pi_2)) &&(\wedge_\pi) \\[1em]
+& \pi_1 - \pi_2 = \mathsf{best}(\{n_1 \mathbin{\dot-} n_2 \mid n_1 \in \mathsf{uses}(\pi_1),\ n_2 \in \mathsf{uses}(\pi_2)\}) &&(-_\pi) \\[1em]
 & \pi_1 \le \pi_2 \iff \mathsf{uses}(\pi_2) \subseteq \mathsf{uses}(\pi_1) &&(\le_\pi)
 \end{aligned}
 ```
@@ -116,5 +127,19 @@ The multiplicities form a [modality](02-modalities.md), whose laws and propertie
 ```math
 \begin{aligned}
 & \text{the multiplicities, with } 0,\ 1,\ +,\ \cdot,\ \wedge, \text{ form a modality} &&(\mathsf{modality}_\pi)
+\end{aligned}
+```
+
+The subtraction leaves the least multiplicity $`\pi`$ such that $`{\pi_1 \le \pi + \pi_2}`$, when one does, as the subtraction of [Abel, Danielsson and Eriksson](https://doi.org/10.1145/3828677): the uses of $`\pi_1`$ left once $`\pi_2`$ of them are taken:
+
+```math
+\begin{aligned}
+& \text{and} &&(\mathsf{least}_\pi.{-}) \\
+& \quad \text{⟹} \\
+& \qquad \pi_1 \le \pi + \pi_2 \\
+& \qquad \pi_1 - \pi_2 \le \pi \\
+& \quad \text{⟹} \\
+& \qquad \pi_1 \le \pi + \pi_2 \\
+& \qquad \pi_1 \le (\pi_1 - \pi_2) + \pi_2
 \end{aligned}
 ```
