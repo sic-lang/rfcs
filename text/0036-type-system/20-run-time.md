@@ -1,6 +1,6 @@
 # Run Time
 
-This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, the programs that realize a signature, and their properties, among them the fundamental lemma of the run time, by which a term typed and used in the mode $`{11}^{\mathsf{m}}`$ is valid at run time, and the soundness of the extraction, by which the erasure of a closed term computes what the term computes.
+This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, the programs that realize a signature, and their properties, among them the fundamental lemma of the run time, by which a term typed and used in the mode $`{11}^{\mathsf{m}}`$ is valid at run time, the soundness of the extraction, by which the erasure of a closed term computes what the term computes, and its conservation of the bindings, by which this erasure reads each variable as the run-time multiplicity of its grade allows.
 It builds on the [usage](12-usage.md), the [typing](14-typing.md), the [erasure](16-erasure.md), the [evaluation](17-evaluation.md) and the [meaning](18-meaning.md), which gives each closed canonical type its [relation of run time](18-meaning.md#relations-of-run-time).
 
 ## Definitions
@@ -184,5 +184,33 @@ The soundness of the extraction is the fundamental lemma for a closed term, run 
 & \qquad\quad T \text{ is an instance of } D \\
 & \qquad\quad t[\rho] \Downarrow T.c(\bar t) \\
 & \qquad\quad H(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi) \text{ with } i = \mathsf{case}_\Sigma(D.c)
+\end{aligned}
+```
+
+The extraction conserves the bindings: the erasure by $`S^{{11}^{\mathsf{m}}}`$ of a closed term used in the mode $`{11}^{\mathsf{m}}`$, run at the weight $`1`$ in the empty heap under the program of a signature whose names are distinct and whose entries use their variables as their grades allow, reads each cell of its heap as the multiplicity of the cell allows, once the reads that its value can still do are counted, and each cell of the multiplicity $`1`$ exactly once when its value holds no closure, by $`(\mathsf{erase}_{▶})`$, $`(\mathsf{usage}_{\lfloor \Sigma \rfloor})`$, $`(\mathsf{cons})`$ and $`(\mathsf{cons}_{\mathsf{data}})`$, since the grades of the empty context have the run-time multiplicities $`0^{\nu}`$; the erasure keeps no level, so that the run is that of $`(\mathsf{sound}_{\lfloor\rfloor})`$ at every assignment $`\rho`$, and the usage alone bounds the reads, without the typing:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{cons}_{\lfloor\rfloor}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \vdash \Sigma \mathrel{▶} \\
+& \qquad \Sigma;\ \varepsilon \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
+& \qquad \lfloor \Sigma \rfloor_{S^{{11}^{\mathsf{m}}}};\ 1;\ \varepsilon;\ \varepsilon \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
+& \quad \exists D. \\
+& \qquad \text{and} \\
+& \qquad\quad H \vdash \ell \mathrel{▶} D \\
+& \qquad\quad \forall c, \pi, \ell'.\ H(c) = \mathsf{bind}_\pi(\ell') \implies \pi \le \#R(c) + D(c) \\[1em]
+& \text{⟹} &&(\mathsf{cons}_{\lfloor\rfloor}.\mathsf{data}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \vdash \Sigma \mathrel{▶} \\
+& \qquad \Sigma;\ \varepsilon \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
+& \qquad \lfloor \Sigma \rfloor_{S^{{11}^{\mathsf{m}}}};\ 1;\ \varepsilon;\ \varepsilon \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
+& \qquad H \vdash \mathsf{data}(\ell) \\
+& \quad \forall c, \ell'. \\
+& \qquad \text{and} \\
+& \qquad\quad H(c) = \mathsf{bind}_1(\ell') \implies c \text{ occurs once in } R \\
+& \qquad\quad H(c) = \mathsf{bind}_0(\ell') \implies c \text{ occurs no time in } R
 \end{aligned}
 ```
