@@ -11,15 +11,15 @@ The target language has variables, all of the first order, the constants at the 
 \begin{aligned}
 & M \mathrel{::=} x \mid f.\{\bar s;\ \bar p\} \mid \text{↯} \mid c_i(\bar M) \mid \mathsf{rec}\ M\ \mathsf{with}\ \bar N \mid M.d_i(\bar M) \mid \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P &&(\mathsf{syntax}_M) \\[1em]
 & \bar M \mathrel{::=} () \mid (M,\ \bar M) &&(\mathsf{syntax}_{\bar M}) \\[1em]
-& \bar N \mathrel{::=} () \mid ((\bar x;\ \bar y \leftarrow \bar k).\, N,\ \bar N) &&(\mathsf{syntax}_{\bar N}) \\[1em]
-& \bar P \mathrel{::=} () \mid ((\bar y;\ \bar z \circlearrowleft k).\, P,\ \bar P) &&(\mathsf{syntax}_{\bar P}) \\[1em]
+& \bar N \mathrel{::=} () \mid ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) &&(\mathsf{syntax}_{\bar N}) \\[1em]
+& \bar P \mathrel{::=} () \mid ((\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k).\, P,\ \bar P) &&(\mathsf{syntax}_{\bar P}) \\[1em]
 & k \mathrel{::=} \bot \mid n \mid \text{↯}_n &&(\mathsf{syntax}_k)
 \end{aligned}
 ```
 
-A branch $`{(\bar x;\ \bar y \leftarrow \bar k).\, N}`$ binds the variables $`\bar x`$ of the fields and $`\bar y`$ of the recursive results, as a branch of a recursor does, and $`\bar k`$ gives each recursive result the position of its field among $`\bar x`$, the first one at $`1`$, or $`\bot`$ when the result is erased, so that it is not computed.
-A branch $`{(\bar y;\ \bar z \circlearrowleft k).\, P}`$ binds the variables $`\bar y`$ of the state and $`\bar z`$ of the arguments, as a branch of a corecursor does, and $`k`$ is its resumption: $`\bot`$ when its destructor is not recursive, the number $`n`$ of the entries of the state that the branch resumes, which the evaluation unpacks from the new state, or $`\text{↯}_n`$ when these $`n`$ entries are erased, so that the evaluation does not read the new state.
-The target language keeps only what its [evaluation](17-evaluation.md) reads: a case chooses a branch, since the names of the constructors and of the destructors are distinct only in their type, and a branch does not bind the non-uniform parameters, which the corecursors do not have yet.
+A branch $`{(\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N}`$ binds the variables $`\bar x`$ of the fields and $`\bar y`$ of the recursive results, as a branch of a recursor does, at the [multiplicities](03-multiplicities.md) $`\bar\pi`$ and $`\bar\pi'`$, which count their uses at run time, and $`\bar k`$ gives each recursive result the position of its field among $`\bar x`$, the first one at $`1`$, or $`\bot`$ when the result is erased, so that it is not computed.
+A branch $`{(\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k).\, P}`$ binds the variables $`\bar y`$ of the state and $`\bar z`$ of the arguments, as a branch of a corecursor does, at the multiplicities $`\bar\pi`$ and $`\bar\pi'`$, and $`k`$ is its resumption: $`\bot`$ when its destructor is not recursive, the number $`n`$ of the entries of the state that the branch resumes, which the evaluation unpacks from the new state, or $`\text{↯}_n`$ when these $`n`$ entries are erased, so that the evaluation does not read the new state.
+The target language keeps only what its [evaluation](17-evaluation.md) reads: the multiplicity of a binder goes with each variable that the evaluation binds, a case chooses a branch, since the names of the constructors and of the destructors are distinct only in their type, and a branch does not bind the non-uniform parameters, which the corecursors do not have yet.
 
 The erasure $`\lfloor t \rfloor_S`$ of a term $`t`$ replaces with $`\text{↯}`$ each position of $`t`$ whose grade is in the set $`S`$, a position being a subterm that a rule of usage checks with a grade of its own, as an argument $`t_j`$ of an entry of grade $`p_j`$ in $`{(\mathsf{tel}_{,▶})}`$.
 It is defined on the terms whose scope has no second-order variable: a program is closed, and the motives and the branches of a recursor and the states and the branches of a corecursor bind variables only, while a second-order variable exists only in the contexts in which a declaration is checked, so that a variable has no arguments, and the target language no second-order variables.
@@ -87,6 +87,24 @@ The resumed types $`\mathsf{resumed}_\Sigma(T)`$ of an instance $`{T = D.\{\bar 
 \end{aligned}
 ```
 
+The grades $`\mathsf{grades}_\Sigma(T.\bar u)`$ of the branches of a recursor of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ give, for each constructor of the block of $`D`$, in the order of the declaration, the grades of the entries of its telescope, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and none when $`\Sigma`$ has no such entry:
+
+```math
+\begin{aligned}
+& \mathsf{grades}_\Sigma(T.\bar u) = \bar q_1, \dots, \bar q_n \text{ if } c_1 : \Theta_1,\ \dots,\ c_n : \Theta_n \text{ are the constructors of this entry and } \bar q_i \text{ the grades of } \Theta_i &&(\mathsf{grades}_{\bar u}) \\
+& \mathsf{grades}_\Sigma(T.\bar u) = () \text{ if } \Sigma \text{ has no such entry}
+\end{aligned}
+```
+
+The arguments $`\mathsf{arguments}_\Sigma(T.\bar g)`$ of the branches of a corecursor of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ give, for each destructor of the block of $`D`$, in the order of the declaration, the position $`j`$ in the block of its type $`D_j`$, whose state the branch binds, and the grades of the entries of its telescope, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and none when $`\Sigma`$ has no such entry:
+
+```math
+\begin{aligned}
+& \mathsf{arguments}_\Sigma(T.\bar g) = (j_1,\ \bar q_1), \dots, (j_n,\ \bar q_n) \text{ if } d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1),\ \dots,\ d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \text{ are the destructors of this entry, } d_i \text{ a destructor of } D_{j_i} \text{ and } \bar q_i \text{ the grades of } \Theta_i &&(\mathsf{arguments}_{\bar g}) \\
+& \mathsf{arguments}_\Sigma(T.\bar g) = () \text{ if } \Sigma \text{ has no such entry}
+\end{aligned}
+```
+
 The skeleton $`\mathsf{skeleton}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ is the term of the target language that the type $`D`$ gives to its closed terms when each type of its block has one constructor at most: the constructor of the case of the only constructor of $`D`$, applied to $`\text{↯}`$ for each field that is not recursive and to the skeleton of the type of each recursive field, and $`\text{↯}`$ when $`D`$ has no constructor or several.
 It is built within the depth $`k`$ of the number of the types of the block, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and is $`\text{↯}`$ when $`\Sigma`$ has no such entry:
 
@@ -116,27 +134,39 @@ The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\te
 & \lfloor D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \rfloor_S = \text{↯} \\
 & \lfloor T.c(\bar t) \rfloor_S = c_i(\lfloor \bar t \rfloor_{S, \mathsf{grades}_\Sigma(T.c)}) \text{ if } i = \mathsf{case}_\Sigma(D.c) \\
 & \lfloor T.c(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\
-& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}\ \mathsf{skeleton}_\Sigma(T)\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, \mathsf{recursive}_\Sigma(T)} \text{ if } r \in S \\
-& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}\ \lfloor t \rfloor_S\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, \mathsf{recursive}_\Sigma(T)} \text{ if } r \notin S \\
+& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}\ \mathsf{skeleton}_\Sigma(T)\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{grades}_\Sigma(T.\bar u)} \text{ if } r \in S \\
+& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}\ \lfloor t \rfloor_S\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{grades}_\Sigma(T.\bar u)} \text{ if } r \notin S \\
 & \lfloor t.(T.d)(\bar t) \rfloor_S = \lfloor t \rfloor_S.d_i(\lfloor \bar t \rfloor_{S, \mathsf{grades}_\Sigma(T.d)}) \text{ if } i = \mathsf{case}_\Sigma(D.d) \\
 & \lfloor t.(T.d)(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\
-& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, r \cdot \bar q}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g), \bar k} \text{ if } \bar q \text{ are the grades of } \Theta_h,\ h = \mathsf{position}_\Sigma(D) \\
-& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, ()}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g), \bar k} \text{ otherwise} \\
+& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, r \cdot \bar q}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g), \bar k, \bar{\bar\pi}} \text{ if } \bar q \text{ are the grades of } \Theta_h,\ h = \mathsf{position}_\Sigma(D) \\
+& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, ()}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g), \bar k, \bar{\bar\pi}} \text{ otherwise} \\
 & \lfloor t \rfloor_{S, p} = \text{↯} \text{ if } p \in S \\
 & \lfloor t \rfloor_{S, p} = \lfloor t \rfloor_S \text{ if } p \notin S \\[1em]
 & \lfloor () \rfloor_{S, \bar p} = () &&(\mathsf{erase}_{\bar t}) \\
 & \lfloor (t,\ \bar t) \rfloor_{S, ()} = (\text{↯},\ \lfloor \bar t \rfloor_{S, ()}) \\
 & \lfloor (t,\ \bar t) \rfloor_{S, (p,\ \bar p)} = (\lfloor t \rfloor_{S, p},\ \lfloor \bar t \rfloor_{S, \bar p}) \\[1em]
-& \lfloor () \rfloor_{S, \bar{\bar k}} = () &&(\mathsf{erase}_{\bar u}) \\
-& \lfloor ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u) \rfloor_{S, \bar{\bar k}} = ((\bar x;\ \bar y \leftarrow \bar k').\, \lfloor u \rfloor_S,\ \lfloor \bar u \rfloor_{S, \bar{\bar k}'}) \\[1em]
-& \lfloor () \rfloor_{S, \bar p, \bar k} = () &&(\mathsf{erase}_{\bar g}) \\
-& \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, (p,\ \bar p), \bar k} = ((\bar y;\ \bar z \circlearrowleft k).\, \lfloor g \rfloor_{S, p},\ \lfloor \bar g \rfloor_{S, \bar p, \bar k'}) \text{ if } \bar x \text{ is empty} \\
-& \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, \bar p, \bar k} = ((\bar y;\ \bar z \circlearrowleft k).\, \text{↯},\ \lfloor \bar g \rfloor_{S, \bar p', \bar k'}) \text{ otherwise}
+& \lfloor () \rfloor_{S, r, \bar{\bar k}, \bar{\bar q}} = () &&(\mathsf{erase}_{\bar u}) \\
+& \lfloor ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u) \rfloor_{S, r, \bar{\bar k}, \bar{\bar q}} = ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \mathsf{run}(\bar e) \leftarrow \bar k').\, \lfloor u \rfloor_S,\ \lfloor \bar u \rfloor_{S, r, \bar{\bar k}', \bar{\bar q}'}) \\[1em]
+& \lfloor () \rfloor_{S, \bar p, \bar k, \bar{\bar\pi}} = () &&(\mathsf{erase}_{\bar g}) \\
+& \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, (p,\ \bar p), \bar k, \bar{\bar\pi}} = ((\bar y \mathrel{▶} \bar\pi_1;\ \bar z \mathrel{▶} \bar\pi_2 \circlearrowleft k).\, \lfloor g \rfloor_{S, p},\ \lfloor \bar g \rfloor_{S, \bar p, \bar k', \bar{\bar\pi}'}) \text{ if } \bar x \text{ is empty} \\
+& \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, \bar p, \bar k, \bar{\bar\pi}} = ((\bar y \mathrel{▶} \bar\pi_1;\ \bar z \mathrel{▶} \bar\pi_2 \circlearrowleft k).\, \text{↯},\ \lfloor \bar g \rfloor_{S, \bar p', \bar k', \bar{\bar\pi}'}) \text{ otherwise}
 \end{aligned}
 ```
 
 In the erasure of a corecursor, $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, $`{\bar\Theta = (\bar x_1.\, \Theta_1 : \bar\kappa_1,\ \dots,\ \bar x_n.\, \Theta_n : \bar\kappa_n)}`$, $`{r \cdot \bar q}`$ multiplies each grade of $`\bar q`$ by $`r`$ on the left, and $`\bar k`$ gives each element $`h`$ of $`\mathsf{resumed}_\Sigma(T)`$ the number $`n`$ of the entries of $`\Theta_h`$ when $`\bar x_h`$ is empty and $`{r \notin S}`$, $`\text{↯}_n`$ when $`\bar x_h`$ is empty and $`{r \in S}`$, since the new state, a field of the grade $`r`$ of a position, is then erased, as are its entries, of the grades $`r \cdot \bar q`$, and $`\bot`$ otherwise.
-A double bar marks a sequence of sequences: in the erasure of the branches of a recursor, $`\bar k`$ is the first sequence of $`\bar{\bar k}`$, or $`()`$ when it has none, $`\bar{\bar k}'`$ the others, and $`k'_j`$ is $`\bot`$ when $`{e_j \in S}`$, and the $`j`$-th element of $`\bar k`$ otherwise, or $`\bot`$ when it has none; in the erasure of the branches of a corecursor, $`k`$ is the first element of $`\bar k`$, or $`\bot`$ when it has none, and $`\bar k'`$ and $`\bar p'`$ are the others.
+In the erasure of a corecursor, $`\bar{\bar\pi}`$ also gives each element $`(j,\ \bar q)`$ of $`\mathsf{arguments}_\Sigma(T.\bar g)`$ the multiplicities of the variables of the branch of its destructor: $`\mathsf{run}(r \cdot q'_l)`$ for the entry $`l`$ of the state, whose grade is $`q'_l`$ in $`\Theta_j`$, and $`\mathsf{run}(q_l)`$ for its argument $`l`$, as the [usage](12-usage.md#definitions) gives these variables the grades $`r \cdot q'_l`$ and $`q_l`$ in the mode $`{11}^{\mathsf{m}}`$.
+A double bar marks a sequence of sequences: in the erasure of the branches of a recursor, $`\bar k`$ is the first sequence of $`\bar{\bar k}`$, or $`()`$ when it has none, $`\bar q`$ the first sequence of $`\bar{\bar q}`$, or $`()`$ when it has none, $`\bar{\bar k}'`$ and $`\bar{\bar q}'`$ the others, and $`k'_j`$ is $`\bot`$ when $`{e_j \in S}`$, and the $`j`$-th element of $`\bar k`$ otherwise, or $`\bot`$ when it has none; in the erasure of the branches of a corecursor, $`k`$ is the first element of $`\bar k`$, or $`\bot`$ when it has none, $`(\bar\pi_1,\ \bar\pi_2)`$ the first element of $`\bar{\bar\pi}`$, or $`((),\ ())`$ when it has none, a variable whose multiplicity is not given having $`\omega`$, and $`\bar k'`$, $`\bar p'`$ and $`\bar{\bar\pi}'`$ are the others.
+The variable of the field $`l`$ of a branch of a recursor has the uses at run time of the field that the recursor gives minus those of the recursion on it, with the [subtraction](03-multiplicities.md) of the multiplicities:
+
+```math
+\begin{aligned}
+& \pi_l = \mathsf{run}(r \cdot q_l) - \mathsf{run}(e_j \cdot r) \text{ if } l \text{ is the } j\text{-th element of } \bar k &&(\mathsf{erase}_{\bar u}.\pi) \\
+& \pi_l = \mathsf{run}(r \cdot q_l) \text{ if } l \text{ is not in } \bar k \\
+& \pi_l = \omega \text{ if } \bar q \text{ has no element } l
+\end{aligned}
+```
+
+The usage leaves the branch the choice of the grade $`g_l`$ of the field, under the bound $`{r \cdot q_l \le g_l + e_j \cdot r}`$, and $`\pi_l`$ is the least multiplicity that this bound allows $`\mathsf{run}(g_l)`$, its only value when $`\mathsf{run}(r \cdot q_l)`$ is $`1`$, so that the syntax need not carry the grades of the fields; a field without grade, in a term that no rule types, states nothing.
 A branch of a corecursor with non-uniform parameters, which the corecursors do not have yet, has no variables for them in the target language, and is erased.
 
 A recursor whose grade is in $`S`$ eliminates a term that the erasure removes, which the [usage](12-usage.md#definitions) allows in the mode $`{11}^{\mathsf{m}}`$ only on a block whose types have one constructor at most: the type of the term then gives its form, which the skeleton rebuilds, so that the recursor runs the branch of the only constructor, and computes the recursive results that the branch uses, as the erasure of the eliminations of the pairs and of the unit of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Erasure/Extraction.agda#L119-L137) runs their branch, which has no recursive result, on erased fields.
@@ -162,10 +192,10 @@ A variable occurs in a term of the target language when the term is the variable
 \frac{x \text{ occurs in } \bar P}{x \text{ occurs in } \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P}\;(\mathsf{occurs}_M.\mathsf{with}_{\bar P}) \\[1em]
 \frac{x \text{ occurs in } M}{x \text{ occurs in } (M,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.M) \\[1em]
 \frac{x \text{ occurs in } \bar M}{x \text{ occurs in } (M,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.\bar M) \\[1em]
-\frac{x \text{ occurs in } N}{x \text{ occurs in } ((\bar x;\ \bar y \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.N) \\[1em]
-\frac{x \text{ occurs in } \bar N}{x \text{ occurs in } ((\bar x;\ \bar y \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.\bar N) \\[1em]
-\frac{x \text{ occurs in } P}{x \text{ occurs in } ((\bar y;\ \bar z \circlearrowleft k).\, P,\ \bar P)}\;(\mathsf{occurs}_{\bar P}.P) \\[1em]
-\frac{x \text{ occurs in } \bar P}{x \text{ occurs in } ((\bar y;\ \bar z \circlearrowleft k).\, P,\ \bar P)}\;(\mathsf{occurs}_{\bar P}.\bar P)
+\frac{x \text{ occurs in } N}{x \text{ occurs in } ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.N) \\[1em]
+\frac{x \text{ occurs in } \bar N}{x \text{ occurs in } ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.\bar N) \\[1em]
+\frac{x \text{ occurs in } P}{x \text{ occurs in } ((\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k).\, P,\ \bar P)}\;(\mathsf{occurs}_{\bar P}.P) \\[1em]
+\frac{x \text{ occurs in } \bar P}{x \text{ occurs in } ((\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k).\, P,\ \bar P)}\;(\mathsf{occurs}_{\bar P}.\bar P)
 \end{gathered}
 ```
 
@@ -197,9 +227,9 @@ The judgment $`{M \sqsubseteq N}`$ reads: the term $`M`$ of the target language 
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar M}.\varepsilon) \\[1em]
 \frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{(M_1,\ \bar M_1) \sqsubseteq (M_2,\ \bar M_2)}\;({\sqsubseteq}_{\bar M}.{,}) \\[1em]
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar N}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}\forall j.\ k_{1j} = \bot \text{ or } k_{1j} = k_{2j} \\ N_1 \sqsubseteq N_2 \\ \bar N_1 \sqsubseteq \bar N_2\end{gathered}}{((\bar x;\ \bar y \leftarrow \bar k_1).\, N_1,\ \bar N_1) \sqsubseteq ((\bar x;\ \bar y \leftarrow \bar k_2).\, N_2,\ \bar N_2)}\;({\sqsubseteq}_{\bar N}.{,}) \\[1em]
+\frac{\begin{gathered}{}\forall j.\ k_{1j} = \bot \text{ or } k_{1j} = k_{2j} \\ N_1 \sqsubseteq N_2 \\ \bar N_1 \sqsubseteq \bar N_2\end{gathered}}{((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k_1).\, N_1,\ \bar N_1) \sqsubseteq ((\bar x \mathrel{▶} \bar\pi;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k_2).\, N_2,\ \bar N_2)}\;({\sqsubseteq}_{\bar N}.{,}) \\[1em]
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar P}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}k_1 = k_2 \text{ or } k_1 = \text{↯}_n \text{ and } k_2 = n \\ P_1 \sqsubseteq P_2 \\ \bar P_1 \sqsubseteq \bar P_2\end{gathered}}{((\bar y;\ \bar z \circlearrowleft k_1).\, P_1,\ \bar P_1) \sqsubseteq ((\bar y;\ \bar z \circlearrowleft k_2).\, P_2,\ \bar P_2)}\;({\sqsubseteq}_{\bar P}.{,})
+\frac{\begin{gathered}{}k_1 = k_2 \text{ or } k_1 = \text{↯}_n \text{ and } k_2 = n \\ P_1 \sqsubseteq P_2 \\ \bar P_1 \sqsubseteq \bar P_2\end{gathered}}{((\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k_1).\, P_1,\ \bar P_1) \sqsubseteq ((\bar y \mathrel{▶} \bar\pi;\ \bar z \mathrel{▶} \bar\pi' \circlearrowleft k_2).\, P_2,\ \bar P_2)}\;({\sqsubseteq}_{\bar P}.{,})
 \end{gathered}
 ```
 

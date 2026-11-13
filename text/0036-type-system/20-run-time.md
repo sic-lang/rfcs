@@ -21,33 +21,34 @@ A closed term is related to an address at a closed type when the type computes t
 \end{aligned}
 ```
 
-A closed substitution $`\theta`$ of a context whose variables are all of the first order is related, with the grades $`\gamma`$, to an environment $`E`$ in a heap $`H`$ when each variable whose grade is not in $`S^{{11}^{\mathsf{m}}}`$, so that the erasure keeps its uses, is related to its address at its type; the erasure keeps no abstraction, so that a second-order variable has no address:
+A closed substitution $`\theta`$ of a context whose variables are all of the first order is related, with the grades $`\gamma`$, to the addresses $`V`$ of the values of its variables in a heap $`H`$, the last one first, when each variable whose grade is not in $`S^{{11}^{\mathsf{m}}}`$, so that the erasure keeps its uses, is related to its address at its type; the erasure keeps no abstraction, so that a second-order variable has no address:
 
 ```math
 \begin{aligned}
 & (\varepsilon,\ \varepsilon) \in \circledR_H(\varepsilon;\ \varepsilon) &&(\circledR_\varepsilon) \\[1em]
 & \text{⟺} &&(\circledR_x) \\
-& \quad ((\theta,\ t),\ (E,\ x \mapsto \ell)) \in \circledR_H(\Gamma,\ x : A;\ \gamma \bullet p) \\
+& \quad ((\theta,\ t),\ (V,\ \ell)) \in \circledR_H(\Gamma,\ x : A;\ \gamma \bullet p) \\
 & \quad \text{and} \\
-& \qquad (\theta,\ E) \in \circledR_H(\Gamma;\ \gamma) \\
+& \qquad (\theta,\ V) \in \circledR_H(\Gamma;\ \gamma) \\
 & \qquad p \notin S^{{11}^{\mathsf{m}}} \implies t \circledR_H \ell : A[\theta]
 \end{aligned}
 ```
 
-A term is valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution $`\theta`$ that the meaning relates to itself and each environment that is related to it in a heap, its erasure by $`S^{{11}^{\mathsf{m}}}`$ evaluates to an address in a heap that extends this heap, to which the substituted term is related at the substituted type:
+A term is valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution $`\theta`$ that the meaning relates to itself and each environment whose [cells](17-evaluation.md#definitions) bind, in a heap, addresses related to it, its erasure by $`S^{{11}^{\mathsf{m}}}`$ evaluates, reading some cells, to an address in a heap that extends this heap, to which the substituted term is related at the substituted type:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&({\vDash}^{\circledR}) \\
 & \quad \Sigma;\ \gamma;\ \Gamma \vDash^{\circledR} t : A \\
-& \quad \forall \theta, H, E. \\
+& \quad \forall \theta, H, E, V. \\
 & \qquad \text{⟹} \\
 & \qquad\quad \text{and} \\
 & \qquad\qquad (\theta,\ \theta) \in \mathsf{eq}(\Gamma) \\
-& \qquad\qquad (\theta,\ E) \in \circledR_H(\Gamma;\ \gamma) \\
-& \qquad\quad \exists \ell, H'. \\
+& \qquad\qquad H \vdash E \mapsto V \\
+& \qquad\qquad (\theta,\ V) \in \circledR_H(\Gamma;\ \gamma) \\
+& \qquad\quad \exists \ell, H', R. \\
 & \qquad\qquad \text{and} \\
-& \qquad\qquad\quad \mathcal{P};\ H;\ E \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H' \\
+& \qquad\qquad\quad \mathcal{P};\ H;\ E \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H';\ R \\
 & \qquad\qquad\quad H \sqsubseteq H' \\
 & \qquad\qquad\quad t[\theta] \circledR_{H'} \ell : A[\theta]
 \end{aligned}
@@ -66,20 +67,21 @@ Closed arguments $`\bar t`$ of a closed telescope are related to addresses $`\ba
 \end{aligned}
 ```
 
-Arguments of a telescope $`\Theta`$, whose entries have the grades $`\bar p`$, are valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution that the meaning relates to itself and each environment that is related to it in a heap, their erasure at the grades $`\bar p`$ evaluates, the first one first, to addresses in a heap that extends this heap, to which the substituted arguments are related at the substituted telescope:
+Arguments of a telescope $`\Theta`$, whose entries have the grades $`\bar p`$, are valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution that the meaning relates to itself and each environment whose cells bind, in a heap, addresses related to it, their erasure at the grades $`\bar p`$ evaluates, the first one first, to addresses in a heap that extends this heap, to which the substituted arguments are related at the substituted telescope:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&({\vDash}^{\circledR}_{\bar t}) \\
 & \quad \Sigma;\ \gamma;\ \Gamma \vDash^{\circledR} \bar t : \Theta \\
-& \quad \forall \theta, H, E. \\
+& \quad \forall \theta, H, E, V. \\
 & \qquad \text{⟹} \\
 & \qquad\quad \text{and} \\
 & \qquad\qquad (\theta,\ \theta) \in \mathsf{eq}(\Gamma) \\
-& \qquad\qquad (\theta,\ E) \in \circledR_H(\Gamma;\ \gamma) \\
-& \qquad\quad \exists \bar\ell, H'. \\
+& \qquad\qquad H \vdash E \mapsto V \\
+& \qquad\qquad (\theta,\ V) \in \circledR_H(\Gamma;\ \gamma) \\
+& \qquad\quad \exists \bar\ell, H', R. \\
 & \qquad\qquad \text{and} \\
-& \qquad\qquad\quad \mathcal{P};\ H;\ E \vdash \lfloor \bar t \rfloor_{S^{{11}^{\mathsf{m}}}, \bar p} \Downarrow \bar\ell;\ H' \\
+& \qquad\qquad\quad \mathcal{P};\ H;\ E \vdash \lfloor \bar t \rfloor_{S^{{11}^{\mathsf{m}}}, \bar p} \Downarrow \bar\ell;\ H';\ R \\
 & \qquad\qquad\quad H \sqsubseteq H' \\
 & \qquad\qquad\quad \bar t[\theta] \circledR_{H'}^{\bar p} \bar\ell : \Theta[\theta]
 \end{aligned}
@@ -162,9 +164,9 @@ The soundness of the extraction is the fundamental lemma for a closed term, run 
 & \qquad \vdash \Sigma \mathrel{▶} \\
 & \qquad \Sigma;\ \varepsilon \vdash t : A \\
 & \qquad \Sigma;\ \varepsilon \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
-& \quad \forall \rho.\ \exists \ell, H. \\
+& \quad \forall \rho.\ \exists \ell, H, R. \\
 & \qquad \text{and} \\
-& \qquad\quad \mathcal{P};\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H \\
+& \qquad\quad \mathcal{P};\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
 & \qquad\quad t[\rho] \circledR_H \ell : A[\rho] \\[1em]
 & \text{⟹} &&(\mathsf{sound}_c) \\
 & \quad \text{and} \\
@@ -176,9 +178,9 @@ The soundness of the extraction is the fundamental lemma for a closed term, run 
 & \qquad D \text{ is a data type of } \Sigma \\
 & \qquad A[\rho] \Downarrow D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \\
 & \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \text{ is not a proposition} \\
-& \quad \exists \ell, H, T, c, \bar t, \bar\ell. \\
+& \quad \exists \ell, H, R, T, c, \bar t, \bar\ell. \\
 & \qquad \text{and} \\
-& \qquad\quad \mathcal{P};\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H \\
+& \qquad\quad \mathcal{P};\ \varepsilon;\ \varepsilon \vdash \lfloor t[\rho] \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
 & \qquad\quad T \text{ is an instance of } D \\
 & \qquad\quad t[\rho] \Downarrow T.c(\bar t) \\
 & \qquad\quad H(\ell) = c_i(\bar\ell) \text{ with } i = \mathsf{case}_\Sigma(D.c)
