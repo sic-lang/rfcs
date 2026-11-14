@@ -13,26 +13,26 @@ The unit `Unit` has, at each level $`l`$, a single constructor without fields, i
 
 ```math
 \begin{aligned}
-& \mathsf{data}.\{;\ l;\ \mid \top\}\ \varepsilon : U_l\ \mathsf{where}\ \mathsf{Unit} \mathrel{▶} {00}^{\gamma} \mathrel{≔} \mathsf{mk} : \varepsilon &&(\mathsf{prelude}.\mathsf{Unit})
+& \mathsf{data}.\{;\ l;\ \mid \top\}\ \varepsilon : U_l\ \mathsf{where}\ \mathsf{Unit} \mathrel{▶} {00}^{\gamma} \oplus \varnothing \mathrel{≔} \mathsf{mk} : \varepsilon &&(\mathsf{prelude}.\mathsf{Unit})
 \end{aligned}
 ```
 
-The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the grade $`p`$ and of the requirement $`r`$, and a term of $`X[x]`$, a type of a universe that depends on $`x`$, used once and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, so that the unpacking keeps the ownership of each entry; it lives in a universe whatever the sort of $`A`$, and its constraint admits the instances at which a proposition $`A`$ has a grade without use at run time, as the [formation of its fields](14-typing.md#fields-of-a-block) requires:
+The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the grade $`p`$ and of the requirement $`r`$, and a term of $`X[x]`$, a type of a universe that depends on $`x`$, used once and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, so that the unpacking keeps the ownership of each entry; it lives in a universe whatever the sort of $`A`$, and its constraint admits the instances at which a proposition $`A`$ has a grade without use at run time, as the [formation of its fields](14-typing.md#fields-of-a-block) requires, and it is [strictly positive](14-typing.md#strict-positivity) in both its parameters:
 
 ```math
 \begin{aligned}
 & \mathsf{data}.\{s;\ l_1, l_2;\ p, r \mid s = \Omega \implies \llcorner p \lrcorner \ne {11}^{\mathsf{m}}\} &&(\mathsf{prelude}.\mathsf{Pair}) \\
 & \quad (A : s_{l_1},\ X : (x : A \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash U_{l_2} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) : U_{l_1 \sqcup l_2} \\
-& \quad \mathsf{where}\ \mathsf{Pair} \mathrel{▶} {00}^{\gamma} \bullet p \bullet {11}^{\mathsf{p}} \mathrel{≔} \mathsf{mk} : (x : A \mathrel{▶} p;\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} r,\ y : X[x] \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}})
+& \quad \mathsf{where}\ \mathsf{Pair} \mathrel{▶} {00}^{\gamma} \bullet p \bullet {11}^{\mathsf{p}} \oplus \{A, X\} \mathrel{≔} \mathsf{mk} : (x : A \mathrel{▶} p;\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} r,\ y : X[x] \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}})
 \end{aligned}
 ```
 
-The type of positions `Step` holds either a term of a type $`A`$ of a universe, used with the grade $`p`$ and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, by its constructor $`\mathsf{next}`$, or a term of a type $`B`$ of any sort, used with the grade $`q`$ and of the requirement $`r`$, by its constructor $`\mathsf{done}`$; it lives in a universe whatever the sort of $`B`$, and its constraint admits the instances at which a proposition $`B`$ has a grade without use at run time:
+The type of positions `Step` holds either a term of a type $`A`$ of a universe, used with the grade $`p`$ and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, by its constructor $`\mathsf{next}`$, or a term of a type $`B`$ of any sort, used with the grade $`q`$ and of the requirement $`r`$, by its constructor $`\mathsf{done}`$; it lives in a universe whatever the sort of $`B`$, its constraint admits the instances at which a proposition $`B`$ has a grade without use at run time, and it is strictly positive in both its parameters:
 
 ```math
 \begin{aligned}
 & \mathsf{data}.\{s;\ l_1, l_2;\ p, q, r \mid s = \Omega \implies \llcorner q \lrcorner \ne {11}^{\mathsf{m}}\}\ (A : U_{l_1},\ B : s_{l_2}) : U_{l_1 \sqcup l_2} &&(\mathsf{prelude}.\mathsf{Step}) \\
-& \quad \mathsf{where}\ \mathsf{Step} \mathrel{▶} {00}^{\gamma} \bullet p \bullet q \mathrel{≔} \mathsf{next} : (x : A \mathrel{▶} p;\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}}) \mid \mathsf{done} : (x : B \mathrel{▶} q;\ {00}^{\mathsf{p}} \mathrel{◀} r)
+& \quad \mathsf{where}\ \mathsf{Step} \mathrel{▶} {00}^{\gamma} \bullet p \bullet q \oplus \{A, B\} \mathrel{≔} \mathsf{next} : (x : A \mathrel{▶} p;\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}}) \mid \mathsf{done} : (x : B \mathrel{▶} q;\ {00}^{\mathsf{p}} \mathrel{◀} r)
 \end{aligned}
 ```
 

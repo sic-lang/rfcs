@@ -160,8 +160,8 @@ An entry is one of three cases, the last of which, a type declaration $`\mathcal
 & {\mathrel{::=}} &&(\mathsf{syntax}_{\mathcal{D}}) \\
 & \quad \mathcal{D} \\
 & \quad {\mid} \\
-& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} c_{11} : \Theta_{11} \mid \dots \mid c_{1 n_1} : \Theta_{1 n_1};\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} c_{k1} : \Theta_{k1} \mid \dots \mid c_{k n_k} : \Theta_{k n_k} \\
-& \qquad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} d_{11} : (\Theta_{11} \vdash B_{11} \mathrel{◀} \psi_{11}) \mathrel{▶} p_{11};\ q_{11} \mathrel{◀} \varsigma_{11} \mid \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots \mid d_{k n_k} : (\Theta_{k n_k} \vdash B_{k n_k} \mathrel{◀} \psi_{k n_k}) \mathrel{▶} p_{k n_k};\ q_{k n_k} \mathrel{◀} \varsigma_{k n_k}
+& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus P_1 \mathrel{≔} c_{11} : \Theta_{11} \mid \dots \mid c_{1 n_1} : \Theta_{1 n_1};\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus P_k \mathrel{≔} c_{k1} : \Theta_{k1} \mid \dots \mid c_{k n_k} : \Theta_{k n_k} \\
+& \qquad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus P_1 \mathrel{≔} d_{11} : (\Theta_{11} \vdash B_{11} \mathrel{◀} \psi_{11}) \mathrel{▶} p_{11};\ q_{11} \mathrel{◀} \varsigma_{11} \mid \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus P_k \mathrel{≔} \dots \mid d_{k n_k} : (\Theta_{k n_k} \vdash B_{k n_k} \mathrel{◀} \psi_{k n_k}) \mathrel{▶} p_{k n_k};\ q_{k n_k} \mathrel{◀} \varsigma_{k n_k}
 \end{aligned}
 ```
 
@@ -169,8 +169,8 @@ The cases are:
 
 - A constant definition $`{f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t}`$, which defines the constant $`f`$ and has sort variables $`\bar s`$, level variables $`\bar l`$, grade variables $`\bar p`$, the mode $`m`$ in which its body is checked, the ownership $`p`$ of its value, which its body must have, and, for each instance of $`\bar s`$ and $`\bar p`$, a type $`A`$ and a body $`t`$ in the empty scope.
 - A constant declaration $`{f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p}`$, which declares the constant $`f`$ and has the same form without a body, whose mode $`m`$ is the mode of its uses, and whose ownership $`p`$, which no body checks, is the one of the value it stands for.
-- A type declaration $`{\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots}`$, a block of data types declared together, which has sort, level and grade variables, the constraint $`C`$ on the instances of its sort and grade variables, the names $`{D_1, \dots, D_k}`$ of its types, and, for each instance of $`\bar s`$ and $`\bar p`$ that $`C`$ admits, the parameters $`\Delta`$, a context, the sort $`\kappa`$ of its types and their bodies: each type $`D_j`$ has the grades $`\zeta_j`$ with which it uses the parameters, a vector of grades over the scope of $`\Delta`$, and its constructors $`{c_{j1}, \dots, c_{j n_j}}`$, in order, and each constructor $`c_{ji}`$ the telescope $`\Theta_{ji}`$ of its fields, in the scope of $`\Delta`$.
-- A type declaration $`{\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots}`$, a block of codata types declared together, which has the same form, except that each type $`D_j`$ has destructors $`{d_{j1}, \dots, d_{j n_j}}`$, in order, rather than constructors: the destructor $`{d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji} \mathrel{◀} \varsigma_{ji}}`$ has the telescope $`\Theta_{ji}`$ of its arguments and its result type $`B_{ji}`$, in the scope of $`\Delta`$ extended by the destructors before it and, for $`B_{ji}`$, by the variables of $`\Theta_{ji}`$; its result has the ownership $`\psi_{ji}`$ and is used with the grade $`p_{ji}`$, and the destructor is used with the grade $`q_{ji}`$ by the types of the destructors after it, in whose scope it is a second-order variable $`{d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji})}`$, so that a destructor may depend on the observations before it; the destructor requires the ownership $`\varsigma_{ji}`$ of the value that it observes, a grade, as an entry of a telescope requires one of its argument.
+- A type declaration $`{\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus P_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus P_k \mathrel{≔} \dots}`$, a block of data types declared together, which has sort, level and grade variables, the constraint $`C`$ on the instances of its sort and grade variables, the names $`{D_1, \dots, D_k}`$ of its types, and, for each instance of $`\bar s`$ and $`\bar p`$ that $`C`$ admits, the parameters $`\Delta`$, a context, the sort $`\kappa`$ of its types and their bodies: each type $`D_j`$ has the grades $`\zeta_j`$ with which it uses the parameters, a vector of grades over the scope of $`\Delta`$, the set $`P_j`$ of the parameters of $`\Delta`$ in which it is strictly positive, the same at every instance, and its constructors $`{c_{j1}, \dots, c_{j n_j}}`$, in order, and each constructor $`c_{ji}`$ the telescope $`\Theta_{ji}`$ of its fields, in the scope of $`\Delta`$.
+- A type declaration $`{\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus P_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus P_k \mathrel{≔} \dots}`$, a block of codata types declared together, which has the same form, except that each type $`D_j`$ has destructors $`{d_{j1}, \dots, d_{j n_j}}`$, in order, rather than constructors: the destructor $`{d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji} \mathrel{◀} \varsigma_{ji}}`$ has the telescope $`\Theta_{ji}`$ of its arguments and its result type $`B_{ji}`$, in the scope of $`\Delta`$ extended by the destructors before it and, for $`B_{ji}`$, by the variables of $`\Theta_{ji}`$; its result has the ownership $`\psi_{ji}`$ and is used with the grade $`p_{ji}`$, and the destructor is used with the grade $`q_{ji}`$ by the types of the destructors after it, in whose scope it is a second-order variable $`{d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji})}`$, so that a destructor may depend on the observations before it; the destructor requires the ownership $`\varsigma_{ji}`$ of the value that it observes, a grade, as an entry of a telescope requires one of its argument.
 
 A block is a block of data types or a block of codata types, never both, so that each of its types is known by its constructors or by its destructors alike.
 
@@ -181,8 +181,8 @@ The names that an entry introduces are $`{D_1, \dots, D_k}`$ for a type declarat
 \begin{aligned}
 & \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
 & \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) = \{f\} \\
-& \mathsf{names}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots) = \{D_1, \dots, D_k\} \\
-& \mathsf{names}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \mathrel{≔} \dots) = \{D_1, \dots, D_k\}
+& \mathsf{names}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus P_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus P_k \mathrel{≔} \dots) = \{D_1, \dots, D_k\} \\
+& \mathsf{names}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus P_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus P_k \mathrel{≔} \dots) = \{D_1, \dots, D_k\}
 \end{aligned}
 ```
 
@@ -222,8 +222,22 @@ A signature has a declared type $`{D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta
 & \text{⟺} &&(\in_D) \\
 & \quad D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\
 & \quad \text{or} \\
-& \qquad (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots;\ \dots) \in \Sigma \\
-& \qquad (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \mathrel{≔} \dots;\ \dots) \in \Sigma
+& \qquad (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus P \mathrel{≔} \dots;\ \dots) \in \Sigma \\
+& \qquad (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus P \mathrel{≔} \dots;\ \dots) \in \Sigma
+\end{aligned}
+```
+
+A signature has a declared type $`D`$ strictly positive in its parameter $`X`$, written $`{D \oplus X \in \Sigma}`$, when one of its entries is a block of data types or of codata types that declares $`D`$ with $`X`$ among the parameters $`P`$ in which it is strictly positive, which the rules of the [strict positivity](14-typing.md#strict-positivity) read:
+
+```math
+\begin{aligned}
+& \text{⟺} &&(\in_\oplus) \\
+& \quad D \oplus X \in \Sigma \\
+& \quad \text{and} \\
+& \qquad X \in P \\
+& \qquad \text{or} \\
+& \qquad \quad (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus P \mathrel{≔} \dots;\ \dots) \in \Sigma \\
+& \qquad \quad (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus P \mathrel{≔} \dots;\ \dots) \in \Sigma
 \end{aligned}
 ```
 
