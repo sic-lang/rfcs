@@ -89,7 +89,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\Theta) \\
 & (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\theta] = (x : A[\theta] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\theta]) \\[1em]
 & \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\bar d) \\
-& (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d)[\theta] = (d : (\Theta[\theta] \vdash B[\theta] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d[\theta])
+& (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d)[\theta] = (d : (\Theta[\theta] \vdash B[\theta] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d[\theta])
 \end{aligned}
 ```
 
@@ -118,7 +118,7 @@ The telescope and the result of a destructor of a codata type are in the scope o
 ```math
 \begin{aligned}
 & [\bar a / \Delta,\ t.T / \varepsilon] = [\bar a / \Delta] &&(\mathsf{obs}_\theta) \\
-& [\bar a / \Delta,\ t.T / (d' : (\Theta' \vdash B' \mathrel{◀} \psi') \mathrel{▶} p';\ q' \mid \bar d_1)] = [(\bar a,\ \bar x.\, t.(T.d')(\bar x)) / (\Delta,\ d' : (\Theta' \vdash B' \mathrel{◀} \psi')),\ t.T / \bar d_1]
+& [\bar a / \Delta,\ t.T / (d' : (\Theta' \vdash B' \mathrel{◀} \psi') \mathrel{▶} p';\ q' \mathrel{◀} \varsigma' \mid \bar d_1)] = [(\bar a,\ \bar x.\, t.(T.d')(\bar x)) / (\Delta,\ d' : (\Theta' \vdash B' \mathrel{◀} \psi')),\ t.T / \bar d_1]
 \end{aligned}
 ```
 
@@ -204,7 +204,7 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Theta) \\
 & (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\bar l' / \bar l] = (x : A[\bar l' / \bar l] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\bar d) \\
-& (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d)[\bar l' / \bar l] = (d : (\Theta[\bar l' / \bar l] \vdash B[\bar l' / \bar l] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d[\bar l' / \bar l]) \\[1em]
+& (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d)[\bar l' / \bar l] = (d : (\Theta[\bar l' / \bar l] \vdash B[\bar l' / \bar l] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Gamma) \\
 & (\Gamma,\ x : A)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ x : A[\bar l' / \bar l] \\
 & (\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi))[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ X : (\Theta[\bar l' / \bar l] \vdash A[\bar l' / \bar l] \mathrel{◀} \psi)

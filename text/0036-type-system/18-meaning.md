@@ -203,7 +203,7 @@ Destructors are in it when the arguments $`\Theta`$ of the first one are a teles
 \begin{aligned}
 & (\varepsilon,\ \{(\bar f,\ \bar g) \mid \bar f \text{ and } \bar g \text{ are families of closed abstractions}\}) \in \mathsf{ty}(s_n)[\bar R] &&(\mathsf{ty}_{\bar d\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{ty}_{\bar d|}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G(f_d)\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G(f_d)\}) \\
 & \quad \mathsf{ty}(s_n)[\bot,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad (\Theta,\ S_\Theta) \in \mathsf{ty}(U_n) \\
@@ -214,7 +214,7 @@ Destructors are in it when the arguments $`\Theta`$ of the first one are a teles
 & \qquad \forall (f,\ f) \in E.\ (\bar d[f / d],\ G(f)) \in \mathsf{ty}(s_n)[\bar R] \\
 & \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2) \\[1em]
 & \in \text{ if} &&(\mathsf{ty}_{\bar d\mathsf{rec}}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G\}) \\
 & \quad \mathsf{ty}(s_n)[R,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad (\Theta,\ S_\Theta) \in \mathsf{ty}(U_n) \\
@@ -297,15 +297,15 @@ The relations of the instances of the types of a block of codata types are the g
 \end{aligned}
 ```
 
-A closed abstraction $`f`$ for the destructor of the case $`i`$, whose arguments have the parameters $`{\bar q \mathrel{◀} \bar r}`$ and the relation $`S_\Theta`$, whose result has the ownership $`\psi`$ and whose result type has the relation $`F(\bar t)`$ at the arguments $`\bar t`$, is related to the value at the address $`\ell`$ when, in each heap that extends $`H`$, its observation at arguments that $`S_\Theta`$ relates to addresses, passed at the multiplicities at run time of their grades and at the requirements at run time of their requirements, with the ownership at run time of the result, gives, at each weight, a value, reading some cells, that $`F`$ relates to the result of $`f`$; the heap of the observation extends $`H`$, since the arguments may be computed after the value at $`\ell`$:
+A closed abstraction $`f`$ for the destructor of the case $`i`$, whose arguments have the parameters $`{\bar q \mathrel{◀} \bar r}`$ and the relation $`S_\Theta`$, whose result has the ownership $`\psi`$, which requires the ownership $`\varsigma`$ of the value that it observes, and whose result type has the relation $`F(\bar t)`$ at the arguments $`\bar t`$, is related to the value at the address $`\ell`$ when, in each heap that extends $`H`$, its observation at arguments that $`S_\Theta`$ relates to addresses, passed at the multiplicities at run time of their grades and at the requirements at run time of their requirements, with the ownership at run time of the result and the requirement at run time on the value, gives, at each weight, a value, reading some cells, that $`F`$ relates to the result of $`f`$; the heap of the observation extends $`H`$, since the arguments may be computed after the value at $`\ell`$:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&(\circledR_{\bar x}) \\
-& \quad (H,\ f,\ \ell) \in \circledR_{\bar x}(i,\ \bar q \mathrel{◀} \bar r,\ \psi,\ S_\Theta,\ F) \\
+& \quad (H,\ f,\ \ell) \in \circledR_{\bar x}(i,\ \bar q \mathrel{◀} \bar r,\ \psi,\ \varsigma,\ S_\Theta,\ F) \\
 & \quad \forall H' \sqsupseteq H.\ \forall (H',\ \bar t,\ \bar\ell) \in S_\Theta.\ \forall \varpi.\ \exists \ell',\ H'',\ R. \\
 & \qquad \text{and} \\
-& \qquad \quad \mathcal{P};\ \varpi;\ H' \vdash \ell.d_i(\bar\ell \mathrel{▶} \mathsf{run}(\bar q) \mathrel{◀} \mathsf{run}(\bar r)) \mathrel{◀} \mathsf{run}(\psi) \Downarrow \ell';\ H'';\ R \\
+& \qquad \quad \mathcal{P};\ \varpi;\ H' \vdash \ell.d_i(\bar\ell \mathrel{▶} \mathsf{run}(\bar q) \mathrel{◀} \mathsf{run}(\bar r)) \mathrel{◀} \mathsf{run}(\psi) \mathrel{◀} \mathsf{run}(\varsigma) \Downarrow \ell';\ H'';\ R \\
 & \qquad \quad (H'',\ f[\bar t / \bar x],\ \ell') \in F(\bar t)
 \end{aligned}
 ```
@@ -376,7 +376,7 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 \begin{aligned}
 & (\varepsilon,\ \{(H,\ \bar f,\ \ell) \mid \bar f \text{ is a family of closed abstractions}\}) \in \mathsf{rt}_D(U_n)[\bar R] &&(\mathsf{rt}_{\bar d\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\bar d|}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (f_d,\ f_d) \in E,\ (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ R_\Theta,\ R)) \text{ and } (H,\ \bar f,\ \ell) \in G(f_d)\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (f_d,\ f_d) \in E,\ (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ R)) \text{ and } (H,\ \bar f,\ \ell) \in G(f_d)\}) \\
 & \quad \mathsf{rt}_D(U_n)[\bot,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \mathrel{◀} \bar r' \text{ the parameters of } \Theta \\
@@ -388,7 +388,7 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 & \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
 & \qquad \forall (f,\ f) \in E.\ (\bar d[f / d],\ G(f)) \in \mathsf{rt}_D(U_n)[\bar R] \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\bar d\mathsf{rec}}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ R_\Theta,\ \bar t \mapsto R)) \text{ and } (H,\ \bar f,\ \ell) \in G\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ \bar t \mapsto R)) \text{ and } (H,\ \bar f,\ \ell) \in G\}) \\
 & \quad \mathsf{rt}_D(U_n)[R,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \mathrel{◀} \bar r' \text{ the parameters of } \Theta \\
@@ -612,13 +612,13 @@ Destructors live in a sort in a context when they are equal at equal closed subs
 \begin{aligned}
 & \Sigma \vDash^{()}_{\theta_1,\ \theta_2} \varepsilon : \kappa \iff \text{the names of } \Sigma \text{ are distinct} &&({\vDash}\bar d_{\kappa\varepsilon}) \\[1em]
 & \text{⟺} &&({\vDash}\bar d_{\kappa|}) \\
-& \quad \Sigma \vDash^{(\bot,\ \bar D)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) : \kappa \\
+& \quad \Sigma \vDash^{(\bot,\ \bar D)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa \\
 & \quad \text{and} \\
 & \qquad \Sigma \vDash \Theta[\theta_1] \equiv \Theta[\theta_2] : U_l \text{ where } l \text{ is the level of } \kappa \\
 & \qquad \exists \kappa_1 \preceq \kappa.\ \forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B[\theta_1,\ \sigma_1] \equiv B[\theta_2,\ \sigma_2] : \kappa_1 \\
 & \qquad \forall \bar x.\, B_1,\ \bar x.\, B_2.\ (\forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B_1[\sigma_1] \equiv B_2[\sigma_2] : B[\theta_1,\ \sigma_1]) \implies \Sigma \vDash^{\bar D}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
 & \text{⟺} &&({\vDash}\bar d_{\kappa\mathsf{rec}}) \\
-& \quad \Sigma \vDash^{(D,\ \bar D)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mid \bar d) : \kappa \\
+& \quad \Sigma \vDash^{(D,\ \bar D)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa \\
 & \quad \text{and} \\
 & \qquad \Sigma \vDash \Theta[\theta_1] \equiv \Theta[\theta_2] : U_l \text{ where } l \text{ is the level of } \kappa \\
 & \qquad B = T_D(\bar x_\Delta) \\
