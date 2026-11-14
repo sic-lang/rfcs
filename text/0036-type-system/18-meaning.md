@@ -5,7 +5,7 @@ It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [substitu
 
 The judgments mean what the meaning explanations of Martin-Löf type theory say of them, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them: a judgment is true when its terms compute as it says.
 The meaning of the judgments ignores the grades, the modes and the ownerships, as the typing does outside the judgments of usage and of ownership that the rule of the constant definitions reads; only the relations of run time read the grades, to tell which positions the erasure keeps, and the equality of the types compares them, so that two instances of a declared type at grades that erase a field in one and keep it in the other are different types.
-What the usage and the ownership of a term guarantee of its erasure when it runs is stated by the [run time](20-run-time.md), on these relations.
+What the usage and the ownership of a term guarantee of its erasure when it runs is stated by the [run time](21-run-time.md), on these relations.
 
 ## Definitions
 
@@ -242,7 +242,7 @@ The relation $`\mathsf{eq}(v)`$ is defined only for the closed canonical types t
 
 ### Relations of Run Time
 
-The relation of run time of a closed type relates its closed terms to the addresses of values of the [target language](16-erasure.md) in a heap, when the value is what the erasure by $`S^{{11}^{\mathsf{m}}}`$ of the term computes; it states what the [run time](20-run-time.md) guarantees of the erasure of a term.
+The relation of run time of a closed type relates its closed terms to the addresses of values of the [target language](16-erasure.md) in a heap, when the value is what the erasure by $`S^{{11}^{\mathsf{m}}}`$ of the term computes; it states what the [run time](21-run-time.md) guarantees of the erasure of a term.
 It is defined on the heaps that the [evaluation](17-evaluation.md) extends, by the graph of the relations of the types of each level, as the equality of the terms of each type is.
 It is stated in a program $`\mathcal{P}`$, which gives the constants of the target language their bodies, and in the interpretation of the constant declarations, which the computations $`t \Downarrow v`$ of the closed terms use.
 The notation omits the program, except where the meaning quantifies over the programs, as the equality of the types does, which writes $`\mathsf{rt}_{\mathcal{P}}`$ and $`\circledR_{\mathcal{P}}`$.
