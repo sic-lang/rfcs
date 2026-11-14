@@ -1,7 +1,7 @@
 # Evaluation
 
-This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands and the reaches of the values and of the environments, and their properties, among which the conservation of the bindings.
-It builds on the [vectors](10-grade-vectors.md#vectors), the [syntax](08-syntax.md), the [erasure](16-erasure.md) and its [usage](16-erasure.md#definitions), and the [type of positions](19-prelude.md#positions) of the prelude.
+This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands and the reaches of the values and of the environments, the annotations of the heaps and the claims of the values, and their properties, among which the conservation of the bindings.
+It builds on the [vectors](10-grade-vectors.md#vectors), the [syntax](08-syntax.md), the [erasure](16-erasure.md), its [usage](16-erasure.md#definitions) and its [ownership](16-erasure.md#definitions), and the [type of positions](19-prelude.md#positions) of the prelude.
 
 ## Definitions
 
@@ -159,21 +159,54 @@ A position makes one reference to its value unless its multiplicity is $`0`$, wh
 \end{aligned}
 ```
 
-The judgment $`{H \vdash \ell \mathrel{⇝} U}`$ reads: a use of the value at the address $`\ell`$ of the heap $`H`$ refers to the addresses as the reach $`U`$ counts.
-The judgment $`{H \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U}`$ reads: the values at the addresses $`\bar\ell`$, at the multiplicities $`\bar\pi`$, refer to the addresses as $`U`$ counts.
-The judgment $`{H \vdash E \mathrel{⇝}_\nu U}`$ reads: a term that reads the variables of the environment $`E`$ as $`\nu`$ allows refers to the addresses as $`U`$ counts, $`\nu(x)`$ reads of the cell of each variable $`x`$, each referring to the cell and to its value.
-A value refers to itself, a constructor to its fields, and a closure to the cells of its scope as its branches read them, for some $`\delta`$ that the usage of its branches allows, and to its state, as the demands do, the positions counting their references rather than their uses:
+A closure does not hold the ownership of the variables of its scope, which the [ownership](16-erasure.md#definitions) of the corecursor that builds it gives, nor the usage of its branches, which bounds their reads of its scope: an annotation $`g`$ of the heap gives them, $`{g(\ell) = (\varphi_\ell,\ \delta_\ell)}`$ for the closure at the address $`\ell`$, so that the reach of a value and what it claims read the same usage.
+An annotation $`g'`$ extends an annotation $`g`$ of a heap $`H`$, written $`{g \sqsubseteq_H g'}`$, when it gives the same ownership and usage at each address of $`H`$:
+
+```math
+\begin{aligned}
+& g(\ell) = (\varphi_\ell,\ \delta_\ell) \text{ where } \varphi_\ell \text{ and } \delta_\ell \text{ are vectors of multiplicities over the scope of the closure at } \ell &&(\mathsf{annotation}_H) \\[1em]
+& g \sqsubseteq_H g' \iff \forall \ell \le |H|.\ g'(\ell) = g(\ell) &&(\sqsubseteq_g)
+\end{aligned}
+```
+
+The judgment $`{H;\ g \vdash \ell \mathrel{⇝} U}`$ reads: a use of the value at the address $`\ell`$ of the heap $`H`$, annotated by $`g`$, refers to the addresses as the reach $`U`$ counts.
+The judgment $`{H;\ g \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U}`$ reads: the values at the addresses $`\bar\ell`$, at the multiplicities $`\bar\pi`$, refer to the addresses as $`U`$ counts.
+The judgment $`{H;\ g \vdash E \mathrel{⇝}_\nu U}`$ reads: a term that reads the variables of the environment $`E`$ as $`\nu`$ allows refers to the addresses as $`U`$ counts, $`\nu(x)`$ reads of the cell of each variable $`x`$, each referring to the cell and to its value.
+A value refers to itself, a constructor to its fields, and a closure to the cells of its scope as its branches read them, as the usage $`\delta_\ell`$ that the annotation gives it allows, and to its state, as the demands do, the positions counting their references rather than their uses:
 
 ```math
 \begin{gathered}
-\frac{H(\ell) = \text{↯}}{H \vdash \ell \mathrel{⇝} [\ell]}\;(\mathsf{reach}_\ell.\text{↯}) \\[1em]
-\frac{H(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho) \quad H \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U}{H \vdash \ell \mathrel{⇝} [\ell] +^D U}\;(\mathsf{reach}_\ell.c) \\[1em]
-\frac{\begin{gathered}{}H(\ell) = \langle E;\ \bar P;\ \bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho \rangle \\ \delta \vdash \bar P \mathrel{▶} \\ H \vdash E \mathrel{⇝}_\delta U_1 \\ H \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U_2\end{gathered}}{H \vdash \ell \mathrel{⇝} [\ell] +^D (U_1 +^D U_2)}\;(\mathsf{reach}_\ell.\mathsf{corec}) \\[1em]
-\frac{}{H \vdash () \mathrel{⇝} () \mathrel{⇝} 0^D}\;(\mathsf{reach}_{\bar\ell}.\varepsilon) \\[1em]
-\frac{H \vdash \ell \mathrel{⇝} U_1 \quad H \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U_2}{H \vdash (\ell,\ \bar\ell) \mathrel{⇝} (\pi,\ \bar\pi) \mathrel{⇝} \lceil \pi \rceil \cdot^D U_1 +^D U_2}\;(\mathsf{reach}_{\bar\ell}.{,}) \\[1em]
-\frac{}{H \vdash \varepsilon \mathrel{⇝}_\nu 0^D}\;(\mathsf{reach}_E.\varepsilon) \\[1em]
-\frac{H(c) = \mathsf{bind}_\pi(\ell) \quad H \vdash \ell \mathrel{⇝} U_1 \quad H \vdash E \mathrel{⇝}_\nu U_2}{H \vdash (E,\ x \mapsto c) \mathrel{⇝}_{\nu \bullet \pi'} \pi' \cdot^D ([c] +^D U_1) +^D U_2}\;(\mathsf{reach}_E.{,})
+\frac{H(\ell) = \text{↯}}{H;\ g \vdash \ell \mathrel{⇝} [\ell]}\;(\mathsf{reach}_\ell.\text{↯}) \\[1em]
+\frac{H(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho) \quad H;\ g \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U}{H;\ g \vdash \ell \mathrel{⇝} [\ell] +^D U}\;(\mathsf{reach}_\ell.c) \\[1em]
+\frac{\begin{gathered}{}H(\ell) = \langle E;\ \bar P;\ \bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho \rangle \\ g(\ell) = (\varphi_\ell,\ \delta_\ell) \\ H;\ g \vdash E \mathrel{⇝}_{\delta_\ell} U_1 \\ H;\ g \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U_2\end{gathered}}{H;\ g \vdash \ell \mathrel{⇝} [\ell] +^D (U_1 +^D U_2)}\;(\mathsf{reach}_\ell.\mathsf{corec}) \\[1em]
+\frac{}{H;\ g \vdash () \mathrel{⇝} () \mathrel{⇝} 0^D}\;(\mathsf{reach}_{\bar\ell}.\varepsilon) \\[1em]
+\frac{H;\ g \vdash \ell \mathrel{⇝} U_1 \quad H;\ g \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U_2}{H;\ g \vdash (\ell,\ \bar\ell) \mathrel{⇝} (\pi,\ \bar\pi) \mathrel{⇝} \lceil \pi \rceil \cdot^D U_1 +^D U_2}\;(\mathsf{reach}_{\bar\ell}.{,}) \\[1em]
+\frac{}{H;\ g \vdash \varepsilon \mathrel{⇝}_\nu 0^D}\;(\mathsf{reach}_E.\varepsilon) \\[1em]
+\frac{H(c) = \mathsf{bind}_\pi(\ell) \quad H;\ g \vdash \ell \mathrel{⇝} U_1 \quad H;\ g \vdash E \mathrel{⇝}_\nu U_2}{H;\ g \vdash (E,\ x \mapsto c) \mathrel{⇝}_{\nu \bullet \pi'} \pi' \cdot^D ([c] +^D U_1) +^D U_2}\;(\mathsf{reach}_E.{,})
 \end{gathered}
+```
+
+The judgment $`{H;\ g \vdash \ell \mathrel{⊳} b}`$ reads: the value at the address $`\ell`$ of the heap $`H`$, annotated by $`g`$, claims the address $`b`$, which it holds alone when it is owned alone.
+A value claims itself, a constructor and a closure what each field and each entry of the state that they store at the requirement $`1`$ and at a multiplicity other than $`0`$ claims, a closure what the cell of each variable of its scope that it owns alone and reads claims, as the annotation gives the ownership and the usage of its scope, and a cell what the value that it binds claims; each claim follows a reference that the reach counts, so that what a value claims is in its reach:
+
+```math
+\begin{gathered}
+\frac{}{H;\ g \vdash \ell \mathrel{⊳} \ell}\;(\mathsf{claim}.\mathsf{self}) \\[1em]
+\frac{H(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho) \quad \pi_k \ne 0 \quad \varrho_k = 1 \quad H;\ g \vdash \ell_k \mathrel{⊳} b}{H;\ g \vdash \ell \mathrel{⊳} b}\;(\mathsf{claim}.c) \\[1em]
+\frac{H(\ell) = \langle E;\ \bar P;\ \bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho \rangle \quad \pi_k \ne 0 \quad \varrho_k = 1 \quad H;\ g \vdash \ell_k \mathrel{⊳} b}{H;\ g \vdash \ell \mathrel{⊳} b}\;(\mathsf{claim}.\mathsf{state}) \\[1em]
+\frac{\begin{gathered}{}H(\ell) = \langle E;\ \bar P;\ \bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho \rangle \\ g(\ell) = (\varphi_\ell,\ \delta_\ell) \\ \delta_\ell(x) \ne 0 \\ \varphi_\ell(x) = 1 \\ H;\ g \vdash E(x) \mathrel{⊳} b\end{gathered}}{H;\ g \vdash \ell \mathrel{⊳} b}\;(\mathsf{claim}.\mathsf{scope}) \\[1em]
+\frac{H(c) = \mathsf{bind}_\pi(\ell) \quad H;\ g \vdash \ell \mathrel{⊳} b}{H;\ g \vdash c \mathrel{⊳} b}\;(\mathsf{claim}.\mathsf{bind})
+\end{gathered}
+```
+
+A term that owns the variables of the environment $`E`$ as $`\varphi`$ gives and reads them as $`\nu`$ allows claims what the cell of each variable that it owns alone and reads claims, $`{H;\ g \vdash E \mathrel{⊳}_{\varphi;\nu} b}`$; an annotation is valid for a heap, $`{\vdash_\Omega H \mathrel{◀} g}`$, when the branches of each closure have their [ownership](16-erasure.md#definitions) under the ownership of its scope and their usage under the usage of its scope, given the ownership $`\Omega`$ of each constant; a program has the ownerships $`\Omega`$, $`{\vdash \mathcal{P} \mathrel{◀} \Omega}`$, when each of its bodies has the ownership that $`\Omega`$ gives its constant:
+
+```math
+\begin{aligned}
+& H;\ g \vdash E \mathrel{⊳}_{\varphi;\nu} b \iff \exists x.\ \varphi(x) = 1 \wedge \nu(x) \ne 0 \wedge H;\ g \vdash E(x) \mathrel{⊳} b &&(\mathsf{claim}_E) \\[1em]
+& \vdash_\Omega H \mathrel{◀} g \iff \forall \ell, E, \bar P, \bar\ell, \bar\pi, \bar\varrho.\ H(\ell) = \langle E;\ \bar P;\ \bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho \rangle \implies \Omega;\ \varphi_\ell \vdash \bar P \mathrel{◀} \wedge\ \delta_\ell \vdash \bar P \mathrel{▶} \text{ where } g(\ell) = (\varphi_\ell,\ \delta_\ell) &&(\mathsf{valid}_g) \\[1em]
+& \vdash \mathcal{P} \mathrel{◀} \Omega \iff \forall f, \bar s, \bar p, M.\ \mathcal{P}(f.\{\bar s;\ \bar p\}) = M \implies \Omega;\ 0^{\nu} \vdash M \mathrel{◀} \Omega(f) &&(\mathsf{own}_{\mathcal{P}})
+\end{aligned}
 ```
 
 ## Properties
@@ -234,28 +267,30 @@ The demands hold in each heap that extends their heap:
 \end{aligned}
 ```
 
-The reaches hold in each heap that extends their heap, and refer only to the addresses of their heap, so that a value that a later run allocates is reached by no value or variable before it:
+The reaches hold in each heap that extends their heap, annotated by an annotation that extends their annotation, and refer only to the addresses of their heap, so that a value that a later run allocates is reached by no value or variable before it:
 
 ```math
 \begin{aligned}
 & \text{⟹} &&(\mathsf{reach}_\ell.{\sqsubseteq}) \\
 & \quad \text{and} \\
 & \qquad H \sqsubseteq H' \\
-& \qquad H \vdash \ell \mathrel{⇝} U \\
-& \quad H' \vdash \ell \mathrel{⇝} U \\[1em]
+& \qquad g \sqsubseteq_H g' \\
+& \qquad H;\ g \vdash \ell \mathrel{⇝} U \\
+& \quad H';\ g' \vdash \ell \mathrel{⇝} U \\[1em]
 & \text{⟹} &&(\mathsf{reach}_E.{\sqsubseteq}) \\
 & \quad \text{and} \\
 & \qquad H \sqsubseteq H' \\
-& \qquad H \vdash E \mathrel{⇝}_\nu U \\
-& \quad H' \vdash E \mathrel{⇝}_\nu U \\[1em]
+& \qquad g \sqsubseteq_H g' \\
+& \qquad H;\ g \vdash E \mathrel{⇝}_\nu U \\
+& \quad H';\ g' \vdash E \mathrel{⇝}_\nu U \\[1em]
 & \text{⟹} &&(\mathsf{reach}_\ell.{<}) \\
 & \quad \text{and} \\
-& \qquad H \vdash \ell \mathrel{⇝} U \\
+& \qquad H;\ g \vdash \ell \mathrel{⇝} U \\
 & \qquad |H| < a \\
 & \quad U(a) = 0 \\[1em]
 & \text{⟹} &&(\mathsf{reach}_E.{<}) \\
 & \quad \text{and} \\
-& \qquad H \vdash E \mathrel{⇝}_\nu U \\
+& \qquad H;\ g \vdash E \mathrel{⇝}_\nu U \\
 & \qquad |H| < a \\
 & \quad U(a) = 0
 \end{aligned}
