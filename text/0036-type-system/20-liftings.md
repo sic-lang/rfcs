@@ -10,8 +10,18 @@ This section gives the variables of a lifting, then the lifting of the types and
 ### Variables of a Lifting
 
 The lifting of the type $`D`$ of a block of codata types $`{\mathcal{D} = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C_{\mathcal{D}}\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$ at a set $`\Pi`$ of its parameters is named $`D^\Pi`$, a name of the signature that $`D`$ and $`\Pi`$ determine.
-It has the variables of the block and five more: the quality $`s_C`$ and the level $`l_C`$ of the sort of its motives, the grade $`r`$ of the recursor that computes its terms, the ownership $`\varsigma`$ that its destructors require of the value that they observe, and the ownership $`\chi`$ of their results.
+It has the variables of the block and these: the quality $`s_C`$ of the sorts of its motives, the level $`l_Y`$ of the sort of the motive of each parameter $`Y`$ of $`\Pi`$, written $`\bar l_\Pi`$ together, the grade $`r`$ of the recursor that computes its terms, the ownership $`\varsigma`$ that its destructors require of the value that they observe, and the ownership $`\chi`$ of their results.
+Each motive has a level of its own, since a sort is equal to another at the same level only: a type lifted is a motive of the lifting of an instance whose argument it is, and its level is not the level of the motive of a parameter.
 Its parameters are those of the block, a motive $`C_Y`$ for each parameter $`Y`$ of $`\Pi`$, and a term $`y`$ of the type $`D`$ at these parameters; in the definitions of this section, $`\Pi`$, these variables and these motives are fixed, and a parameter is lifted when it is in $`\Pi`$.
+
+The level $`{l \sqcup \bigsqcup \bar l'}`$ is the level $`l`$ [joined](06-levels.md) to each of the levels $`\bar l'`$:
+
+```math
+\begin{aligned}
+& l \sqcup \textstyle\bigsqcup \varepsilon = l &&(\textstyle\bigsqcup_l) \\
+& l \sqcup \textstyle\bigsqcup (l',\ \bar l') = (l \sqcup l') \sqcup \textstyle\bigsqcup \bar l'
+\end{aligned}
+```
 
 The grade of the result of a destructor of the lifting is the grade of the [mode](05-modes.md) of the grade $`p`$ of the destructor that it lifts, since an observation reads the grade of its destructor by its mode only, without use at run time when the motives are propositions, as the [formation](14-typing.md#destructors-of-a-block) of a destructor whose result is a proposition requires:
 
@@ -33,53 +43,53 @@ The telescope $`{r \cdot \Theta}`$ is the telescope $`\Theta`$ whose entries are
 
 ### Types
 
-The relation $`{A \uparrow u = A'}`$ reads: the type $`A'`$ is the type $`A`$ lifted at the term $`u`$ of $`A`$.
-A parameter lifted, applied to arguments in which no parameter lifted occurs, is lifted to its motive at these arguments and at the term; an instance of a declared type of which an argument at least is lifted is lifted to the instance of the lifting of this type at the parameters of these arguments, at the variables of the lifting, at the arguments lifted and at the term:
+The relation $`{\Sigma \vdash A \uparrow u = A' : (s_C)_l}`$ reads: the type $`A'`$, of the level $`l`$, is the type $`A`$ lifted at the term $`u`$ of $`A`$.
+A parameter lifted, applied to arguments in which no parameter lifted occurs, is lifted to its motive at these arguments and at the term, of the level of this motive; an instance of a declared type of which an argument at least is lifted is lifted to the instance of the lifting of this type at the parameters of these arguments, at the variables of the lifting, at the levels of the arguments lifted, at these arguments and at the term, of the level of the instance joined to these levels:
 
 ```math
 \begin{gathered}
-\frac{\begin{gathered}{}Y \in \Pi \\ \text{no parameter of } \Pi \text{ occurs in } \bar t\end{gathered}}{Y[\bar t] \uparrow u = C_Y[\bar t,\ u]}\;(\uparrow_X) \\[1em]
-\frac{\begin{gathered}{}\bar a \uparrow = (\Pi';\ \bar a') \\ \Pi' \ne \varnothing\end{gathered}}{D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \uparrow u = D^{\Pi'}.\{\bar s', s_C;\ \bar l', l_C;\ \bar p', r, \varsigma, \chi\}\ (\bar a',\ u)}\;(\uparrow_D)
+\frac{\begin{gathered}{}Y \in \Pi \\ \text{no parameter of } \Pi \text{ occurs in } \bar t\end{gathered}}{\Sigma \vdash Y[\bar t] \uparrow u = C_Y[\bar t,\ u] : (s_C)_{l_Y}}\;(\uparrow_X) \\[1em]
+\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : s_l \mathrel{▶} \zeta \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l'';\ \bar a') \\ \Pi' \ne \varnothing\end{gathered}}{\Sigma \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \uparrow u = D^{\Pi'}.\{\bar s', s_C;\ \bar l', \bar l'';\ \bar p', r, \varsigma, \chi\}\ (\bar a',\ u) : (s_C)_{l[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \sqcup \bigsqcup \bar l''}}\;(\uparrow_D)
 \end{gathered}
 ```
 
 A type in which no parameter lifted occurs has no lifting, nor has a type in which one occurs otherwise, in a term or below a second-order variable.
 
-The relation $`{\bar a \uparrow = (\Pi';\ \bar a')}`$ reads: the arguments $`\bar a'`$ are the arguments $`\bar a`$ of an instance lifted, and $`\Pi'`$ is the set of the parameters of the instance whose arguments are lifted.
+The relation $`{\Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a')}`$ reads: the arguments $`\bar a'`$ are the arguments $`\bar a`$ of an instance lifted, $`\Pi'`$ is the set of the parameters of the instance whose arguments are lifted, and $`\bar l`$ are the levels of these arguments lifted, in the order of the parameters.
 An argument in which a parameter lifted occurs is followed by its motive, the argument lifted at a term $`z`$ of its own, under the variables that its abstraction binds, and an argument in which none occurs is kept; in these rules, $`Y`$ is the parameter of the instance whose argument is $`{\bar x.\, B}`$:
 
 ```math
 \begin{gathered}
-\frac{}{() \uparrow = (\varnothing;\ ())}\;(\uparrow_{\bar a\varepsilon}) \\[1em]
-\frac{\begin{gathered}{}\bar a \uparrow = (\Pi';\ \bar a') \\ B \uparrow z = B'\end{gathered}}{(\bar a,\ \bar x.\, B) \uparrow = (\Pi' \cup \{Y\};\ (\bar a',\ \bar x.\, B,\ (\bar x, z).\, B'))}\;(\uparrow_{\bar a,}) \\[1em]
-\frac{\begin{gathered}{}\bar a \uparrow = (\Pi';\ \bar a') \\ \text{no parameter of } \Pi \text{ occurs in } B\end{gathered}}{(\bar a,\ \bar x.\, B) \uparrow = (\Pi';\ (\bar a',\ \bar x.\, B))}\;(\uparrow_{\bar a\notin})
+\frac{}{\Sigma \vdash () \uparrow = (\varnothing;\ \varepsilon;\ ())}\;(\uparrow_{\bar a\varepsilon}) \\[1em]
+\frac{\begin{gathered}{}\Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a') \\ \Sigma \vdash B \uparrow z = B' : (s_C)_{l'}\end{gathered}}{\Sigma \vdash (\bar a,\ \bar x.\, B) \uparrow = (\Pi' \cup \{Y\};\ (\bar l, l');\ (\bar a',\ \bar x.\, B,\ (\bar x, z).\, B'))}\;(\uparrow_{\bar a,}) \\[1em]
+\frac{\begin{gathered}{}\Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a') \\ \text{no parameter of } \Pi \text{ occurs in } B\end{gathered}}{\Sigma \vdash (\bar a,\ \bar x.\, B) \uparrow = (\Pi';\ \bar l;\ (\bar a',\ \bar x.\, B))}\;(\uparrow_{\bar a\notin})
 \end{gathered}
 ```
 
 ### Destructors
 
-The relation $`{\bar d \uparrow y = \bar d'}`$ reads: the destructors $`\bar d'`$ are the destructors $`\bar d`$ of the type $`D`$ lifted at the term $`y`$ of its instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta}`$ at the parameters themselves.
+The relation $`{\Sigma \vdash \bar d \uparrow y = \bar d'}`$ reads: the destructors $`\bar d'`$ are the destructors $`\bar d`$ of the type $`D`$ lifted at the term $`y`$ of its instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta}`$ at the parameters themselves.
 The lifting has each destructor whose result is lifted at the observation of $`y`$ by it, at its arguments $`\bar x`$, used $`r`$ times more, since the recursor eliminates this observation $`r`$ times, with this result, of the ownership $`\chi`$ whatever the ownerships of the arguments are, and the requirement $`\varsigma`$; it has no destructor for a destructor in whose result no parameter lifted occurs.
 In the destructors after it, each destructor is the [observation](09-substitution.md) of $`y`$ by it, so that the destructors of the lifting do not depend on one another, and none is used by the types of those after it:
 
 ```math
 \begin{gathered}
-\frac{}{\varepsilon \uparrow y = \varepsilon}\;(\uparrow_{\bar d\varepsilon}) \\[1em]
-\frac{\begin{gathered}{}B \uparrow y.(T.d)(\bar x) = B' \\ \bar d[y.T / d] \uparrow y = \bar d'\end{gathered}}{(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y = (d : (r \cdot \Theta \vdash B' \mathrel{◀} \chi) \mathrel{▶} \mathsf{grade}_{s_C}(p);\ {00}^{\mathsf{p}} \mathrel{◀} \varsigma \mid \bar d')}\;(\uparrow_{\bar d|}) \\[1em]
-\frac{\begin{gathered}{}\text{no parameter of } \Pi \text{ occurs in } B \\ \bar d[y.T / d] \uparrow y = \bar d'\end{gathered}}{(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y = \bar d'}\;(\uparrow_{\bar d\notin})
+\frac{}{\Sigma \vdash \varepsilon \uparrow y = \varepsilon}\;(\uparrow_{\bar d\varepsilon}) \\[1em]
+\frac{\begin{gathered}{}\Sigma \vdash B \uparrow y.(T.d)(\bar x) = B' : (s_C)_l \\ \Sigma \vdash \bar d[y.T / d] \uparrow y = \bar d'\end{gathered}}{\Sigma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y = (d : (r \cdot \Theta \vdash B' \mathrel{◀} \chi) \mathrel{▶} \mathsf{grade}_{s_C}(p);\ {00}^{\mathsf{p}} \mathrel{◀} \varsigma \mid \bar d')}\;(\uparrow_{\bar d|}) \\[1em]
+\frac{\begin{gathered}{}\text{no parameter of } \Pi \text{ occurs in } B \\ \Sigma \vdash \bar d[y.T / d] \uparrow y = \bar d'\end{gathered}}{\Sigma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y = \bar d'}\;(\uparrow_{\bar d\notin})
 \end{gathered}
 ```
 
 ### Parameters
 
-The parameters $`{\Delta \uparrow}`$ of the lifting are the parameters $`\Delta`$ in which each parameter lifted is followed by its motive: a type of the sort $`{(s_C)_{l_C}}`$ over the telescope of the parameter and a term $`z`$ of it, which the motive may use as it wants and of which it requires nothing, and whose result has the least ownership, as a type:
+The parameters $`{\Delta \uparrow}`$ of the lifting are the parameters $`\Delta`$ in which each parameter lifted is followed by its motive: a type over the telescope of the parameter and a term $`z`$ of it, of the sort of the quality $`s_C`$ and of the level of this motive, which the motive may use as it wants and of which it requires nothing, and whose result has the least ownership, as a type:
 
 ```math
 \begin{aligned}
 & \varepsilon \uparrow = \varepsilon &&(\mathsf{params}_{\uparrow}) \\
-& (\Delta,\ x : A) \uparrow = (\Delta \uparrow,\ x : A,\ C_x : (z : x \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash (s_C)_{l_C} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) \text{ if } x \in \Pi \\
+& (\Delta,\ x : A) \uparrow = (\Delta \uparrow,\ x : A,\ C_x : (z : x \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash (s_C)_{l_x} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) \text{ if } x \in \Pi \\
 & (\Delta,\ x : A) \uparrow = (\Delta \uparrow,\ x : A) \text{ otherwise} \\
-& (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi)) \uparrow = (\Delta \uparrow,\ X : (\Theta \vdash A \mathrel{◀} \psi),\ C_X : (\Theta,\ z : X[\bar x] \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash (s_C)_{l_C} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) \text{ if } X \in \Pi \\
+& (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi)) \uparrow = (\Delta \uparrow,\ X : (\Theta \vdash A \mathrel{◀} \psi),\ C_X : (\Theta,\ z : X[\bar x] \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash (s_C)_{l_X} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) \text{ if } X \in \Pi \\
 & (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi)) \uparrow = (\Delta \uparrow,\ X : (\Theta \vdash A \mathrel{◀} \psi)) \text{ otherwise}
 \end{aligned}
 ```
@@ -89,25 +99,25 @@ In the fourth case, $`\bar x`$ are the variables of $`\Theta`$.
 ### Declaration
 
 The lifting $`{\mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')}`$ of the type $`D`$ of the block $`\mathcal{D}`$, whose sort is $`{\kappa = s_l}`$, at the parameters $`\Pi`$, with the destructors $`\bar d'`$, is a block of one codata type, since the types of a block share their parameters while each lifting has a term of its own type.
-It has the constraint of the block, the parameters lifted followed by the term $`y`$, and the sort of the quality $`s_C`$ and of the level of the block joined to $`l_C`$; it uses its parameters with the grades $`\zeta`$ that give each of them the least grade $`{\omega\omega}^{\mathsf{p}}`$, which states nothing, and declares no parameter in which it is strictly positive:
+It has the constraint of the block, the parameters lifted followed by the term $`y`$, and the sort of the quality $`s_C`$ and of the level of the block joined to the levels of the motives; it uses its parameters with the grades $`\zeta`$ that give each of them the least grade $`{\omega\omega}^{\mathsf{p}}`$, which states nothing, and declares no parameter in which it is strictly positive:
 
 ```math
 \begin{aligned}
 & {=} &&(\mathsf{lifting}_{\mathcal{D}}) \\
 & \quad \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d') \\
-& \quad \mathsf{codata}.\{\bar s, s_C;\ \bar l, l_C;\ \bar p, r, \varsigma, \chi \mid C_{\mathcal{D}}\}\ (\Delta \uparrow,\ y : D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta) : (s_C)_{l \sqcup l_C}\ \mathsf{where}\ D^\Pi \mathrel{▶} \zeta \oplus \varnothing \mathrel{≔} \bar d'
+& \quad \mathsf{codata}.\{\bar s, s_C;\ \bar l, \bar l_\Pi;\ \bar p, r, \varsigma, \chi \mid C_{\mathcal{D}}\}\ (\Delta \uparrow,\ y : D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta) : (s_C)_{l \sqcup \bigsqcup \bar l_\Pi}\ \mathsf{where}\ D^\Pi \mathrel{▶} \zeta \oplus \varnothing \mathrel{≔} \bar d'
 \end{aligned}
 ```
 
-The destructors $`\bar d'`$ are those of the lifting of $`D`$ at $`\Pi`$, written $`{\mathcal{D} \vdash D \uparrow_\Pi \bar d'}`$, when $`D`$ is a type of the block and, at each instance of the variables of the lifting, they are its destructors $`\bar d_D`$ lifted at $`y`$, with the variables of the lifting at this instance; their names are those of the destructors of $`D`$ whose results are lifted, which are thus the same at each instance:
+The destructors $`\bar d'`$ are those of the lifting of $`D`$ at $`\Pi`$, written $`{\Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d'}`$, when $`D`$ is a type of the block and, at each instance of the variables of the lifting, they are its destructors $`\bar d_D`$ lifted at $`y`$, with the variables of the lifting at this instance; their names are those of the destructors of $`D`$ whose results are lifted, which are thus the same at each instance:
 
 ```math
 \begin{aligned}
 & \text{⟺} &&(\uparrow_{\mathcal{D}}) \\
-& \quad \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
+& \quad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
 & \quad \text{and} \\
 & \qquad D \text{ is a type of } \mathcal{D} \text{, a block of codata types} \\
-& \qquad \forall \bar s',\ s'_C,\ \bar p',\ r',\ \varsigma',\ \chi' \text{ as many as } \bar s,\ s_C,\ \bar p,\ r,\ \varsigma,\ \chi.\ \bar d_D[\bar s' / \bar s,\ \bar p' / \bar p] \uparrow y = \bar d'[\bar s', s'_C / \bar s, s_C,\ \bar p', r', \varsigma', \chi' / \bar p, r, \varsigma, \chi]
+& \qquad \forall \bar s',\ s'_C,\ \bar p',\ r',\ \varsigma',\ \chi' \text{ as many as } \bar s,\ s_C,\ \bar p,\ r,\ \varsigma,\ \chi.\ \Sigma \vdash \bar d_D[\bar s' / \bar s,\ \bar p' / \bar p] \uparrow y = \bar d'[\bar s', s'_C / \bar s, s_C,\ \bar p', r', \varsigma', \chi' / \bar p, r, \varsigma, \chi]
 \end{aligned}
 ```
 
@@ -120,7 +130,7 @@ A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, writt
 & \quad \exists \mathcal{D},\ \bar d'. \\
 & \qquad \text{and} \\
 & \qquad \quad \mathcal{D} \in \Sigma \\
-& \qquad \quad \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
+& \qquad \quad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
 & \qquad \quad \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d') \in \Sigma
 \end{aligned}
 ```
