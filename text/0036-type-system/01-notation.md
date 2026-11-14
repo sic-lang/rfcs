@@ -37,6 +37,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`c`$ | Constructors of the data types |
 | $`d`$ | Destructors of the codata types |
 | $`\varsigma`$ | Ownerships that the destructors require of the values that they observe |
+| $`\Pi`$ | Sets of parameters of a declared type: those in which it is strictly positive, and those at which it is lifted |
 | $`C`$ | Motives of the recursors |
 | $`f`$ | Constants, defined or declared |
 | $`\Sigma`$ | Signatures |
