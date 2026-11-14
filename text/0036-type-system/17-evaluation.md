@@ -1,6 +1,6 @@
 # Evaluation
 
-This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands of the values and of the environments, and their properties, among which the conservation of the bindings.
+This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands and the reaches of the values and of the environments, and their properties, among which the conservation of the bindings.
 It builds on the [vectors](10-grade-vectors.md#vectors), the [syntax](08-syntax.md), the [erasure](16-erasure.md) and its [usage](16-erasure.md#definitions), and the [type of positions](19-prelude.md#positions) of the prelude.
 
 ## Definitions
@@ -150,6 +150,32 @@ The cells that a run allocates, $`\mathsf{new}_H(H,\ H')`$, give each address of
 \end{gathered}
 ```
 
+The guarantees on the ownership at run time count the references to each address, a value or a cell, along the paths that start from the values and the variables that a run still uses; a reach $`U`$ is a demand that counts these references.
+A position makes one reference to its value unless its multiplicity is $`0`$, whatever its multiplicity: a value owned alone is used once, and reads its position once, whatever the multiplicity bounds over all the uses of the value, while a position of the multiplicity $`0`$ is never read:
+
+```math
+\begin{aligned}
+& \lceil 0 \rceil = 0 \text{ and } \lceil \pi \rceil = 1 \text{ if } \pi \ne 0 &&(\mathsf{refs}_\pi)
+\end{aligned}
+```
+
+The judgment $`{H \vdash \ell \mathrel{⇝} U}`$ reads: a use of the value at the address $`\ell`$ of the heap $`H`$ refers to the addresses as the reach $`U`$ counts.
+The judgment $`{H \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U}`$ reads: the values at the addresses $`\bar\ell`$, at the multiplicities $`\bar\pi`$, refer to the addresses as $`U`$ counts.
+The judgment $`{H \vdash E \mathrel{⇝}_\nu U}`$ reads: a term that reads the variables of the environment $`E`$ as $`\nu`$ allows refers to the addresses as $`U`$ counts, $`\nu(x)`$ reads of the cell of each variable $`x`$, each referring to the cell and to its value.
+A value refers to itself, a constructor to its fields, and a closure to the cells of its scope as its branches read them, for some $`\delta`$ that the usage of its branches allows, and to its state, as the demands do, the positions counting their references rather than their uses:
+
+```math
+\begin{gathered}
+\frac{H(\ell) = \text{↯}}{H \vdash \ell \mathrel{⇝} [\ell]}\;(\mathsf{reach}_\ell.\text{↯}) \\[1em]
+\frac{H(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho) \quad H \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U}{H \vdash \ell \mathrel{⇝} [\ell] +^D U}\;(\mathsf{reach}_\ell.c) \\[1em]
+\frac{\begin{gathered}{}H(\ell) = \langle E;\ \bar P;\ \bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho \rangle \\ \delta \vdash \bar P \mathrel{▶} \\ H \vdash E \mathrel{⇝}_\delta U_1 \\ H \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U_2\end{gathered}}{H \vdash \ell \mathrel{⇝} [\ell] +^D (U_1 +^D U_2)}\;(\mathsf{reach}_\ell.\mathsf{corec}) \\[1em]
+\frac{}{H \vdash () \mathrel{⇝} () \mathrel{⇝} 0^D}\;(\mathsf{reach}_{\bar\ell}.\varepsilon) \\[1em]
+\frac{H \vdash \ell \mathrel{⇝} U_1 \quad H \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U_2}{H \vdash (\ell,\ \bar\ell) \mathrel{⇝} (\pi,\ \bar\pi) \mathrel{⇝} \lceil \pi \rceil \cdot^D U_1 +^D U_2}\;(\mathsf{reach}_{\bar\ell}.{,}) \\[1em]
+\frac{}{H \vdash \varepsilon \mathrel{⇝}_\nu 0^D}\;(\mathsf{reach}_E.\varepsilon) \\[1em]
+\frac{H(c) = \mathsf{bind}_\pi(\ell) \quad H \vdash \ell \mathrel{⇝} U_1 \quad H \vdash E \mathrel{⇝}_\nu U_2}{H \vdash (E,\ x \mapsto c) \mathrel{⇝}_{\nu \bullet \pi'} \pi' \cdot^D ([c] +^D U_1) +^D U_2}\;(\mathsf{reach}_E.{,})
+\end{gathered}
+```
+
 ## Properties
 
 The evaluation is deterministic: a term evaluates to one address, in one heap, reading the same cells, whatever the program:
@@ -205,6 +231,33 @@ The demands hold in each heap that extends their heap:
 & \qquad H \sqsubseteq H' \\
 & \qquad H \vdash E \mathrel{▶}_\nu D \\
 & \quad H' \vdash E \mathrel{▶}_\nu D
+\end{aligned}
+```
+
+The reaches hold in each heap that extends their heap, and refer only to the addresses of their heap, so that a value that a later run allocates is reached by no value or variable before it:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{reach}_\ell.{\sqsubseteq}) \\
+& \quad \text{and} \\
+& \qquad H \sqsubseteq H' \\
+& \qquad H \vdash \ell \mathrel{⇝} U \\
+& \quad H' \vdash \ell \mathrel{⇝} U \\[1em]
+& \text{⟹} &&(\mathsf{reach}_E.{\sqsubseteq}) \\
+& \quad \text{and} \\
+& \qquad H \sqsubseteq H' \\
+& \qquad H \vdash E \mathrel{⇝}_\nu U \\
+& \quad H' \vdash E \mathrel{⇝}_\nu U \\[1em]
+& \text{⟹} &&(\mathsf{reach}_\ell.{<}) \\
+& \quad \text{and} \\
+& \qquad H \vdash \ell \mathrel{⇝} U \\
+& \qquad |H| < a \\
+& \quad U(a) = 0 \\[1em]
+& \text{⟹} &&(\mathsf{reach}_E.{<}) \\
+& \quad \text{and} \\
+& \qquad H \vdash E \mathrel{⇝}_\nu U \\
+& \qquad |H| < a \\
+& \quad U(a) = 0
 \end{aligned}
 ```
 
