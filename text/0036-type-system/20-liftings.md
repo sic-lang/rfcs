@@ -1,6 +1,6 @@
 # Liftings
 
-This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the lifting of a type at a term, of the arguments of an instance, of the destructors of a codata type and of its parameters, the declaration of the lifting, and the signatures that hold it.
+This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the lifting of a type at a term, of the arguments of an instance, of the destructors of a codata type and of its parameters, the declaration of the lifting, and the signatures that hold it, with the ownership of the lifting of a codata type without recursive destructor.
 Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md) and on the variables that [do not occur](14-typing.md#strict-positivity) in a term, and the typing will read them for the recursive result of a field nested below a codata type.
 
 ## Definitions
@@ -136,3 +136,18 @@ A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, writt
 ```
 
 The lifting is an entry of the signature as the others: the judgments of the signatures check it, so that a type whose lifting is not well formed, such as a recursive codata type, whose lifting is not at its parameters themselves, or a codata type with a result below a data type, which has no lifting, has no lifting that a well-formed signature holds.
+
+## Properties
+
+A signature whose entries have their [ownerships](13-ownership.md#definitions), followed by the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, has the ownerships of its entries: the lifting has no recursive destructor either, since the result of each of its destructors is a motive, or an instance of the lifting of another type:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{lift}_{◀}) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \mathrel{◀} \\
+& \qquad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \mathsf{rec}_{\mathcal{D}}(\bar d_D[\bar s' / \bar s,\ \bar p' / \bar p]) = (\bot,\ \dots,\ \bot) \\
+& \quad {}\vdash (\Sigma,\ \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')) \mathrel{◀}
+\end{aligned}
+```
