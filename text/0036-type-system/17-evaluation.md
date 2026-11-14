@@ -1,6 +1,6 @@
 # Evaluation
 
-This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands and the reaches of the values and of the environments, the annotations of the heaps and the claims of the values, and their properties, among which the conservation of the bindings.
+This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands and the reaches of the values and of the environments, the annotations of the heaps and the claims of the values, and their properties, among which the conservation of the bindings and the uniqueness at run time.
 It builds on the [vectors](10-grade-vectors.md#vectors), the [syntax](08-syntax.md), the [erasure](16-erasure.md), its [usage](16-erasure.md#definitions) and its [ownership](16-erasure.md#definitions), and the [type of positions](19-prelude.md#positions) of the prelude.
 
 ## Definitions
@@ -60,11 +60,11 @@ A variable reads its cell, which gives the address of its value, a constant eval
 \end{gathered}
 ```
 
-The judgment $`{\mathcal{P};\ \varpi;\ H;\ E \vdash \mathsf{rec}_\rho\ \ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \Downarrow \ell';\ H';\ R}`$ reads: the recursor of the multiplicity $`\rho`$, of the requirement $`\varrho`$ of the recursion of its block, with the branches $`\bar N`$, in the environment $`E`$, at the weight $`\varpi`$, eliminates the value at the address $`\ell`$, a constructor, to the address $`\ell'`$.
+The judgment $`{\mathcal{P};\ \varpi;\ H;\ E \vdash \mathsf{rec}_\rho\ \ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \Downarrow \ell';\ H';\ R}`$ reads: the recursor of the multiplicity $`\rho`$, of the requirement $`\varrho`$ of its recursion, with the branches $`\bar N`$, in the environment $`E`$, at the weight $`\varpi`$, eliminates the value at the address $`\ell`$, a constructor, to the address $`\ell'`$.
 The branch of the case of the constructor evaluates, with cells for its fields and for its recursive results, at the multiplicities of their binders times the weight, $`{\varpi \cdot \bar\pi}`$ multiplying each multiplicity of $`\bar\pi`$ by $`\varpi`$ on the left, each result the recursor on its field, at the weight times the multiplicity of its binder, or $`\text{↯}`$ when it is erased, which the judgment $`{\mathcal{P};\ \varpi;\ H;\ E \vdash \mathsf{rec}_\rho\ \bar\ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \leftarrow \bar k \mathrel{▶} \bar\pi' \Downarrow \bar\ell';\ H';\ R}`$ gives, in order, for the fields at the addresses $`\bar\ell`$.
 The branch must read each field within $`\rho`$ times the multiplicity $`\pi_{0l}`$ at which the constructor stores it: by its cell, at the multiplicity $`\pi_l`$ of its binder, and by the recursions on it, each of which eliminates its value at $`\rho`$ again, and is computed once but read as the binder of its result allows, each read using the value that the recursion builds from the field, $`\mathsf{recursions}(\bar k,\ \bar\pi',\ l)`$ times, which adds the multiplicities of the binders of the recursive results whose field is $`l`$.
 The branch must also give the variable of each field a coefficient of ownership $`\kappa_l`$ within the requirement $`\varrho_{0l}`$ at which the constructor stores the field times the uses of the field that the recursor gives, $`{\rho \cdot \pi_{0l}}`$, as the [ownership](13-ownership.md) gives the variable the ownership of the term times the requirement of the field times these uses.
-Each field on which a recursive result recurses must meet the requirement $`\varrho`$ of the recursion, $`{\varrho \le \varrho_{0l}}`$, since the [ownership](16-erasure.md#definitions) of the branches assumes of the term of each level of the recursion the ownership of the term of the recursor times $`\varrho`$, which a field that requires less would not keep:
+The requirement $`\varrho`$ of the recursion must be within the requirement of each field on which a recursive result recurses times these uses, $`{\varrho \le \varrho_{0l} \cdot (\rho \cdot \pi_{0l})}`$, a recursion being a use of the field, since the [ownership](16-erasure.md#definitions) of the branches assumes of the term of each level of the recursion the ownership of the term of the recursor times $`\varrho`$, which a field of a lesser coefficient would not keep:
 
 ```math
 \begin{aligned}
@@ -74,7 +74,7 @@ Each field on which a recursive result recurses must meet the requirement $`\var
 
 ```math
 \begin{gathered}
-\frac{\begin{gathered}{}H_1(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi_0 \mathrel{◀} \bar\varrho_0) \\ \text{the branch } i \text{ of } \bar N \text{ is } (\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N \\ \bar\ell \text{ and } \bar x \text{ are as many} \\ \forall l \le |\bar x|.\ \rho \cdot \pi_{0l} \le \pi_l + \rho \cdot \mathsf{recursions}(\bar k,\ \bar\pi',\ l) \\ \forall l \le |\bar x|.\ \kappa_l \le \varrho_{0l} \cdot (\rho \cdot \pi_{0l}) \\ \forall l \in \bar k.\ \varrho \le \varrho_{0l} \\ \mathcal{P};\ \varpi;\ H_1;\ E \vdash \mathsf{rec}_\rho\ \bar\ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \leftarrow \bar k \mathrel{▶} \bar\pi' \Downarrow \bar\ell';\ H_2;\ R_1 \\ \mathcal{P};\ \varpi;\ (H_2,\ \mathsf{bind}_{\varpi \cdot \bar\pi, \varpi \cdot \bar\pi'}(\bar\ell,\ \bar\ell'));\ E,\ \bar x\, \bar y \mapsto |H_2| + \bar n \vdash N \Downarrow \ell';\ H_3;\ R_2\end{gathered}}{\mathcal{P};\ \varpi;\ H_1;\ E \vdash \mathsf{rec}_\rho\ \ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \Downarrow \ell';\ H_3;\ R_1 \cdot R_2}\;(\iota_\Downarrow) \\[1em]
+\frac{\begin{gathered}{}H_1(\ell) = c_i(\bar\ell \mathrel{▶} \bar\pi_0 \mathrel{◀} \bar\varrho_0) \\ \text{the branch } i \text{ of } \bar N \text{ is } (\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N \\ \bar\ell \text{ and } \bar x \text{ are as many} \\ \forall l \le |\bar x|.\ \rho \cdot \pi_{0l} \le \pi_l + \rho \cdot \mathsf{recursions}(\bar k,\ \bar\pi',\ l) \\ \forall l \le |\bar x|.\ \kappa_l \le \varrho_{0l} \cdot (\rho \cdot \pi_{0l}) \\ \forall l \in \bar k.\ \varrho \le \varrho_{0l} \cdot (\rho \cdot \pi_{0l}) \\ \mathcal{P};\ \varpi;\ H_1;\ E \vdash \mathsf{rec}_\rho\ \bar\ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \leftarrow \bar k \mathrel{▶} \bar\pi' \Downarrow \bar\ell';\ H_2;\ R_1 \\ \mathcal{P};\ \varpi;\ (H_2,\ \mathsf{bind}_{\varpi \cdot \bar\pi, \varpi \cdot \bar\pi'}(\bar\ell,\ \bar\ell'));\ E,\ \bar x\, \bar y \mapsto |H_2| + \bar n \vdash N \Downarrow \ell';\ H_3;\ R_2\end{gathered}}{\mathcal{P};\ \varpi;\ H_1;\ E \vdash \mathsf{rec}_\rho\ \ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \Downarrow \ell';\ H_3;\ R_1 \cdot R_2}\;(\iota_\Downarrow) \\[1em]
 \frac{}{\mathcal{P};\ \varpi;\ H;\ E \vdash \mathsf{rec}_\rho\ \bar\ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \leftarrow () \mathrel{▶} () \Downarrow ();\ H;\ ()}\;(\mathsf{results}_\Downarrow.\varepsilon) \\[1em]
 \frac{\mathcal{P};\ \varpi;\ (H_1,\ \text{↯});\ E \vdash \mathsf{rec}_\rho\ \bar\ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \leftarrow \bar k \mathrel{▶} \bar\pi' \Downarrow \bar\ell';\ H_2;\ R}{\mathcal{P};\ \varpi;\ H_1;\ E \vdash \mathsf{rec}_\rho\ \bar\ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \leftarrow (\bot,\ \bar k) \mathrel{▶} (\pi',\ \bar\pi') \Downarrow (|H_1| + 1,\ \bar\ell');\ H_2;\ R}\;(\mathsf{results}_\Downarrow.\text{↯}) \\[1em]
 \frac{\begin{gathered}{}\ell_j \text{ is the address at the position } j \text{ in } \bar\ell \\ \mathcal{P};\ \varpi \cdot \pi';\ H_1;\ E \vdash \mathsf{rec}_\rho\ \ell_j \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \Downarrow \ell';\ H_2;\ R_1 \\ \mathcal{P};\ \varpi;\ H_2;\ E \vdash \mathsf{rec}_\rho\ \bar\ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \leftarrow \bar k \mathrel{▶} \bar\pi' \Downarrow \bar\ell';\ H_3;\ R_2\end{gathered}}{\mathcal{P};\ \varpi;\ H_1;\ E \vdash \mathsf{rec}_\rho\ \bar\ell \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \leftarrow (j,\ \bar k) \mathrel{▶} (\pi',\ \bar\pi') \Downarrow (\ell',\ \bar\ell');\ H_3;\ R_1 \cdot R_2}\;(\mathsf{results}_\Downarrow.\mathsf{rec})
@@ -297,6 +297,80 @@ The reaches hold in each heap that extends their heap, annotated by an annotatio
 \end{aligned}
 ```
 
+A value, positions and an environment have one reach at most:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{reach}_\ell.\mathsf{det}) \\
+& \quad \text{and} \\
+& \qquad H;\ g \vdash \ell \mathrel{⇝} U_1 \\
+& \qquad H;\ g \vdash \ell \mathrel{⇝} U_2 \\
+& \quad U_1 = U_2 \\[1em]
+& \text{⟹} &&(\mathsf{reach}_{\bar\ell}.\mathsf{det}) \\
+& \quad \text{and} \\
+& \qquad H;\ g \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U_1 \\
+& \qquad H;\ g \vdash \bar\ell \mathrel{⇝} \bar\pi \mathrel{⇝} U_2 \\
+& \quad U_1 = U_2 \\[1em]
+& \text{⟹} &&(\mathsf{reach}_E.\mathsf{det}) \\
+& \quad \text{and} \\
+& \qquad H;\ g \vdash E \mathrel{⇝}_\nu U_1 \\
+& \qquad H;\ g \vdash E \mathrel{⇝}_\nu U_2 \\
+& \quad U_1 = U_2
+\end{aligned}
+```
+
+What a value claims is in its reach, what a cell claims is the cell or in the reach of the value that it binds, and what a term claims through its environment is in the reach of the environment:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{claim}.{⇝}) \\
+& \quad \text{and} \\
+& \qquad H;\ g \vdash \ell \mathrel{⊳} b \\
+& \qquad H;\ g \vdash \ell \mathrel{⇝} U \\
+& \quad U(b) \ne 0 \\[1em]
+& \text{⟹} &&(\mathsf{claim}.\mathsf{bind}_{⇝}) \\
+& \quad \text{and} \\
+& \qquad H;\ g \vdash c \mathrel{⊳} b \\
+& \qquad H(c) = \mathsf{bind}_\pi(\ell) \\
+& \qquad H;\ g \vdash \ell \mathrel{⇝} U \\
+& \quad ([c] +^D U)(b) \ne 0 \\[1em]
+& \text{⟹} &&(\mathsf{claim}_E.{⇝}) \\
+& \quad \text{and} \\
+& \qquad H;\ g \vdash E \mathrel{⊳}_{\varphi;\nu} b \\
+& \qquad H;\ g \vdash E \mathrel{⇝}_\nu U \\
+& \quad U(b) \ne 0
+\end{aligned}
+```
+
+The claims hold in each heap that extends their heap, annotated by an annotation that extends their annotation, and a value that has a reach in a heap, a cell that binds one, or a term through an environment that has one, claims in such a heap only what it claims in the heap, since its paths stay in the heap:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{claim}.{\sqsubseteq}) \\
+& \quad \text{and} \\
+& \qquad H \sqsubseteq H' \\
+& \qquad g \sqsubseteq_H g' \\
+& \qquad H;\ g \vdash \ell \mathrel{⊳} b \\
+& \quad H';\ g' \vdash \ell \mathrel{⊳} b \\[1em]
+& \text{⟹} &&(\mathsf{claim}.{\sqsupseteq}) \\
+& \quad \text{and} \\
+& \qquad H \sqsubseteq H' \\
+& \qquad g \sqsubseteq_H g' \\
+& \qquad H';\ g' \vdash \ell \mathrel{⊳} b \\
+& \qquad \text{or} \\
+& \qquad\quad \exists U.\ H;\ g \vdash \ell \mathrel{⇝} U \\
+& \qquad\quad \exists \pi, \ell', U.\ H(\ell) = \mathsf{bind}_\pi(\ell') \text{ and } H;\ g \vdash \ell' \mathrel{⇝} U \\
+& \quad H;\ g \vdash \ell \mathrel{⊳} b \\[1em]
+& \text{⟹} &&(\mathsf{claim}_E.{\sqsupseteq}) \\
+& \quad \text{and} \\
+& \qquad H \sqsubseteq H' \\
+& \qquad g \sqsubseteq_H g' \\
+& \qquad H';\ g' \vdash E \mathrel{⊳}_{\varphi;\nu} b \\
+& \qquad H;\ g \vdash E \mathrel{⇝}_\nu U \\
+& \quad H;\ g \vdash E \mathrel{⊳}_{\varphi;\nu} b
+\end{aligned}
+```
+
 The demand of an environment follows the operations of the usage on its vector, keeping the demands of the values that it chose: the vector $`0^{\nu}`$ has the demand $`0^D`$, and the demand for a sum, a product or a higher vector splits into, factors through or is below a demand for each part, rather than adding two demands, whose choices of the demands of the values may differ:
 
 ```math
@@ -381,6 +455,51 @@ A closed term run at the weight $`1`$ in the empty heap therefore reads each cel
 & \qquad \text{and} \\
 & \qquad\quad H(c) = \mathsf{bind}_1(\ell') \implies c \text{ occurs once in } R \\
 & \qquad\quad H(c) = \mathsf{bind}_0(\ell') \implies c \text{ occurs no time in } R
+\end{aligned}
+```
+
+The references are kept: a run of a term that has an ownership $`o`$ under the ownership $`\varphi`$ of its scope and a usage $`\nu`$, in a program whose bodies have their ownerships and are well used, in a heap whose annotation is valid, in an environment of the reach $`U_E`$ for $`\nu`$, gives a value that has a reach $`U`$, under an annotation that extends that of the heap and is valid for the heap of its end, which refers to no address of the heap that the environment does not refer to.
+A frame $`F`$ is a reach of the heap, which counts the references of what the rest of a program still uses, and refers to no later address: when the frame and the environment together refer once at most to each address that the term claims through its environment, and the term is owned alone, the frame and the value together refer once at most to each address that the value claims:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{reach}_\Downarrow) \\
+& \quad \text{and} \\
+& \qquad \vdash \mathcal{P} \mathrel{◀} \Omega \\
+& \qquad \vdash \mathcal{P} \mathrel{▶} \\
+& \qquad \Omega;\ \varphi \vdash M \mathrel{◀} o \\
+& \qquad \nu \vdash M \mathrel{▶} \\
+& \qquad \vdash_\Omega H \mathrel{◀} g \\
+& \qquad H;\ g \vdash E \mathrel{⇝}_\nu U_E \\
+& \qquad \forall b.\ |H| < b \implies F(b) = 0 \\
+& \qquad \forall b.\ H;\ g \vdash E \mathrel{⊳}_{\varphi;\nu} b \implies F(b) + U_E(b) \ne \omega \\
+& \qquad \mathcal{P};\ \varpi;\ H;\ E \vdash M \Downarrow \ell;\ H';\ R \\
+& \quad \exists g', U. \\
+& \qquad \text{and} \\
+& \qquad\quad g \sqsubseteq_H g' \\
+& \qquad\quad \vdash_\Omega H' \mathrel{◀} g' \\
+& \qquad\quad H';\ g' \vdash \ell \mathrel{⇝} U \\
+& \qquad\quad \forall b \le |H|.\ U_E(b) = 0 \implies U(b) = 0 \\
+& \qquad\quad o = 1 \implies \forall b.\ H';\ g' \vdash \ell \mathrel{⊳} b \implies F(b) + U(b) \ne \omega
+\end{aligned}
+```
+
+The value of a term owned alone is unique at run time: no frame refers to it, so that nothing that the rest of the program still uses reaches the value, which its term holds alone:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{uniq}_\Downarrow) \\
+& \quad \text{and} \\
+& \qquad \vdash \mathcal{P} \mathrel{◀} \Omega \\
+& \qquad \vdash \mathcal{P} \mathrel{▶} \\
+& \qquad \Omega;\ \varphi \vdash M \mathrel{◀} 1 \\
+& \qquad \nu \vdash M \mathrel{▶} \\
+& \qquad \vdash_\Omega H \mathrel{◀} g \\
+& \qquad H;\ g \vdash E \mathrel{⇝}_\nu U_E \\
+& \qquad \forall b.\ |H| < b \implies F(b) = 0 \\
+& \qquad \forall b.\ H;\ g \vdash E \mathrel{⊳}_{\varphi;\nu} b \implies F(b) + U_E(b) \ne \omega \\
+& \qquad \mathcal{P};\ \varpi;\ H;\ E \vdash M \Downarrow \ell;\ H';\ R \\
+& \quad F(\ell) = 0
 \end{aligned}
 ```
 
