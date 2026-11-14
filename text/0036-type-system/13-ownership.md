@@ -123,3 +123,20 @@ Ownership is stable under the [renamings](09-substitution.md#renamings): renamed
 & \forall x.\ \varphi'(\alpha(x)) = \varphi(x) \text{ and } \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \implies \Sigma;\ \varphi' \vdash \bar t[\alpha] \mathrel{◀} \bar o;\ \Theta[\alpha];\ m &&(\mathsf{ren}_{◀}.\bar t)
 \end{aligned}
 ```
+
+Ownership holds in every signature that has the entries of its own, since it reads its signature only by the entries that it has, its constants, its data types and its codata types; the judgment $`{\vdash \Sigma \mathrel{◀}}`$ checks the body of a constant definition in the signature before it, which every later signature extends:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{ext}_{◀}.t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \varphi \vdash t \mathrel{◀} p;\ m \\
+& \quad \Sigma';\ \varphi \vdash t \mathrel{◀} p;\ m \\[1em]
+& \text{⟹} &&(\mathsf{ext}_{◀}.\bar t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \\
+& \quad \Sigma';\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m
+\end{aligned}
+```

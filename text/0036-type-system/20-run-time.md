@@ -1,7 +1,7 @@
 # Run Time
 
-This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, the programs that realize a signature, and their properties, among them the fundamental lemma of the run time, by which a term typed and used in the mode $`{11}^{\mathsf{m}}`$ is valid at run time, the soundness of the extraction, by which the erasure of a closed term computes what the term computes, and its conservation of the bindings, by which this erasure reads each variable as the run-time multiplicity of its grade allows.
-It builds on the [usage](12-usage.md), the [typing](14-typing.md), the [erasure](16-erasure.md), the [evaluation](17-evaluation.md) and the [meaning](18-meaning.md), which gives each closed canonical type its [relation of run time](18-meaning.md#relations-of-run-time).
+This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, the programs that realize a signature, and their properties, among them the fundamental lemma of the run time, by which a term typed and used in the mode $`{11}^{\mathsf{m}}`$ is valid at run time, the soundness of the extraction, by which the erasure of a closed term computes what the term computes, its conservation of the bindings, by which this erasure reads each variable as the run-time multiplicity of its grade allows, and its uniqueness, by which the value of this erasure does not share what it owns alone.
+It builds on the [usage](12-usage.md), the [ownership](13-ownership.md), the [typing](14-typing.md), the [erasure](16-erasure.md), the [evaluation](17-evaluation.md) and the [meaning](18-meaning.md), which gives each closed canonical type its [relation of run time](18-meaning.md#relations-of-run-time).
 
 ## Definitions
 
@@ -212,5 +212,29 @@ The extraction conserves the bindings: the erasure by $`S^{{11}^{\mathsf{m}}}`$ 
 & \qquad \text{and} \\
 & \qquad\quad H(c) = \mathsf{bind}_1(\ell') \implies c \text{ occurs once in } R \\
 & \qquad\quad H(c) = \mathsf{bind}_0(\ell') \implies c \text{ occurs no time in } R
+\end{aligned}
+```
+
+The extraction keeps what its value owns alone unshared: the erasure by $`S^{{11}^{\mathsf{m}}}`$ of a closed term used in the mode $`{11}^{\mathsf{m}}`$, whose ownership in this mode has the run-time multiplicity $`1`$, run at the weight $`1`$ in the empty heap under the program of a signature whose names are distinct and whose entries have their usages and their ownerships, gives a value that has a [reach](17-evaluation.md#definitions), under an annotation valid for its heap, which refers once at most to each address that the value [claims](17-evaluation.md#definitions), by $`(\mathsf{erase}_{▶})`$, $`(\mathsf{erase}_{◀})`$, $`(\mathsf{usage}_{\lfloor \Sigma \rfloor})`$, $`(\mathsf{own}_{\lfloor \Sigma \rfloor})`$ and $`(\mathsf{reach}_\Downarrow)`$.
+A closed term runs in the empty heap, to which no frame refers, so that $`(\mathsf{uniq}_\Downarrow)`$, which compares the value with a frame, says nothing of it, while it holds of each term that the run evaluates in a heap that the rest of the program still uses; $`(\mathsf{reach}_\Downarrow)`$ is read here at the frame that refers to nothing, and what remains is about the value itself: no value that it holds as owned alone, such as a field whose position requires the ownership $`1`$, is referred to twice along the paths from it.
+As for the conservation of the bindings, the run is the same at every assignment of the level variables, and the usage and the ownership alone bound the references, without the typing:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{uniq}_{\lfloor\rfloor}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \vdash \Sigma \mathrel{▶} \\
+& \qquad \vdash \Sigma \mathrel{◀} \\
+& \qquad \forall f,\ p'.\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p' \text{ is an entry of } \Sigma \implies \Omega(f) = \mathsf{run}(p') \\
+& \qquad \Sigma;\ \varepsilon \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
+& \qquad \Sigma;\ \varepsilon \vdash t \mathrel{◀} p;\ {11}^{\mathsf{m}} \\
+& \qquad \mathsf{run}(p) = 1 \\
+& \qquad \lfloor \Sigma \rfloor_{S^{{11}^{\mathsf{m}}}};\ 1;\ \varepsilon;\ \varepsilon \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
+& \quad \exists g, U. \\
+& \qquad \text{and} \\
+& \qquad\quad \vdash_\Omega H \mathrel{◀} g \\
+& \qquad\quad H;\ g \vdash \ell \mathrel{⇝} U \\
+& \qquad\quad \forall b.\ H;\ g \vdash \ell \mathrel{⊳} b \implies U(b) \ne \omega
 \end{aligned}
 ```

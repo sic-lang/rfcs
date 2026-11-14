@@ -1,6 +1,6 @@
 # Evaluation
 
-This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands and the reaches of the values and of the environments, the annotations of the heaps and the claims of the values, and their properties, among which the conservation of the bindings and the uniqueness at run time.
+This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands and the reaches of the values and of the environments, the annotations of the heaps and the claims of the values, and their properties, among which the conservation of the bindings, the ownership of the program of a signature and the uniqueness at run time.
 It builds on the [vectors](10-grade-vectors.md#vectors), the [syntax](08-syntax.md), the [erasure](16-erasure.md), its [usage](16-erasure.md#definitions) and its [ownership](16-erasure.md#definitions), and the [type of positions](19-prelude.md#positions) of the prelude.
 
 ## Definitions
@@ -455,6 +455,19 @@ A closed term run at the weight $`1`$ in the empty heap therefore reads each cel
 & \qquad \text{and} \\
 & \qquad\quad H(c) = \mathsf{bind}_1(\ell') \implies c \text{ occurs once in } R \\
 & \qquad\quad H(c) = \mathsf{bind}_0(\ell') \implies c \text{ occurs no time in } R
+\end{aligned}
+```
+
+The program of a signature has its ownership, when the names of the signature are distinct and its entries have their ownerships, given ownerships $`\Omega`$ of the constants that are the run-time multiplicities of those of their entries, defined or declared: each of its bodies is the erasure at run time of the body of a constant definition of the mode $`{11}^{\mathsf{m}}`$, whose value has the ownership of the definition in the signature before it, and so in the whole signature, $`(\mathsf{ext}_{◀}.t)`$, in which the program erases it, $`(\mathsf{erase}_{◀})`$:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{own}_{\lfloor \Sigma \rfloor}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \vdash \Sigma \mathrel{◀} \\
+& \qquad \forall f,\ p'.\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p' \text{ is an entry of } \Sigma \implies \Omega(f) = \mathsf{run}(p') \\
+& \quad \vdash \lfloor \Sigma \rfloor_{S^{{11}^{\mathsf{m}}}} \mathrel{◀} \Omega
 \end{aligned}
 ```
 
