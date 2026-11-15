@@ -905,6 +905,32 @@ The graph of the nestings of run time has these properties at the relations that
 \end{aligned}
 ```
 
+It agrees with the graph of run time on the terms that the equality of a type relates to themselves, when each position of the nesting holds a type with its relation of run time.
+The two graphs do not give a type the same relation: a position holds no equality, so that $`(\mathsf{rt}_{\lambda|\lambda})`$ relates the observation of a term at run time alone, while $`(\mathsf{rt}_{\bar d|})`$ asks that it be one that the equality gives to the destructor.
+The relation that the nesting gives a type then relates every term that the relation that the type has without position relates, and this one relates those of them that the equality of the type relates to themselves, so that a type below which the types of a block are nested keeps, once the block has its relations, the relation of run time that the block read, for the terms of the type:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{agree}_{\circledR\lambda}.\lambda) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad (A,\ R_1) \in \mathsf{rt}(U_n)[\lambda] \\
+& \qquad \forall (T,\ Q) \text{ that } \lambda \text{ holds}.\ (T,\ Q) \in \mathsf{rt}(U_n)[\bot] \\
+& \qquad (A,\ R_2) \in \mathsf{rt}(U_n)[\bot] \\
+& \qquad (H,\ t,\ \ell) \in R_2 \\
+& \quad (H,\ t,\ \ell) \in R_1 \\[1em]
+& \text{⟹} &&(\mathsf{agree}_{\circledR\lambda}.\bot) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad (A,\ R_1) \in \mathsf{rt}(U_n)[\lambda] \\
+& \qquad \forall (T,\ Q) \text{ that } \lambda \text{ holds}.\ (T,\ Q) \in \mathsf{rt}(U_n)[\bot] \\
+& \qquad (A,\ R_2) \in \mathsf{rt}(U_n)[\bot] \\
+& \qquad (A,\ F) \in \mathsf{ty}(s_n)[\bot] \\
+& \qquad (t,\ t) \in F \text{ and } (H,\ t,\ \ell) \in R_1 \\
+& \quad (H,\ t,\ \ell) \in R_2
+\end{aligned}
+```
+
 A meaningful signature has [distinct](08-syntax.md) names, as a well-formed one does, so that the computation is deterministic, by $`{(\mathsf{det}_{\Downarrow})}`$; and the meaning is exact for the proofs: two closed terms are equal proofs of a proposition exactly when each of them is a proof of it, as the rule $`(\mathsf{irr})`$ says:
 
 ```math
