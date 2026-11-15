@@ -499,6 +499,91 @@ Every judgment in a context holds in every context in which a substitution of th
 \end{aligned}
 ```
 
+Every judgment in a context, and the judgment of the destructors of a block, holds in every well-formed signature that has the entries of its own, since it reads its signature only by the entries that it has, its constants, its declared types and the prelude; the judgment $`{\vdash \Sigma}`$ checks an entry in the signature before it, which every later signature extends:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{ext}_\vdash.\Gamma) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma \vdash \Gamma \\
+& \quad \Sigma' \vdash \Gamma \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.A) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash A \\
+& \quad \Sigma';\ \Gamma \vdash A \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.A_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash A \equiv B \\
+& \quad \Sigma';\ \Gamma \vdash A \equiv B \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash t : A \\
+& \quad \Sigma';\ \Gamma \vdash t : A \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.t_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash t \equiv u : A \\
+& \quad \Sigma';\ \Gamma \vdash t \equiv u : A \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \quad \Sigma';\ \Gamma \vdash \bar t : \Theta \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar t_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \\
+& \quad \Sigma';\ \Gamma \vdash \bar t \equiv \bar u : \Theta \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar a) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \bar a : \Delta \\
+& \quad \Sigma';\ \Gamma \vdash \bar a : \Delta \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar a_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\
+& \quad \Sigma';\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\Theta) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \kappa \\
+& \quad \Sigma';\ \Gamma \vdash \Theta : \kappa \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\Theta_{\bar\kappa}) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \quad \Sigma';\ \Gamma \vdash \Theta : \bar\kappa \le l \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\Theta_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \\
+& \quad \Sigma';\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar d) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa \\
+& \quad \Sigma';\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa
+\end{aligned}
+```
+
 The names of a well-formed signature are [distinct](08-syntax.md):
 
 ```math
