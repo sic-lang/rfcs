@@ -55,6 +55,11 @@
               tools = [ ];
               command = "nix flake check --quiet";
             };
+            # Checks that no link of the RFCs ends its text with a formula (CONTRIBUTING.md).
+            links = {
+              tools = [ ];
+              command = lib.getExe checkLinks.run;
+            };
             # Checks the names of the formulas and of the rules of the RFCs (CONTRIBUTING.md).
             names = {
               tools = [ ];
@@ -162,6 +167,25 @@
               mdbook build 2>&1 | tee "$mermaid/build.log"
               if grep -q 'keeping the original content' "$mermaid/build.log"; then
                 echo 'A formula does not render: see the warning of mdbook-katex above.' >&2
+                exit 1
+              fi
+            '';
+          };
+          # Checks that no link of the RFCs ends its text with a formula, which GitHub does not render.
+          checkLinks = command {
+            name = "check-links";
+            runtimeInputs = [
+              pkgs.git
+              pkgs.gnugrep
+            ];
+            text = ''
+              cd "$(git rev-parse --show-toplevel)"
+              mapfile -d "" files < <(git ls-files -z 'text/*.md')
+              if [ ''${#files[@]} -eq 0 ]; then
+                exit 0
+              fi
+              if grep -nF '`$](' "''${files[@]}"; then
+                echo 'A link must not end its text with a formula: put the link on words, as $`x`$ of the [section](#section).' >&2
                 exit 1
               fi
             '';
