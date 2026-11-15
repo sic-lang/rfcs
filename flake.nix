@@ -205,8 +205,9 @@
               if [ ''${#files[@]} -eq 0 ]; then
                 exit 0
               fi
-              # A name, then the end of its line, which may break the formula with \\ or \\[1em].
-              name='\([^()]*\)(?=\s*(\\\\(\[1em\])?)?\s*$)'
+              # A name, then the end of its line, which may break the formula with \\, or with a space
+              # as \\[1em] after a formula and \\[2em] after a rule.
+              name='\([^()]*\)(?=\s*(\\\\(\[[12]em\])?)?\s*$)'
               status=0
               if grep -nP '&&' "''${files[@]}" | grep -vP "&&$name"; then
                 echo 'A column && of a formula must end its line with the name of the formula, as &&(\mathsf{op}_p).' >&2
