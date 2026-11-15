@@ -198,7 +198,7 @@ A signature has the entries $`{e \in \Sigma}`$ that extend it, its last entry an
 
 ```math
 \begin{gathered}
-\frac{}{e \in (\Sigma,\ e)}\;(\in_\Sigma.e) \\[1em]
+\frac{}{e \in (\Sigma,\ e)}\;(\in_\Sigma.e) \\[2em]
 \frac{e_1 \in \Sigma}{e_1 \in (\Sigma,\ e_2)}\;(\in_\Sigma.e,e)
 \end{gathered}
 ```

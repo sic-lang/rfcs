@@ -48,8 +48,8 @@ A parameter lifted, applied to arguments in which no parameter lifted occurs, is
 
 ```math
 \begin{gathered}
-\frac{\begin{gathered}{}Y \in \Pi \\ \text{no parameter of } \Pi \text{ occurs in } \bar t\end{gathered}}{\Sigma \vdash Y[\bar t] \uparrow u = C_Y[\bar t,\ u] : (s_C)_{l_Y}}\;(\uparrow_X) \\[1em]
-\frac{\begin{gathered}{}D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : s_l \mathrel{▶} \zeta \in \Sigma \\ \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\ \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l'';\ \bar a') \\ \Pi' \ne \varnothing\end{gathered}}{\Sigma \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \uparrow u = D^{\Pi'}.\{\bar s', s_C;\ \bar l', \bar l'';\ \bar p', r, \varsigma, \chi\}\ (\bar a',\ u) : (s_C)_{l[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \sqcup \bigsqcup \bar l''}}\;(\uparrow_D)
+\frac{\begin{aligned}& Y \in \Pi \\[0.6em] & \text{no parameter of } \Pi \text{ occurs in } \bar t\end{aligned}}{\Sigma \vdash Y[\bar t] \uparrow u = C_Y[\bar t,\ u] : (s_C)_{l_Y}}\;(\uparrow_X) \\[2em]
+\frac{\begin{aligned}& D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : s_l \mathrel{▶} \zeta \in \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l'';\ \bar a') \\[0.6em] & \Pi' \ne \varnothing\end{aligned}}{\Sigma \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \uparrow u = D^{\Pi'}.\{\bar s', s_C;\ \bar l', \bar l'';\ \bar p', r, \varsigma, \chi\}\ (\bar a',\ u) : (s_C)_{l[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \sqcup \bigsqcup \bar l''}}\;(\uparrow_D)
 \end{gathered}
 ```
 
@@ -60,9 +60,9 @@ An argument in which a parameter lifted occurs is followed by its motive, the ar
 
 ```math
 \begin{gathered}
-\frac{}{\Sigma \vdash () \uparrow = (\varnothing;\ \varepsilon;\ ())}\;(\uparrow_{\bar a\varepsilon}) \\[1em]
-\frac{\begin{gathered}{}\Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a') \\ \Sigma \vdash B \uparrow z = B' : (s_C)_{l'}\end{gathered}}{\Sigma \vdash (\bar a,\ \bar x.\, B) \uparrow = (\Pi' \cup \{Y\};\ (\bar l, l');\ (\bar a',\ \bar x.\, B,\ (\bar x, z).\, B'))}\;(\uparrow_{\bar a,}) \\[1em]
-\frac{\begin{gathered}{}\Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a') \\ \text{no parameter of } \Pi \text{ occurs in } B\end{gathered}}{\Sigma \vdash (\bar a,\ \bar x.\, B) \uparrow = (\Pi';\ \bar l;\ (\bar a',\ \bar x.\, B))}\;(\uparrow_{\bar a\notin})
+\frac{}{\Sigma \vdash () \uparrow = (\varnothing;\ \varepsilon;\ ())}\;(\uparrow_{\bar a\varepsilon}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a') \\[0.6em] & \Sigma \vdash B \uparrow z = B' : (s_C)_{l'}\end{aligned}}{\Sigma \vdash (\bar a,\ \bar x.\, B) \uparrow = (\Pi' \cup \{Y\};\ (\bar l, l');\ (\bar a',\ \bar x.\, B,\ (\bar x, z).\, B'))}\;(\uparrow_{\bar a,}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a') \\[0.6em] & \text{no parameter of } \Pi \text{ occurs in } B\end{aligned}}{\Sigma \vdash (\bar a,\ \bar x.\, B) \uparrow = (\Pi';\ \bar l;\ (\bar a',\ \bar x.\, B))}\;(\uparrow_{\bar a\notin})
 \end{gathered}
 ```
 
@@ -75,9 +75,9 @@ In the destructors after it, each destructor is the [observation](09-substitutio
 
 ```math
 \begin{gathered}
-\frac{}{\Sigma \vdash \varepsilon \uparrow y = \varepsilon}\;(\uparrow_{\bar d\varepsilon}) \\[1em]
-\frac{\begin{gathered}{}\Sigma \vdash B \uparrow y.(T.d)(\bar x) = B' : (s_C)_{l'} \\ (s_C)_{l'} \preceq \kappa' \\ \Sigma \vdash \bar d[y.T / d] \uparrow y = \bar d'\end{gathered}}{\Sigma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y = (d : (r \cdot \Theta \vdash B' \mathrel{◀} \chi) \mathrel{▶} \mathsf{grade}_{s_C}(p);\ {00}^{\mathsf{p}} \mathrel{◀} \varsigma \mid \bar d')}\;(\uparrow_{\bar d|}) \\[1em]
-\frac{\begin{gathered}{}\text{no parameter of } \Pi \text{ occurs in } B \\ \Sigma \vdash \bar d[y.T / d] \uparrow y = \bar d'\end{gathered}}{\Sigma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y = \bar d'}\;(\uparrow_{\bar d\notin})
+\frac{}{\Sigma \vdash \varepsilon \uparrow y = \varepsilon}\;(\uparrow_{\bar d\varepsilon}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash B \uparrow y.(T.d)(\bar x) = B' : (s_C)_{l'} \\[0.6em] & (s_C)_{l'} \preceq \kappa' \\[0.6em] & \Sigma \vdash \bar d[y.T / d] \uparrow y = \bar d'\end{aligned}}{\Sigma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y = (d : (r \cdot \Theta \vdash B' \mathrel{◀} \chi) \mathrel{▶} \mathsf{grade}_{s_C}(p);\ {00}^{\mathsf{p}} \mathrel{◀} \varsigma \mid \bar d')}\;(\uparrow_{\bar d|}) \\[2em]
+\frac{\begin{aligned}& \text{no parameter of } \Pi \text{ occurs in } B \\[0.6em] & \Sigma \vdash \bar d[y.T / d] \uparrow y = \bar d'\end{aligned}}{\Sigma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y = \bar d'}\;(\uparrow_{\bar d\notin})
 \end{gathered}
 ```
 

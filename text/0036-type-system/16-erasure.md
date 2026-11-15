@@ -205,19 +205,19 @@ A variable occurs in a term of the target language when the term is the variable
 
 ```math
 \begin{gathered}
-\frac{}{x \text{ occurs in } x}\;(\mathsf{occurs}_M.x) \\[1em]
-\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } c_i(\bar M)}\;(\mathsf{occurs}_M.c) \\[1em]
-\frac{x \text{ occurs in } M}{x \text{ occurs in } \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N}\;(\mathsf{occurs}_M.\mathsf{rec}) \\[1em]
-\frac{x \text{ occurs in } \bar N}{x \text{ occurs in } \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N}\;(\mathsf{occurs}_M.\mathsf{with}) \\[1em]
-\frac{x \text{ occurs in } M}{x \text{ occurs in } M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma}\;(\mathsf{occurs}_M.\mathsf{obs}) \\[1em]
-\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma}\;(\mathsf{occurs}_M.\mathsf{args}) \\[1em]
-\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P}\;(\mathsf{occurs}_M.\mathsf{from}) \\[1em]
-\frac{x \text{ occurs in } \bar P}{x \text{ occurs in } \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P}\;(\mathsf{occurs}_M.\mathsf{with}_{\bar P}) \\[1em]
-\frac{x \text{ occurs in } M}{x \text{ occurs in } (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.M) \\[1em]
-\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.\bar M) \\[1em]
-\frac{x \text{ occurs in } N}{x \text{ occurs in } ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.N) \\[1em]
-\frac{x \text{ occurs in } \bar N}{x \text{ occurs in } ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.\bar N) \\[1em]
-\frac{x \text{ occurs in } P}{x \text{ occurs in } ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P)}\;(\mathsf{occurs}_{\bar P}.P) \\[1em]
+\frac{}{x \text{ occurs in } x}\;(\mathsf{occurs}_M.x) \\[2em]
+\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } c_i(\bar M)}\;(\mathsf{occurs}_M.c) \\[2em]
+\frac{x \text{ occurs in } M}{x \text{ occurs in } \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N}\;(\mathsf{occurs}_M.\mathsf{rec}) \\[2em]
+\frac{x \text{ occurs in } \bar N}{x \text{ occurs in } \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N}\;(\mathsf{occurs}_M.\mathsf{with}) \\[2em]
+\frac{x \text{ occurs in } M}{x \text{ occurs in } M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma}\;(\mathsf{occurs}_M.\mathsf{obs}) \\[2em]
+\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma}\;(\mathsf{occurs}_M.\mathsf{args}) \\[2em]
+\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P}\;(\mathsf{occurs}_M.\mathsf{from}) \\[2em]
+\frac{x \text{ occurs in } \bar P}{x \text{ occurs in } \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P}\;(\mathsf{occurs}_M.\mathsf{with}_{\bar P}) \\[2em]
+\frac{x \text{ occurs in } M}{x \text{ occurs in } (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.M) \\[2em]
+\frac{x \text{ occurs in } \bar M}{x \text{ occurs in } (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M)}\;(\mathsf{occurs}_{\bar M}.\bar M) \\[2em]
+\frac{x \text{ occurs in } N}{x \text{ occurs in } ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.N) \\[2em]
+\frac{x \text{ occurs in } \bar N}{x \text{ occurs in } ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N)}\;(\mathsf{occurs}_{\bar N}.\bar N) \\[2em]
+\frac{x \text{ occurs in } P}{x \text{ occurs in } ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P)}\;(\mathsf{occurs}_{\bar P}.P) \\[2em]
 \frac{x \text{ occurs in } \bar P}{x \text{ occurs in } ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P)}\;(\mathsf{occurs}_{\bar P}.\bar P)
 \end{gathered}
 ```
@@ -228,9 +228,9 @@ A term of the target language is a skeleton when it is built of constructors and
 
 ```math
 \begin{gathered}
-\frac{}{\text{↯} \text{ is a skeleton}}\;(\mathsf{skeleton}_M.\text{↯}) \\[1em]
-\frac{\bar M \text{ are skeletons}}{c_i(\bar M) \text{ is a skeleton}}\;(\mathsf{skeleton}_M.c) \\[1em]
-\frac{}{() \text{ are skeletons}}\;(\mathsf{skeleton}_{\bar M}.\varepsilon) \\[1em]
+\frac{}{\text{↯} \text{ is a skeleton}}\;(\mathsf{skeleton}_M.\text{↯}) \\[2em]
+\frac{\bar M \text{ are skeletons}}{c_i(\bar M) \text{ is a skeleton}}\;(\mathsf{skeleton}_M.c) \\[2em]
+\frac{}{() \text{ are skeletons}}\;(\mathsf{skeleton}_{\bar M}.\varepsilon) \\[2em]
 \frac{M \text{ is a skeleton} \quad \bar M \text{ are skeletons}}{(M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \text{ are skeletons}}\;(\mathsf{skeleton}_{\bar M}.{,})
 \end{gathered}
 ```
@@ -239,20 +239,20 @@ The judgment $`{M \sqsubseteq N}`$ reads: the term $`M`$ of the target language 
 
 ```math
 \begin{gathered}
-\frac{}{\text{↯} \sqsubseteq M}\;({\sqsubseteq}.\text{↯}) \\[1em]
-\frac{}{x \sqsubseteq x}\;({\sqsubseteq}.x) \\[1em]
-\frac{}{f.\{\bar s;\ \bar p\} \sqsubseteq f.\{\bar s;\ \bar p\}}\;({\sqsubseteq}.f) \\[1em]
-\frac{\bar M_1 \sqsubseteq \bar M_2}{c_i(\bar M_1) \sqsubseteq c_i(\bar M_2)}\;({\sqsubseteq}.c) \\[1em]
-\frac{M_1 \sqsubseteq M_2 \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}) \\[1em]
-\frac{M_1 \text{ is a skeleton} \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \omega\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}_{\mathsf{skeleton}}) \\[1em]
-\frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{M_1.d_i(\bar M_1) \mathrel{◀} \psi \mathrel{◀} \varsigma \sqsubseteq M_2.d_i(\bar M_2) \mathrel{◀} \psi \mathrel{◀} \varsigma}\;({\sqsubseteq}.d) \\[1em]
-\frac{\bar M_1 \sqsubseteq \bar M_2 \quad \bar P_1 \sqsubseteq \bar P_2}{\mathsf{corec}\ \mathsf{from}\ \bar M_1\ \mathsf{with}\ \bar P_1 \sqsubseteq \mathsf{corec}\ \mathsf{from}\ \bar M_2\ \mathsf{with}\ \bar P_2}\;({\sqsubseteq}.\mathsf{corec}) \\[1em]
-\frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar M}.\varepsilon) \\[1em]
-\frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{(M_1 \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M_1) \sqsubseteq (M_2 \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M_2)}\;({\sqsubseteq}_{\bar M}.{,}) \\[1em]
-\frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar N}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}\forall j.\ k_{1j} = \bot \text{ or } k_{1j} = k_{2j} \\ N_1 \sqsubseteq N_2 \\ \bar N_1 \sqsubseteq \bar N_2\end{gathered}}{((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k_1).\, N_1,\ \bar N_1) \sqsubseteq ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k_2).\, N_2,\ \bar N_2)}\;({\sqsubseteq}_{\bar N}.{,}) \\[1em]
-\frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar P}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}k_1 = k_2 \text{ or } k_1 = \text{↯}_n \text{ and } k_2 = n \\ P_1 \sqsubseteq P_2 \\ \bar P_1 \sqsubseteq \bar P_2\end{gathered}}{((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k_1 \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P_1,\ \bar P_1) \sqsubseteq ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k_2 \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P_2,\ \bar P_2)}\;({\sqsubseteq}_{\bar P}.{,})
+\frac{}{\text{↯} \sqsubseteq M}\;({\sqsubseteq}.\text{↯}) \\[2em]
+\frac{}{x \sqsubseteq x}\;({\sqsubseteq}.x) \\[2em]
+\frac{}{f.\{\bar s;\ \bar p\} \sqsubseteq f.\{\bar s;\ \bar p\}}\;({\sqsubseteq}.f) \\[2em]
+\frac{\bar M_1 \sqsubseteq \bar M_2}{c_i(\bar M_1) \sqsubseteq c_i(\bar M_2)}\;({\sqsubseteq}.c) \\[2em]
+\frac{M_1 \sqsubseteq M_2 \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}) \\[2em]
+\frac{M_1 \text{ is a skeleton} \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \omega\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}_{\mathsf{skeleton}}) \\[2em]
+\frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{M_1.d_i(\bar M_1) \mathrel{◀} \psi \mathrel{◀} \varsigma \sqsubseteq M_2.d_i(\bar M_2) \mathrel{◀} \psi \mathrel{◀} \varsigma}\;({\sqsubseteq}.d) \\[2em]
+\frac{\bar M_1 \sqsubseteq \bar M_2 \quad \bar P_1 \sqsubseteq \bar P_2}{\mathsf{corec}\ \mathsf{from}\ \bar M_1\ \mathsf{with}\ \bar P_1 \sqsubseteq \mathsf{corec}\ \mathsf{from}\ \bar M_2\ \mathsf{with}\ \bar P_2}\;({\sqsubseteq}.\mathsf{corec}) \\[2em]
+\frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar M}.\varepsilon) \\[2em]
+\frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{(M_1 \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M_1) \sqsubseteq (M_2 \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M_2)}\;({\sqsubseteq}_{\bar M}.{,}) \\[2em]
+\frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar N}.\varepsilon) \\[2em]
+\frac{\begin{aligned}& \forall j.\ k_{1j} = \bot \text{ or } k_{1j} = k_{2j} \\[0.6em] & N_1 \sqsubseteq N_2 \\[0.6em] & \bar N_1 \sqsubseteq \bar N_2\end{aligned}}{((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k_1).\, N_1,\ \bar N_1) \sqsubseteq ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k_2).\, N_2,\ \bar N_2)}\;({\sqsubseteq}_{\bar N}.{,}) \\[2em]
+\frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar P}.\varepsilon) \\[2em]
+\frac{\begin{aligned}& k_1 = k_2 \text{ or } k_1 = \text{↯}_n \text{ and } k_2 = n \\[0.6em] & P_1 \sqsubseteq P_2 \\[0.6em] & \bar P_1 \sqsubseteq \bar P_2\end{aligned}}{((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k_1 \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P_1,\ \bar P_1) \sqsubseteq ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k_2 \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P_2,\ \bar P_2)}\;({\sqsubseteq}_{\bar P}.{,})
 \end{gathered}
 ```
 
@@ -272,20 +272,20 @@ In the rules, $`{\nu \bullet \bar\pi \bullet \bar\pi'}`$ extends $`\nu`$ by the 
 
 ```math
 \begin{gathered}
-\frac{}{(0^{\nu},\ x \mathrel{≔} 1) \vdash x \mathrel{▶}}\;(\mathsf{usage}_M.x) \\[1em]
-\frac{}{0^{\nu} \vdash f.\{\bar s;\ \bar p\} \mathrel{▶}}\;(\mathsf{usage}_M.f) \\[1em]
-\frac{}{0^{\nu} \vdash \text{↯} \mathrel{▶}}\;(\mathsf{usage}_M.\text{↯}) \\[1em]
-\frac{\nu \vdash \bar M \mathrel{▶}}{\nu \vdash c_i(\bar M) \mathrel{▶}}\;(\mathsf{usage}_M.c) \\[1em]
-\frac{\begin{gathered}{}\nu \vdash M \mathrel{▶} \\ \rho = 0 \implies M \text{ is a skeleton} \\ \chi \vdash \bar N \mathrel{▶}\end{gathered}}{\rho \cdot^{\nu} \nu +^{\nu} \chi \vdash \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{rec}) \\[1em]
-\frac{\nu_1 \vdash M \mathrel{▶} \quad \nu_2 \vdash \bar M \mathrel{▶}}{\nu_1 +^{\nu} \nu_2 \vdash M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma \mathrel{▶}}\;(\mathsf{usage}_M.d) \\[1em]
-\frac{\nu \vdash \bar M \mathrel{▶} \quad \delta \vdash \bar P \mathrel{▶}}{\nu +^{\nu} \delta \vdash \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{corec}) \\[1em]
-\frac{\nu \vdash M \mathrel{▶} \quad \mu \le^{\nu} \nu}{\mu \vdash M \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{sub}) \\[1em]
-\frac{}{0^{\nu} \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}\nu_1 \vdash M \mathrel{▶} \\ \pi = 0 \implies M \text{ is a skeleton} \\ \nu_2 \vdash \bar M \mathrel{▶}\end{gathered}}{\pi \cdot^{\nu} \nu_1 +^{\nu} \nu_2 \vdash (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.{,}) \\[1em]
-\frac{}{\chi \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}\delta \bullet \bar\pi \bullet \bar\pi' \vdash N \mathrel{▶} \\ \chi \le^{\nu} \delta +^{\nu} (\Sigma_{k_j \ne \bot}\, \pi'_j) \cdot^{\nu} \chi \\ \forall j.\ k_j \ne \bot \implies \pi'_j \ne 0 \\ \chi \vdash \bar N \mathrel{▶}\end{gathered}}{\chi \vdash ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.{,}) \\[1em]
-\frac{}{\delta \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar P}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}\delta_i \bullet \bar\pi \bullet \bar\pi' \vdash P \mathrel{▶} \\ \delta \le^{\nu} \delta_i \\ k \ne \bot \implies \delta \le^{\nu} \delta_i +^{\nu} \delta \\ \delta \vdash \bar P \mathrel{▶}\end{gathered}}{\delta \vdash ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) \mathrel{▶}}\;(\mathsf{usage}_{\bar P}.{,})
+\frac{}{(0^{\nu},\ x \mathrel{≔} 1) \vdash x \mathrel{▶}}\;(\mathsf{usage}_M.x) \\[2em]
+\frac{}{0^{\nu} \vdash f.\{\bar s;\ \bar p\} \mathrel{▶}}\;(\mathsf{usage}_M.f) \\[2em]
+\frac{}{0^{\nu} \vdash \text{↯} \mathrel{▶}}\;(\mathsf{usage}_M.\text{↯}) \\[2em]
+\frac{\nu \vdash \bar M \mathrel{▶}}{\nu \vdash c_i(\bar M) \mathrel{▶}}\;(\mathsf{usage}_M.c) \\[2em]
+\frac{\begin{aligned}& \nu \vdash M \mathrel{▶} \\[0.6em] & \rho = 0 \implies M \text{ is a skeleton} \\[0.6em] & \chi \vdash \bar N \mathrel{▶}\end{aligned}}{\rho \cdot^{\nu} \nu +^{\nu} \chi \vdash \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{rec}) \\[2em]
+\frac{\nu_1 \vdash M \mathrel{▶} \quad \nu_2 \vdash \bar M \mathrel{▶}}{\nu_1 +^{\nu} \nu_2 \vdash M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma \mathrel{▶}}\;(\mathsf{usage}_M.d) \\[2em]
+\frac{\nu \vdash \bar M \mathrel{▶} \quad \delta \vdash \bar P \mathrel{▶}}{\nu +^{\nu} \delta \vdash \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{corec}) \\[2em]
+\frac{\nu \vdash M \mathrel{▶} \quad \mu \le^{\nu} \nu}{\mu \vdash M \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{sub}) \\[2em]
+\frac{}{0^{\nu} \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.\varepsilon) \\[2em]
+\frac{\begin{aligned}& \nu_1 \vdash M \mathrel{▶} \\[0.6em] & \pi = 0 \implies M \text{ is a skeleton} \\[0.6em] & \nu_2 \vdash \bar M \mathrel{▶}\end{aligned}}{\pi \cdot^{\nu} \nu_1 +^{\nu} \nu_2 \vdash (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.{,}) \\[2em]
+\frac{}{\chi \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.\varepsilon) \\[2em]
+\frac{\begin{aligned}& \delta \bullet \bar\pi \bullet \bar\pi' \vdash N \mathrel{▶} \\[0.6em] & \chi \le^{\nu} \delta +^{\nu} (\Sigma_{k_j \ne \bot}\, \pi'_j) \cdot^{\nu} \chi \\[0.6em] & \forall j.\ k_j \ne \bot \implies \pi'_j \ne 0 \\[0.6em] & \chi \vdash \bar N \mathrel{▶}\end{aligned}}{\chi \vdash ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.{,}) \\[2em]
+\frac{}{\delta \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar P}.\varepsilon) \\[2em]
+\frac{\begin{aligned}& \delta_i \bullet \bar\pi \bullet \bar\pi' \vdash P \mathrel{▶} \\[0.6em] & \delta \le^{\nu} \delta_i \\[0.6em] & k \ne \bot \implies \delta \le^{\nu} \delta_i +^{\nu} \delta \\[0.6em] & \delta \vdash \bar P \mathrel{▶}\end{aligned}}{\delta \vdash ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) \mathrel{▶}}\;(\mathsf{usage}_{\bar P}.{,})
 \end{gathered}
 ```
 
@@ -298,20 +298,20 @@ A position satisfies its requirement in every case, without the exception of the
 
 ```math
 \begin{gathered}
-\frac{}{\Omega;\ \varphi \vdash x \mathrel{◀} \varphi(x)}\;(\mathsf{own}_M.x) \\[1em]
-\frac{}{\Omega;\ \varphi \vdash f.\{\bar s;\ \bar p\} \mathrel{◀} \Omega(f)}\;(\mathsf{own}_M.f) \\[1em]
-\frac{}{\Omega;\ \varphi \vdash \text{↯} \mathrel{◀} o}\;(\mathsf{own}_M.\text{↯}) \\[1em]
-\frac{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o}{\Omega;\ \varphi \vdash c_i(\bar M) \mathrel{◀} 1}\;(\mathsf{own}_M.c) \\[1em]
-\frac{\Omega;\ \varphi \vdash M \mathrel{◀} o \quad \Omega;\ \varphi \vdash \bar N \mathrel{◀} o \cdot \varrho;\ o'}{\Omega;\ \varphi \vdash \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \mathrel{◀} o'}\;(\mathsf{own}_M.\mathsf{rec}) \\[1em]
-\frac{\begin{gathered}{}\Omega;\ \varphi \vdash M \mathrel{◀} o \\ \Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o \\ \psi[\bar o] = v \\ \varsigma \le o\end{gathered}}{\Omega;\ \varphi \vdash M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma \mathrel{◀} o \cdot v}\;(\mathsf{own}_M.d) \\[1em]
-\frac{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o \quad \Omega;\ \varphi \vdash \bar P \mathrel{◀}}{\Omega;\ \varphi \vdash \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \mathrel{◀} 1}\;(\mathsf{own}_M.\mathsf{corec}) \\[1em]
-\frac{\Omega;\ \varphi \vdash M \mathrel{◀} p \quad q \le p}{\Omega;\ \varphi \vdash M \mathrel{◀} q}\;(\mathsf{own}_M.\mathsf{sub}) \\[1em]
-\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} ()}\;(\mathsf{own}_{\bar M}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}\Omega;\ \varphi \vdash M \mathrel{◀} o \\ \varrho \le o \\ \Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o\end{gathered}}{\Omega;\ \varphi \vdash (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \mathrel{◀} (o,\ \bar o)}\;(\mathsf{own}_{\bar M}.{,}) \\[1em]
-\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}\Omega;\ \varphi \bullet o \cdot \bar\kappa \bullet o' \cdot \bar\pi' \vdash N \mathrel{◀} o' \\ \Omega;\ \varphi \vdash \bar N \mathrel{◀} o;\ o'\end{gathered}}{\Omega;\ \varphi \vdash ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.{,}) \\[1em]
-\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀}}\;(\mathsf{own}_{\bar P}.\varepsilon) \\[1em]
-\frac{\begin{gathered}{}\forall \bar o, v.\ \bar\varrho' \le \bar o \text{ and } (k = \bot \text{ and } \psi[\bar o] = v \text{ or } k \ne \bot \text{ and } v = 1) \implies \Omega;\ \varsigma \cdot \varphi \bullet \varsigma \cdot \bar\varrho \cdot \bar\pi \bullet \bar o \cdot \bar\pi' \vdash P \mathrel{◀} v \\ k \ne \bot \implies \exists \chi.\ \psi = \chi \\ \Omega;\ \varphi \vdash \bar P \mathrel{◀}\end{gathered}}{\Omega;\ \varphi \vdash ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) \mathrel{◀}}\;(\mathsf{own}_{\bar P}.{,})
+\frac{}{\Omega;\ \varphi \vdash x \mathrel{◀} \varphi(x)}\;(\mathsf{own}_M.x) \\[2em]
+\frac{}{\Omega;\ \varphi \vdash f.\{\bar s;\ \bar p\} \mathrel{◀} \Omega(f)}\;(\mathsf{own}_M.f) \\[2em]
+\frac{}{\Omega;\ \varphi \vdash \text{↯} \mathrel{◀} o}\;(\mathsf{own}_M.\text{↯}) \\[2em]
+\frac{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o}{\Omega;\ \varphi \vdash c_i(\bar M) \mathrel{◀} 1}\;(\mathsf{own}_M.c) \\[2em]
+\frac{\Omega;\ \varphi \vdash M \mathrel{◀} o \quad \Omega;\ \varphi \vdash \bar N \mathrel{◀} o \cdot \varrho;\ o'}{\Omega;\ \varphi \vdash \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \mathrel{◀} o'}\;(\mathsf{own}_M.\mathsf{rec}) \\[2em]
+\frac{\begin{aligned}& \Omega;\ \varphi \vdash M \mathrel{◀} o \\[0.6em] & \Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o \\[0.6em] & \psi[\bar o] = v \\[0.6em] & \varsigma \le o\end{aligned}}{\Omega;\ \varphi \vdash M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma \mathrel{◀} o \cdot v}\;(\mathsf{own}_M.d) \\[2em]
+\frac{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o \quad \Omega;\ \varphi \vdash \bar P \mathrel{◀}}{\Omega;\ \varphi \vdash \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \mathrel{◀} 1}\;(\mathsf{own}_M.\mathsf{corec}) \\[2em]
+\frac{\Omega;\ \varphi \vdash M \mathrel{◀} p \quad q \le p}{\Omega;\ \varphi \vdash M \mathrel{◀} q}\;(\mathsf{own}_M.\mathsf{sub}) \\[2em]
+\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} ()}\;(\mathsf{own}_{\bar M}.\varepsilon) \\[2em]
+\frac{\begin{aligned}& \Omega;\ \varphi \vdash M \mathrel{◀} o \\[0.6em] & \varrho \le o \\[0.6em] & \Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o\end{aligned}}{\Omega;\ \varphi \vdash (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \mathrel{◀} (o,\ \bar o)}\;(\mathsf{own}_{\bar M}.{,}) \\[2em]
+\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.\varepsilon) \\[2em]
+\frac{\begin{aligned}& \Omega;\ \varphi \bullet o \cdot \bar\kappa \bullet o' \cdot \bar\pi' \vdash N \mathrel{◀} o' \\[0.6em] & \Omega;\ \varphi \vdash \bar N \mathrel{◀} o;\ o'\end{aligned}}{\Omega;\ \varphi \vdash ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.{,}) \\[2em]
+\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀}}\;(\mathsf{own}_{\bar P}.\varepsilon) \\[2em]
+\frac{\begin{aligned}& \forall \bar o, v.\ \bar\varrho' \le \bar o \text{ and } (k = \bot \text{ and } \psi[\bar o] = v \text{ or } k \ne \bot \text{ and } v = 1) \implies \Omega;\ \varsigma \cdot \varphi \bullet \varsigma \cdot \bar\varrho \cdot \bar\pi \bullet \bar o \cdot \bar\pi' \vdash P \mathrel{◀} v \\[0.6em] & k \ne \bot \implies \exists \chi.\ \psi = \chi \\[0.6em] & \Omega;\ \varphi \vdash \bar P \mathrel{◀}\end{aligned}}{\Omega;\ \varphi \vdash ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) \mathrel{◀}}\;(\mathsf{own}_{\bar P}.{,})
 \end{gathered}
 ```
 

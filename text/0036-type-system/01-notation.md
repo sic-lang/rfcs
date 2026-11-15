@@ -92,9 +92,9 @@ Rules and formulas are named as follows:
 ## Variables of Rules and Formulas
 
 A rule holds for every instance of the variables of its fraction, and a variable left free in a formula is universally quantified, over the kind that its letter names.
-In a rule, the premises are written one per line, and a premise that holds only under a condition, written $`\dots \text{ if } \dots`$, comes after the others.
+In a rule, the premises are written one per line, aligned on the left and separated by a small space, and a premise that holds only under a condition, written $`\dots \text{ if } \dots`$, comes after the others.
 A formula too long for one line is written in prefix form: its operator alone on a line, then each of its operands on the lines below, indented, and written the same way when it is itself too long for one line; the argument of an application too long for one line goes on the lines below its opening parenthesis, indented, broken after a comma; a formula made of several statements is their conjunction, written in prefix form under $`\text{and}`$; a formula on one line keeps its operators between their operands.
-Two formulas that follow each other are separated by an empty line.
+Two formulas that follow each other are separated by an empty line, and two rules by a larger space, which tells the premises of a rule from the rule before it.
 A grammar is written in the [Backus–Naur form](https://doi.org/10.1145/366193.366201) of the report on ALGOL 60: $`{\pi \mathrel{::=} 0 \mid 1 \mid \omega}`$ reads: a multiplicity is $`0`$, $`1`$ or $`\omega`$, and each alternative, separated by $`\mid`$, is a case of the definition.
 An operation or a relation defined by cases writes its cases one per line, named on the first line, without a conjunction: the first case that matches the arguments applies, the last one may be written $`\dots \text{ otherwise}`$, for the arguments that no case before it matches, and a case that applies only under a condition is written $`\dots \text{ if } \dots`$.
 A relation defined by the ways of deriving it is written as rules, one per way, as the judgments are.
