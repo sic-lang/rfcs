@@ -399,7 +399,7 @@ The type of a field, or of the result of a destructor, has the relation of the g
 \end{aligned}
 ```
 
-An instance of a data type in a universe has the relation $`(\circledR_\mu)`$ when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes of run time in $`U_n`$, with the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, which take the relation $`{\circledR_\Downarrow(X_D)}`$ at the positions $`\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i})`$ of the recursive fields of the type $`D`$; an instance of a codata type has the relation $`(\circledR_\nu)`$ when the destructors of the types of its block are of run time in $`U_n`$, likewise:
+An instance of a data type in a universe has the relation $`(\circledR_\mu)`$ when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes of run time in $`U_n`$, with the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, whose nestings hold, at the positions $`\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i})`$ of the recursive fields of the type $`D`$, the instance $`D[T]`$ of this type and the relation $`{\circledR_\Downarrow(X_D)}`$; an instance of a codata type has the relation $`(\circledR_\nu)`$ when the destructors of the types of its block are of run time in $`U_n`$, with the relation $`{\circledR_\Downarrow(X_D)}`$ at the positions $`\mathsf{rec}_{\mathcal{D}}(\bar d_{j'})`$ of the recursive destructors of the type $`D`$:
 
 ```math
 \begin{aligned}
@@ -407,7 +407,7 @@ An instance of a data type in a universe has the relation $`(\circledR_\mu)`$ wh
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of a block } \mathcal{D} \text{ of } \Sigma \\
 & \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
-& \qquad \forall \bar X.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar X)) \in \mathsf{rt}(U_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto \circledR_\Downarrow(X_D)] \\[1em]
+& \qquad \forall \bar X.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar X)) \in \mathsf{rt}(U_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto (D[T],\ \circledR_\Downarrow(X_D))] \\[1em]
 & (T,\ \circledR_\nu(D_j,\ \bar S)) \in \mathsf{rt}(U_n) \text{ if} &&(\mathsf{rt}_d) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
@@ -416,13 +416,13 @@ An instance of a data type in a universe has the relation $`(\circledR_\mu)`$ wh
 \end{aligned}
 ```
 
-The graph $`\mathsf{rt}(U_n)[\bar R]`$ of the telescopes relates a closed telescope $`\Theta`$ to the relation $`S`$ of the terms of its fields to the addresses of their values, written $`{(\Theta,\ S) \in \mathsf{rt}(U_n)[\bar R]}`$, where $`\bar R`$ gives a relation $`R`$ at the position of each recursive field, and $`\bot`$ at the others.
-A first type that is not a recursive field computes to a type whose terms have the equality $`F`$ and the relation $`R`$ at run time: the first term is one that the equality gives to it, related by $`R^p`$ at the grade $`p`$ of the entry, and the rest is a telescope of run time for each term that the equality gives to it, on which it depends even when the entry is erased.
-A first type that is a recursive field has the relation $`R`$ that $`\bar R`$ gives it, at the grade of the entry, and the rest is the same for every term of it:
+The graph $`\mathsf{rt}(U_n)[\bar\lambda]`$ of the telescopes relates a closed telescope $`\Theta`$ to the relation $`S`$ of the terms of its fields to the addresses of their values, written $`{(\Theta,\ S) \in \mathsf{rt}(U_n)[\bar\lambda]}`$, where $`\bar\lambda`$ gives the [nesting](14-typing.md#nesting) of each field of $`\Theta`$, which holds, at each of its positions, a pair $`(T,\ Q)`$ of the closed instance $`T`$ of a type of a block and of the relation of run time $`Q`$ given for its terms; $`\mathsf{rt}(U_n)`$ is the graph of the telescopes without position, $`\bar\lambda`$ being $`\bot`$ everywhere.
+A first type whose nesting has no position computes to a type whose terms have the equality $`F`$ and the relation $`R`$ at run time: the first term is one that the equality gives to it, related by $`R^p`$ at the grade $`p`$ of the entry, and the rest is a telescope of run time for each term that the equality gives to it, on which it depends even when the entry is erased.
+A first type whose nesting $`\lambda`$ has a position, as that of a recursive field has, is read by the graph $`\mathsf{rt}(U_n)[\lambda]`$ of the nestings, defined below, which gives it the relation $`R`$, at the grade of the entry, and the rest is the same for every term of it, on which it does not depend:
 
 ```math
 \begin{aligned}
-& (\varepsilon,\ \{(H,\ (),\ ())\}) \in \mathsf{rt}(U_n)[\bar R] &&(\mathsf{rt}_{\Theta\varepsilon}) \\[1em]
+& (\varepsilon,\ \{(H,\ (),\ ())\}) \in \mathsf{rt}(U_n)[\bar\lambda] &&(\mathsf{rt}_{\Theta\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\Theta,}) \\
 & \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta), \\
 & \quad \phantom{(}\{(H,\ (a,\ \bar t),\ (\ell,\ \bar\ell)) \mid \\
@@ -430,19 +430,21 @@ A first type that is a recursive field has the relation $`R`$ that $`\bar R`$ gi
 & \qquad \quad (a,\ a) \in F \\
 & \qquad \quad (H,\ a,\ \ell) \in R^p \\
 & \qquad \quad (H,\ \bar t,\ \bar\ell) \in G(a)\}) \\
-& \quad \mathsf{rt}(U_n)[\bot,\ \bar R] \\
+& \quad \mathsf{rt}(U_n)[\bot,\ \bar\lambda] \\
 & \quad \text{and} \\
 & \qquad \exists v,\ \kappa_1.\ A \Downarrow v,\ \kappa_1 \preceq U_n,\ (v,\ F) \in \mathsf{ty}_\Downarrow(\kappa_1) \text{ and } (v,\ R) \in \mathsf{rt}_\Downarrow(U_n) \\
-& \qquad \forall (a,\ a) \in F.\ (\Theta[a / x],\ G(a)) \in \mathsf{rt}(U_n)[\bar R] \\[1em]
-& \in \text{ if} &&(\mathsf{rt}_{\Theta\mathsf{rec}}) \\
+& \qquad \forall (a,\ a) \in F.\ (\Theta[a / x],\ G(a)) \in \mathsf{rt}(U_n)[\bar\lambda] \\[1em]
+& \in \text{ if} &&(\mathsf{rt}_{\Theta\lambda}) \\
 & \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta), \\
 & \quad \phantom{(}\{(H,\ (a,\ \bar t),\ (\ell,\ \bar\ell)) \mid \\
 & \qquad \text{and} \\
 & \qquad \quad (H,\ a,\ \ell) \in R^p \\
 & \qquad \quad (H,\ \bar t,\ \bar\ell) \in G\}) \\
-& \quad \mathsf{rt}(U_n)[R,\ \bar R] \\
+& \quad \mathsf{rt}(U_n)[\lambda,\ \bar\lambda] \\
 & \quad \text{and} \\
-& \qquad \forall a.\ (\Theta[a / x],\ G) \in \mathsf{rt}(U_n)[\bar R]
+& \qquad \lambda \ne \bot \\
+& \qquad (A,\ R) \in \mathsf{rt}(U_n)[\lambda] \\
+& \qquad \forall a.\ (\Theta[a / x],\ G) \in \mathsf{rt}(U_n)[\bar\lambda]
 \end{aligned}
 ```
 
@@ -550,7 +552,7 @@ Its clauses are those of the destructors, where the result type of a destructor 
 \end{aligned}
 ```
 
-At each level $`n`$, the relations $`\mathsf{rt}(U_n)`$, $`\mathsf{rt}(U_n)[\bar R]`$, of the telescopes, $`\mathsf{rt}_D(U_n)[\bar R]`$, of the destructors, and $`\mathsf{rt}(U_n)[\lambda]`$ and $`\mathsf{rt}_D(U_n)[\Lambda]`$, of the nestings, are the least relations with these clauses, given the relations of the levels below $`n`$, as those of the equality are, and they are defined at each level together with them, after the relations of the levels below it.
+At each level $`n`$, the relations $`\mathsf{rt}(U_n)`$, $`\mathsf{rt}(U_n)[\bar\lambda]`$, of the telescopes, $`\mathsf{rt}_D(U_n)[\bar R]`$, of the destructors, and $`\mathsf{rt}(U_n)[\lambda]`$ and $`\mathsf{rt}_D(U_n)[\Lambda]`$, of the nestings, are the least relations with these clauses, given the relations of the levels below $`n`$, as those of the equality are, and they are defined at each level together with them, after the relations of the levels below it.
 
 A closed canonical type has the relation of run time that a universe gives it, and a proposition relates every term to every address:
 
