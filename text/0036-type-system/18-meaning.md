@@ -739,7 +739,7 @@ Two closed telescopes are equal in a sort $`\kappa`$ when their first types are 
 ### Fields of a Block
 
 The fields of a constructor of a block $`\mathcal{D}`$, whose [nestings](14-typing.md#fields-of-a-block) $`\mathsf{nest}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields whose nesting has no position, and their recursive fields of the type $`D`$, whose nesting is $`D`$, are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, as the rules $`{(\mathsf{fields}_{,})}`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$ of the [fields of a block](14-typing.md#fields-of-a-block) check.
-A nested field, whose nesting $`(\bar\lambda')`$ is that of an instance, is no type before the types of the block are, which occur in it, so that its meaning is what the clauses of the instances of the block read of it: the graph of the nestings of the sort $`\kappa`$ gives the two types one equality of their terms, whatever the relations $`\bar R`$ given at their positions for the instances of the types of the block, the graph of run time gives them one relation in each program, whatever the relations $`\bar Q`$ given at their positions, if $`\kappa`$ is a universe, and they are equal types of a sort that $`\kappa`$ bounds once the instances at their positions are equal types of $`\kappa`$.
+A nested field, whose nesting $`(\bar\lambda')`$ is that of an instance, is no type before the types of the block are, which occur in it, so that its meaning is what the clauses of the instances of the block read of it: the graph of the nestings of the sort $`\kappa`$ gives the two types one equality of their terms, whatever the relations $`\bar R`$ given at their positions for the instances of the types of the block, the graph of run time gives them one relation in each program, whatever the relations $`\bar Q`$ given at their positions, if $`\kappa`$ is a universe, and they are equal types of a sort that $`\kappa`$ bounds once the instances of the types of the block are equal types of $`\kappa`$.
 The rest is equal for every pair of equal terms of a field whose nesting has no position, and for every pair of terms of the other fields, on which it does not depend; fields live in a sort in a context when their instances by equal closed substitutions of the context are equal in it, at the parameters themselves substituted:
 
 ```math
@@ -770,7 +770,7 @@ The rest is equal for every pair of equal terms of a field whose nesting has no 
 & \qquad \qquad \quad (A_1,\ R) \in \mathsf{rt}_{\mathcal{P}}(U_n)[(\bar\lambda') \mapsto (T_D(\bar a_1),\ Q_D)] \\
 & \qquad \qquad \quad (A_2,\ R) \in \mathsf{rt}_{\mathcal{P}}(U_n)[(\bar\lambda') \mapsto (T_D(\bar a_2),\ Q_D)] \\
 & \qquad \text{⟹} \\
-& \qquad \quad \forall D \text{ that a position of } (\bar\lambda') \text{ holds}.\ \Sigma \vDash T_D(\bar a_1) \equiv T_D(\bar a_2) : \kappa \\
+& \qquad \quad \forall D \text{ of } \mathcal{D}.\ \Sigma \vDash T_D(\bar a_1) \equiv T_D(\bar a_2) : \kappa \\
 & \qquad \quad \exists \kappa_1 \preceq \kappa.\ \Sigma \vDash A_1 \equiv A_2 : \kappa_1 \\
 & \qquad \forall a_1,\ a_2.\ \Sigma \vDash^{\bar\lambda}_{\bar a_1,\ \bar a_2} \Theta_1[a_1 / x] \equiv \Theta_2[a_2 / x] : \kappa \\[1em]
 & \text{⟺} &&({\vDash}\Gamma_{\mathsf{fields}}) \\
