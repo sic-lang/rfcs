@@ -391,6 +391,16 @@ The nestings $`\bar\lambda`$ of the arguments of an instance give their nestings
 \end{aligned}
 ```
 
+A nesting whose positions hold the names of the types of a block gives, for an object $`h_D`$ given for each type $`D`$ of the block, the nesting with the same positions, which hold these objects, written $`{\lambda \mapsto h_D}`$, and $`{\bar\lambda \mapsto h_D}`$ for each of several nestings:
+
+```math
+\begin{aligned}
+& (\bot \mapsto h_D) = \bot &&(\mathsf{map}_\lambda) \\
+& (D \mapsto h_D) = h_D \\
+& ((\bar\lambda) \mapsto h_D) = (\bar\lambda \mapsto h_D)
+\end{aligned}
+```
+
 The nesting reads the instances alone, and neither the terms nor the parameters in which a declared type is strictly positive, which the [strict positivity](#strict-positivity) checks; a substitution keeps the instances of a type, so that the nesting of a type of a declaration is also that of its instances.
 
 ### Fields of a Block
@@ -406,12 +416,24 @@ A field of a constructor of a block of data types $`\mathcal{D}`$ is recursive w
 \end{aligned}
 ```
 
-The fields of a constructor of a block $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, live in a sort when those that are not recursive do, as the entries of a [telescope in a sort](#telescopes-in-a-sort), and each recursive field is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, the abstraction $`{\bar x.\, X[\bar x]}`$ for a second-order parameter $`X`$, a field on which no field after it depends:
+The [nesting](#nesting) $`\mathsf{nest}_{\mathcal{D}}(A)`$ of the type of a field gives the positions of the types of the block in it, each of which holds the name of its type, and no position to the variables; $`\mathsf{nest}_{\mathcal{D}}(\Theta)`$ gives it for each field of a telescope, in order.
+A recursive field of the type $`D`$ has the nesting $`D`$, and a field is nested when its nesting is that of an instance, $`(\bar\lambda)`$, the types of the block occurring below an instance of another declared type:
+
+```math
+\begin{aligned}
+& \mathsf{nest}_{\mathcal{D}}(A) = \mathsf{nest}_\Lambda(A) &&(\mathsf{nest}_{\mathcal{D}}) \\
+& \quad \text{where } \Lambda \text{ gives its name to each type of } \mathcal{D} \text{, and names no variable} \\[1em]
+& \mathsf{nest}_{\mathcal{D}}(\varepsilon) = () &&(\mathsf{nest}_\Theta) \\
+& \mathsf{nest}_{\mathcal{D}}(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) = (\mathsf{nest}_{\mathcal{D}}(A),\ \mathsf{nest}_{\mathcal{D}}(\Theta))
+\end{aligned}
+```
+
+The fields of a constructor of a block $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, live in a sort when those whose nesting has no position do, as the entries of a [telescope in a sort](#telescopes-in-a-sort), and each recursive field is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, the abstraction $`{\bar x.\, X[\bar x]}`$ for a second-order parameter $`X`$, a field on which no field after it depends:
 
 ```math
 \begin{gathered}
 \frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} \varepsilon : \kappa}\;(\mathsf{fields}_\varepsilon) \\[2em]
-\frac{\begin{aligned}& \mathsf{rec}_{\mathcal{D}}(A) = \bot \\[0.6em] & \Sigma;\ \Gamma \vdash A : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa \\[0.6em] & \Sigma;\ \Gamma,\ x : A \vdash_{\mathcal{D}} \Theta : \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa}\;(\mathsf{fields}_{,}) \\[2em]
+\frac{\begin{aligned}& \mathsf{nest}_{\mathcal{D}}(A) = \bot \\[0.6em] & \Sigma;\ \Gamma \vdash A : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa \\[0.6em] & \Sigma;\ \Gamma,\ x : A \vdash_{\mathcal{D}} \Theta : \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa}\;(\mathsf{fields}_{,}) \\[2em]
 \frac{\begin{aligned}& D \text{ is a type of } \mathcal{D} \\[0.6em] & x \text{ does not occur in } \Theta \\[0.6em] & \Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa \text{ is } \Omega\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (x : D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa}\;(\mathsf{fields}_{\mathsf{rec}})
 \end{gathered}
 ```

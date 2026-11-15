@@ -115,7 +115,7 @@ The instances of the types of a block are given together, since a recursive fiel
 \end{aligned}
 ```
 
-An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes in its sort, whose terms are equal by the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions $`\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i})`$ of the recursive fields of the type $`D`$, the graph of the telescopes takes the instance $`D[T]`$ of this type with the relation $`{\mathsf{eq}_\Downarrow(X_D)}`$, or with the relation that holds when $`B_D`$ does:
+An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes in its sort, whose terms are equal by the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions of the [nestings](14-typing.md#fields-of-a-block) $`\mathsf{nest}_{\mathcal{D}}(\Theta_{j'i})`$ of the fields that hold the type $`D`$, those of the recursive fields of this type and those below the instances of the nested fields, the graph of the telescopes takes the instance $`D[T]`$ of this type with the relation $`{\mathsf{eq}_\Downarrow(X_D)}`$, or with the relation that holds when $`B_D`$ does:
 
 ```math
 \begin{aligned}
@@ -123,12 +123,12 @@ An instance in a universe is a type of it, and an instance in a universe of prop
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of a block } \mathcal{D} \text{ of } \Sigma \\
 & \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
-& \qquad \forall \bar X.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar X)) \in \mathsf{ty}(U_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto (D[T],\ \mathsf{eq}_\Downarrow(X_D))] \\[1em]
+& \qquad \forall \bar X.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar X)) \in \mathsf{ty}(U_n)[\mathsf{nest}_{\mathcal{D}}(\Theta_{j'i}) \mapsto (D[T],\ \mathsf{eq}_\Downarrow(X_D))] \\[1em]
 & (T,\ \mathsf{true}_\mu(D_j,\ \bar S)) \in \mathsf{ty}(\Omega_n) \text{ if} &&(\mathsf{ty}_{D\Omega}) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of a block } \mathcal{D} \text{ of } \Sigma \\
 & \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n \\
-& \qquad \forall \bar B.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar B)) \in \mathsf{ty}(\Omega_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto (D[T],\ \{(t,\ u) \mid B_D\})]
+& \qquad \forall \bar B.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar B)) \in \mathsf{ty}(\Omega_n)[\mathsf{nest}_{\mathcal{D}}(\Theta_{j'i}) \mapsto (D[T],\ \{(t,\ u) \mid B_D\})]
 \end{aligned}
 ```
 
@@ -288,7 +288,7 @@ The relations that a nesting holds are any relations, so that an abstraction tha
 ```
 
 At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$, $`\mathsf{ty}(s_n)[\bar\lambda]`$, of the telescopes, $`\mathsf{ty}(s_n)[\bar R]`$, of the destructors, and $`\mathsf{ty}(s_n)[\lambda]`$ and $`\mathsf{ty}(s_n)[\Lambda]`$, of the nestings, where $`\mathsf{ty}(s_n)`$ is the graph without position, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
-The fields of an instance that are not recursive and the destructors of an instance that are not recursive are of types given before its block, and its recursive fields and the results of its recursive destructors have the relations that the clauses $`(\mathsf{ty}_D)`$ and $`(\mathsf{ty}_d)`$ give them, so that its relations are not circular.
+The fields of an instance whose nesting has no position and the destructors of an instance that are not recursive are of types given before its block, its recursive fields and the results of its recursive destructors have the relations that the clauses $`(\mathsf{ty}_D)`$ and $`(\mathsf{ty}_d)`$ give them, and its nested fields are instances of codata types given before its block, which the graph of the nestings reads at these relations, so that its relations are not circular.
 
 A closed canonical type has the equality that a universe gives it, and a proposition the equality of its proofs: all the closed terms when it is true, and none when it is false; a closed canonical type is a proposition when a universe of propositions gives it, and a closed type computes to a proposition when its canonical form is one:
 
@@ -400,7 +400,7 @@ The type of a field, or of the result of a destructor, has the relation of the g
 \end{aligned}
 ```
 
-An instance of a data type in a universe has the relation $`(\circledR_\mu)`$ when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes of run time in $`U_n`$, with the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, whose nestings hold, at the positions $`\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i})`$ of the recursive fields of the type $`D`$, the instance $`D[T]`$ of this type and the relation $`{\circledR_\Downarrow(X_D)}`$; an instance of a codata type has the relation $`(\circledR_\nu)`$ when the destructors of the types of its block are of run time in $`U_n`$, with the relation $`{\circledR_\Downarrow(X_D)}`$ at the positions $`\mathsf{rec}_{\mathcal{D}}(\bar d_{j'})`$ of the recursive destructors of the type $`D`$:
+An instance of a data type in a universe has the relation $`(\circledR_\mu)`$ when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes of run time in $`U_n`$, with the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the instances of the types of the block, where the nestings $`\mathsf{nest}_{\mathcal{D}}(\Theta_{j'i})`$ of the fields hold, at their positions that hold the type $`D`$, the instance $`D[T]`$ of this type and the relation $`{\circledR_\Downarrow(X_D)}`$; an instance of a codata type has the relation $`(\circledR_\nu)`$ when the destructors of the types of its block are of run time in $`U_n`$, with the relation $`{\circledR_\Downarrow(X_D)}`$ at the positions $`\mathsf{rec}_{\mathcal{D}}(\bar d_{j'})`$ of the recursive destructors of the type $`D`$:
 
 ```math
 \begin{aligned}
@@ -408,7 +408,7 @@ An instance of a data type in a universe has the relation $`(\circledR_\mu)`$ wh
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of a block } \mathcal{D} \text{ of } \Sigma \\
 & \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
-& \qquad \forall \bar X.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar X)) \in \mathsf{rt}(U_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto (D[T],\ \circledR_\Downarrow(X_D))] \\[1em]
+& \qquad \forall \bar X.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar X)) \in \mathsf{rt}(U_n)[\mathsf{nest}_{\mathcal{D}}(\Theta_{j'i}) \mapsto (D[T],\ \circledR_\Downarrow(X_D))] \\[1em]
 & (T,\ \circledR_\nu(D_j,\ \bar S)) \in \mathsf{rt}(U_n) \text{ if} &&(\mathsf{rt}_d) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
@@ -738,30 +738,50 @@ Two closed telescopes are equal in a sort $`\kappa`$ when their first types are 
 
 ### Fields of a Block
 
-The fields of a constructor of a block $`\mathcal{D}`$, whose recursive fields $`\mathsf{rec}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields that are not recursive, and their recursive fields of the type $`D`$ are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, the rest being equal for every pair of terms of them, on which it does not depend, as the rules $`{(\mathsf{fields}_{,})}`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$ of the [fields of a block](14-typing.md#fields-of-a-block) check; fields live in a sort in a context when their instances by equal closed substitutions of the context are equal in it, at the parameters themselves substituted:
+The fields of a constructor of a block $`\mathcal{D}`$, whose [nestings](14-typing.md#fields-of-a-block) $`\mathsf{nest}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields whose nesting has no position, and their recursive fields of the type $`D`$, whose nesting is $`D`$, are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, as the rules $`{(\mathsf{fields}_{,})}`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$ of the [fields of a block](14-typing.md#fields-of-a-block) check.
+A nested field, whose nesting $`(\bar\lambda')`$ is that of an instance, is no type before the types of the block are, which occur in it, so that its meaning is what the clauses of the instances of the block read of it: the graph of the nestings of the sort $`\kappa`$ gives the two types one equality of their terms, whatever the relations $`\bar R`$ given at their positions for the instances of the types of the block, the graph of run time gives them one relation in each program, whatever the relations $`\bar Q`$ given at their positions, if $`\kappa`$ is a universe, and they are equal types of a sort that $`\kappa`$ bounds once the instances at their positions are equal types of $`\kappa`$.
+The rest is equal for every pair of equal terms of a field whose nesting has no position, and for every pair of terms of the other fields, on which it does not depend; fields live in a sort in a context when their instances by equal closed substitutions of the context are equal in it, at the parameters themselves substituted:
 
 ```math
 \begin{aligned}
 & \Sigma \vDash^{()}_{\bar a_1,\ \bar a_2} \varepsilon \equiv \varepsilon : \kappa \iff \text{the names of } \Sigma \text{ are distinct} &&({\vDash}\mathsf{fields}_\varepsilon) \\[1em]
 & \text{⟺} &&({\vDash}\mathsf{fields}_{,}) \\
-& \quad \Sigma \vDash^{(\bot,\ \bar D)}_{\bar a_1,\ \bar a_2} (x : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \Theta_1) \equiv (x : A_2 \mathrel{▶} p_2;\ q_2 \mathrel{◀} r_2,\ \Theta_2) : \kappa \\
+& \quad \Sigma \vDash^{(\bot,\ \bar\lambda)}_{\bar a_1,\ \bar a_2} (x : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \Theta_1) \equiv (x : A_2 \mathrel{▶} p_2;\ q_2 \mathrel{◀} r_2,\ \Theta_2) : \kappa \\
 & \quad \text{and} \\
 & \qquad \exists \kappa_1 \preceq \kappa.\ \Sigma \vDash A_1 \equiv A_2 : \kappa_1 \\
-& \qquad \forall a_1,\ a_2.\ \Sigma \vDash a_1 \equiv a_2 : A_1 \implies \Sigma \vDash^{\bar D}_{\bar a_1,\ \bar a_2} \Theta_1[a_1 / x] \equiv \Theta_2[a_2 / x] : \kappa \\[1em]
+& \qquad \forall a_1,\ a_2.\ \Sigma \vDash a_1 \equiv a_2 : A_1 \implies \Sigma \vDash^{\bar\lambda}_{\bar a_1,\ \bar a_2} \Theta_1[a_1 / x] \equiv \Theta_2[a_2 / x] : \kappa \\[1em]
 & \text{⟺} &&({\vDash}\mathsf{fields}_{\mathsf{rec}}) \\
-& \quad \Sigma \vDash^{(D,\ \bar D)}_{\bar a_1,\ \bar a_2} (x : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \Theta_1) \equiv (x : A_2 \mathrel{▶} p_2;\ q_2 \mathrel{◀} r_2,\ \Theta_2) : \kappa \\
+& \quad \Sigma \vDash^{(D,\ \bar\lambda)}_{\bar a_1,\ \bar a_2} (x : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \Theta_1) \equiv (x : A_2 \mathrel{▶} p_2;\ q_2 \mathrel{◀} r_2,\ \Theta_2) : \kappa \\
 & \quad \text{and} \\
 & \qquad A_1 = T_D(\bar a_1) \text{ and } A_2 = T_D(\bar a_2) \\
-& \qquad \forall a_1,\ a_2.\ \Sigma \vDash^{\bar D}_{\bar a_1,\ \bar a_2} \Theta_1[a_1 / x] \equiv \Theta_2[a_2 / x] : \kappa \\[1em]
+& \qquad \forall a_1,\ a_2.\ \Sigma \vDash^{\bar\lambda}_{\bar a_1,\ \bar a_2} \Theta_1[a_1 / x] \equiv \Theta_2[a_2 / x] : \kappa \\[1em]
+& \text{⟺} &&({\vDash}\mathsf{fields}_\lambda) \\
+& \quad \Sigma \vDash^{((\bar\lambda'),\ \bar\lambda)}_{\bar a_1,\ \bar a_2} (x : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \Theta_1) \equiv (x : A_2 \mathrel{▶} p_2;\ q_2 \mathrel{◀} r_2,\ \Theta_2) : \kappa \\
+& \quad \text{and} \\
+& \qquad \kappa = s_l \text{ and } [\![l]\!] = n \\
+& \qquad \forall \bar R.\ \exists F. \\
+& \qquad \quad \text{and} \\
+& \qquad \qquad (A_1,\ F) \in \mathsf{ty}(s_n)[(\bar\lambda') \mapsto (T_D(\bar a_1),\ R_D)] \\
+& \qquad \qquad (A_2,\ F) \in \mathsf{ty}(s_n)[(\bar\lambda') \mapsto (T_D(\bar a_2),\ R_D)] \\
+& \qquad \text{⟹} \\
+& \qquad \quad s = U \\
+& \qquad \quad \forall \mathcal{P},\ \bar Q.\ \exists R. \\
+& \qquad \qquad \text{and} \\
+& \qquad \qquad \quad (A_1,\ R) \in \mathsf{rt}_{\mathcal{P}}(U_n)[(\bar\lambda') \mapsto (T_D(\bar a_1),\ Q_D)] \\
+& \qquad \qquad \quad (A_2,\ R) \in \mathsf{rt}_{\mathcal{P}}(U_n)[(\bar\lambda') \mapsto (T_D(\bar a_2),\ Q_D)] \\
+& \qquad \text{⟹} \\
+& \qquad \quad \forall D \text{ that a position of } (\bar\lambda') \text{ holds}.\ \Sigma \vDash T_D(\bar a_1) \equiv T_D(\bar a_2) : \kappa \\
+& \qquad \quad \exists \kappa_1 \preceq \kappa.\ \Sigma \vDash A_1 \equiv A_2 : \kappa_1 \\
+& \qquad \forall a_1,\ a_2.\ \Sigma \vDash^{\bar\lambda}_{\bar a_1,\ \bar a_2} \Theta_1[a_1 / x] \equiv \Theta_2[a_2 / x] : \kappa \\[1em]
 & \text{⟺} &&({\vDash}\Gamma_{\mathsf{fields}}) \\
 & \quad \Sigma;\ \Gamma \vDash_{\mathcal{D}} \Theta : \kappa \\
 & \quad \text{and} \\
 & \qquad \Sigma \vDash \Gamma \\
-& \qquad \forall (\theta_1,\ \theta_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash^{\mathsf{rec}_{\mathcal{D}}(\Theta)}_{\bar x_\Delta[\theta_1],\ \bar x_\Delta[\theta_2]} \Theta[\theta_1] \equiv \Theta[\theta_2] : \kappa
+& \qquad \forall (\theta_1,\ \theta_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash^{\mathsf{nest}_{\mathcal{D}}(\Theta)}_{\bar x_\Delta[\theta_1],\ \bar x_\Delta[\theta_2]} \Theta[\theta_1] \equiv \Theta[\theta_2] : \kappa
 \end{aligned}
 ```
 
-Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`{D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a}`$, and $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\mathsf{fields}_{\mathsf{rec}})`$.
+Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`{D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a}`$, $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\mathsf{fields}_{\mathsf{rec}})`$, and $`{(\bar\lambda') \mapsto (T_D(\bar a),\ R_D)}`$ is the [nesting](14-typing.md#nesting) $`(\bar\lambda')`$ whose positions that hold a type $`D`$ hold the instance $`T_D(\bar a)`$ and the relation $`R_D`$.
 
 ### Destructors of a Block
 
