@@ -772,6 +772,40 @@ In a signature whose names are distinct, the equality of the terms of a closed c
 \end{aligned}
 ```
 
+The graph of the nestings has these properties at the relations that a nesting holds: the equality that it gives the terms of a type is a partial equivalence relation when they are, and it is unique at a nesting.
+It agrees with the graph of the types: when each position of the nesting holds a type with the equality of its terms, the equality that it gives a type is the one that the type has without position, if it has one, so that a type below which the types of a block are nested keeps, once the block has its equality, the equality that the block read:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{per}_\lambda.\mathsf{symm}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad (A,\ F) \in \mathsf{ty}(s_n)[\lambda] \\
+& \qquad \text{each relation that } \lambda \text{ holds is symmetric and transitive} \\
+& \qquad (t_1,\ t_2) \in F \\
+& \quad (t_2,\ t_1) \in F \\[1em]
+& \text{⟹} &&(\mathsf{per}_\lambda.\mathsf{trans}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad (A,\ F) \in \mathsf{ty}(s_n)[\lambda] \\
+& \qquad \text{each relation that } \lambda \text{ holds is symmetric and transitive} \\
+& \qquad (t_1,\ t_2) \in F \text{ and } (t_2,\ t_3) \in F \\
+& \quad (t_1,\ t_3) \in F \\[1em]
+& \text{⟹} &&(\mathsf{unique}_\lambda) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad (A,\ F_1) \in \mathsf{ty}(s_n)[\lambda] \text{ and } (A,\ F_2) \in \mathsf{ty}(s'_n)[\lambda] \\
+& \quad F_1 = F_2 \\[1em]
+& \text{⟹} &&(\mathsf{agree}_\lambda) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad (A,\ F_1) \in \mathsf{ty}(s_n)[\lambda] \\
+& \qquad \forall (T,\ R) \text{ that } \lambda \text{ holds}.\ (T,\ R) \in \mathsf{ty}(U_n)[\bot] \\
+& \qquad (A,\ F_2) \in \mathsf{ty}(s'_n)[\bot] \\
+& \quad F_1 = F_2
+\end{aligned}
+```
+
 A type has one relation of run time when the names of the signature are distinct, as it has one equality of its terms:
 
 ```math
