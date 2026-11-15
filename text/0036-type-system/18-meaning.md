@@ -786,32 +786,38 @@ Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and 
 
 ### Destructors of a Block
 
-The destructors of a codata type of a block $`\mathcal{D}`$, whose recursive destructors $`\mathsf{rec}_{\mathcal{D}}`$ gives, are equal in a sort $`\kappa`$ at two closed substitutions $`\theta_1`$ and $`\theta_2`$ of their scope when the premises of the rules $`(\bar d_{\kappa|})`$ and $`(\bar d_{\kappa\mathsf{rec}})`$ of the [destructors of a block](14-typing.md#destructors-of-a-block) are meaningful: the arguments of the first one are equal telescopes in the universe of the level of $`\kappa`$; if it is not recursive, its results at equal arguments are equal types of a sort that $`\kappa`$ bounds, and the destructors after it are equal for every pair of abstractions for it whose instances at equal arguments are equal terms of its result, as $`(\mathsf{eq}_X)`$ relates them; if it is recursive, its result is the instance $`T_D(\bar x_\Delta)`$ of the block at the parameters themselves, and the destructors after it are equal for every pair of abstractions for it, on which they do not depend.
+The destructors of a codata type of a block $`\mathcal{D}`$, strictly positive in the parameters $`\Pi`$, whose [nestings](14-typing.md#destructors-of-a-block) $`\mathsf{nest}_{\mathcal{D};\ \Pi}`$ gives before any substitution, are equal in a sort $`\kappa`$ at two closed substitutions $`\theta_1`$ and $`\theta_2`$ of their scope when the premises of the rules $`(\bar d_{\kappa|})`$, $`(\bar d_{\kappa\lambda})`$ and $`(\bar d_{\kappa\mathsf{rec}})`$ of the [destructors of a block](14-typing.md#destructors-of-a-block) are meaningful: the arguments of the first one are equal telescopes in the universe of the level of $`\kappa`$; if it is not recursive, its results at equal arguments are equal types of a sort that $`\kappa`$ bounds, and the destructors after it are equal for every pair of abstractions for it whose instances at equal arguments are equal terms of its result, as $`(\mathsf{eq}_X)`$ relates them, if the nesting of its result has no position, and for every pair of abstractions for it, on which they do not depend, otherwise; if it is recursive, its result is the instance $`T_D(\bar x_\Delta)`$ of the block at the parameters themselves, and the destructors after it are equal for every pair of abstractions for it, on which they do not depend.
 Destructors live in a sort in a context when they are equal at equal closed substitutions of the context:
 
 ```math
 \begin{aligned}
 & \Sigma \vDash^{()}_{\theta_1,\ \theta_2} \varepsilon : \kappa \iff \text{the names of } \Sigma \text{ are distinct} &&({\vDash}\bar d_{\kappa\varepsilon}) \\[1em]
 & \text{⟺} &&({\vDash}\bar d_{\kappa|}) \\
-& \quad \Sigma \vDash^{(\bot,\ \bar D)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa \\
+& \quad \Sigma \vDash^{(\bot,\ \bar\lambda)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa \\
 & \quad \text{and} \\
 & \qquad \Sigma \vDash \Theta[\theta_1] \equiv \Theta[\theta_2] : U_l \text{ where } l \text{ is the level of } \kappa \\
 & \qquad \exists \kappa_1 \preceq \kappa.\ \forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B[\theta_1,\ \sigma_1] \equiv B[\theta_2,\ \sigma_2] : \kappa_1 \\
 & \qquad \forall \bar x.\, B_1,\ \bar x.\, B_2. \\
 & \qquad \quad \text{⟹} \\
 & \qquad \qquad \forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B_1[\sigma_1] \equiv B_2[\sigma_2] : B[\theta_1,\ \sigma_1] \\
-& \qquad \qquad \Sigma \vDash^{\bar D}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
+& \qquad \qquad \Sigma \vDash^{\bar\lambda}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
+& \text{⟺} \text{ if } \lambda \ne \bot \text{ and } \lambda \text{ is no type of } \mathcal{D} &&({\vDash}\bar d_{\kappa\lambda}) \\
+& \quad \Sigma \vDash^{(\lambda,\ \bar\lambda)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa \\
+& \quad \text{and} \\
+& \qquad \Sigma \vDash \Theta[\theta_1] \equiv \Theta[\theta_2] : U_l \text{ where } l \text{ is the level of } \kappa \\
+& \qquad \exists \kappa_1 \preceq \kappa.\ \forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B[\theta_1,\ \sigma_1] \equiv B[\theta_2,\ \sigma_2] : \kappa_1 \\
+& \qquad \forall \bar x.\, B_1,\ \bar x.\, B_2.\ \Sigma \vDash^{\bar\lambda}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
 & \text{⟺} &&({\vDash}\bar d_{\kappa\mathsf{rec}}) \\
-& \quad \Sigma \vDash^{(D,\ \bar D)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa \\
+& \quad \Sigma \vDash^{(D,\ \bar\lambda)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa \\
 & \quad \text{and} \\
 & \qquad \Sigma \vDash \Theta[\theta_1] \equiv \Theta[\theta_2] : U_l \text{ where } l \text{ is the level of } \kappa \\
 & \qquad B = T_D(\bar x_\Delta) \\
-& \qquad \forall \bar x.\, B_1,\ \bar x.\, B_2.\ \Sigma \vDash^{\bar D}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
+& \qquad \forall \bar x.\, B_1,\ \bar x.\, B_2.\ \Sigma \vDash^{\bar\lambda}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
 & \text{⟺} &&({\vDash}\Gamma_{\bar d}) \\
-& \quad \Sigma;\ \Gamma \vDash_{\mathcal{D}} \bar d : \kappa \\
+& \quad \Sigma;\ \Gamma \vDash_{\mathcal{D};\ \Pi} \bar d : \kappa \\
 & \quad \text{and} \\
 & \qquad \Sigma \vDash \Gamma \\
-& \qquad \forall (\theta_1,\ \theta_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash^{\mathsf{rec}_{\mathcal{D}}(\bar d)}_{\theta_1,\ \theta_2} \bar d : \kappa
+& \qquad \forall (\theta_1,\ \theta_2) \in \mathsf{eq}(\Gamma).\ \Sigma \vDash^{\mathsf{nest}_{\mathcal{D};\ \Pi}(\bar d)}_{\theta_1,\ \theta_2} \bar d : \kappa
 \end{aligned}
 ```
 
@@ -1002,7 +1008,7 @@ Every judgment of the typing is meaningful under an interpretation that interpre
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \Sigma;\ \Gamma \vDash \bar a_1 \equiv \bar a_2 : \Delta &&(\mathsf{sound}.\bar a_\equiv) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \Sigma;\ \Gamma \vDash \Theta : \kappa &&(\mathsf{sound}.\Theta) \\[1em]
 & \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \Sigma;\ \Gamma \vDash \Theta_1 \equiv \Theta_2 : \kappa &&(\mathsf{sound}.\Theta_\equiv) \\[1em]
-& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa \implies \Sigma;\ \Gamma \vDash_{\mathcal{D}} \bar d : \kappa &&(\mathsf{sound}.\bar d)
+& \iota \text{ interprets } \Sigma \text{ and } \Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa \implies \Sigma;\ \Gamma \vDash_{\mathcal{D};\ \Pi} \bar d : \kappa &&(\mathsf{sound}.\bar d)
 \end{aligned}
 ```
 

@@ -29,7 +29,7 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`{\Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l}`$ | The telescope $`\Theta`$ lives in the sorts $`\bar\kappa`$ below the level $`l`$ |
 | $`{\Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa}`$ | $`\Theta_1`$ and $`\Theta_2`$ are equal telescopes in the sort $`\kappa`$ |
 | $`{\Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa}`$ | The fields $`\Theta`$ of a constructor of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
-| $`{\Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa}`$ | The destructors $`\bar d`$ of a codata type of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
+| $`{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa}`$ | The destructors $`\bar d`$ of a codata type of the block $`\mathcal{D}`$, strictly positive in the parameters $`\Pi`$, live in the sort $`\kappa`$ |
 | $`{\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k}`$ | The type declaration is well formed |
 | $`{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k}`$ | The type declaration is well formed |
 | $`{\Sigma;\ \Gamma' \vdash \alpha : \Gamma}`$ | $`\alpha`$ is a renaming of the context $`\Gamma`$ in the context $`\Gamma'`$ |
@@ -346,15 +346,14 @@ The arguments $`\bar a`$ of an instance of the declared type $`D`$ are strictly 
 \end{gathered}
 ```
 
-The fields of a constructor are strictly positive in a variable when the type of each of them is, and the destructors of a codata type when the variable does not occur in the arguments of any of them and the result of each of them is strictly positive in it; no destructor after a destructor in whose result the variable occurs depends on it, as none depends on a recursive destructor, while the destructors after a destructor in whose result the variable does not occur may depend on it:
+The fields of a constructor are strictly positive in a variable when the type of each of them is, and the destructors of a codata type when the variable does not occur in the arguments of any of them and the result of each of them is strictly positive in it; the rule $`(\bar d_{\kappa\lambda})`$ of the [destructors of a block](#destructors-of-a-block) checks that no destructor depends on a destructor in whose result such a variable occurs:
 
 ```math
 \begin{gathered}
 \frac{}{\Sigma;\ \mathcal{D} \vdash \varepsilon \oplus X}\;(\oplus_\varepsilon) \\[2em]
 \frac{\begin{aligned}& \Sigma;\ \mathcal{D} \vdash A \oplus X \\[0.6em] & \Sigma;\ \mathcal{D} \vdash \Theta \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) \oplus X}\;(\oplus_{\Theta,}) \\[2em]
 \frac{}{\Sigma;\ \mathcal{D} \vdash \varepsilon \oplus X}\;(\oplus_{\bar d\varepsilon}) \\[2em]
-\frac{\begin{aligned}& X \text{ does not occur in } \Theta \\[0.6em] & \Sigma;\ \mathcal{D} \vdash B \oplus X \\[0.6em] & d \text{ does not occur in } \bar d \\[0.6em] & \Sigma;\ \mathcal{D} \vdash \bar d \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) \oplus X}\;(\oplus_{\bar d|}) \\[2em]
-\frac{\begin{aligned}& X \text{ does not occur in } \Theta \\[0.6em] & X \text{ does not occur in } B \\[0.6em] & \Sigma;\ \mathcal{D} \vdash \bar d \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) \oplus X}\;(\oplus_{\bar d\notin})
+\frac{\begin{aligned}& X \text{ does not occur in } \Theta \\[0.6em] & \Sigma;\ \mathcal{D} \vdash B \oplus X \\[0.6em] & \Sigma;\ \mathcal{D} \vdash \bar d \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) \oplus X}\;(\oplus_{\bar d|})
 \end{gathered}
 ```
 
@@ -449,14 +448,29 @@ A destructor of a codata type of a block of codata types $`\mathcal{D}`$ is recu
 \end{aligned}
 ```
 
-The destructors $`\bar d`$ of a codata type of a block $`{\mathcal{D} = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`{d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mathrel{◀} \varsigma_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n \mathrel{◀} \varsigma_n}`$, or $`\varepsilon`$ when there is none, live in a sort $`\kappa`$ of level $`l`$ when the arguments of each live in the universe $`U_l`$, whatever the quality of $`\kappa`$, so that a proposition may quantify over a type of its level.
-The result of a destructor that is not recursive lives in a sort that $`\kappa`$ [bounds](07-sorts.md), a result that is a proposition having a grade without use at run time, and the destructor is a second-order variable of the context of the destructors after it; the result of a recursive destructor is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, as the type of a recursive field is, with a grade without use at run time if $`\kappa`$ is a universe of propositions, and no destructor after it depends on it:
+The [nesting](#nesting) $`\mathsf{nest}_\Pi(B)`$ of the result of a destructor of a codata type that is strictly positive in the parameters $`\Pi`$ gives the positions of these parameters in it, each of which holds its parameter, and no position to the other variables.
+The nesting $`\mathsf{nest}_{\mathcal{D};\ \Pi}(B)`$ of the result of a destructor is the type of the block if the destructor is recursive, and the nesting of its result otherwise; $`\mathsf{nest}_{\mathcal{D};\ \Pi}(\bar d)`$ gives it for each destructor, in order:
+
+```math
+\begin{aligned}
+& \mathsf{nest}_\Pi(B) = \mathsf{nest}_\Lambda(B) &&(\mathsf{nest}_\Pi) \\
+& \quad \text{where } \Lambda \text{ gives a position that holds it to each parameter of } \Pi \text{ alone} \\[1em]
+& \mathsf{nest}_{\mathcal{D};\ \Pi}(B) = \mathsf{rec}_{\mathcal{D}}(B) \text{ if } \mathsf{rec}_{\mathcal{D}}(B) \ne \bot &&(\mathsf{nest}_B) \\
+& \mathsf{nest}_{\mathcal{D};\ \Pi}(B) = \mathsf{nest}_\Pi(B) \text{ otherwise} \\[1em]
+& \mathsf{nest}_{\mathcal{D};\ \Pi}(\varepsilon) = () &&(\mathsf{nest}_{\bar d}) \\
+& \mathsf{nest}_{\mathcal{D};\ \Pi}(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) = (\mathsf{nest}_{\mathcal{D};\ \Pi}(B),\ \mathsf{nest}_{\mathcal{D};\ \Pi}(\bar d))
+\end{aligned}
+```
+
+The destructors $`\bar d`$ of a codata type of a block $`{\mathcal{D} = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, strictly positive in the parameters $`\Pi`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`{d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mathrel{◀} \varsigma_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n \mathrel{◀} \varsigma_n}`$, or $`\varepsilon`$ when there is none, live in a sort $`\kappa`$ of level $`l`$ when the arguments of each live in the universe $`U_l`$, whatever the quality of $`\kappa`$, so that a proposition may quantify over a type of its level.
+The result of a destructor that is not recursive lives in a sort that $`\kappa`$ [bounds](07-sorts.md), a result that is a proposition having a grade without use at run time; the destructor is a second-order variable of the context of the destructors after it if the nesting of its result has no position, and no destructor after it depends on it otherwise, as none depends on a recursive destructor; the result of a recursive destructor is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, as the type of a recursive field is, with a grade without use at run time if $`\kappa`$ is a universe of propositions, and no destructor after it depends on it:
 
 ```math
 \begin{gathered}
-\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} \varepsilon : \kappa}\;(\bar d_{\kappa\varepsilon}) \\[2em]
-\frac{\begin{aligned}& \mathsf{rec}_{\mathcal{D}}(B) = \bot \\[0.6em] & l \text{ is the level of } \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash \Theta : U_l \\[0.6em] & \Sigma;\ \Gamma,\ \Theta \vdash B : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega \\[0.6em] & \Sigma;\ \Gamma,\ d : (\Theta \vdash B \mathrel{◀} \psi) \vdash_{\mathcal{D}} \bar d : \kappa\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa}\;(\bar d_{\kappa|}) \\[2em]
-\frac{\begin{aligned}& D \text{ is a type of } \mathcal{D} \\[0.6em] & l \text{ is the level of } \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash \Theta : U_l \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa \text{ is } \Omega \\[0.6em] & d \text{ does not occur in } \bar d \\[0.6em] & \Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (d : (\Theta \vdash D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa}\;(\bar d_{\kappa\mathsf{rec}})
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \varepsilon : \kappa}\;(\bar d_{\kappa\varepsilon}) \\[2em]
+\frac{\begin{aligned}& \mathsf{rec}_{\mathcal{D}}(B) = \bot \\[0.6em] & \mathsf{nest}_\Pi(B) = \bot \\[0.6em] & l \text{ is the level of } \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash \Theta : U_l \\[0.6em] & \Sigma;\ \Gamma,\ \Theta \vdash B : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega \\[0.6em] & \Sigma;\ \Gamma,\ d : (\Theta \vdash B \mathrel{◀} \psi) \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa}\;(\bar d_{\kappa|}) \\[2em]
+\frac{\begin{aligned}& \mathsf{rec}_{\mathcal{D}}(B) = \bot \\[0.6em] & \mathsf{nest}_\Pi(B) \ne \bot \\[0.6em] & l \text{ is the level of } \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash \Theta : U_l \\[0.6em] & \Sigma;\ \Gamma,\ \Theta \vdash B : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega \\[0.6em] & d \text{ does not occur in } \bar d \\[0.6em] & \Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa}\;(\bar d_{\kappa\lambda}) \\[2em]
+\frac{\begin{aligned}& D \text{ is a type of } \mathcal{D} \\[0.6em] & l \text{ is the level of } \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash \Theta : U_l \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa \text{ is } \Omega \\[0.6em] & d \text{ does not occur in } \bar d \\[0.6em] & \Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} (d : (\Theta \vdash D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa}\;(\bar d_{\kappa\mathsf{rec}})
 \end{gathered}
 ```
 
@@ -470,11 +484,11 @@ The fields of a type in a universe of propositions are propositions, by the rule
 \frac{\begin{aligned}& \exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j, i. \\ & \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \qquad {\vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]}}\ \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j, i.\ \forall X \in \Pi_j.\ \Sigma;\ \mathcal{D} \vdash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \oplus X\end{aligned} \\[0.6em] & \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct}\end{aligned}}{\Sigma \vdash \mathcal{D}}\;(\mathsf{data})
 ```
 
-A block of codata types is well formed likewise, with the destructors $`\bar d_j`$ of each type $`D_j`$ in place of its constructors: its constraint admits an instance and, at each instance it admits, its parameters form a context, the destructors of each type live in its sort, and they are strictly positive in each parameter in which their type declares that it is; the destructors of each type have distinct names.
+A block of codata types is well formed likewise, with the destructors $`\bar d_j`$ of each type $`D_j`$ in place of its constructors: its constraint admits an instance and, at each instance it admits, its parameters form a context, the destructors of each type live in its sort, at the parameters in which the type declares that it is strictly positive, and they are strictly positive in each parameter in which their type declares that it is; the destructors of each type have distinct names.
 The arguments of the destructors and the results of those that are not recursive are checked in the signature $`\Sigma`$, which the block does not extend, so that the types of the block occur only as the results of the recursive destructors, at its parameters:
 
 ```math
-\frac{\begin{aligned}& \exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j. \\ & \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \qquad {\vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]}}\ \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j.\ \forall X \in \Pi_j.\ \Sigma;\ \mathcal{D} \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \oplus X\end{aligned} \\[0.6em] & \forall j.\ \text{the names } d_{j1}, \dots, d_{j n_j} \text{ are distinct}\end{aligned}}{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k}\;(\mathsf{codata})
+\frac{\begin{aligned}& \exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j. \\ & \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \qquad {\vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p];\ \Pi_j}}\ \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j.\ \forall X \in \Pi_j.\ \Sigma;\ \mathcal{D} \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \oplus X\end{aligned} \\[0.6em] & \forall j.\ \text{the names } d_{j1}, \dots, d_{j n_j} \text{ are distinct}\end{aligned}}{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k}\;(\mathsf{codata})
 ```
 
 ### Renamings
@@ -514,7 +528,7 @@ Every judgment holds in a well-formed signature, and the signature that a well-f
 & \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta_{\bar\kappa}) \\[1em]
 & \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta_\equiv) \\[1em]
 & \Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{fields}) \\[1em]
-& \Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar d) \\[1em]
+& \Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar d) \\[1em]
 & \text{⟹} &&(\mathsf{presup}_\Sigma.\mathsf{data}) \\
 & \quad \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
 & \qquad \mathsf{where} \\
@@ -668,8 +682,8 @@ Every judgment in a context, and the judgment of the destructors of a block, hol
 & \quad \text{and} \\
 & \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
 & \qquad {}\vdash \Sigma' \\
-& \qquad \Sigma;\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa \\
-& \quad \Sigma';\ \Gamma \vdash_{\mathcal{D}} \bar d : \kappa
+& \qquad \Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa \\
+& \quad \Sigma';\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa
 \end{aligned}
 ```
 
