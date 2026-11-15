@@ -584,6 +584,26 @@ Every judgment in a context, and the judgment of the destructors of a block, hol
 \end{aligned}
 ```
 
+A rule reads the levels only by their equality and their order, which every instantiation keeps, and by the instances of the entries of the signature, whose levels are instantiated in turn.
+Every judgment in a context thus holds once levels $`\bar l'`$ replace the level variables $`\bar l`$ of its context, of its terms, of its telescopes and of its sorts, the sorts $`\bar\kappa`$ one by one:
+
+```math
+\begin{aligned}
+& \Sigma \vdash \Gamma \implies \Sigma \vdash \Gamma[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.\Gamma) \\[1em]
+& \Sigma;\ \Gamma \vdash A \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash A[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.A) \\[1em]
+& \Sigma;\ \Gamma \vdash A \equiv B \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash A[\bar l' / \bar l] \equiv B[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.A_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash t[\bar l' / \bar l] : A[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.t) \\[1em]
+& \Sigma;\ \Gamma \vdash t \equiv u : A \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash t[\bar l' / \bar l] \equiv u[\bar l' / \bar l] : A[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t : \Theta \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \bar t[\bar l' / \bar l] : \Theta[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.\bar t) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \bar t[\bar l' / \bar l] \equiv \bar u[\bar l' / \bar l] : \Theta[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.\bar t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \bar a[\bar l' / \bar l] : \Delta[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.\bar a) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \bar a_1[\bar l' / \bar l] \equiv \bar a_2[\bar l' / \bar l] : \Delta[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \Theta[\bar l' / \bar l] : \kappa[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \Theta[\bar l' / \bar l] : \bar\kappa[\bar l' / \bar l] \le l[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.\Theta_{\bar\kappa}) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \Theta_1[\bar l' / \bar l] \equiv \Theta_2[\bar l' / \bar l] : \kappa[\bar l' / \bar l] &&(\mathsf{lvl}_\vdash.\Theta_\equiv)
+\end{aligned}
+```
+
 The names of a well-formed signature are [distinct](08-syntax.md):
 
 ```math
