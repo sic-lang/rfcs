@@ -23,7 +23,9 @@ The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the gr
 \begin{aligned}
 & \mathsf{data}.\{s;\ l_1, l_2;\ p, r \mid s = \Omega \implies \llcorner p \lrcorner \ne {11}^{\mathsf{m}}\} &&(\mathsf{prelude}.\mathsf{Pair}) \\
 & \quad (A : s_{l_1},\ X : (x : A \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash U_{l_2} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) : U_{l_1 \sqcup l_2} \\
-& \quad \mathsf{where}\ \mathsf{Pair} \mathrel{▶} {00}^{\gamma} \bullet p \bullet {11}^{\mathsf{p}} \oplus \{A, X\} \mathrel{≔} \mathsf{mk} : (x : A \mathrel{▶} p;\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} r,\ y : X[x] \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}})
+& \quad \mathsf{where} \\
+& \qquad \mathsf{Pair} \mathrel{▶} {00}^{\gamma} \bullet p \bullet {11}^{\mathsf{p}} \oplus \{A, X\} \mathrel{≔} \\
+& \qquad \quad \mathsf{mk} : (x : A \mathrel{▶} p;\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} r,\ y : X[x] \mathrel{▶} {11}^{\mathsf{p}};\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}})
 \end{aligned}
 ```
 
@@ -31,8 +33,13 @@ The type of positions `Step` holds either a term of a type $`A`$ of a universe, 
 
 ```math
 \begin{aligned}
-& \mathsf{data}.\{s;\ l_1, l_2;\ p, q, r \mid s = \Omega \implies \llcorner q \lrcorner \ne {11}^{\mathsf{m}}\}\ (A : U_{l_1},\ B : s_{l_2}) : U_{l_1 \sqcup l_2} &&(\mathsf{prelude}.\mathsf{Step}) \\
-& \quad \mathsf{where}\ \mathsf{Step} \mathrel{▶} {00}^{\gamma} \bullet p \bullet q \oplus \{A, B\} \mathrel{≔} \mathsf{next} : (x : A \mathrel{▶} p;\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}}) \mid \mathsf{done} : (x : B \mathrel{▶} q;\ {00}^{\mathsf{p}} \mathrel{◀} r)
+& \mathsf{data}.\{s;\ l_1, l_2;\ p, q, r \mid s = \Omega \implies \llcorner q \lrcorner \ne {11}^{\mathsf{m}}\} &&(\mathsf{prelude}.\mathsf{Step}) \\
+& \quad (A : U_{l_1},\ B : s_{l_2}) : U_{l_1 \sqcup l_2} \\
+& \quad \mathsf{where} \\
+& \qquad \mathsf{Step} \mathrel{▶} {00}^{\gamma} \bullet p \bullet q \oplus \{A, B\} \mathrel{≔} \\
+& \qquad \quad {\mid} \\
+& \qquad \qquad \mathsf{next} : (x : A \mathrel{▶} p;\ {00}^{\mathsf{p}} \mathrel{◀} {11}^{\mathsf{p}}) \\
+& \qquad \qquad \mathsf{done} : (x : B \mathrel{▶} q;\ {00}^{\mathsf{p}} \mathrel{◀} r)
 \end{aligned}
 ```
 
@@ -54,10 +61,14 @@ The level $`\mathsf{level}_{\bar\kappa}(l)`$ of a packing is the join of the lev
 \begin{aligned}
 & \mathsf{level}_{()}(l) = l &&(\mathsf{level}_{\bar\kappa}) \\
 & \mathsf{level}_{(s_{l'},\ \bar\kappa)}(l) = l' \sqcup \mathsf{level}_{\bar\kappa}(l) \\[1em]
-& \langle \varepsilon \rangle_{();\ l} = \mathsf{Unit}.\{;\ l;\}\ () &&(\mathsf{pack}_\Theta) \\
-& \langle x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta \rangle_{(s_{l'},\ \bar\kappa);\ l} = \mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l}) \\[1em]
-& \langle () \rangle_{\varepsilon;\ ();\ l} = (\mathsf{Unit}.\{;\ l;\}\ ()).\mathsf{mk}() &&(\mathsf{pack}_{\bar t}) \\
-& \langle (t,\ \bar t) \rangle_{(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta);\ (s_{l'},\ \bar\kappa);\ l} = (\mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l})).\mathsf{mk}(t,\ \langle \bar t \rangle_{\Theta[t / x];\ \bar\kappa;\ l})
+& \langle \varepsilon \rangle_{();\ l} = \mathsf{Unit}.\{;\ l;\}\ () &&(\mathsf{pack}_\Theta) \\[1em]
+& {=} \\
+& \quad \langle x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta \rangle_{(s_{l'},\ \bar\kappa);\ l} \\
+& \quad \mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l}) \\[1em]
+& \langle () \rangle_{\varepsilon;\ ();\ l} = (\mathsf{Unit}.\{;\ l;\}\ ()).\mathsf{mk}() &&(\mathsf{pack}_{\bar t}) \\[1em]
+& {=} \\
+& \quad \langle (t,\ \bar t) \rangle_{(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta);\ (s_{l'},\ \bar\kappa);\ l} \\
+& \quad (\mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l})).\mathsf{mk}(t,\ \langle \bar t \rangle_{\Theta[t / x];\ \bar\kappa;\ l})
 \end{aligned}
 ```
 
@@ -67,9 +78,14 @@ The unpacking $`{\mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\
 
 ```math
 \begin{aligned}
-& \mathsf{unpack}_r\ u : \langle \varepsilon \rangle_{();\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b = \mathsf{rec}_r\ (\mathsf{Unit}.\{;\ l;\}\ ())\ u\ \mathsf{return}\ z.\, C\ \mathsf{with}\ \mathsf{Unit}.\mathsf{mk}() \Rightarrow b &&(\mathsf{unpack}) \\
-& \mathsf{unpack}_r\ u : \langle x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta \rangle_{(s_{l'},\ \bar\kappa);\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b = \mathsf{rec}_r\ (\mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r'\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l}))\ u \\
-& \quad \mathsf{return}\ z.\, C\ \mathsf{with}\ \mathsf{Pair}.\mathsf{mk}(x,\ y) \Rightarrow \mathsf{unpack}_r\ y : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b
+& {=} &&(\mathsf{unpack}) \\
+& \quad \mathsf{unpack}_r\ u : \langle \varepsilon \rangle_{();\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \\
+& \quad \mathsf{rec}_r\ (\mathsf{Unit}.\{;\ l;\}\ ())\ u\ \mathsf{return}\ z.\, C\ \mathsf{with}\ \mathsf{Unit}.\mathsf{mk}() \Rightarrow b \\[1em]
+& {=} \\
+& \quad \mathsf{unpack}_r\ u : \langle x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta \rangle_{(s_{l'},\ \bar\kappa);\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \\
+& \quad \mathsf{rec}_r\ (\mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r'\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l}))\ u \\
+& \qquad \mathsf{return}\ z.\, C \\
+& \qquad \mathsf{with}\ \mathsf{Pair}.\mathsf{mk}(x,\ y) \Rightarrow \mathsf{unpack}_r\ y : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b
 \end{aligned}
 ```
 
@@ -99,9 +115,18 @@ The resumption $`{\mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar 
 
 ```math
 \begin{aligned}
-& \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) = \mathsf{rec}_{{11}^{\mathsf{p}}}\ \mathsf{pos}_{r;\ \chi}(\Theta_j : \bar\kappa_j,\ T : \kappa)\ v\ \mathsf{return}\ z.\, T\ \mathsf{with} &&(\mathsf{resume}) \\
-& \quad (\mathsf{Step}.\mathsf{next}(x) \Rightarrow \mathsf{unpack}_r\ x : \langle \Theta_j \rangle_{\bar\kappa_j;\ l_j}\ \mathsf{return}\ T\ \mathsf{with}\ \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g,\ \mathsf{Step}.\mathsf{done}(x) \Rightarrow x) \\[1em]
-& \mathsf{resume}_{B;\ r;\ \chi}(v,\ D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a : \kappa,\ \bar\Theta,\ \bar g) = \mathsf{resume}_{r;\ \chi}(v,\ D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a : \kappa,\ \bar\Theta,\ \bar g) \text{ if } \mathsf{rec}_{\mathcal{D}}(B) = D_j &&(\mathsf{resume}_B) \\
+& {=} &&(\mathsf{resume}) \\
+& \quad \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) \\
+& \quad \mathsf{rec}_{{11}^{\mathsf{p}}}\ \mathsf{pos}_{r;\ \chi}(\Theta_j : \bar\kappa_j,\ T : \kappa)\ v \\
+& \qquad \mathsf{return}\ z.\, T \\
+& \qquad \mathsf{with} \\
+& \qquad \quad (\mathsf{Step}.\mathsf{next}(x) \Rightarrow \\
+& \qquad \qquad \phantom{(}\mathsf{unpack}_r\ x : \langle \Theta_j \rangle_{\bar\kappa_j;\ l_j}\ \mathsf{return}\ T\ \mathsf{with}\ \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g, \\
+& \qquad \quad \phantom{(}\mathsf{Step}.\mathsf{done}(x) \Rightarrow x) \\[1em]
+& {=} \text{ if} &&(\mathsf{resume}_B) \\
+& \quad \mathsf{resume}_{B;\ r;\ \chi}(v,\ D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a : \kappa,\ \bar\Theta,\ \bar g) \\
+& \quad \mathsf{resume}_{r;\ \chi}(v,\ D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a : \kappa,\ \bar\Theta,\ \bar g) \\
+& \quad \mathsf{rec}_{\mathcal{D}}(B) = D_j \\[1em]
 & \mathsf{resume}_{B;\ r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) = v \text{ otherwise}
 \end{aligned}
 ```
@@ -221,7 +246,16 @@ In a signature that holds the prelude, the resumption of a position $`v`$ by a c
 & \qquad \Sigma;\ \varphi \vdash v \mathrel{◀} o;\ m \\
 & \qquad \text{the entries of } \Theta_j \text{ require } r_1, \dots, r_n \\
 & \qquad \Theta_j \text{ has the grades } q_1, \dots, q_n \\
-& \qquad \Sigma;\ \varphi,\ y_{j1} \mathrel{◀} o \cdot (\ulcorner m \urcorner \cdot r) \cdot r_1 \cdot (\ulcorner m \urcorner \cdot r \cdot q_1), \dots, y_{jn} \mathrel{◀} o \cdot (\ulcorner m \urcorner \cdot r) \cdot r_n \cdot (\ulcorner m \urcorner \cdot r \cdot q_n) \vdash \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \mathrel{◀} {11}^{\mathsf{p}};\ m \\
+& \qquad \Sigma; \\
+& \qquad \quad \varphi, \\
+& \qquad \quad y_{j1} \mathrel{◀} o \cdot (\ulcorner m \urcorner \cdot r) \cdot r_1 \cdot (\ulcorner m \urcorner \cdot r \cdot q_1), \\
+& \qquad \quad \dots, \\
+& \qquad \quad y_{jn} \mathrel{◀} o \cdot (\ulcorner m \urcorner \cdot r) \cdot r_n \cdot (\ulcorner m \urcorner \cdot r \cdot q_n) \\
+& \qquad {\vdash}\ \mathsf{corec}_r\ T \\
+& \qquad \qquad \mathsf{from}\ \bar y_j \\
+& \qquad \qquad \mathsf{return}\ \bar\Theta \\
+& \qquad \qquad \mathsf{with}\ \bar g \\
+& \qquad \mathrel{◀} {11}^{\mathsf{p}};\ m \\
 & \qquad p \le {11}^{\mathsf{p}} \\
 & \qquad p \le o \cdot \chi \cdot (\ulcorner m \urcorner \cdot q_s) \\
 & \quad \Sigma;\ \varphi \vdash \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) \mathrel{◀} p;\ m

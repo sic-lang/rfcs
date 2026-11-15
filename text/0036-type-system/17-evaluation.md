@@ -38,7 +38,8 @@ The program $`\lfloor \Sigma \rfloor_S`$ of a signature $`\Sigma`$, erased by a 
 
 ```math
 \begin{aligned}
-& \lfloor \Sigma \rfloor_S(f.\{\bar s';\ \bar p'\}) = \lfloor t[\bar s' / \bar s,\ \bar p' / \bar p] \rfloor_S \text{ if } f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} {11}^{\mathsf{m}} \mathrel{◀} p \mathrel{≔} t \text{ is this entry} &&(\mathsf{erase}_\Sigma)
+& \lfloor \Sigma \rfloor_S(f.\{\bar s';\ \bar p'\}) = \lfloor t[\bar s' / \bar s,\ \bar p' / \bar p] \rfloor_S &&(\mathsf{erase}_\Sigma) \\
+& \quad \text{if}\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} {11}^{\mathsf{m}} \mathrel{◀} p \mathrel{≔} t \text{ is this entry}
 \end{aligned}
 ```
 
@@ -68,7 +69,11 @@ The requirement $`\varrho`$ of the recursion must be within the requirement of e
 
 ```math
 \begin{aligned}
-& \mathsf{recursions}((k_1, \dots, k_b),\ (\pi'_1, \dots, \pi'_b),\ l) = \pi_1 + \dots + \pi_b \text{ where } \pi_j = \pi'_j \text{ if } k_j = l \text{ and } \pi_j = 0 \text{ otherwise} &&(\mathsf{recursions}_{\bar k, \bar\pi', l})
+& \mathsf{recursions}((k_1, \dots, k_b),\ (\pi'_1, \dots, \pi'_b),\ l) = \pi_1 + \dots + \pi_b &&(\mathsf{recursions}_{\bar k, \bar\pi', l}) \\
+& \quad \text{where} \\
+& \qquad \text{and} \\
+& \qquad \quad \pi_j = \pi'_j \text{ if } k_j = l \\
+& \qquad \quad \pi_j = 0 \text{ otherwise}
 \end{aligned}
 ```
 
@@ -165,7 +170,8 @@ An annotation $`g'`$ extends an annotation $`g`$ of a heap $`H`$, written $`{g \
 
 ```math
 \begin{aligned}
-& g(\ell) = (\varphi_\ell,\ \delta_\ell) \text{ where } \varphi_\ell \text{ and } \delta_\ell \text{ are vectors of multiplicities over the scope of the closure at } \ell &&(\mathsf{annotation}_H) \\[1em]
+& g(\ell) = (\varphi_\ell,\ \delta_\ell) &&(\mathsf{annotation}_H) \\
+& \quad \text{where}\ \varphi_\ell \text{ and } \delta_\ell \text{ are vectors of multiplicities over the scope of the closure at } \ell \\[1em]
 & g \sqsubseteq_H g' \iff \forall \ell \le |H|.\ g'(\ell) = g(\ell) &&(\sqsubseteq_g)
 \end{aligned}
 ```
@@ -205,7 +211,13 @@ A term that owns the variables of the environment $`E`$ as $`\varphi`$ gives and
 ```math
 \begin{aligned}
 & H;\ g \vdash E \mathrel{⊳}_{\varphi;\nu} b \iff \exists x.\ \varphi(x) = 1 \wedge \nu(x) \ne 0 \wedge H;\ g \vdash E(x) \mathrel{⊳} b &&(\mathsf{claim}_E) \\[1em]
-& \vdash_\Omega H \mathrel{◀} g \iff \forall \ell, E, \bar P, \bar\ell, \bar\pi, \bar\varrho.\ H(\ell) = \langle E;\ \bar P;\ \bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho \rangle \implies \Omega;\ \varphi_\ell \vdash \bar P \mathrel{◀} \wedge\ \delta_\ell \vdash \bar P \mathrel{▶} \text{ where } g(\ell) = (\varphi_\ell,\ \delta_\ell) &&(\mathsf{valid}_g) \\[1em]
+& \text{⟺} &&(\mathsf{valid}_g) \\
+& \quad \vdash_\Omega H \mathrel{◀} g \\
+& \quad \forall \ell, E, \bar P, \bar\ell, \bar\pi, \bar\varrho. \\
+& \qquad \text{⟹} \text{ where} \\
+& \qquad \quad H(\ell) = \langle E;\ \bar P;\ \bar\ell \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho \rangle \\
+& \qquad \quad \Omega;\ \varphi_\ell \vdash \bar P \mathrel{◀} \wedge\ \delta_\ell \vdash \bar P \mathrel{▶} \\
+& \qquad \quad g(\ell) = (\varphi_\ell,\ \delta_\ell) \\[1em]
 & \vdash \mathcal{P} \mathrel{◀} \Omega \iff \forall f, \bar s, \bar p, M.\ \mathcal{P}(f.\{\bar s;\ \bar p\}) = M \implies \Omega;\ 0^{\nu} \vdash M \mathrel{◀} \Omega(f) &&(\mathsf{own}_{\mathcal{P}})
 \end{aligned}
 ```

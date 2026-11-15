@@ -87,10 +87,20 @@ The parameters $`{\Delta \uparrow}`$ of the lifting are the parameters $`\Delta`
 
 ```math
 \begin{aligned}
-& \varepsilon \uparrow = \varepsilon &&(\mathsf{params}_{\uparrow}) \\
-& (\Delta,\ x : A) \uparrow = (\Delta \uparrow,\ x : A,\ C_x : (z : x \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash (s_C)_{l_x} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) \text{ if } x \in \Pi \\
-& (\Delta,\ x : A) \uparrow = (\Delta \uparrow,\ x : A) \text{ otherwise} \\
-& (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi)) \uparrow = (\Delta \uparrow,\ X : (\Theta \vdash A \mathrel{◀} \psi),\ C_X : (\Theta,\ z : X[\bar x] \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash (s_C)_{l_X} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) \text{ if } X \in \Pi \\
+& \varepsilon \uparrow = \varepsilon &&(\mathsf{params}_{\uparrow}) \\[1em]
+& {=} \text{ if} \\
+& \quad (\Delta,\ x : A) \uparrow \\
+& \quad (\Delta \uparrow, \\
+& \quad \phantom{(}x : A, \\
+& \quad \phantom{(}C_x : (z : x \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash (s_C)_{l_x} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) \\
+& \quad x \in \Pi \\[1em]
+& (\Delta,\ x : A) \uparrow = (\Delta \uparrow,\ x : A) \text{ otherwise} \\[1em]
+& {=} \text{ if} \\
+& \quad (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi)) \uparrow \\
+& \quad (\Delta \uparrow, \\
+& \quad \phantom{(}X : (\Theta \vdash A \mathrel{◀} \psi), \\
+& \quad \phantom{(}C_X : (\Theta,\ z : X[\bar x] \mathrel{▶} {\omega\omega}^{\mathsf{p}};\ {\omega\omega}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}} \vdash (s_C)_{l_X} \mathrel{◀} {\omega\omega}^{\mathsf{p}})) \\
+& \quad X \in \Pi \\[1em]
 & (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi)) \uparrow = (\Delta \uparrow,\ X : (\Theta \vdash A \mathrel{◀} \psi)) \text{ otherwise}
 \end{aligned}
 ```
@@ -106,7 +116,10 @@ It has the constraint of the block, the parameters lifted followed by the term $
 \begin{aligned}
 & {=} &&(\mathsf{lifting}_{\mathcal{D}}) \\
 & \quad \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d') \\
-& \quad \mathsf{codata}.\{\bar s, s_C;\ \bar l, \bar l_\Pi;\ \bar p, r, \varsigma, \chi \mid C_{\mathcal{D}}\}\ (\Delta \uparrow,\ y : D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta) : (s_C)_{l \sqcup \bigsqcup \bar l_\Pi}\ \mathsf{where}\ D^\Pi \mathrel{▶} \zeta \oplus \varnothing \mathrel{≔} \bar d'
+& \quad \mathsf{codata}.\{\bar s, s_C;\ \bar l, \bar l_\Pi;\ \bar p, r, \varsigma, \chi \mid C_{\mathcal{D}}\} \\
+& \qquad (\Delta \uparrow,\ y : D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta) : (s_C)_{l \sqcup \bigsqcup \bar l_\Pi} \\
+& \qquad \mathsf{where} \\
+& \qquad \quad D^\Pi \mathrel{▶} \zeta \oplus \varnothing \mathrel{≔} \bar d'
 \end{aligned}
 ```
 
@@ -118,7 +131,9 @@ The destructors $`\bar d'`$ are those of the lifting of $`D`$ at $`\Pi`$, writte
 & \quad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
 & \quad \text{and} \\
 & \qquad D \text{ is a type of } \mathcal{D} \text{, a block of codata types} \\
-& \qquad \forall \bar s',\ s'_C,\ \bar p',\ r',\ \varsigma',\ \chi' \text{ as many as } \bar s,\ s_C,\ \bar p,\ r,\ \varsigma,\ \chi.\ \Sigma \vdash \bar d_D[\bar s' / \bar s,\ \bar p' / \bar p] \uparrow y = \bar d'[\bar s', s'_C / \bar s, s_C,\ \bar p', r', \varsigma', \chi' / \bar p, r, \varsigma, \chi]
+& \qquad \forall \bar s',\ s'_C,\ \bar p',\ r',\ \varsigma',\ \chi' \text{ as many as } \bar s,\ s_C,\ \bar p,\ r,\ \varsigma,\ \chi. \\
+& \qquad \quad \Sigma \vdash \bar d_D[\bar s' / \bar s,\ \bar p' / \bar p] \uparrow y \\
+& \qquad \quad {=}\ \bar d'[\bar s', s'_C / \bar s, s_C,\ \bar p', r', \varsigma', \chi' / \bar p, r, \varsigma, \chi]
 \end{aligned}
 ```
 

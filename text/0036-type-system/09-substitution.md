@@ -20,15 +20,15 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & \kappa[\sigma] = \kappa \\
 & f.\{\bar s;\ \bar l;\ \bar p\}[\sigma] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\sigma] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma] \\
-& ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\sigma] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).c(\bar t[\sigma]) \\
+& ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\sigma] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).c(\bar t[\sigma]) \\[1em]
 & {=} \\
 & \quad (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
 & \qquad \mathsf{return}\ \bar C \\
 & \qquad \mathsf{with}\ \bar u)[\sigma] \\
 & \quad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ t[\sigma] \\
 & \qquad \mathsf{return}\ \bar C[\sigma] \\
-& \qquad \mathsf{with}\ \bar u[\sigma] \\
-& (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\sigma] = t[\sigma].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).d)(\bar t[\sigma]) \\
+& \qquad \mathsf{with}\ \bar u[\sigma] \\[1em]
+& (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\sigma] = t[\sigma].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).d)(\bar t[\sigma]) \\[1em]
 & {=} \\
 & \quad (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \\
 & \qquad \mathsf{from}\ \bar t \\
@@ -84,15 +84,15 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & \kappa[\theta] = \kappa \\
 & f.\{\bar s;\ \bar l;\ \bar p\}[\theta] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\theta] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta] \\
-& ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\theta] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).c(\bar t[\theta]) \\
+& ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\theta] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).c(\bar t[\theta]) \\[1em]
 & {=} \\
 & \quad (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
 & \qquad \mathsf{return}\ \bar C \\
 & \qquad \mathsf{with}\ \bar u)[\theta] \\
 & \quad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ t[\theta] \\
 & \qquad \mathsf{return}\ \bar C[\theta] \\
-& \qquad \mathsf{with}\ \bar u[\theta] \\
-& (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\theta] = t[\theta].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).d)(\bar t[\theta]) \\
+& \qquad \mathsf{with}\ \bar u[\theta] \\[1em]
+& (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\theta] = t[\theta].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).d)(\bar t[\theta]) \\[1em]
 & {=} \\
 & \quad (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \\
 & \qquad \mathsf{from}\ \bar t \\
@@ -145,7 +145,7 @@ The telescope and the result of a destructor of a codata type are in the scope o
 
 ```math
 \begin{aligned}
-& [\bar a / \Delta,\ t.T / \varepsilon] = [\bar a / \Delta] &&(\mathsf{obs}_\theta) \\
+& [\bar a / \Delta,\ t.T / \varepsilon] = [\bar a / \Delta] &&(\mathsf{obs}_\theta) \\[1em]
 & {=} \\
 & \quad [\bar a / \Delta,\ t.T / (d' : (\Theta' \vdash B' \mathrel{◀} \psi') \mathrel{▶} p';\ q' \mathrel{◀} \varsigma' \mid \bar d_1)] \\
 & \quad [(\bar a,\ \bar x.\, t.(T.d')(\bar x)) / (\Delta,\ d' : (\Theta' \vdash B' \mathrel{◀} \psi')),\ t.T / \bar d_1]
@@ -214,20 +214,20 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & (s_l)[\bar l' / \bar l] = s_{l[\bar l' / \bar l]} &&(\mathsf{inst}_l.\kappa) \\[1em]
 & x[\bar t][\bar l' / \bar l] = x[\bar t[\bar l' / \bar l]] &&(\mathsf{inst}_l.t) \\
 & f.\{\bar s;\ \bar l_1;\ \bar p\}[\bar l' / \bar l] = f.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\} \\
-& (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)[\bar l' / \bar l] = D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l] \\
+& (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)[\bar l' / \bar l] = D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l] \\[1em]
 & {=} \\
 & \quad ((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).c(\bar t))[\bar l' / \bar l] \\
-& \quad (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).c(\bar t[\bar l' / \bar l]) \\
+& \quad (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).c(\bar t[\bar l' / \bar l]) \\[1em]
 & {=} \\
 & \quad (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ t \\
 & \qquad \mathsf{return}\ \bar C \\
 & \qquad \mathsf{with}\ \bar u)[\bar l' / \bar l] \\
 & \quad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ t[\bar l' / \bar l] \\
 & \qquad \mathsf{return}\ \bar C[\bar l' / \bar l] \\
-& \qquad \mathsf{with}\ \bar u[\bar l' / \bar l] \\
+& \qquad \mathsf{with}\ \bar u[\bar l' / \bar l] \\[1em]
 & {=} \\
 & \quad (t.((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).d)(\bar t))[\bar l' / \bar l] \\
-& \quad t[\bar l' / \bar l].((D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).d)(\bar t[\bar l' / \bar l]) \\
+& \quad t[\bar l' / \bar l].((D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).d)(\bar t[\bar l' / \bar l]) \\[1em]
 & {=} \\
 & \quad (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a) \\
 & \qquad \mathsf{from}\ \bar t \\
@@ -251,7 +251,7 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\bar l' / \bar l] = ((\bar x;\ \bar y;\ \bar z).\, g[\bar l' / \bar l],\ \bar g[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Theta) \\
 & (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\bar l' / \bar l] = (x : A[\bar l' / \bar l] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\bar l' / \bar l]) \\[1em]
-& \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\bar d) \\
+& \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\bar d) \\[1em]
 & {=} \\
 & \quad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d)[\bar l' / \bar l] \\
 & \quad (d : (\Theta[\bar l' / \bar l] \vdash B[\bar l' / \bar l] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d[\bar l' / \bar l]) \\[1em]
@@ -278,8 +278,10 @@ A substitution followed by another one is a single one, which substitutes the se
 ```math
 \begin{aligned}
 & t[\sigma][\tau] = t[\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\tau] \text{ for each } x &&(\mathsf{comp}_\sigma) \\[1em]
-& t[\theta_1][\theta_2] = t[\theta_3] \text{ if } \theta_3(x) = \bar x.\, B[\theta_2] \text{ for each } x \text{ such that } \theta_1(x) = \bar x.\, B &&(\mathsf{comp}_\theta.t) \\[1em]
-& \Theta[\theta_1][\theta_2] = \Theta[\theta_3] \text{ if } \theta_3(x) = \bar x.\, B[\theta_2] \text{ for each } x \text{ such that } \theta_1(x) = \bar x.\, B &&(\mathsf{comp}_\theta.\Theta) \\[1em]
+& t[\theta_1][\theta_2] = t[\theta_3] &&(\mathsf{comp}_\theta.t) \\
+& \quad \text{if}\ \theta_3(x) = \bar x.\, B[\theta_2] \text{ for each } x \text{ such that } \theta_1(x) = \bar x.\, B \\[1em]
+& \Theta[\theta_1][\theta_2] = \Theta[\theta_3] &&(\mathsf{comp}_\theta.\Theta) \\
+& \quad \text{if}\ \theta_3(x) = \bar x.\, B[\theta_2] \text{ for each } x \text{ such that } \theta_1(x) = \bar x.\, B \\[1em]
 & \text{⟹} &&(\mathsf{comp}_{\sigma\theta}.t) \\
 & \quad \text{and} \\
 & \qquad \theta_2(x) = \sigma(x)[\theta_1] \text{ for each } x \text{ whose telescope is empty} \\
@@ -319,8 +321,10 @@ The value of an instantiated level is the value of the level under the values of
 & \Gamma[\bar l_1 / \bar l][\bar l_2 / \bar l'] = \Gamma[\bar l_1[\bar l_2 / \bar l'] / \bar l] &&(\mathsf{comp}_l.\Gamma) \\[1em]
 & t[\sigma][\bar l' / \bar l] = t[\bar l' / \bar l][\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\bar l' / \bar l] \text{ for each } x &&(\mathsf{comm}_{l\sigma}.t) \\[1em]
 & \Theta[\sigma][\bar l' / \bar l] = \Theta[\bar l' / \bar l][\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\bar l' / \bar l] \text{ for each } x &&(\mathsf{comm}_{l\sigma}.\Theta) \\[1em]
-& t[\theta][\bar l' / \bar l] = t[\bar l' / \bar l][\theta'] \text{ if } \theta'(x) = \bar x.\, B[\bar l' / \bar l] \text{ for each } x \text{ such that } \theta(x) = \bar x.\, B &&(\mathsf{comm}_{l\theta}.t) \\[1em]
-& \Theta[\theta][\bar l' / \bar l] = \Theta[\bar l' / \bar l][\theta'] \text{ if } \theta'(x) = \bar x.\, B[\bar l' / \bar l] \text{ for each } x \text{ such that } \theta(x) = \bar x.\, B &&(\mathsf{comm}_{l\theta}.\Theta) \\[1em]
+& t[\theta][\bar l' / \bar l] = t[\bar l' / \bar l][\theta'] &&(\mathsf{comm}_{l\theta}.t) \\
+& \quad \text{if}\ \theta'(x) = \bar x.\, B[\bar l' / \bar l] \text{ for each } x \text{ such that } \theta(x) = \bar x.\, B \\[1em]
+& \Theta[\theta][\bar l' / \bar l] = \Theta[\bar l' / \bar l][\theta'] &&(\mathsf{comm}_{l\theta}.\Theta) \\
+& \quad \text{if}\ \theta'(x) = \bar x.\, B[\bar l' / \bar l] \text{ for each } x \text{ such that } \theta(x) = \bar x.\, B \\[1em]
 & B[\bar t / \bar x][\bar l' / \bar l] = B[\bar l' / \bar l][\bar t[\bar l' / \bar l] / \bar x] &&(\mathsf{comm}_l.\bar t) \\[1em]
 & (\Gamma,\ \Theta)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ \Theta[\bar l' / \bar l] &&(\mathsf{comm}_l.\Gamma)
 \end{aligned}

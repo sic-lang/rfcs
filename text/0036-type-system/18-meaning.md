@@ -231,7 +231,8 @@ A closed canonical type has the equality that a universe gives it, and a proposi
 ```math
 \begin{aligned}
 & \mathsf{eq}(v) = R \text{ if } (v,\ R) \in \mathsf{ty}(U_n) &&(\mathsf{eq}_{\mathsf{type}}) \\[1em]
-& \mathsf{eq}(v) = \{(t,\ u) \mid t \text{ and } u \text{ are closed terms}\} \text{ if } (v,\ b) \in \mathsf{ty}(\Omega_n) \text{ with a true } b &&(\mathsf{eq}_{\mathsf{true}}) \\[1em]
+& \mathsf{eq}(v) = \{(t,\ u) \mid t \text{ and } u \text{ are closed terms}\} &&(\mathsf{eq}_{\mathsf{true}}) \\
+& \quad \text{if}\ (v,\ b) \in \mathsf{ty}(\Omega_n) \text{ with a true } b \\[1em]
 & \mathsf{eq}(v) = \varnothing \text{ if } (v,\ b) \in \mathsf{ty}(\Omega_n) \text{ with a false } b &&(\mathsf{eq}_{\mathsf{false}}) \\[1em]
 & v \text{ is a proposition} \iff \exists n,\ b.\ (v,\ b) \in \mathsf{ty}(\Omega_n) &&(\mathsf{prop}_v) \\[1em]
 & A \text{ computes to a proposition} \iff \exists v.\ A \Downarrow v \text{ and } v \text{ is a proposition} &&(\mathsf{prop}_\Downarrow)
@@ -263,7 +264,13 @@ The canonical terms of an instance of a data type are its constructors, at any i
 \begin{aligned}
 & = &&(\circledR_c) \\
 & \quad \circledR_c^{\bar s';\ \bar p'}(D_j,\ \bar S) \\
-& \quad \{(H,\ T.c_{ji}(\bar t),\ \ell) \mid T \text{ is an instance of } D_j,\ H(\ell) = c_{i'}(\bar\ell \mathrel{▶} \mathsf{run}(\bar q) \mathrel{◀} \mathsf{run}(\bar r)) \text{ with } i' = \mathsf{case}_\Sigma(D_j.c_{ji}),\ \bar q \mathrel{◀} \bar r \text{ the parameters of } \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ and } (H,\ \bar t,\ \bar\ell) \in S_i\}
+& \quad \{(H,\ T.c_{ji}(\bar t),\ \ell) \mid \\
+& \qquad \text{and} \\
+& \qquad \quad T \text{ is an instance of } D_j \\
+& \qquad \quad H(\ell) = c_{i'}(\bar\ell \mathrel{▶} \mathsf{run}(\bar q) \mathrel{◀} \mathsf{run}(\bar r)) \\
+& \qquad \quad i' = \mathsf{case}_\Sigma(D_j.c_{ji}) \\
+& \qquad \quad \bar q \mathrel{◀} \bar r \text{ the parameters of } \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \quad (H,\ \bar t,\ \bar\ell) \in S_i\}
 \end{aligned}
 ```
 
@@ -354,13 +361,22 @@ A first type that is a recursive field has the relation $`R`$ that $`\bar R`$ gi
 \begin{aligned}
 & (\varepsilon,\ \{(H,\ (),\ ())\}) \in \mathsf{rt}(U_n)[\bar R] &&(\mathsf{rt}_{\Theta\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\Theta,}) \\
-& \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta),\ \{(H,\ (a,\ \bar t),\ (\ell,\ \bar\ell)) \mid (a,\ a) \in F,\ (H,\ a,\ \ell) \in R^p \text{ and } (H,\ \bar t,\ \bar\ell) \in G(a)\}) \\
+& \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta), \\
+& \quad \phantom{(}\{(H,\ (a,\ \bar t),\ (\ell,\ \bar\ell)) \mid \\
+& \qquad \text{and} \\
+& \qquad \quad (a,\ a) \in F \\
+& \qquad \quad (H,\ a,\ \ell) \in R^p \\
+& \qquad \quad (H,\ \bar t,\ \bar\ell) \in G(a)\}) \\
 & \quad \mathsf{rt}(U_n)[\bot,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad \exists v,\ \kappa_1.\ A \Downarrow v,\ \kappa_1 \preceq U_n,\ (v,\ F) \in \mathsf{ty}_\Downarrow(\kappa_1) \text{ and } (v,\ R) \in \mathsf{rt}_\Downarrow(U_n) \\
 & \qquad \forall (a,\ a) \in F.\ (\Theta[a / x],\ G(a)) \in \mathsf{rt}(U_n)[\bar R] \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\Theta\mathsf{rec}}) \\
-& \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta),\ \{(H,\ (a,\ \bar t),\ (\ell,\ \bar\ell)) \mid (H,\ a,\ \ell) \in R^p \text{ and } (H,\ \bar t,\ \bar\ell) \in G\}) \\
+& \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta), \\
+& \quad \phantom{(}\{(H,\ (a,\ \bar t),\ (\ell,\ \bar\ell)) \mid \\
+& \qquad \text{and} \\
+& \qquad \quad (H,\ a,\ \ell) \in R^p \\
+& \qquad \quad (H,\ \bar t,\ \bar\ell) \in G\}) \\
 & \quad \mathsf{rt}(U_n)[R,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad \forall a.\ (\Theta[a / x],\ G) \in \mathsf{rt}(U_n)[\bar R]
@@ -376,7 +392,12 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 \begin{aligned}
 & (\varepsilon,\ \{(H,\ \bar f,\ \ell) \mid \bar f \text{ is a family of closed abstractions}\}) \in \mathsf{rt}_D(U_n)[\bar R] &&(\mathsf{rt}_{\bar d\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\bar d|}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (f_d,\ f_d) \in E,\ (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ R)) \text{ and } (H,\ \bar f,\ \ell) \in G(f_d)\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
+& \quad \phantom{(}\{(H,\ \bar f,\ \ell) \mid \\
+& \qquad \text{and} \\
+& \qquad \quad (f_d,\ f_d) \in E \\
+& \qquad \quad (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ R)) \\
+& \qquad \quad (H,\ \bar f,\ \ell) \in G(f_d)\}) \\
 & \quad \mathsf{rt}_D(U_n)[\bot,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \mathrel{◀} \bar r' \text{ the parameters of } \Theta \\
@@ -388,7 +409,11 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 & \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
 & \qquad \forall (f,\ f) \in E.\ (\bar d[f / d],\ G(f)) \in \mathsf{rt}_D(U_n)[\bar R] \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\bar d\mathsf{rec}}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(H,\ \bar f,\ \ell) \mid (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ \bar t \mapsto R)) \text{ and } (H,\ \bar f,\ \ell) \in G\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
+& \quad \phantom{(}\{(H,\ \bar f,\ \ell) \mid \\
+& \qquad \text{and} \\
+& \qquad \quad (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ \bar t \mapsto R)) \\
+& \qquad \quad (H,\ \bar f,\ \ell) \in G\}) \\
 & \quad \mathsf{rt}_D(U_n)[R,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \mathrel{◀} \bar r' \text{ the parameters of } \Theta \\
@@ -462,7 +487,9 @@ A block of data types $`\mathcal{D}`$ is meaningful when, at each instance of it
 & \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\
 & \qquad \text{⟹} \\
 & \qquad \quad C[\bar s' / \bar s,\ \bar p' / \bar p] \\
-& \qquad \quad \forall j, i.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
+& \qquad \quad \forall j, i. \\
+& \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \qquad {\vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]}}\ \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
 \end{aligned}
 ```
 
@@ -475,7 +502,9 @@ A block of codata types is meaningful likewise when, at each instance of its sor
 & \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\
 & \qquad \text{⟹} \\
 & \qquad \quad C[\bar s' / \bar s,\ \bar p' / \bar p] \\
-& \qquad \quad \forall j.\ \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]} \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
+& \qquad \quad \forall j. \\
+& \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \qquad {\vDash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]}}\ \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p]
 \end{aligned}
 ```
 
@@ -616,7 +645,10 @@ Destructors live in a sort in a context when they are equal at equal closed subs
 & \quad \text{and} \\
 & \qquad \Sigma \vDash \Theta[\theta_1] \equiv \Theta[\theta_2] : U_l \text{ where } l \text{ is the level of } \kappa \\
 & \qquad \exists \kappa_1 \preceq \kappa.\ \forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B[\theta_1,\ \sigma_1] \equiv B[\theta_2,\ \sigma_2] : \kappa_1 \\
-& \qquad \forall \bar x.\, B_1,\ \bar x.\, B_2.\ (\forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B_1[\sigma_1] \equiv B_2[\sigma_2] : B[\theta_1,\ \sigma_1]) \implies \Sigma \vDash^{\bar D}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
+& \qquad \forall \bar x.\, B_1,\ \bar x.\, B_2. \\
+& \qquad \quad \text{⟹} \\
+& \qquad \qquad \forall (\sigma_1,\ \sigma_2) \in \mathsf{eq}(\Theta[\theta_1]).\ \Sigma \vDash B_1[\sigma_1] \equiv B_2[\sigma_2] : B[\theta_1,\ \sigma_1] \\
+& \qquad \qquad \Sigma \vDash^{\bar D}_{(\theta_1,\ \bar x.\, B_1),\ (\theta_2,\ \bar x.\, B_2)} \bar d : \kappa \\[1em]
 & \text{⟺} &&({\vDash}\bar d_{\kappa\mathsf{rec}}) \\
 & \quad \Sigma \vDash^{(D,\ \bar D)}_{\theta_1,\ \theta_2} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa \\
 & \quad \text{and} \\

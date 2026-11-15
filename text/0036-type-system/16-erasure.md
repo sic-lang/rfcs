@@ -9,7 +9,16 @@ The target language has variables, all of the first order, the constants at the 
 
 ```math
 \begin{aligned}
-& M \mathrel{::=} x \mid f.\{\bar s;\ \bar p\} \mid \text{↯} \mid c_i(\bar M) \mid \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \mid M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma \mid \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P &&(\mathsf{syntax}_M) \\[1em]
+& {\mathrel{::=}} &&(\mathsf{syntax}_M) \\
+& \quad M \\
+& \quad {\mid} \\
+& \qquad x \\
+& \qquad f.\{\bar s;\ \bar p\} \\
+& \qquad \text{↯} \\
+& \qquad c_i(\bar M) \\
+& \qquad \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \\
+& \qquad M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma \\
+& \qquad \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \\[1em]
 & \bar M \mathrel{::=} () \mid (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) &&(\mathsf{syntax}_{\bar M}) \\[1em]
 & \bar N \mathrel{::=} () \mid ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) &&(\mathsf{syntax}_{\bar N}) \\[1em]
 & \bar P \mathrel{::=} () \mid ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) &&(\mathsf{syntax}_{\bar P}) \\[1em]
@@ -42,7 +51,14 @@ The parameters $`\mathsf{parameters}_\Sigma(T.c)`$ of the fields of the construc
 
 ```math
 \begin{aligned}
-& \mathsf{parameters}_\Sigma(T.c) = \text{the parameters of } \Theta \text{ if } (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots \mid c : \Theta \mid \dots;\ \dots) \text{ is this entry} &&(\mathsf{parameters}_c) \\
+& \mathsf{parameters}_\Sigma(T.c) = \text{the parameters of } \Theta &&(\mathsf{parameters}_c) \\
+& \quad \text{if} \\
+& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \quad \mathsf{where} \\
+& \qquad \qquad \dots; \\
+& \qquad \qquad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots \mid c : \Theta \mid \dots; \\
+& \qquad \qquad \dots \\
+& \qquad \quad \text{is this entry} \\[1em]
 & \mathsf{parameters}_\Sigma(T.c) = () \text{ if } \Sigma \text{ has no such entry}
 \end{aligned}
 ```
@@ -51,7 +67,14 @@ The parameters $`\mathsf{parameters}_\Sigma(T.d)`$ of the destructor $`d`$ of an
 
 ```math
 \begin{aligned}
-& \mathsf{parameters}_\Sigma(T.d) = (\text{the parameters of } \Theta,\ \psi,\ \varsigma) \text{ if } (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \dots;\ \dots) \text{ is this entry} &&(\mathsf{parameters}_d) \\
+& \mathsf{parameters}_\Sigma(T.d) = (\text{the parameters of } \Theta,\ \psi,\ \varsigma) &&(\mathsf{parameters}_d) \\
+& \quad \text{if} \\
+& \qquad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \quad \mathsf{where} \\
+& \qquad \qquad \dots; \\
+& \qquad \qquad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \dots; \\
+& \qquad \qquad \dots \\
+& \qquad \quad \text{is this entry} \\[1em]
 & \mathsf{parameters}_\Sigma(T.d) = ((),\ \psi_\bot,\ {\omega\omega}^{\mathsf{p}}) \text{ if } \Sigma \text{ has no such entry}
 \end{aligned}
 ```
@@ -60,7 +83,17 @@ The grades $`\mathsf{grades}_\Sigma(T.\bar g)`$ of the branches of a corecursor 
 
 ```math
 \begin{aligned}
-& \mathsf{grades}_\Sigma(T.\bar g) = p_{11}, \dots, p_{kn_k} \text{ if } (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k) \text{ is this entry, } D = D_h \text{ and } d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji} \mathrel{◀} \varsigma_{ji} \text{ in } \bar d_j &&(\mathsf{grades}_{\bar g}) \\
+& \mathsf{grades}_\Sigma(T.\bar g) = p_{11}, \dots, p_{kn_k} &&(\mathsf{grades}_{\bar g}) \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \qquad \mathsf{where} \\
+& \qquad \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\
+& \qquad \qquad \quad \dots; \\
+& \qquad \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\
+& \qquad \qquad \text{is this entry} \\
+& \qquad \quad D = D_h \\
+& \qquad \quad d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji} \mathrel{◀} \varsigma_{ji} \text{ in } \bar d_j \\[1em]
 & \mathsf{grades}_\Sigma(T.\bar g) = () \text{ if } \Sigma \text{ has no such entry}
 \end{aligned}
 ```
@@ -77,8 +110,22 @@ The case $`\mathsf{case}_\Sigma(D.c)`$ of the constructor $`c`$ of the type $`D`
 
 ```math
 \begin{aligned}
-& \mathsf{case}_\Sigma(D.c) = i \text{ if } c_i \text{ is the constructor } c \text{ of } D \text{ in } (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} c_1 : \Theta_1 \mid \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots \mid c_n : \Theta_n) &&(\mathsf{case}_c) \\[1em]
-& \mathsf{case}_\Sigma(D.d) = i \text{ if } d_i \text{ is the destructor } d \text{ of } D \text{ in } (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} d_1 : \dots \mid \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots \mid d_n : \dots) &&(\mathsf{case}_d)
+& \mathsf{case}_\Sigma(D.c) = i &&(\mathsf{case}_c) \\
+& \quad \text{if} \\
+& \qquad c_i \text{ is the constructor } c \text{ of } D \text{ in} \\
+& \qquad \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \qquad \mathsf{where} \\
+& \qquad \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} c_1 : \Theta_1 \mid \dots; \\
+& \qquad \qquad \quad \dots; \\
+& \qquad \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots \mid c_n : \Theta_n \\[1em]
+& \mathsf{case}_\Sigma(D.d) = i &&(\mathsf{case}_d) \\
+& \quad \text{if} \\
+& \qquad d_i \text{ is the destructor } d \text{ of } D \text{ in} \\
+& \qquad \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \qquad \mathsf{where} \\
+& \qquad \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} d_1 : \dots \mid \dots; \\
+& \qquad \qquad \quad \dots; \\
+& \qquad \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots \mid d_n : \dots
 \end{aligned}
 ```
 
@@ -86,7 +133,11 @@ The recursive fields $`\mathsf{recursive}_\Sigma(T)`$ of an instance $`{T = D.\{
 
 ```math
 \begin{aligned}
-& \mathsf{recursive}_\Sigma(T) = \bar k_1, \dots, \bar k_n \text{ if } c_1 : \Theta_1,\ \dots,\ c_n : \Theta_n \text{ are the constructors of this entry and } \bar k_i \text{ the positions } j \text{ at which } \mathsf{rec}_{\mathcal{D}}(\Theta_i) \ne \bot &&(\mathsf{recursive}_c) \\
+& \mathsf{recursive}_\Sigma(T) = \bar k_1, \dots, \bar k_n &&(\mathsf{recursive}_c) \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad c_1 : \Theta_1,\ \dots,\ c_n : \Theta_n \text{ are the constructors of this entry} \\
+& \qquad \quad \bar k_i \text{ the positions } j \text{ at which } \mathsf{rec}_{\mathcal{D}}(\Theta_i) \ne \bot \\[1em]
 & \mathsf{recursive}_\Sigma(T) = () \text{ if } \Sigma \text{ has no such entry}
 \end{aligned}
 ```
@@ -95,7 +146,11 @@ The resumed types $`\mathsf{resumed}_\Sigma(T)`$ of an instance $`{T = D.\{\bar 
 
 ```math
 \begin{aligned}
-& \mathsf{resumed}_\Sigma(T) = h_1, \dots, h_n \text{ if } d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1),\ \dots,\ d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \text{ are the destructors of this entry and } h_i \text{ is the position of } \mathsf{rec}_{\mathcal{D}}(B_i) \text{ in the block, or } \bot \text{ when } \mathsf{rec}_{\mathcal{D}}(B_i) = \bot &&(\mathsf{resumed}_d) \\
+& \mathsf{resumed}_\Sigma(T) = h_1, \dots, h_n &&(\mathsf{resumed}_d) \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1),\ \dots,\ d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \text{ are the destructors of this entry} \\
+& \qquad \quad h_i \text{ is the position of } \mathsf{rec}_{\mathcal{D}}(B_i) \text{ in the block, or } \bot \text{ when } \mathsf{rec}_{\mathcal{D}}(B_i) = \bot \\[1em]
 & \mathsf{resumed}_\Sigma(T) = () \text{ if } \Sigma \text{ has no such entry}
 \end{aligned}
 ```
@@ -104,7 +159,11 @@ The parameters $`\mathsf{parameters}_\Sigma(T.\bar u)`$ of the branches of a rec
 
 ```math
 \begin{aligned}
-& \mathsf{parameters}_\Sigma(T.\bar u) = \bar q_1 \mathrel{◀} \bar r_1, \dots, \bar q_n \mathrel{◀} \bar r_n \text{ if } c_1 : \Theta_1,\ \dots,\ c_n : \Theta_n \text{ are the constructors of this entry and } \bar q_i \mathrel{◀} \bar r_i \text{ the parameters of } \Theta_i &&(\mathsf{parameters}_{\bar u}) \\
+& \mathsf{parameters}_\Sigma(T.\bar u) = \bar q_1 \mathrel{◀} \bar r_1, \dots, \bar q_n \mathrel{◀} \bar r_n &&(\mathsf{parameters}_{\bar u}) \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad c_1 : \Theta_1,\ \dots,\ c_n : \Theta_n \text{ are the constructors of this entry} \\
+& \qquad \quad \bar q_i \mathrel{◀} \bar r_i \text{ the parameters of } \Theta_i \\[1em]
 & \mathsf{parameters}_\Sigma(T.\bar u) = () \text{ if } \Sigma \text{ has no such entry}
 \end{aligned}
 ```
@@ -113,7 +172,11 @@ The requirement $`\mathsf{recursion}_\Sigma(T, r)`$ of the recursion of a recurs
 
 ```math
 \begin{aligned}
-& \mathsf{recursion}_\Sigma(T, r) = \mathsf{recursion}(\{r \cdot q_{il} \mathrel{◀} r_{il} \mid l \in \bar k_i\}) \text{ where } \mathsf{recursive}_\Sigma(T) = \bar k_1, \dots, \bar k_n \text{ and } \mathsf{parameters}_\Sigma(T.\bar u) = \bar q_1 \mathrel{◀} \bar r_1, \dots, \bar q_n \mathrel{◀} \bar r_n &&(\mathsf{recursion}_c)
+& \mathsf{recursion}_\Sigma(T, r) = \mathsf{recursion}(\{r \cdot q_{il} \mathrel{◀} r_{il} \mid l \in \bar k_i\}) &&(\mathsf{recursion}_c) \\
+& \quad \text{where} \\
+& \qquad \text{and} \\
+& \qquad \quad \mathsf{recursive}_\Sigma(T) = \bar k_1, \dots, \bar k_n \\
+& \qquad \quad \mathsf{parameters}_\Sigma(T.\bar u) = \bar q_1 \mathrel{◀} \bar r_1, \dots, \bar q_n \mathrel{◀} \bar r_n
 \end{aligned}
 ```
 
@@ -121,7 +184,15 @@ The arguments $`\mathsf{arguments}_\Sigma(T.\bar g)`$ of the branches of a corec
 
 ```math
 \begin{aligned}
-& \mathsf{arguments}_\Sigma(T.\bar g) = (j_1,\ \bar q_1 \mathrel{◀} \bar r_1,\ \psi_1,\ \varsigma_1), \dots, (j_n,\ \bar q_n \mathrel{◀} \bar r_n,\ \psi_n,\ \varsigma_n) \text{ if } d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mathrel{◀} \varsigma_1,\ \dots,\ d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n \mathrel{◀} \varsigma_n \text{ are the destructors of this entry, } d_i \text{ a destructor of } D_{j_i} \text{ and } \bar q_i \mathrel{◀} \bar r_i \text{ the parameters of } \Theta_i &&(\mathsf{arguments}_{\bar g}) \\
+& \mathsf{arguments}_\Sigma(T.\bar g) = (j_1,\ \bar q_1 \mathrel{◀} \bar r_1,\ \psi_1,\ \varsigma_1), \dots, (j_n,\ \bar q_n \mathrel{◀} \bar r_n,\ \psi_n,\ \varsigma_n) &&(\mathsf{arguments}_{\bar g}) \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mathrel{◀} \varsigma_1, \\
+& \qquad \quad \dots, \\
+& \qquad \quad d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n \mathrel{◀} \varsigma_n \\
+& \qquad \qquad \text{are the destructors of this entry} \\
+& \qquad \quad d_i \text{ a destructor of } D_{j_i} \\
+& \qquad \quad \bar q_i \mathrel{◀} \bar r_i \text{ the parameters of } \Theta_i \\[1em]
 & \mathsf{arguments}_\Sigma(T.\bar g) = () \text{ if } \Sigma \text{ has no such entry}
 \end{aligned}
 ```
@@ -131,10 +202,22 @@ It is built within the depth $`k`$ of the number of the types of the block, at t
 
 ```math
 \begin{aligned}
-& \mathsf{skeleton}_\Sigma(T) = \mathsf{skeleton}^k(D) \text{ if } (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k) \text{ is this entry} &&(\mathsf{skeleton}_D) \\
+& \mathsf{skeleton}_\Sigma(T) = \mathsf{skeleton}^k(D) &&(\mathsf{skeleton}_D) \\
+& \quad \text{if} \\
+& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \quad \mathsf{where} \\
+& \qquad \qquad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\
+& \qquad \qquad \dots; \\
+& \qquad \qquad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\
+& \qquad \quad \text{is this entry} \\[1em]
 & \mathsf{skeleton}_\Sigma(T) = \text{↯} \text{ if } \Sigma \text{ has no such entry} \\[1em]
-& \mathsf{skeleton}^0(D_j) = \text{↯} \\
-& \mathsf{skeleton}^{n + 1}(D_j) = c_i(M_1 \mathrel{▶} 0 \mathrel{◀} \omega, \dots, M_a \mathrel{▶} 0 \mathrel{◀} \omega) \text{ if } \bar c_j = (c : \Theta),\ i = \mathsf{case}_\Sigma(D_j.c) \text{ and } \Theta \text{ has } a \text{ entries} \\
+& \mathsf{skeleton}^0(D_j) = \text{↯} \\[1em]
+& \mathsf{skeleton}^{n + 1}(D_j) = c_i(M_1 \mathrel{▶} 0 \mathrel{◀} \omega, \dots, M_a \mathrel{▶} 0 \mathrel{◀} \omega) \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad \bar c_j = (c : \Theta) \\
+& \qquad \quad i = \mathsf{case}_\Sigma(D_j.c) \\
+& \qquad \quad \Theta \text{ has } a \text{ entries} \\[1em]
 & \mathsf{skeleton}^{n + 1}(D_j) = \text{↯} \text{ otherwise}
 \end{aligned}
 ```
@@ -154,23 +237,53 @@ The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\te
 & \lfloor f.\{\bar s;\ \bar l;\ \bar p\} \rfloor_S = f.\{\bar s;\ \bar p\} \\
 & \lfloor D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \rfloor_S = \text{↯} \\
 & \lfloor T.c(\bar t) \rfloor_S = c_i(\lfloor \bar t \rfloor_{S, \mathsf{parameters}_\Sigma(T.c)}) \text{ if } i = \mathsf{case}_\Sigma(D.c) \\
-& \lfloor T.c(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\
-& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}_{\mathsf{run}(r)}\ \mathsf{skeleton}_\Sigma(T) \mathrel{◀} \omega\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{parameters}_\Sigma(T.\bar u)} \text{ if } r \in S \\
-& \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S = \mathsf{rec}_{\mathsf{run}(r)}\ \lfloor t \rfloor_S \mathrel{◀} \mathsf{run}(\mathsf{recursion}_\Sigma(T, r))\ \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{parameters}_\Sigma(T.\bar u)} \text{ if } r \notin S \\
-& \lfloor t.(T.d)(\bar t) \rfloor_S = \lfloor t \rfloor_S.d_i(\lfloor \bar t \rfloor_{S, \bar q \mathrel{◀} \bar r}) \mathrel{◀} \mathsf{run}(\psi) \mathrel{◀} \mathsf{run}(\varsigma) \text{ if } i = \mathsf{case}_\Sigma(D.d) \text{ and } (\bar q \mathrel{◀} \bar r,\ \psi,\ \varsigma) = \mathsf{parameters}_\Sigma(T.d) \\
-& \lfloor t.(T.d)(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\
-& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, r \cdot \bar q \mathrel{◀} \bar r}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g), \bar k, \bar{\bar o}} \text{ if } \bar q \mathrel{◀} \bar r \text{ are the parameters of } \Theta_h,\ h = \mathsf{position}_\Sigma(D) \\
-& \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S = \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, ()}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g), \bar k, \bar{\bar o}} \text{ otherwise} \\
+& \lfloor T.c(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\[1em]
+& {=} \text{ if} \\
+& \quad \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S \\
+& \quad \mathsf{rec}_{\mathsf{run}(r)}\ \mathsf{skeleton}_\Sigma(T) \mathrel{◀} \omega \\
+& \qquad \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{parameters}_\Sigma(T.\bar u)} \\
+& \quad r \in S \\[1em]
+& {=} \text{ if} \\
+& \quad \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S \\
+& \quad \mathsf{rec}_{\mathsf{run}(r)}\ \lfloor t \rfloor_S \mathrel{◀} \mathsf{run}(\mathsf{recursion}_\Sigma(T, r)) \\
+& \qquad \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{parameters}_\Sigma(T.\bar u)} \\
+& \quad r \notin S \\[1em]
+& \lfloor t.(T.d)(\bar t) \rfloor_S = \lfloor t \rfloor_S.d_i(\lfloor \bar t \rfloor_{S, \bar q \mathrel{◀} \bar r}) \mathrel{◀} \mathsf{run}(\psi) \mathrel{◀} \mathsf{run}(\varsigma) \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad i = \mathsf{case}_\Sigma(D.d) \\
+& \qquad \quad (\bar q \mathrel{◀} \bar r,\ \psi,\ \varsigma) = \mathsf{parameters}_\Sigma(T.d) \\[1em]
+& \lfloor t.(T.d)(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\[1em]
+& {=} \text{ if} \\
+& \quad \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S \\
+& \quad \mathsf{corec} \\
+& \qquad \mathsf{from}\ \lfloor \bar t \rfloor_{S, r \cdot \bar q \mathrel{◀} \bar r} \\
+& \qquad \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g), \bar k, \bar{\bar o}} \\
+& \quad \text{and} \\
+& \qquad \bar q \mathrel{◀} \bar r \text{ are the parameters of } \Theta_h \\
+& \qquad h = \mathsf{position}_\Sigma(D) \\[1em]
+& {=} \text{ otherwise} \\
+& \quad \lfloor \mathsf{corec}_r\ T\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \rfloor_S \\
+& \quad \mathsf{corec}\ \mathsf{from}\ \lfloor \bar t \rfloor_{S, ()}\ \mathsf{with}\ \lfloor \bar g \rfloor_{S, \mathsf{grades}_\Sigma(T.\bar g), \bar k, \bar{\bar o}} \\[1em]
 & \lfloor t \rfloor_{S, p} = \text{↯} \text{ if } p \in S \\
 & \lfloor t \rfloor_{S, p} = \lfloor t \rfloor_S \text{ if } p \notin S \\[1em]
 & \lfloor () \rfloor_{S, \bar p \mathrel{◀} \bar r} = () &&(\mathsf{erase}_{\bar t}) \\
 & \lfloor (t,\ \bar t) \rfloor_{S, ()} = (\text{↯} \mathrel{▶} \omega \mathrel{◀} \omega,\ \lfloor \bar t \rfloor_{S, ()}) \\
 & \lfloor (t,\ \bar t) \rfloor_{S, (p \mathrel{◀} r,\ \bar p \mathrel{◀} \bar r)} = (\lfloor t \rfloor_{S, p} \mathrel{▶} \mathsf{run}(p) \mathrel{◀} \mathsf{run}(r),\ \lfloor \bar t \rfloor_{S, \bar p \mathrel{◀} \bar r}) \\[1em]
-& \lfloor () \rfloor_{S, r, \bar{\bar k}, \bar{\bar q} \mathrel{◀} \bar{\bar r}} = () &&(\mathsf{erase}_{\bar u}) \\
-& \lfloor ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u) \rfloor_{S, r, \bar{\bar k}, \bar{\bar q} \mathrel{◀} \bar{\bar r}} = ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \mathsf{run}(\bar e) \leftarrow \bar k').\, \lfloor u \rfloor_S,\ \lfloor \bar u \rfloor_{S, r, \bar{\bar k}', \bar{\bar q}' \mathrel{◀} \bar{\bar r}'}) \\[1em]
-& \lfloor () \rfloor_{S, \bar p, \bar k, \bar{\bar o}} = () &&(\mathsf{erase}_{\bar g}) \\
-& \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, (p,\ \bar p), \bar k, \bar{\bar o}} = ((\bar y \mathrel{▶} \mathsf{run}(\ulcorner {11}^{\mathsf{m}} \odot p \urcorner \cdot \bar o_1) \mathrel{◀} \mathsf{run}(\bar r_1);\ \bar z \mathrel{▶} \mathsf{run}(\ulcorner {11}^{\mathsf{m}} \odot p \urcorner \cdot \bar o_2) \mathrel{◀} \mathsf{run}(\bar r_2) \circlearrowleft k \mathrel{◀} \mathsf{run}(\psi) \mathrel{◀} \mathsf{run}(\varsigma)).\, \lfloor g \rfloor_{S, p},\ \lfloor \bar g \rfloor_{S, \bar p, \bar k', \bar{\bar o}'}) \text{ if } \bar x \text{ is empty} \\
-& \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, \bar p, \bar k, \bar{\bar o}} = ((\bar y \mathrel{▶} \omega \mathrel{◀} \omega;\ \bar z \mathrel{▶} \omega \mathrel{◀} \omega \circlearrowleft k \mathrel{◀} \psi_\bot \mathrel{◀} \omega).\, \text{↯},\ \lfloor \bar g \rfloor_{S, \bar p', \bar k', \bar{\bar o}'}) \text{ otherwise}
+& \lfloor () \rfloor_{S, r, \bar{\bar k}, \bar{\bar q} \mathrel{◀} \bar{\bar r}} = () &&(\mathsf{erase}_{\bar u}) \\[1em]
+& {=} \\
+& \quad \lfloor ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u) \rfloor_{S, r, \bar{\bar k}, \bar{\bar q} \mathrel{◀} \bar{\bar r}} \\
+& \quad ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \mathsf{run}(\bar e) \leftarrow \bar k').\, \lfloor u \rfloor_S,\ \lfloor \bar u \rfloor_{S, r, \bar{\bar k}', \bar{\bar q}' \mathrel{◀} \bar{\bar r}'}) \\[1em]
+& \lfloor () \rfloor_{S, \bar p, \bar k, \bar{\bar o}} = () &&(\mathsf{erase}_{\bar g}) \\[1em]
+& {=} \text{ if} \\
+& \quad \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, (p,\ \bar p), \bar k, \bar{\bar o}} \\
+& \quad ((\bar y \mathrel{▶} \mathsf{run}(\ulcorner {11}^{\mathsf{m}} \odot p \urcorner \cdot \bar o_1) \mathrel{◀} \mathsf{run}(\bar r_1); \\
+& \quad \phantom{((}\bar z \mathrel{▶} \mathsf{run}(\ulcorner {11}^{\mathsf{m}} \odot p \urcorner \cdot \bar o_2) \mathrel{◀} \mathsf{run}(\bar r_2) \circlearrowleft k \mathrel{◀} \mathsf{run}(\psi) \mathrel{◀} \mathsf{run}(\varsigma)).\, \lfloor g \rfloor_{S, p}, \\
+& \quad \phantom{(}\lfloor \bar g \rfloor_{S, \bar p, \bar k', \bar{\bar o}'}) \\
+& \quad \bar x \text{ is empty} \\[1em]
+& {=} \text{ otherwise} \\
+& \quad \lfloor ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g) \rfloor_{S, \bar p, \bar k, \bar{\bar o}} \\
+& \quad ((\bar y \mathrel{▶} \omega \mathrel{◀} \omega;\ \bar z \mathrel{▶} \omega \mathrel{◀} \omega \circlearrowleft k \mathrel{◀} \psi_\bot \mathrel{◀} \omega).\, \text{↯},\ \lfloor \bar g \rfloor_{S, \bar p', \bar k', \bar{\bar o}'})
 \end{aligned}
 ```
 
@@ -311,7 +424,7 @@ A position satisfies its requirement in every case, without the exception of the
 \frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.\varepsilon) \\[2em]
 \frac{\begin{aligned}& \Omega;\ \varphi \bullet o \cdot \bar\kappa \bullet o' \cdot \bar\pi' \vdash N \mathrel{◀} o' \\[0.6em] & \Omega;\ \varphi \vdash \bar N \mathrel{◀} o;\ o'\end{aligned}}{\Omega;\ \varphi \vdash ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar k).\, N,\ \bar N) \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.{,}) \\[2em]
 \frac{}{\Omega;\ \varphi \vdash () \mathrel{◀}}\;(\mathsf{own}_{\bar P}.\varepsilon) \\[2em]
-\frac{\begin{aligned}& \forall \bar o, v. \\ & \quad {\Longrightarrow} \\ & \qquad \text{and} \\ & \qquad \quad \bar\varrho' \le \bar o \\ & \qquad \quad \text{or} \\ & \qquad \qquad \text{and} \\ & \qquad \qquad \quad k = \bot \\ & \qquad \qquad \quad \psi[\bar o] = v \\ & \qquad \qquad \text{and} \\ & \qquad \qquad \quad k \ne \bot \\ & \qquad \qquad \quad v = 1 \\ & \qquad \Omega;\ \varsigma \cdot \varphi \bullet \varsigma \cdot \bar\varrho \cdot \bar\pi \bullet \bar o \cdot \bar\pi' \\ & \qquad {\vdash}\ P \mathrel{◀} v \\[0.6em] & k \ne \bot \implies \exists \chi.\ \psi = \chi \\[0.6em] & \Omega;\ \varphi \vdash \bar P \mathrel{◀}\end{aligned}}{\Omega;\ \varphi \vdash ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) \mathrel{◀}}\;(\mathsf{own}_{\bar P}.{,})
+\frac{\begin{aligned}& \forall \bar o, v. \\ & \quad \text{⟹} \\ & \qquad \text{and} \\ & \qquad \quad \bar\varrho' \le \bar o \\ & \qquad \quad \text{or} \\ & \qquad \qquad \text{and} \\ & \qquad \qquad \quad k = \bot \\ & \qquad \qquad \quad \psi[\bar o] = v \\ & \qquad \qquad \text{and} \\ & \qquad \qquad \quad k \ne \bot \\ & \qquad \qquad \quad v = 1 \\ & \qquad \Omega;\ \varsigma \cdot \varphi \bullet \varsigma \cdot \bar\varrho \cdot \bar\pi \bullet \bar o \cdot \bar\pi' \\ & \qquad {\vdash}\ P \mathrel{◀} v \\[0.6em] & k \ne \bot \implies \exists \chi.\ \psi = \chi \\[0.6em] & \Omega;\ \varphi \vdash \bar P \mathrel{◀}\end{aligned}}{\Omega;\ \varphi \vdash ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) \mathrel{◀}}\;(\mathsf{own}_{\bar P}.{,})
 \end{gathered}
 ```
 

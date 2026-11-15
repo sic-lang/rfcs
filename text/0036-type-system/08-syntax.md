@@ -131,7 +131,12 @@ The ownership $`\psi`$ of the result of $`{X : (\Theta \vdash A \mathrel{◀} \p
 
 ```math
 \begin{aligned}
-& \psi \mathrel{::=} \chi_0 \wedge x_{j_1} \cdot \chi_{j_1} \wedge \dots \wedge x_{j_n} \cdot \chi_{j_n} \mid x_{j_1} \cdot \chi_{j_1} \wedge \dots \wedge x_{j_n} \cdot \chi_{j_n} \text{ if } j_1 < \dots < j_n &&(\mathsf{syntax}_\psi)
+& {\mathrel{::=}} &&(\mathsf{syntax}_\psi) \\
+& \quad \psi \\
+& \quad {\mid} \\
+& \qquad \chi_0 \wedge x_{j_1} \cdot \chi_{j_1} \wedge \dots \wedge x_{j_n} \cdot \chi_{j_n} \\
+& \qquad x_{j_1} \cdot \chi_{j_1} \wedge \dots \wedge x_{j_n} \cdot \chi_{j_n} \\
+& \quad \text{if}\ j_1 < \dots < j_n
 \end{aligned}
 ```
 
@@ -170,14 +175,16 @@ An entry is one of three cases, the last of which, a type declaration $`\mathcal
 & \qquad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
 & \qquad \quad \mathsf{where} \\
 & \qquad \qquad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \\
-& \qquad \qquad \quad d_{11} : (\Theta_{11} \vdash B_{11} \mathrel{◀} \psi_{11}) \mathrel{▶} p_{11};\ q_{11} \mathrel{◀} \varsigma_{11} \mid \\
-& \qquad \qquad \quad \dots \mid \\
-& \qquad \qquad \quad d_{1 n_1} : (\Theta_{1 n_1} \vdash B_{1 n_1} \mathrel{◀} \psi_{1 n_1}) \mathrel{▶} p_{1 n_1};\ q_{1 n_1} \mathrel{◀} \varsigma_{1 n_1}; \\
+& \qquad \qquad \quad {\mid} \\
+& \qquad \qquad \qquad d_{11} : (\Theta_{11} \vdash B_{11} \mathrel{◀} \psi_{11}) \mathrel{▶} p_{11};\ q_{11} \mathrel{◀} \varsigma_{11} \\
+& \qquad \qquad \qquad \dots \\
+& \qquad \qquad \qquad d_{1 n_1} : (\Theta_{1 n_1} \vdash B_{1 n_1} \mathrel{◀} \psi_{1 n_1}) \mathrel{▶} p_{1 n_1};\ q_{1 n_1} \mathrel{◀} \varsigma_{1 n_1}; \\
 & \qquad \qquad \dots; \\
 & \qquad \qquad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \\
-& \qquad \qquad \quad d_{k1} : (\Theta_{k1} \vdash B_{k1} \mathrel{◀} \psi_{k1}) \mathrel{▶} p_{k1};\ q_{k1} \mathrel{◀} \varsigma_{k1} \mid \\
-& \qquad \qquad \quad \dots \mid \\
-& \qquad \qquad \quad d_{k n_k} : (\Theta_{k n_k} \vdash B_{k n_k} \mathrel{◀} \psi_{k n_k}) \mathrel{▶} p_{k n_k};\ q_{k n_k} \mathrel{◀} \varsigma_{k n_k}
+& \qquad \qquad \quad {\mid} \\
+& \qquad \qquad \qquad d_{k1} : (\Theta_{k1} \vdash B_{k1} \mathrel{◀} \psi_{k1}) \mathrel{▶} p_{k1};\ q_{k1} \mathrel{◀} \varsigma_{k1} \\
+& \qquad \qquad \qquad \dots \\
+& \qquad \qquad \qquad d_{k n_k} : (\Theta_{k n_k} \vdash B_{k n_k} \mathrel{◀} \psi_{k n_k}) \mathrel{▶} p_{k n_k};\ q_{k n_k} \mathrel{◀} \varsigma_{k n_k}
 \end{aligned}
 ```
 
@@ -196,7 +203,7 @@ The names that an entry introduces are $`{D_1, \dots, D_k}`$ for a type declarat
 ```math
 \begin{aligned}
 & \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
-& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) = \{f\} \\
+& \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) = \{f\} \\[1em]
 & {=} \\
 & \quad \mathsf{names}( \\
 & \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
@@ -204,7 +211,7 @@ The names that an entry introduces are $`{D_1, \dots, D_k}`$ for a type declarat
 & \qquad \qquad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \dots; \\
 & \qquad \qquad \dots; \\
 & \qquad \qquad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots) \\
-& \quad \{D_1, \dots, D_k\} \\
+& \quad \{D_1, \dots, D_k\} \\[1em]
 & {=} \\
 & \quad \mathsf{names}( \\
 & \qquad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
@@ -275,7 +282,7 @@ The names of a signature are distinct when each of its entries introduces distin
 
 ```math
 \begin{aligned}
-& \text{the names of } \varnothing \text{ are distinct} &&(\mathsf{names}_\Sigma) \\
+& \text{the names of } \varnothing \text{ are distinct} &&(\mathsf{names}_\Sigma) \\[1em]
 & \text{⟺} \\
 & \quad \text{the names of } \Sigma,\ e \text{ are distinct} \\
 & \quad \text{and} \\
