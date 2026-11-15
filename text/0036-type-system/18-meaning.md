@@ -485,7 +485,72 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 \end{aligned}
 ```
 
-At each level $`n`$, the relations $`\mathsf{rt}(U_n)`$, $`\mathsf{rt}(U_n)[\bar R]`$ and $`\mathsf{rt}_D(U_n)[\bar R]`$ are the least relations with these clauses, given the relations of the levels below $`n`$, as those of the equality are, and they are defined at each level together with them, after the relations of the levels below it.
+A type below which the types of a block are nested has no relation of run time before the block does, as it has no equality, and the graph $`\mathsf{rt}(U_n)[\lambda]`$ of the nestings gives it one from the relations given for these types: it relates a closed type $`A`$ to the relation $`R`$ of its closed terms to the addresses of their values, written $`{(A,\ R) \in \mathsf{rt}(U_n)[\lambda]}`$, where the [nesting](14-typing.md#nesting) $`\lambda`$ of $`A`$ holds, at each of its positions, a pair $`(T,\ Q)`$ of the closed instance $`T`$ of a type of the block and of the relation of run time $`Q`$ given for its terms.
+A position holds no equality: the relations of run time read the equality of a field or of an abstraction for what depends on it, and nothing depends on a field or on a result whose nesting has a position.
+A type without position computes to a type of a sort that $`U_n`$ bounds, a type at a position is the instance that the position holds, with its relation, the same instance being written with any levels that are [equal](06-levels.md), and a type whose nesting is that of an instance is an instance of a codata type: in $`U_n`$, its block has no recursive destructor, and its destructors are read at the nestings $`\bar\lambda`$ of its arguments, with the relation $`\circledR_\nu`$ of the relations $`\bar S`$ of its destructors, which no relation $`\bar X`$ changes; in $`\Omega_n`$, its terms, proofs, are erased, and the clause reads neither its destructors nor its truth, which the relation does not depend on:
+
+```math
+\begin{aligned}
+& (A,\ R) \in \mathsf{rt}(U_n)[\bot] \text{ if } \exists v.\ A \Downarrow v \text{ and } (v,\ R) \in \mathsf{rt}_\Downarrow(U_n) &&(\mathsf{rt}_{\lambda\bot}) \\[1em]
+& (T,\ Q) \in \mathsf{rt}(U_n)[(T,\ Q)] &&(\mathsf{rt}_{\lambda T}) \\[1em]
+& (T,\ \circledR_\Downarrow(\circledR_\nu(D_j,\ \bar S))) \in \mathsf{rt}(U_n)[(\bar\lambda)] \text{ if} &&(\mathsf{rt}_{\lambda D}) \\
+& \quad \text{and} \\
+& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
+& \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
+& \qquad \forall j'.\ \mathsf{rec}_{\mathcal{D}}(\bar d_{j'}) = (\bot,\ \dots,\ \bot) \\
+& \qquad \forall j'.\ (\bar d_{j'}[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p],\ \bar a,\ S_{j'}) \in \mathsf{rt}_{D_{j'}}(U_n)[\Delta \mapsto \bar\lambda] \\[1em]
+& (T,\ \{(H,\ t,\ \ell) \mid t \text{ is a closed term}\}) \in \mathsf{rt}(U_n)[(\bar\lambda)] \text{ if} &&(\mathsf{rt}_{\lambda D\Omega}) \\
+& \quad \text{and} \\
+& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
+& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n
+\end{aligned}
+```
+
+The graph $`\mathsf{rt}_D(U_n)[\Lambda]`$ relates likewise destructors $`\bar d`$ of the type $`D`$, none of which is recursive, and a closed substitution $`\theta`$ of their variables to the relation $`S`$ of the families of closed abstractions for them to the addresses of values, written $`{(\bar d,\ \theta,\ S) \in \mathsf{rt}_D(U_n)[\Lambda]}`$, where $`\Lambda`$ gives their nestings to the variables of the destructors, as in the graph of the nestings of the equality.
+Its clauses are those of the destructors, where the result type of a destructor is read by the graphs of the nestings, at its nesting: a destructor whose result has no position is read as one that is not recursive, and the destructors after a destructor whose result has a position are the same for every abstraction for it, as those after a recursive destructor, its abstraction being related at run time alone:
+
+```math
+\begin{aligned}
+& (\varepsilon,\ \theta,\ \{(H,\ \bar f,\ \ell) \mid \bar f \text{ is a family of closed abstractions}\}) \in \mathsf{rt}_D(U_n)[\Lambda] &&(\mathsf{rt}_{\lambda\varepsilon}) \\[1em]
+& \in \text{ if} &&(\mathsf{rt}_{\lambda|}) \\
+& \quad ( \\
+& \qquad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
+& \qquad \theta, \\
+& \qquad \{(H,\ \bar f,\ \ell) \mid \\
+& \qquad \quad \text{and} \\
+& \qquad \qquad (f_d,\ f_d) \in E \\
+& \qquad \qquad (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ R)) \\
+& \qquad \qquad (H,\ \bar f,\ \ell) \in G(f_d)\}) \\
+& \quad \mathsf{rt}_D(U_n)[\Lambda] \\
+& \quad \text{and} \\
+& \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \mathrel{◀} \bar r' \text{ the parameters of } \Theta \\
+& \qquad \mathsf{nest}_\Lambda(B) = \bot \\
+& \qquad (\Theta[\theta],\ S_\Theta) \in \mathsf{ty}(U_n) \\
+& \qquad (\Theta[\theta],\ R_\Theta) \in \mathsf{rt}(U_n) \\
+& \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ F(\bar t)) \in \mathsf{ty}(U_n)[\bot] \\
+& \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ R(\bar t)) \in \mathsf{rt}(U_n)[\bot] \\
+& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
+& \qquad \forall (f,\ f) \in E.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{rt}_D(U_n)[\Lambda] \\[1em]
+& \in \text{ if} &&(\mathsf{rt}_{\lambda|\lambda}) \\
+& \quad ( \\
+& \qquad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
+& \qquad \theta, \\
+& \qquad \{(H,\ \bar f,\ \ell) \mid \\
+& \qquad \quad \text{and} \\
+& \qquad \qquad (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ R)) \\
+& \qquad \qquad (H,\ \bar f,\ \ell) \in G\}) \\
+& \quad \mathsf{rt}_D(U_n)[\Lambda] \\
+& \quad \text{and} \\
+& \qquad i = \mathsf{case}_\Sigma(D.d) \text{ and } \bar q' \mathrel{◀} \bar r' \text{ the parameters of } \Theta \\
+& \qquad \mathsf{nest}_\Lambda(B) \neq \bot \\
+& \qquad (\Theta[\theta],\ S_\Theta) \in \mathsf{ty}(U_n) \\
+& \qquad (\Theta[\theta],\ R_\Theta) \in \mathsf{rt}(U_n) \\
+& \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ R(\bar t)) \in \mathsf{rt}(U_n)[\mathsf{nest}_\Lambda(B)] \\
+& \qquad \forall f.\ (\bar d,\ (\theta,\ f / d),\ G) \in \mathsf{rt}_D(U_n)[\Lambda]
+\end{aligned}
+```
+
+At each level $`n`$, the relations $`\mathsf{rt}(U_n)`$, $`\mathsf{rt}(U_n)[\bar R]`$, of the telescopes, $`\mathsf{rt}_D(U_n)[\bar R]`$, of the destructors, and $`\mathsf{rt}(U_n)[\lambda]`$ and $`\mathsf{rt}_D(U_n)[\Lambda]`$, of the nestings, are the least relations with these clauses, given the relations of the levels below $`n`$, as those of the equality are, and they are defined at each level together with them, after the relations of the levels below it.
 
 A closed canonical type has the relation of run time that a universe gives it, and a proposition relates every term to every address:
 
