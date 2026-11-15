@@ -160,8 +160,24 @@ An entry is one of three cases, the last of which, a type declaration $`\mathcal
 & {\mathrel{::=}} &&(\mathsf{syntax}_{\mathcal{D}}) \\
 & \quad \mathcal{D} \\
 & \quad {\mid} \\
-& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} c_{11} : \Theta_{11} \mid \dots \mid c_{1 n_1} : \Theta_{1 n_1};\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} c_{k1} : \Theta_{k1} \mid \dots \mid c_{k n_k} : \Theta_{k n_k} \\
-& \qquad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} d_{11} : (\Theta_{11} \vdash B_{11} \mathrel{◀} \psi_{11}) \mathrel{▶} p_{11};\ q_{11} \mathrel{◀} \varsigma_{11} \mid \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots \mid d_{k n_k} : (\Theta_{k n_k} \vdash B_{k n_k} \mathrel{◀} \psi_{k n_k}) \mathrel{▶} p_{k n_k};\ q_{k n_k} \mathrel{◀} \varsigma_{k n_k}
+& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \quad \mathsf{where} \\
+& \qquad \qquad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \\
+& \qquad \qquad \quad c_{11} : \Theta_{11} \mid \dots \mid c_{1 n_1} : \Theta_{1 n_1}; \\
+& \qquad \qquad \dots; \\
+& \qquad \qquad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \\
+& \qquad \qquad \quad c_{k1} : \Theta_{k1} \mid \dots \mid c_{k n_k} : \Theta_{k n_k} \\
+& \qquad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \quad \mathsf{where} \\
+& \qquad \qquad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \\
+& \qquad \qquad \quad d_{11} : (\Theta_{11} \vdash B_{11} \mathrel{◀} \psi_{11}) \mathrel{▶} p_{11};\ q_{11} \mathrel{◀} \varsigma_{11} \mid \\
+& \qquad \qquad \quad \dots \mid \\
+& \qquad \qquad \quad d_{1 n_1} : (\Theta_{1 n_1} \vdash B_{1 n_1} \mathrel{◀} \psi_{1 n_1}) \mathrel{▶} p_{1 n_1};\ q_{1 n_1} \mathrel{◀} \varsigma_{1 n_1}; \\
+& \qquad \qquad \dots; \\
+& \qquad \qquad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \\
+& \qquad \qquad \quad d_{k1} : (\Theta_{k1} \vdash B_{k1} \mathrel{◀} \psi_{k1}) \mathrel{▶} p_{k1};\ q_{k1} \mathrel{◀} \varsigma_{k1} \mid \\
+& \qquad \qquad \quad \dots \mid \\
+& \qquad \qquad \quad d_{k n_k} : (\Theta_{k n_k} \vdash B_{k n_k} \mathrel{◀} \psi_{k n_k}) \mathrel{▶} p_{k n_k};\ q_{k n_k} \mathrel{◀} \varsigma_{k n_k}
 \end{aligned}
 ```
 
@@ -181,8 +197,22 @@ The names that an entry introduces are $`{D_1, \dots, D_k}`$ for a type declarat
 \begin{aligned}
 & \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) = \{f\} &&(\mathsf{names}_e) \\
 & \mathsf{names}(f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) = \{f\} \\
-& \mathsf{names}(\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots) = \{D_1, \dots, D_k\} \\
-& \mathsf{names}(\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \dots;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots) = \{D_1, \dots, D_k\}
+& {=} \\
+& \quad \mathsf{names}( \\
+& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \quad \mathsf{where} \\
+& \qquad \qquad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \dots; \\
+& \qquad \qquad \dots; \\
+& \qquad \qquad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots) \\
+& \quad \{D_1, \dots, D_k\} \\
+& {=} \\
+& \quad \mathsf{names}( \\
+& \qquad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \quad \mathsf{where} \\
+& \qquad \qquad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \dots; \\
+& \qquad \qquad \dots; \\
+& \qquad \qquad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots) \\
+& \quad \{D_1, \dots, D_k\}
 \end{aligned}
 ```
 

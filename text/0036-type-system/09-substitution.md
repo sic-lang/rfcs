@@ -21,9 +21,23 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & f.\{\bar s;\ \bar l;\ \bar p\}[\sigma] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\sigma] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma] \\
 & ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\sigma] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).c(\bar t[\sigma]) \\
-& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\sigma] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ t[\sigma]\ \mathsf{return}\ \bar C[\sigma]\ \mathsf{with}\ \bar u[\sigma] \\
+& {=} \\
+& \quad (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
+& \qquad \mathsf{return}\ \bar C \\
+& \qquad \mathsf{with}\ \bar u)[\sigma] \\
+& \quad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ t[\sigma] \\
+& \qquad \mathsf{return}\ \bar C[\sigma] \\
+& \qquad \mathsf{with}\ \bar u[\sigma] \\
 & (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\sigma] = t[\sigma].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).d)(\bar t[\sigma]) \\
-& (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g)[\sigma] = \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ \mathsf{from}\ \bar t[\sigma]\ \mathsf{return}\ \bar\Theta[\sigma]\ \mathsf{with}\ \bar g[\sigma] \\[1em]
+& {=} \\
+& \quad (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \\
+& \qquad \mathsf{from}\ \bar t \\
+& \qquad \mathsf{return}\ \bar\Theta \\
+& \qquad \mathsf{with}\ \bar g)[\sigma] \\
+& \quad \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]) \\
+& \qquad \mathsf{from}\ \bar t[\sigma] \\
+& \qquad \mathsf{return}\ \bar\Theta[\sigma] \\
+& \qquad \mathsf{with}\ \bar g[\sigma] \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar t) \\
 & (t,\ \bar t)[\sigma] = (t[\sigma],\ \bar t[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar a) \\
@@ -71,9 +85,23 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & f.\{\bar s;\ \bar l;\ \bar p\}[\theta] = f.\{\bar s;\ \bar l;\ \bar p\} \\
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\theta] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta] \\
 & ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\theta] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).c(\bar t[\theta]) \\
-& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\theta] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ t[\theta]\ \mathsf{return}\ \bar C[\theta]\ \mathsf{with}\ \bar u[\theta] \\
+& {=} \\
+& \quad (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
+& \qquad \mathsf{return}\ \bar C \\
+& \qquad \mathsf{with}\ \bar u)[\theta] \\
+& \quad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ t[\theta] \\
+& \qquad \mathsf{return}\ \bar C[\theta] \\
+& \qquad \mathsf{with}\ \bar u[\theta] \\
 & (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\theta] = t[\theta].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).d)(\bar t[\theta]) \\
-& (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g)[\theta] = \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ \mathsf{from}\ \bar t[\theta]\ \mathsf{return}\ \bar\Theta[\theta]\ \mathsf{with}\ \bar g[\theta] \\[1em]
+& {=} \\
+& \quad (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \\
+& \qquad \mathsf{from}\ \bar t \\
+& \qquad \mathsf{return}\ \bar\Theta \\
+& \qquad \mathsf{with}\ \bar g)[\theta] \\
+& \quad \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]) \\
+& \qquad \mathsf{from}\ \bar t[\theta] \\
+& \qquad \mathsf{return}\ \bar\Theta[\theta] \\
+& \qquad \mathsf{with}\ \bar g[\theta] \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar t) \\
 & (t,\ \bar t)[\theta] = (t[\theta],\ \bar t[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar a) \\
@@ -118,7 +146,9 @@ The telescope and the result of a destructor of a codata type are in the scope o
 ```math
 \begin{aligned}
 & [\bar a / \Delta,\ t.T / \varepsilon] = [\bar a / \Delta] &&(\mathsf{obs}_\theta) \\
-& [\bar a / \Delta,\ t.T / (d' : (\Theta' \vdash B' \mathrel{◀} \psi') \mathrel{▶} p';\ q' \mathrel{◀} \varsigma' \mid \bar d_1)] = [(\bar a,\ \bar x.\, t.(T.d')(\bar x)) / (\Delta,\ d' : (\Theta' \vdash B' \mathrel{◀} \psi')),\ t.T / \bar d_1]
+& {=} \\
+& \quad [\bar a / \Delta,\ t.T / (d' : (\Theta' \vdash B' \mathrel{◀} \psi') \mathrel{▶} p';\ q' \mathrel{◀} \varsigma' \mid \bar d_1)] \\
+& \quad [(\bar a,\ \bar x.\, t.(T.d')(\bar x)) / (\Delta,\ d' : (\Theta' \vdash B' \mathrel{◀} \psi')),\ t.T / \bar d_1]
 \end{aligned}
 ```
 
@@ -185,10 +215,28 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & x[\bar t][\bar l' / \bar l] = x[\bar t[\bar l' / \bar l]] &&(\mathsf{inst}_l.t) \\
 & f.\{\bar s;\ \bar l_1;\ \bar p\}[\bar l' / \bar l] = f.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\} \\
 & (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)[\bar l' / \bar l] = D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l] \\
-& ((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).c(\bar t))[\bar l' / \bar l] = (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).c(\bar t[\bar l' / \bar l]) \\
-& (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u)[\bar l' / \bar l] = \mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ t[\bar l' / \bar l]\ \mathsf{return}\ \bar C[\bar l' / \bar l]\ \mathsf{with}\ \bar u[\bar l' / \bar l] \\
-& (t.((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).d)(\bar t))[\bar l' / \bar l] = t[\bar l' / \bar l].((D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).d)(\bar t[\bar l' / \bar l]) \\
-& (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g)[\bar l' / \bar l] = \mathsf{corec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ \mathsf{from}\ \bar t[\bar l' / \bar l]\ \mathsf{return}\ \bar\Theta[\bar l' / \bar l]\ \mathsf{with}\ \bar g[\bar l' / \bar l] \\[1em]
+& {=} \\
+& \quad ((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).c(\bar t))[\bar l' / \bar l] \\
+& \quad (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).c(\bar t[\bar l' / \bar l]) \\
+& {=} \\
+& \quad (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ t \\
+& \qquad \mathsf{return}\ \bar C \\
+& \qquad \mathsf{with}\ \bar u)[\bar l' / \bar l] \\
+& \quad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ t[\bar l' / \bar l] \\
+& \qquad \mathsf{return}\ \bar C[\bar l' / \bar l] \\
+& \qquad \mathsf{with}\ \bar u[\bar l' / \bar l] \\
+& {=} \\
+& \quad (t.((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).d)(\bar t))[\bar l' / \bar l] \\
+& \quad t[\bar l' / \bar l].((D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).d)(\bar t[\bar l' / \bar l]) \\
+& {=} \\
+& \quad (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a) \\
+& \qquad \mathsf{from}\ \bar t \\
+& \qquad \mathsf{return}\ \bar\Theta \\
+& \qquad \mathsf{with}\ \bar g)[\bar l' / \bar l] \\
+& \quad \mathsf{corec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]) \\
+& \qquad \mathsf{from}\ \bar t[\bar l' / \bar l] \\
+& \qquad \mathsf{return}\ \bar\Theta[\bar l' / \bar l] \\
+& \qquad \mathsf{with}\ \bar g[\bar l' / \bar l] \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar t) \\
 & (t,\ \bar t)[\bar l' / \bar l] = (t[\bar l' / \bar l],\ \bar t[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar a) \\
@@ -204,7 +252,9 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Theta) \\
 & (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\bar l' / \bar l] = (x : A[\bar l' / \bar l] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\bar d) \\
-& (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d)[\bar l' / \bar l] = (d : (\Theta[\bar l' / \bar l] \vdash B[\bar l' / \bar l] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d[\bar l' / \bar l]) \\[1em]
+& {=} \\
+& \quad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d)[\bar l' / \bar l] \\
+& \quad (d : (\Theta[\bar l' / \bar l] \vdash B[\bar l' / \bar l] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d[\bar l' / \bar l]) \\[1em]
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Gamma) \\
 & (\Gamma,\ x : A)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ x : A[\bar l' / \bar l] \\
 & (\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi))[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ X : (\Theta[\bar l' / \bar l] \vdash A[\bar l' / \bar l] \mathrel{◀} \psi)
