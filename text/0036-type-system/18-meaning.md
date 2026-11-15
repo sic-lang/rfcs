@@ -115,7 +115,7 @@ The instances of the types of a block are given together, since a recursive fiel
 \end{aligned}
 ```
 
-An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes in its sort, whose terms are equal by the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions $`\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i})`$ of the recursive fields of the type $`D`$, the graph of the telescopes takes the relation $`{\mathsf{eq}_\Downarrow(X_D)}`$, or the relation that holds when $`B_D`$ does:
+An instance in a universe is a type of it, and an instance in a universe of propositions a proposition of it, when the fields of the constructors of the types of its block, at its instance and its arguments, are telescopes in its sort, whose terms are equal by the relations $`\bar S(\bar X)`$, whatever the relations $`\bar X`$ of the recursive fields, or $`\bar S(\bar B)`$, whatever their truths $`\bar B`$; at the positions $`\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i})`$ of the recursive fields of the type $`D`$, the graph of the telescopes takes the instance $`D[T]`$ of this type with the relation $`{\mathsf{eq}_\Downarrow(X_D)}`$, or with the relation that holds when $`B_D`$ does:
 
 ```math
 \begin{aligned}
@@ -123,16 +123,16 @@ An instance in a universe is a type of it, and an instance in a universe of prop
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of a block } \mathcal{D} \text{ of } \Sigma \\
 & \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
-& \qquad \forall \bar X.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar X)) \in \mathsf{ty}(U_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto \mathsf{eq}_\Downarrow(X_D)] \\[1em]
+& \qquad \forall \bar X.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar X)) \in \mathsf{ty}(U_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto (D[T],\ \mathsf{eq}_\Downarrow(X_D))] \\[1em]
 & (T,\ \mathsf{true}_\mu(D_j,\ \bar S)) \in \mathsf{ty}(\Omega_n) \text{ if} &&(\mathsf{ty}_{D\Omega}) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a data type of a block } \mathcal{D} \text{ of } \Sigma \\
 & \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n \\
-& \qquad \forall \bar B.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar B)) \in \mathsf{ty}(\Omega_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto \{(t,\ u) \mid B_D\}]
+& \qquad \forall \bar B.\ \forall j', i.\ (\Theta_{j'i}[T],\ S_{j'i}(\bar B)) \in \mathsf{ty}(\Omega_n)[\mathsf{rec}_{\mathcal{D}}(\Theta_{j'i}) \mapsto (D[T],\ \{(t,\ u) \mid B_D\})]
 \end{aligned}
 ```
 
-Here $`\Theta_{j'i}[T]`$ is the fields of the constructor $`c_{j'i}`$ at the instance and the arguments of $`T`$, by $`(\mathsf{inst}_T)`$.
+Here $`\Theta_{j'i}[T]`$ is the fields of the constructor $`c_{j'i}`$ at the instance and the arguments of $`T`$, by $`(\mathsf{inst}_T)`$, and $`D[T]`$ is the instance $`{D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ of the type $`D`$ of the block at them.
 
 The canonical terms of an instance of a codata type are its corecursors, at any instance of its type, as for the constructors, and two of them are equal when their observations are related by the equality $`S`$ of the destructors of the type: the observations $`\mathsf{obs}(v)`$ of a corecursor $`v`$ of the instance $`T_v`$ it carries are the closed abstractions $`{\bar x.\, v.(T_v.d)(\bar x)}`$, one for each destructor $`d`$, over the variables of its arguments, so that two corecursors are equal when their observations at equal arguments are equal, as the partial equivalence relations of the types of functions relate them; a proposition declared as a codata type is true when $`S`$ relates some abstractions to themselves, so that each of its destructors has a result at all its arguments:
 
@@ -175,24 +175,26 @@ An instance of a codata type in a universe is a type of it, and an instance in a
 \end{aligned}
 ```
 
-The graph $`\mathsf{ty}(s_n)[\bar R]`$ of the telescopes in the sort $`s_n`$, of the quality $`s`$ at the level $`n`$, relates a closed telescope $`\Theta`$ to the equality $`S`$ of the terms of its fields, written $`{(\Theta,\ S) \in \mathsf{ty}(s_n)[\bar R]}`$, where $`\bar R`$ gives a relation $`R`$ at the position of each recursive field of $`\Theta`$, and $`\bot`$ at the others; $`\mathsf{ty}(s_n)`$ is the graph of the telescopes without recursive fields, $`\bar R`$ being $`\bot`$ everywhere.
-A telescope is in it when its first type, if it is not a recursive field, computes to a type of a sort that $`s_n`$ [bounds](07-sorts.md), and its rest is for each term of it, the same for equal terms, as the condition on the families of types of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111) requires, and when its first type, if it is a recursive field, has the relation $`R`$ that $`\bar R`$ gives it, the rest being the same for every term of it, on which it does not depend:
+The graph $`\mathsf{ty}(s_n)[\bar\lambda]`$ of the telescopes in the sort $`s_n`$, of the quality $`s`$ at the level $`n`$, relates a closed telescope $`\Theta`$ to the equality $`S`$ of the terms of its fields, written $`{(\Theta,\ S) \in \mathsf{ty}(s_n)[\bar\lambda]}`$, where $`\bar\lambda`$ gives the [nesting](14-typing.md#nesting) of each field of $`\Theta`$, which holds, at each of its positions, a pair $`(T,\ R)`$ of the closed instance $`T`$ of a type of a block and of the relation $`R`$ given for its terms; $`\mathsf{ty}(s_n)`$ is the graph of the telescopes without position, $`\bar\lambda`$ being $`\bot`$ everywhere.
+A telescope is in it when its first type, if its nesting has no position, computes to a type of a sort that $`s_n`$ [bounds](07-sorts.md), and its rest is for each term of it, the same for equal terms, as the condition on the families of types of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111) requires, and when its first type, if its nesting $`\lambda`$ has a position, as that of a recursive field has, is read by the graph $`\mathsf{ty}(s_n)[\lambda]`$ of the nestings, defined below, the rest being the same for every term of it, on which it does not depend:
 
 ```math
 \begin{aligned}
-& (\varepsilon,\ \{((),\ ())\}) \in \mathsf{ty}(s_n)[\bar R] &&(\mathsf{ty}_{\Theta\varepsilon}) \\[1em]
+& (\varepsilon,\ \{((),\ ())\}) \in \mathsf{ty}(s_n)[\bar\lambda] &&(\mathsf{ty}_{\Theta\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{ty}_{\Theta,}) \\
 & \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta),\ \{((a_1,\ \bar t),\ (a_2,\ \bar u)) \mid (a_1,\ a_2) \in F \text{ and } (\bar t,\ \bar u) \in G(a_1)\}) \\
-& \quad \mathsf{ty}(s_n)[\bot,\ \bar R] \\
+& \quad \mathsf{ty}(s_n)[\bot,\ \bar\lambda] \\
 & \quad \text{and} \\
 & \qquad \exists v,\ \kappa_1.\ A \Downarrow v,\ \kappa_1 \preceq s_n \text{ and } (v,\ F) \in \mathsf{ty}_\Downarrow(\kappa_1) \\
-& \qquad \forall (a,\ a) \in F.\ (\Theta[a / x],\ G(a)) \in \mathsf{ty}(s_n)[\bar R] \\
+& \qquad \forall (a,\ a) \in F.\ (\Theta[a / x],\ G(a)) \in \mathsf{ty}(s_n)[\bar\lambda] \\
 & \qquad \forall (a_1,\ a_2) \in F.\ G(a_1) = G(a_2) \\[1em]
-& \in \text{ if} &&(\mathsf{ty}_{\Theta\mathsf{rec}}) \\
-& \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta),\ \{((a_1,\ \bar t),\ (a_2,\ \bar u)) \mid (a_1,\ a_2) \in R \text{ and } (\bar t,\ \bar u) \in G\}) \\
-& \quad \mathsf{ty}(s_n)[R,\ \bar R] \\
+& \in \text{ if} &&(\mathsf{ty}_{\Theta\lambda}) \\
+& \quad ((x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta),\ \{((a_1,\ \bar t),\ (a_2,\ \bar u)) \mid (a_1,\ a_2) \in F \text{ and } (\bar t,\ \bar u) \in G\}) \\
+& \quad \mathsf{ty}(s_n)[\lambda,\ \bar\lambda] \\
 & \quad \text{and} \\
-& \qquad \forall a.\ (\Theta[a / x],\ G) \in \mathsf{ty}(s_n)[\bar R]
+& \qquad \lambda \ne \bot \\
+& \qquad (A,\ F) \in \mathsf{ty}(s_n)[\lambda] \\
+& \qquad \forall a.\ (\Theta[a / x],\ G) \in \mathsf{ty}(s_n)[\bar\lambda]
 \end{aligned}
 ```
 
@@ -224,7 +226,7 @@ Destructors are in it when the arguments $`\Theta`$ of the first one are a teles
 ```
 
 A type below which the types of a block are nested, such as a type of functions to a type of the block, has no equality before the block does, and the graph $`\mathsf{ty}(s_n)[\lambda]`$ of the nestings gives it one from the relations given for these types: it relates a closed type $`A`$ to the equality $`F`$ of its closed terms, written $`{(A,\ F) \in \mathsf{ty}(s_n)[\lambda]}`$, where the [nesting](14-typing.md#nesting) $`\lambda`$ of $`A`$ holds, at each of its positions, a pair $`(T,\ R)`$ of the closed instance $`T`$ of a type of the block and of the relation $`R`$ given for its terms.
-A type without position computes to a type of a sort that $`s_n`$ bounds, a type at a position is the instance that the position holds, with its relation, and a type whose nesting is that of an instance is an instance of a codata type whose block has no recursive destructor, in $`U_n`$ or in $`\Omega_n`$, whose destructors are read at the nestings $`\bar\lambda`$ of its arguments, with the equality $`\mathsf{eq}_\nu`$ or the truth $`\mathsf{true}_\nu`$ of the equalities $`\bar S`$ of its destructors, which no relation $`\bar X`$ changes:
+A type without position computes to a type of a sort that $`s_n`$ bounds, a type at a position is the instance that the position holds, with its relation, the same instance being written with any levels that are [equal](06-levels.md), and a type whose nesting is that of an instance is an instance of a codata type whose block has no recursive destructor, in $`U_n`$ or in $`\Omega_n`$, whose destructors are read at the nestings $`\bar\lambda`$ of its arguments, with the equality $`\mathsf{eq}_\nu`$ or the truth $`\mathsf{true}_\nu`$ of the equalities $`\bar S`$ of its destructors, which no relation $`\bar X`$ changes:
 
 ```math
 \begin{aligned}
@@ -284,7 +286,7 @@ The relations that a nesting holds are any relations, so that an abstraction tha
 \end{aligned}
 ```
 
-At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$, $`\mathsf{ty}(s_n)[\bar R]`$, of the telescopes and of the destructors, and $`\mathsf{ty}(s_n)[\lambda]`$ and $`\mathsf{ty}(s_n)[\Lambda]`$, of the nestings, where $`\mathsf{ty}(s_n)`$ is the graph without recursive positions, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
+At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$, $`\mathsf{ty}(s_n)[\bar\lambda]`$, of the telescopes, $`\mathsf{ty}(s_n)[\bar R]`$, of the destructors, and $`\mathsf{ty}(s_n)[\lambda]`$ and $`\mathsf{ty}(s_n)[\Lambda]`$, of the nestings, where $`\mathsf{ty}(s_n)`$ is the graph without position, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
 The fields of an instance that are not recursive and the destructors of an instance that are not recursive are of types given before its block, and its recursive fields and the results of its recursive destructors have the relations that the clauses $`(\mathsf{ty}_D)`$ and $`(\mathsf{ty}_d)`$ give them, so that its relations are not circular.
 
 A closed canonical type has the equality that a universe gives it, and a proposition the equality of its proofs: all the closed terms when it is true, and none when it is false; a closed canonical type is a proposition when a universe of propositions gives it, and a closed type computes to a proposition when its canonical form is one:
