@@ -121,6 +121,7 @@
             runtimeInputs = [
               pkgs.coreutils
               pkgs.git
+              pkgs.gnugrep
               pkgs.mdbook
               pkgs.mdbook-katex
               pkgs.mdbook-mermaid
@@ -156,7 +157,13 @@
               RUST_LOG=warn mdbook-mermaid install "$mermaid"
               cp "$mermaid"/*.js .
               install -m 644 ${mermaidJs} mermaid.min.js
-              mdbook build
+              # mdbook-katex only warns of a formula that KaTeX refuses, whose source it keeps in
+              # the page: the build fails on that warning, which tells the formula and its error.
+              mdbook build 2>&1 | tee "$mermaid/build.log"
+              if grep -q 'keeping the original content' "$mermaid/build.log"; then
+                echo 'A formula does not render: see the warning of mdbook-katex above.' >&2
+                exit 1
+              fi
             '';
           };
           # Checks that a formula is named in its last column and a rule after its fraction, as the
