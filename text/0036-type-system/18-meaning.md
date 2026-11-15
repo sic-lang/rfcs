@@ -885,6 +885,26 @@ A type has one relation of run time when the names of the signature are distinct
 \end{aligned}
 ```
 
+The graph of the nestings of run time has these properties at the relations that a nesting holds: the relation of run time that it gives a type is unique at a nesting, and it relates a term to an address in each heap that [extends](17-evaluation.md) a heap in which it relates them, when the relations that the nesting holds do:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unique}_{\circledR\lambda}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad (A,\ R_1) \in \mathsf{rt}(U_n)[\lambda] \text{ and } (A,\ R_2) \in \mathsf{rt}(U_n)[\lambda] \\
+& \quad R_1 = R_2 \\[1em]
+& \text{⟹} &&(\mathsf{ext}_{\circledR\lambda}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad (A,\ R) \in \mathsf{rt}(U_n)[\lambda] \\
+& \qquad \forall (T,\ Q) \text{ that } \lambda \text{ holds}.\ \forall H_1 \sqsubseteq H_2,\ t',\ \ell'.\ (H_1,\ t',\ \ell') \in Q \implies (H_2,\ t',\ \ell') \in Q \\
+& \qquad H \sqsubseteq H' \\
+& \qquad (H,\ t,\ \ell) \in R \\
+& \quad (H',\ t,\ \ell) \in R
+\end{aligned}
+```
+
 A meaningful signature has [distinct](08-syntax.md) names, as a well-formed one does, so that the computation is deterministic, by $`{(\mathsf{det}_{\Downarrow})}`$; and the meaning is exact for the proofs: two closed terms are equal proofs of a proposition exactly when each of them is a proof of it, as the rule $`(\mathsf{irr})`$ says:
 
 ```math
