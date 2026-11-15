@@ -22,6 +22,7 @@ jobs:
           - commits
           - editorconfig
           - flake
+          - links
           - markdownlint
           - names
           - nixfmt
