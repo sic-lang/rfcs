@@ -1,6 +1,6 @@
 # Liftings
 
-This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the parameters of the lifting and its declaration, the lifting of a type at a term, of the arguments of an instance and of the destructors of a codata type, and the signatures that hold it, with the ownership of the lifting of a codata type without recursive destructor.
+This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the parameters of the lifting and its declaration, the lifting of a type at a term, of the arguments of an instance and of the destructors of a codata type, and the signatures that hold it, with the typing and the ownership of the lifting of a codata type without recursive destructor.
 Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md) and on the variables that [do not occur](14-typing.md#strict-positivity) in a term, and the typing will read them for the recursive result of a field nested below a codata type.
 
 ## Definitions
@@ -158,7 +158,37 @@ The lifting is an entry of the signature as the others: the judgments of the sig
 
 ## Properties
 
-A signature whose entries have their [ownerships](13-ownership.md#definitions), followed by the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, has the ownerships of its entries: the lifting has no recursive destructor either, since the result of each of its destructors is a motive, or an instance of the lifting of another type:
+The lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
+
+A well-formed signature gives a well-formed [type declaration](14-typing.md#type-declarations) to the lifting of a codata type of one of its blocks, of which no destructor is recursive, when each parameter lifted is a type, at the variables $`\bar x`$ of its telescope, in the parameters $`\Delta_1`$ before it followed by it, at each instance that the constraint of the block admits: the motive of a parameter is a type over a term of this parameter, which neither the relation of the destructors lifted nor the strict positivity requires to be a type:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{lift}_\vdash) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \\
+& \qquad \mathcal{D} \in \Sigma \\
+& \qquad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \mathsf{rec}_{\mathcal{D}}(\bar d_D[\bar s' / \bar s,\ \bar p' / \bar p]) = (\bot,\ \dots,\ \bot) \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall \Delta_1,\ x,\ A,\ \Delta_2. \\
+& \qquad \quad \text{⟹} \\
+& \qquad \qquad \text{and} \\
+& \qquad \qquad \quad C_{\mathcal{D}}[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \qquad \quad \Delta[\bar s' / \bar s,\ \bar p' / \bar p] = (\Delta_1,\ x : A,\ \Delta_2) \\
+& \qquad \qquad \quad x \in \Pi \\
+& \qquad \qquad \Sigma;\ \Delta_1,\ x : A \vdash x \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall \Delta_1,\ X,\ \Theta,\ A,\ \psi,\ \Delta_2. \\
+& \qquad \quad \text{⟹} \\
+& \qquad \qquad \text{and} \\
+& \qquad \qquad \quad C_{\mathcal{D}}[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \qquad \quad \Delta[\bar s' / \bar s,\ \bar p' / \bar p] = (\Delta_1,\ X : (\Theta \vdash A \mathrel{◀} \psi),\ \Delta_2) \\
+& \qquad \qquad \quad X \in \Pi \\
+& \qquad \qquad \Sigma;\ \Delta_1,\ X : (\Theta \vdash A \mathrel{◀} \psi),\ \Theta \vdash X[\bar x] \\
+& \quad \Sigma \vdash \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')
+\end{aligned}
+```
+
+A signature whose entries have their [ownerships](13-ownership.md#definitions), followed by the lifting of a codata type of which no destructor is recursive, at any instance, has the ownerships of its entries: the lifting has no recursive destructor either, since the result of each of its destructors is a motive, or an instance of the lifting of another type:
 
 ```math
 \begin{aligned}
