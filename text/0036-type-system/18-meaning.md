@@ -246,7 +246,8 @@ A type without position computes to a type of a sort that $`s_n`$ bounds, a type
 ```
 
 The graph $`\mathsf{ty}(s_n)[\Lambda]`$ relates likewise destructors $`\bar d`$, none of which is recursive, and a closed substitution $`\theta`$ of their variables to the equality $`S`$ of the families of closed abstractions for them, written $`{(\bar d,\ \theta,\ S) \in \mathsf{ty}(s_n)[\Lambda]}`$, where $`\Lambda`$ gives their nestings to the variables of the destructors, those of the arguments of the parameters: the destructors keep their variables, since the nesting of a result is read before the substitution replaces them.
-Its clauses are those of the destructors that are not recursive, where the result type of a destructor is read by the graph of the nestings, at its nesting, in which no name is a type of a block:
+Its clauses are those of the destructors, where the result type of a destructor is read by the graph of the nestings, at its nesting, in which no name is a type of a block: a destructor whose result has no position is read as one that is not recursive, and the destructors after a destructor whose result has a position are the same for every abstraction for it, on which they do not depend, as those after a recursive destructor.
+The relations that a nesting holds are any relations, so that an abstraction that the equality of such a result relates to another need not be related to itself, and the destructors after it would have no equality at it:
 
 ```math
 \begin{aligned}
@@ -260,12 +261,26 @@ Its clauses are those of the destructors that are not recursive, where the resul
 & \qquad \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G(f_d)\}) \\
 & \quad \mathsf{ty}(s_n)[\Lambda] \\
 & \quad \text{and} \\
+& \qquad \mathsf{nest}_\Lambda(B) = \bot \\
+& \qquad (\Theta[\theta],\ S_\Theta) \in \mathsf{ty}(U_n) \\
+& \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ F(\bar t)) \in \mathsf{ty}(s_n)[\bot] \\
+& \qquad \forall (\bar t_1,\ \bar t_2) \in S_\Theta.\ F(\bar t_1) = F(\bar t_2) \\
+& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
+& \qquad \forall (f,\ f) \in E.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{ty}(s_n)[\Lambda] \\
+& \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2) \\[1em]
+& \in \text{ if} &&(\mathsf{ty}_{\lambda|\lambda}) \\
+& \quad ( \\
+& \qquad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
+& \qquad \theta, \\
+& \qquad \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G\}) \\
+& \quad \mathsf{ty}(s_n)[\Lambda] \\
+& \quad \text{and} \\
+& \qquad \mathsf{nest}_\Lambda(B) \neq \bot \\
 & \qquad (\Theta[\theta],\ S_\Theta) \in \mathsf{ty}(U_n) \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ F(\bar t)) \in \mathsf{ty}(s_n)[\mathsf{nest}_\Lambda(B)] \\
 & \qquad \forall (\bar t_1,\ \bar t_2) \in S_\Theta.\ F(\bar t_1) = F(\bar t_2) \\
 & \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
-& \qquad \forall (f,\ f) \in E.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{ty}(s_n)[\Lambda] \\
-& \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2)
+& \qquad \forall f.\ (\bar d,\ (\theta,\ f / d),\ G) \in \mathsf{ty}(s_n)[\Lambda]
 \end{aligned}
 ```
 
