@@ -226,7 +226,8 @@ Destructors are in it when the arguments $`\Theta`$ of the first one are a teles
 ```
 
 A type below which the types of a block are nested, such as a type of functions to a type of the block, has no equality before the block does, and the graph $`\mathsf{ty}(s_n)[\lambda]`$ of the nestings gives it one from the relations given for these types: it relates a closed type $`A`$ to the equality $`F`$ of its closed terms, written $`{(A,\ F) \in \mathsf{ty}(s_n)[\lambda]}`$, where the [nesting](14-typing.md#nesting) $`\lambda`$ of $`A`$ holds, at each of its positions, a pair $`(T,\ R)`$ of the closed instance $`T`$ of a type of the block and of the relation $`R`$ given for its terms.
-A type without position computes to a type of a sort that $`s_n`$ bounds, a type at a position is the instance that the position holds, with its relation, the same instance being written with any levels that are [equal](06-levels.md), and a type whose nesting is that of an instance is an instance of a codata type none of whose destructors is recursive, in $`U_n`$ or in $`\Omega_n`$, whose destructors are read at the nestings $`\bar\lambda`$ of its arguments, with the equality $`\mathsf{eq}_d`$ or the truth $`\mathsf{true}_d`$ of the equality $`S`$ of its destructors, which no relation of its block changes.
+A type without position computes to a type of a sort that $`s_n`$ bounds, a type at a position is the instance that the position holds, with its relation, the same instance being written with any levels that are [equal](06-levels.md), and a type whose nesting is that of an instance is an instance of a codata type none of whose destructors is recursive, in a universe $`U_l`$ or $`\Omega_l`$ whose level $`n`$ bounds, whose destructors are read at the nestings $`\bar\lambda`$ of its arguments, with the equality $`\mathsf{eq}_d`$ or the truth $`\mathsf{true}_d`$ of the equality $`S`$ of its destructors, which no relation of its block changes.
+The instance may live below the level $`n`$, when no result of its destructors holds the parameters whose arguments have positions, since the sort of a type does not bound the sorts of its parameters: its destructors are then read at the level $`n`$, whose sorts bound what the sorts of its own level bound.
 The clause reads the destructors of the type alone, and not those of the other types of its block, which need not be [strictly positive](14-typing.md#strict-positivity) in the parameters whose arguments have positions:
 
 ```math
@@ -236,13 +237,13 @@ The clause reads the destructors of the type alone, and not those of the other t
 & (T,\ \mathsf{eq}_\Downarrow(\mathsf{eq}_d(D_j,\ S))) \in \mathsf{ty}(U_n)[(\bar\lambda)] \text{ if} &&(\mathsf{ty}_{\lambda D}) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
-& \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
+& \qquad \kappa[T] = U_l \text{ and } [\![l]\!] \le n \\
 & \qquad \mathsf{rec}_{\mathcal{D}}(\bar d_j) = (\bot,\ \dots,\ \bot) \\
 & \qquad (\bar d_j[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p],\ \bar a,\ S) \in \mathsf{ty}(U_n)[\Delta \mapsto \bar\lambda] \\[1em]
 & (T,\ \{(t,\ u) \mid \mathsf{true}_d(S)\}) \in \mathsf{ty}(s_n)[(\bar\lambda)] \text{ if} &&(\mathsf{ty}_{\lambda D\Omega}) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
-& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n \\
+& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] \le n \\
 & \qquad \mathsf{rec}_{\mathcal{D}}(\bar d_j) = (\bot,\ \dots,\ \bot) \\
 & \qquad (\bar d_j[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p],\ \bar a,\ S) \in \mathsf{ty}(\Omega_n)[\Delta \mapsto \bar\lambda]
 \end{aligned}
@@ -490,7 +491,7 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 
 A type below which the types of a block are nested has no relation of run time before the block does, as it has no equality, and the graph $`\mathsf{rt}(U_n)[\lambda]`$ of the nestings gives it one from the relations given for these types: it relates a closed type $`A`$ to the relation $`R`$ of its closed terms to the addresses of their values, written $`{(A,\ R) \in \mathsf{rt}(U_n)[\lambda]}`$, where the [nesting](14-typing.md#nesting) $`\lambda`$ of $`A`$ holds, at each of its positions, a pair $`(T,\ Q)`$ of the closed instance $`T`$ of a type of the block and of the relation of run time $`Q`$ given for its terms.
 A position holds no equality: the relations of run time read the equality of a field or of an abstraction for what depends on it, and nothing depends on a field or on a result whose nesting has a position.
-A type without position computes to a type of a sort that $`U_n`$ bounds, a type at a position is the instance that the position holds, with its relation, the same instance being written with any levels that are [equal](06-levels.md), and a type whose nesting is that of an instance is an instance of a codata type: in $`U_n`$, none of its destructors is recursive, and its destructors, alone in its block, are read at the nestings $`\bar\lambda`$ of its arguments, with the relation $`\circledR_d`$ of the relation $`S`$ of its destructors, which no relation of its block changes; in $`\Omega_n`$, its terms, proofs, are erased, and the clause reads neither its destructors nor its truth, which the relation does not depend on:
+A type without position computes to a type of a sort that $`U_n`$ bounds, a type at a position is the instance that the position holds, with its relation, the same instance being written with any levels that are [equal](06-levels.md), and a type whose nesting is that of an instance is an instance of a codata type, in a universe whose level $`n`$ bounds, as for the equality: in $`U_l`$, none of its destructors is recursive, and its destructors, alone in its block, are read at the nestings $`\bar\lambda`$ of its arguments, with the relation $`\circledR_d`$ of the relation $`S`$ of its destructors, which no relation of its block changes; in $`\Omega_l`$, its terms, proofs, are erased, and the clause reads neither its destructors nor its truth, which the relation does not depend on:
 
 ```math
 \begin{aligned}
@@ -499,13 +500,13 @@ A type without position computes to a type of a sort that $`U_n`$ bounds, a type
 & (T,\ \circledR_\Downarrow(\circledR_d(D_j,\ S))) \in \mathsf{rt}(U_n)[(\bar\lambda)] \text{ if} &&(\mathsf{rt}_{\lambda D}) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
-& \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
+& \qquad \kappa[T] = U_l \text{ and } [\![l]\!] \le n \\
 & \qquad \mathsf{rec}_{\mathcal{D}}(\bar d_j) = (\bot,\ \dots,\ \bot) \\
 & \qquad (\bar d_j[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p],\ \bar a,\ S) \in \mathsf{rt}_{D_j}(U_n)[\Delta \mapsto \bar\lambda] \\[1em]
 & (T,\ \{(H,\ t,\ \ell) \mid t \text{ is a closed term}\}) \in \mathsf{rt}(U_n)[(\bar\lambda)] \text{ if} &&(\mathsf{rt}_{\lambda D\Omega}) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
-& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n
+& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] \le n
 \end{aligned}
 ```
 
