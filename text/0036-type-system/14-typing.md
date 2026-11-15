@@ -338,6 +338,41 @@ The fields of a constructor are strictly positive in a variable when the type of
 \end{gathered}
 ```
 
+### Nesting
+
+The nesting of a type gives the positions at which the types of a block occur in it, below the instances of other declared types: a nesting $`\lambda`$ is no position, $`\bot`$, a position that holds an object $`h`$, such as the name of a type of the block, or the nestings of the arguments of an instance:
+
+```math
+\begin{aligned}
+& \lambda \mathrel{::=} \bot \mid h \mid (\bar\lambda) &&(\mathsf{syntax}_\lambda)
+\end{aligned}
+```
+
+The nesting $`\mathsf{nest}_\Lambda(A)`$ of a type $`A`$ is read on its syntax, where $`\Lambda`$ gives a nesting to each variable, $`\bot`$ to those it does not name, and the object that a position holds to each type of the block: the nesting of a variable applied to arguments is that of the variable, the nesting of an instance of a type of the block is the position that holds its object, and the nesting of an instance of another declared type is the nestings of its arguments, each under the variables that its abstraction binds, which have no position, or $`\bot`$ when none of them has a position; any other type has no position:
+
+```math
+\begin{aligned}
+& \mathsf{nest}_\Lambda(x[\bar t]) = \Lambda(x) &&(\mathsf{nest}_A) \\
+& \mathsf{nest}_\Lambda(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = \Lambda(D) \text{ if } \Lambda \text{ gives an object to } D \\
+& \mathsf{nest}_\Lambda(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = \mathsf{nest}(\mathsf{nest}_\Lambda(\bar a)) \text{ otherwise} \\
+& \mathsf{nest}_\Lambda(A) = \bot \text{ for any other type } A \\[1em]
+& \mathsf{nest}_\Lambda(()) = () &&(\mathsf{nest}_{\bar a}) \\
+& \mathsf{nest}_\Lambda((\bar a,\ \bar x.\, B)) = (\mathsf{nest}_\Lambda(\bar a),\ \mathsf{nest}_\Lambda(B)) \\[1em]
+& \mathsf{nest}(\bar\lambda) = \bot \text{ if each of } \bar\lambda \text{ is } \bot &&(\mathsf{nest}_{\bar\lambda}) \\
+& \mathsf{nest}(\bar\lambda) = (\bar\lambda) \text{ otherwise}
+\end{aligned}
+```
+
+The nestings $`\bar\lambda`$ of the arguments of an instance give their nestings to the parameters $`\Delta`$ of its type, in order, written $`{\Delta \mapsto \bar\lambda}`$:
+
+```math
+\begin{aligned}
+& (\Delta \mapsto \bar\lambda)(x) = \lambda_i \text{ if } x \text{ is the parameter of } \Delta \text{ at the position } i &&(\mathsf{nest}_\Delta)
+\end{aligned}
+```
+
+The nesting reads the instances alone, and neither the terms nor the parameters in which a declared type is strictly positive, which the [strict positivity](#strict-positivity) checks; a substitution keeps the instances of a type, so that the nesting of a type of a declaration is also that of its instances.
+
 ### Fields of a Block
 
 A field of a constructor of a block of data types $`\mathcal{D}`$ is recursive when its type is an instance of a type of the block; $`\mathsf{rec}_{\mathcal{D}}(A)`$ names this type, $`\bot`$ when there is none, and $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$ gives it for each field of a telescope, in order:

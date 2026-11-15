@@ -223,7 +223,53 @@ Destructors are in it when the arguments $`\Theta`$ of the first one are a teles
 \end{aligned}
 ```
 
-At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$ and $`\mathsf{ty}(s_n)[\bar R]`$, of the telescopes and of the destructors, where $`\mathsf{ty}(s_n)`$ is the graph without recursive positions, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
+A type below which the types of a block are nested, such as a type of functions to a type of the block, has no equality before the block does, and the graph $`\mathsf{ty}(s_n)[\lambda]`$ of the nestings gives it one from the relations given for these types: it relates a closed type $`A`$ to the equality $`F`$ of its closed terms, written $`{(A,\ F) \in \mathsf{ty}(s_n)[\lambda]}`$, where the [nesting](14-typing.md#nesting) $`\lambda`$ of $`A`$ holds, at each of its positions, a pair $`(T,\ R)`$ of the closed instance $`T`$ of a type of the block and of the relation $`R`$ given for its terms.
+A type without position computes to a type of a sort that $`s_n`$ bounds, a type at a position is the instance that the position holds, with its relation, and a type whose nesting is that of an instance is an instance of a codata type whose block has no recursive destructor, in $`U_n`$ or in $`\Omega_n`$, whose destructors are read at the nestings $`\bar\lambda`$ of its arguments, with the equality $`\mathsf{eq}_\nu`$ or the truth $`\mathsf{true}_\nu`$ of the equalities $`\bar S`$ of its destructors, which no relation $`\bar X`$ changes:
+
+```math
+\begin{aligned}
+& (A,\ F) \in \mathsf{ty}(s_n)[\bot] \text{ if } \exists v,\ \kappa_1.\ A \Downarrow v,\ \kappa_1 \preceq s_n \text{ and } (v,\ F) \in \mathsf{ty}_\Downarrow(\kappa_1) &&(\mathsf{ty}_{\lambda\bot}) \\[1em]
+& (T,\ R) \in \mathsf{ty}(s_n)[(T,\ R)] &&(\mathsf{ty}_{\lambda T}) \\[1em]
+& (T,\ \mathsf{eq}_\Downarrow(\mathsf{eq}_\nu(D_j,\ \bar S))) \in \mathsf{ty}(U_n)[(\bar\lambda)] \text{ if} &&(\mathsf{ty}_{\lambda D}) \\
+& \quad \text{and} \\
+& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
+& \qquad \kappa[T] = U_l \text{ and } [\![l]\!] = n \\
+& \qquad \forall j'.\ \mathsf{rec}_{\mathcal{D}}(\bar d_{j'}) = (\bot,\ \dots,\ \bot) \\
+& \qquad \forall j'.\ (\bar d_{j'}[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p],\ \bar a,\ S_{j'}) \in \mathsf{ty}(U_n)[\Delta \mapsto \bar\lambda] \\[1em]
+& (T,\ \{(t,\ u) \mid \mathsf{true}_\nu(D_j,\ \bar S)\}) \in \mathsf{ty}(s_n)[(\bar\lambda)] \text{ if} &&(\mathsf{ty}_{\lambda D\Omega}) \\
+& \quad \text{and} \\
+& \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
+& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] = n \\
+& \qquad \forall j'.\ \mathsf{rec}_{\mathcal{D}}(\bar d_{j'}) = (\bot,\ \dots,\ \bot) \\
+& \qquad \forall j'.\ (\bar d_{j'}[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p],\ \bar a,\ S_{j'}) \in \mathsf{ty}(\Omega_n)[\Delta \mapsto \bar\lambda]
+\end{aligned}
+```
+
+The graph $`\mathsf{ty}(s_n)[\Lambda]`$ relates likewise destructors $`\bar d`$, none of which is recursive, and a closed substitution $`\theta`$ of their variables to the equality $`S`$ of the families of closed abstractions for them, written $`{(\bar d,\ \theta,\ S) \in \mathsf{ty}(s_n)[\Lambda]}`$, where $`\Lambda`$ gives their nestings to the variables of the destructors, those of the arguments of the parameters: the destructors keep their variables, since the nesting of a result is read before the substitution replaces them.
+Its clauses are those of the destructors that are not recursive, where the result type of a destructor is read by the graph of the nestings, at its nesting, in which no name is a type of a block:
+
+```math
+\begin{aligned}
+& \in &&(\mathsf{ty}_{\lambda\varepsilon}) \\
+& \quad (\varepsilon,\ \theta,\ \{(\bar f,\ \bar g) \mid \bar f \text{ and } \bar g \text{ are families of closed abstractions}\}) \\
+& \quad \mathsf{ty}(s_n)[\Lambda] \\[1em]
+& \in \text{ if} &&(\mathsf{ty}_{\lambda|}) \\
+& \quad ( \\
+& \qquad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
+& \qquad \theta, \\
+& \qquad \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G(f_d)\}) \\
+& \quad \mathsf{ty}(s_n)[\Lambda] \\
+& \quad \text{and} \\
+& \qquad (\Theta[\theta],\ S_\Theta) \in \mathsf{ty}(U_n) \\
+& \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ F(\bar t)) \in \mathsf{ty}(s_n)[\mathsf{nest}_\Lambda(B)] \\
+& \qquad \forall (\bar t_1,\ \bar t_2) \in S_\Theta.\ F(\bar t_1) = F(\bar t_2) \\
+& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
+& \qquad \forall (f,\ f) \in E.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{ty}(s_n)[\Lambda] \\
+& \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2)
+\end{aligned}
+```
+
+At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$, $`\mathsf{ty}(s_n)[\bar R]`$, of the telescopes and of the destructors, and $`\mathsf{ty}(s_n)[\lambda]`$ and $`\mathsf{ty}(s_n)[\Lambda]`$, of the nestings, where $`\mathsf{ty}(s_n)`$ is the graph without recursive positions, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
 The fields of an instance that are not recursive and the destructors of an instance that are not recursive are of types given before its block, and its recursive fields and the results of its recursive destructors have the relations that the clauses $`(\mathsf{ty}_D)`$ and $`(\mathsf{ty}_d)`$ give them, so that its relations are not circular.
 
 A closed canonical type has the equality that a universe gives it, and a proposition the equality of its proofs: all the closed terms when it is true, and none when it is false; a closed canonical type is a proposition when a universe of propositions gives it, and a closed type computes to a proposition when its canonical form is one:

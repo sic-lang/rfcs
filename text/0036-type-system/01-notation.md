@@ -49,6 +49,8 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`{\gamma, \delta, \zeta}`$ | Vectors of grades, one grade per variable of a scope, $`\zeta`$ being the grades with which a declared type uses its parameters |
 | $`\varphi`$ | Ownerships of the variables of a scope, one grade per variable whose telescope is empty |
 | $`o`$ | Ownerships of the arguments of a second-order variable |
+| $`{\lambda, \Lambda}`$ | Nestings of the types, and the nestings $`\Lambda`$ of the variables of a scope |
+| $`h`$ | Objects that a nesting holds at its positions |
 | $`{M, N, P}`$ | Terms of the target language of the erasure, $`N`$ being a branch of a recursor and $`P`$ a branch of a corecursor |
 | $`V`$ | Values of the evaluation |
 | $`H`$ | Heaps |
