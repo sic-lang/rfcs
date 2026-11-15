@@ -264,20 +264,6 @@ A signature has a declared type $`{D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta
 \end{aligned}
 ```
 
-A signature has a declared type $`D`$ strictly positive in its parameter $`X`$, written $`{D \oplus X \in \Sigma}`$, when one of its entries is a block of data types or of codata types that declares $`D`$ with $`X`$ among the parameters $`\Pi`$ in which it is strictly positive, which the rules of the [strict positivity](14-typing.md#strict-positivity) read:
-
-```math
-\begin{aligned}
-& \text{⟺} &&(\in_\oplus) \\
-& \quad D \oplus X \in \Sigma \\
-& \quad \text{and} \\
-& \qquad X \in \Pi \\
-& \qquad \text{or} \\
-& \qquad \quad (\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots;\ \dots) \in \Sigma \\
-& \qquad \quad (\mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots;\ \dots) \in \Sigma
-\end{aligned}
-```
-
 The names of a signature are distinct when each of its entries introduces distinct names, which no entry before it introduces, and names the constructors or the destructors of each of its types once, so that a type declaration names each of its types and each constructor or destructor of a type once:
 
 ```math

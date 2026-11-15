@@ -306,35 +306,55 @@ Two telescopes are equal in a sort $`\kappa`$ when their entries have the same g
 
 ### Strict Positivity
 
-A type is strictly positive in a variable when the variable occurs in it only as the type itself or below instances of declared types, at the parameters in which these types are [declared strictly positive](08-syntax.md#entries-and-signatures), and never in a term: the judgment $`{\Sigma \vdash A \oplus X}`$ reads the type $`A`$ is strictly positive in the variable $`X`$, in the signature $`\Sigma`$.
+A type is strictly positive in a variable when the variable occurs in it only as the type itself or below instances of declared types, at the parameters in which these types are strictly positive, and never in a term: the judgment $`{\Sigma;\ \mathcal{D} \vdash A \oplus X}`$ reads the type $`A`$ is strictly positive in the variable $`X`$, in the signature $`\Sigma`$ and the block $`\mathcal{D}`$ whose formation checks it.
+The judgment reads that a declared type $`D`$ is strictly positive in its parameter $`X`$, written $`{D \oplus X \in \Sigma;\ \mathcal{D}}`$, when $`D`$ is a type of the block that declares $`X`$ among the parameters $`\Pi`$ in which it is strictly positive, as the type of a recursive field or the result of a recursive destructor is, or when $`D`$ is a codata type of the signature that does and none of whose destructors is [recursive](#destructors-of-a-block), at any instance of its sort and grade variables: the types of a block are nested below such a codata type only, whose own destructors nest its parameters below such types only, since their strict positivity read the same types:
+
+```math
+\begin{aligned}
+& \text{⟺} &&(\in_{\oplus\mathcal{D}}) \\
+& \quad D \oplus X \in \Sigma;\ \mathcal{D} \\
+& \quad \text{or} \\
+& \qquad \text{and} \\
+& \qquad \quad \mathcal{D} \text{ declares } D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots \\
+& \qquad \quad X \in \Pi \\
+& \qquad \text{and} \\
+& \qquad \quad {\in} \\
+& \qquad \qquad \mathcal{D}' = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d;\ \dots \\
+& \qquad \qquad \Sigma \\
+& \qquad \quad X \in \Pi \\
+& \qquad \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \mathsf{rec}_{\mathcal{D}'}(\bar d[\bar s' / \bar s,\ \bar p' / \bar p]) = (\bot,\ \dots,\ \bot)
+\end{aligned}
+```
+
 A type in which the variable does not occur is strictly positive in it, as is the variable applied to arguments in which it does not occur, and an instance of a declared type whose arguments are:
 
 ```math
 \begin{gathered}
-\frac{X \text{ does not occur in } A}{\Sigma \vdash A \oplus X}\;(\oplus_{\notin}) \\[2em]
-\frac{X \text{ does not occur in } \bar t}{\Sigma \vdash X[\bar t] \oplus X}\;(\oplus_X) \\[2em]
-\frac{\Sigma \vdash_D \bar a \oplus X}{\Sigma \vdash D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \oplus X}\;(\oplus_D)
+\frac{X \text{ does not occur in } A}{\Sigma;\ \mathcal{D} \vdash A \oplus X}\;(\oplus_{\notin}) \\[2em]
+\frac{X \text{ does not occur in } \bar t}{\Sigma;\ \mathcal{D} \vdash X[\bar t] \oplus X}\;(\oplus_X) \\[2em]
+\frac{\Sigma;\ \mathcal{D} \vdash_D \bar a \oplus X}{\Sigma;\ \mathcal{D} \vdash D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \oplus X}\;(\oplus_D)
 \end{gathered}
 ```
 
-The arguments $`\bar a`$ of an instance of the declared type $`D`$ are strictly positive in a variable, written $`{\Sigma \vdash_D \bar a \oplus X}`$, when the argument of each parameter in which $`D`$ is strictly positive is strictly positive in the variable, under the variables that its abstraction binds, and the variable does not occur in the arguments of the other parameters; in these rules, $`Y`$ is the parameter of $`D`$ whose argument is $`{\bar x.\, B}`$:
+The arguments $`\bar a`$ of an instance of the declared type $`D`$ are strictly positive in a variable, written $`{\Sigma;\ \mathcal{D} \vdash_D \bar a \oplus X}`$, when the argument of each parameter in which $`D`$ is read strictly positive is strictly positive in the variable, under the variables that its abstraction binds, and the variable does not occur in the arguments of the other parameters; in these rules, $`Y`$ is the parameter of $`D`$ whose argument is $`{\bar x.\, B}`$:
 
 ```math
 \begin{gathered}
-\frac{}{\Sigma \vdash_D () \oplus X}\;(\oplus_{\bar a\varepsilon}) \\[2em]
-\frac{\begin{aligned}& D \oplus Y \in \Sigma \\[0.6em] & \Sigma \vdash_D \bar a \oplus X \\[0.6em] & \Sigma \vdash B \oplus X\end{aligned}}{\Sigma \vdash_D (\bar a,\ \bar x.\, B) \oplus X}\;(\oplus_{\bar a,}) \\[2em]
-\frac{\begin{aligned}& \Sigma \vdash_D \bar a \oplus X \\[0.6em] & X \text{ does not occur in } B\end{aligned}}{\Sigma \vdash_D (\bar a,\ \bar x.\, B) \oplus X}\;(\oplus_{\bar a\notin})
+\frac{}{\Sigma;\ \mathcal{D} \vdash_D () \oplus X}\;(\oplus_{\bar a\varepsilon}) \\[2em]
+\frac{\begin{aligned}& D \oplus Y \in \Sigma;\ \mathcal{D} \\[0.6em] & \Sigma;\ \mathcal{D} \vdash_D \bar a \oplus X \\[0.6em] & \Sigma;\ \mathcal{D} \vdash B \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash_D (\bar a,\ \bar x.\, B) \oplus X}\;(\oplus_{\bar a,}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \mathcal{D} \vdash_D \bar a \oplus X \\[0.6em] & X \text{ does not occur in } B\end{aligned}}{\Sigma;\ \mathcal{D} \vdash_D (\bar a,\ \bar x.\, B) \oplus X}\;(\oplus_{\bar a\notin})
 \end{gathered}
 ```
 
-The fields of a constructor are strictly positive in a variable when the type of each of them is, and the destructors of a codata type when the variable does not occur in the arguments of any of them and the result of each of them is strictly positive in it:
+The fields of a constructor are strictly positive in a variable when the type of each of them is, and the destructors of a codata type when the variable does not occur in the arguments of any of them and the result of each of them is strictly positive in it; no destructor after a destructor in whose result the variable occurs depends on it, as none depends on a recursive destructor, while the destructors after a destructor in whose result the variable does not occur may depend on it:
 
 ```math
 \begin{gathered}
-\frac{}{\Sigma \vdash \varepsilon \oplus X}\;(\oplus_\varepsilon) \\[2em]
-\frac{\begin{aligned}& \Sigma \vdash A \oplus X \\[0.6em] & \Sigma \vdash \Theta \oplus X\end{aligned}}{\Sigma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) \oplus X}\;(\oplus_{\Theta,}) \\[2em]
-\frac{}{\Sigma \vdash \varepsilon \oplus X}\;(\oplus_{\bar d\varepsilon}) \\[2em]
-\frac{\begin{aligned}& X \text{ does not occur in } \Theta \\[0.6em] & \Sigma \vdash B \oplus X \\[0.6em] & \Sigma \vdash \bar d \oplus X\end{aligned}}{\Sigma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) \oplus X}\;(\oplus_{\bar d|})
+\frac{}{\Sigma;\ \mathcal{D} \vdash \varepsilon \oplus X}\;(\oplus_\varepsilon) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \mathcal{D} \vdash A \oplus X \\[0.6em] & \Sigma;\ \mathcal{D} \vdash \Theta \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) \oplus X}\;(\oplus_{\Theta,}) \\[2em]
+\frac{}{\Sigma;\ \mathcal{D} \vdash \varepsilon \oplus X}\;(\oplus_{\bar d\varepsilon}) \\[2em]
+\frac{\begin{aligned}& X \text{ does not occur in } \Theta \\[0.6em] & \Sigma;\ \mathcal{D} \vdash B \oplus X \\[0.6em] & d \text{ does not occur in } \bar d \\[0.6em] & \Sigma;\ \mathcal{D} \vdash \bar d \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) \oplus X}\;(\oplus_{\bar d|}) \\[2em]
+\frac{\begin{aligned}& X \text{ does not occur in } \Theta \\[0.6em] & X \text{ does not occur in } B \\[0.6em] & \Sigma;\ \mathcal{D} \vdash \bar d \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) \oplus X}\;(\oplus_{\bar d\notin})
 \end{gathered}
 ```
 
@@ -420,19 +440,19 @@ The result of a destructor that is not recursive lives in a sort that $`\kappa`$
 
 ### Type Declarations
 
-A block of data types $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k}`$ is well formed when its constraint $`C`$ admits an instance of its sort and grade variables and, at each instance it admits, its parameters form a context, the fields of each constructor live in its sort, and they are [strictly positive](#strict-positivity) in each parameter in which their type declares that it is, in the signature extended by the block, whose types declare the parameters in which the types of the recursive fields are strictly positive; the constructors of each type have distinct names.
+A block of data types $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k}`$ is well formed when its constraint $`C`$ admits an instance of its sort and grade variables and, at each instance it admits, its parameters form a context, the fields of each constructor live in its sort, and they are [strictly positive](#strict-positivity) in each parameter in which their type declares that it is, in the signature and the block, whose types declare the parameters in which the types of the recursive fields are strictly positive; the constructors of each type have distinct names.
 The fields that are not recursive are checked in the signature $`\Sigma`$, which the block does not extend, so that the types of the block occur only as the types of the recursive fields, at its parameters.
 The fields of a type in a universe of propositions are propositions, by the rules $`{(\mathsf{fields}_{,})}`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$:
 
 ```math
-\frac{\begin{aligned}& \exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j, i. \\ & \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \qquad {\vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]}}\ \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j, i.\ \forall X \in \Pi_j.\ \Sigma,\ \mathcal{D} \vdash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \oplus X\end{aligned} \\[0.6em] & \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct}\end{aligned}}{\Sigma \vdash \mathcal{D}}\;(\mathsf{data})
+\frac{\begin{aligned}& \exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j, i. \\ & \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \qquad {\vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]}}\ \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j, i.\ \forall X \in \Pi_j.\ \Sigma;\ \mathcal{D} \vdash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \oplus X\end{aligned} \\[0.6em] & \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct}\end{aligned}}{\Sigma \vdash \mathcal{D}}\;(\mathsf{data})
 ```
 
 A block of codata types is well formed likewise, with the destructors $`\bar d_j`$ of each type $`D_j`$ in place of its constructors: its constraint admits an instance and, at each instance it admits, its parameters form a context, the destructors of each type live in its sort, and they are strictly positive in each parameter in which their type declares that it is; the destructors of each type have distinct names.
 The arguments of the destructors and the results of those that are not recursive are checked in the signature $`\Sigma`$, which the block does not extend, so that the types of the block occur only as the results of the recursive destructors, at its parameters:
 
 ```math
-\frac{\begin{aligned}& \exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j. \\ & \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \qquad {\vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]}}\ \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j.\ \forall X \in \Pi_j.\ \Sigma,\ \mathcal{D} \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \oplus X\end{aligned} \\[0.6em] & \forall j.\ \text{the names } d_{j1}, \dots, d_{j n_j} \text{ are distinct}\end{aligned}}{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k}\;(\mathsf{codata})
+\frac{\begin{aligned}& \exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j. \\ & \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \qquad {\vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]}}\ \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j.\ \forall X \in \Pi_j.\ \Sigma;\ \mathcal{D} \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \oplus X\end{aligned} \\[0.6em] & \forall j.\ \text{the names } d_{j1}, \dots, d_{j n_j} \text{ are distinct}\end{aligned}}{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k}\;(\mathsf{codata})
 ```
 
 ### Renamings
