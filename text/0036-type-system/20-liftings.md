@@ -154,7 +154,8 @@ A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, writt
 \end{aligned}
 ```
 
-The lifting is an entry of the signature as the others: the judgments of the signatures check it, so that a type whose lifting is not well formed, such as a recursive codata type, whose lifting is not at its parameters themselves, or a codata type with a result below a data type, which has no lifting, has no lifting that a well-formed signature holds.
+The lifting is an entry of the signature, whose formation and whose ownership are checked as those of the others, so that a type whose lifting is not well formed, such as a recursive codata type, whose lifting is not at its parameters themselves, or a codata type with a result below a data type, which has no lifting, has no lifting that a well-formed signature holds.
+The [usage](12-usage.md#definitions) of the signatures has a rule of its own for it, which does not check its destructors.
 
 ## Properties
 

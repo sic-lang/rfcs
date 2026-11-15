@@ -1,7 +1,7 @@
 # Usage
 
 This annex defines the judgment of usage, which checks how a term uses the variables of its scope, in a mode, the usage of the entries of a signature, and their properties.
-It builds on the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md) and the [grade vectors](10-grade-vectors.md).
+It builds on the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md), the [grade vectors](10-grade-vectors.md) and the definitions of the [liftings](20-liftings.md#definitions).
 
 ## Definitions
 
@@ -105,7 +105,8 @@ The destructors $`\bar d`$ of a codata type, $`{d_1 : (\Theta_1 \vdash B_1 \math
 ```
 
 The entries of a signature use the variables as their grades allow when, at each instance of its sort and grade variables, the body of each constant definition uses no variable, in the mode of the definition, and, at each instance that the constraint $`C`$ of a type declaration admits, the constructors $`\bar c_j`$ or the destructors $`\bar d_j`$ of each of its types $`D_j`$ use the parameters as the grades $`\zeta_j`$ of the type allow, the uses of all of them added, as their usage adds them.
-Each entry is checked in the signature before it, as its [formation](14-typing.md#signatures-and-entries) is, and the constructors or the destructors of a type declaration in the signature $`{\Sigma,\ \mathcal{D}}`$, which reads the grades of the types of the block:
+Each entry is checked in the signature before it, as its [formation](14-typing.md#signatures-and-entries) is, and the constructors or the destructors of a type declaration in the signature $`{\Sigma,\ \mathcal{D}}`$, which reads the grades of the types of the block.
+The [lifting](20-liftings.md#declaration) of a type of a block of the signature, with [its destructors](20-liftings.md#signatures), is an entry of its own, whose destructors the usage does not check, since it uses its parameters with the least grades, which state nothing:
 
 ```math
 \begin{gathered}
@@ -113,7 +114,8 @@ Each entry is checked in the signature before it, as its [formation](14-typing.m
 \frac{\begin{aligned}& \vdash \Sigma \mathrel{▶} \\[0.6em] & \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \Sigma;\ {00}^{\gamma} \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} m\end{aligned}}{\vdash (\Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{def}▶}) \\[2em]
 \frac{\vdash \Sigma \mathrel{▶}}{\vdash (\Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{decl}▶}) \\[2em]
 \frac{\begin{aligned}& {=} \\ & \quad \mathcal{D} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\[0.6em] & \vdash \Sigma \mathrel{▶} \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar c_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned}\end{aligned}}{\vdash (\Sigma,\ \mathcal{D}) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{data}▶}) \\[2em]
-\frac{\begin{aligned}& {=} \\ & \quad \mathcal{D} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\[0.6em] & \vdash \Sigma \mathrel{▶} \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned}\end{aligned}}{\vdash (\Sigma,\ \mathcal{D}) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{codata}▶})
+\frac{\begin{aligned}& {=} \\ & \quad \mathcal{D} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\[0.6em] & \vdash \Sigma \mathrel{▶} \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned}\end{aligned}}{\vdash (\Sigma,\ \mathcal{D}) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{codata}▶}) \\[2em]
+\frac{\begin{aligned}& \vdash \Sigma \mathrel{▶} \\[0.6em] & \mathcal{D} \in \Sigma \\[0.6em] & \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d'\end{aligned}}{\vdash (\Sigma,\ \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{lift}▶})
 \end{gathered}
 ```
 
