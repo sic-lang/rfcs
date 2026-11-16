@@ -165,7 +165,26 @@ The [usage](12-usage.md#definitions) of the signatures has a rule of its own for
 
 ## Properties
 
-The lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
+A type has one lifting at most, and the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
+
+In a signature whose [names are distinct](08-syntax.md), a type has one lifting at most at a term and at its nesting, of one level, and the arguments of an instance are lifted in one way at most at their nestings, with the same parameters lifted and the same levels:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unique}_{\uparrow}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \Sigma \vdash A \uparrow_\lambda u = A'_1 : (s_C)_{l_1} \\
+& \qquad \Sigma \vdash A \uparrow_\lambda u = A'_2 : (s_C)_{l_2} \\
+& \quad A'_1 = A'_2 \text{ and } l_1 = l_2 \\[1em]
+& \text{⟹} &&(\mathsf{unique}_{\uparrow\bar a}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \Sigma \vdash \bar a \uparrow_{\bar\lambda} = (\Pi_1;\ \bar l_1;\ \bar a'_1) \\
+& \qquad \Sigma \vdash \bar a \uparrow_{\bar\lambda} = (\Pi_2;\ \bar l_2;\ \bar a'_2) \\
+& \quad \Pi_1 = \Pi_2 \text{ and } \bar l_1 = \bar l_2 \text{ and } \bar a'_1 = \bar a'_2
+\end{aligned}
+```
 
 A well-formed signature gives a well-formed [type declaration](14-typing.md#type-declarations) to the lifting of a codata type of one of its blocks, of which no destructor is recursive, when each parameter lifted is a type, at the variables $`\bar x`$ of its telescope, in the parameters $`\Delta_1`$ before it followed by it, at each instance that the constraint of the block admits, and when no entry of the signature introduces its name $`D^\Pi`$: the motive of a parameter is a type over a term of this parameter, which neither the relation of the destructors lifted nor the strict positivity requires to be a type:
 
