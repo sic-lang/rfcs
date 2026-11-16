@@ -1,7 +1,7 @@
 # Liftings
 
 This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the parameters of the lifting and its declaration, the lifting of a type at a term, of the arguments of an instance and of the destructors of a codata type, and the signatures that hold it, with the typing and the ownership of the lifting of a codata type without recursive destructor.
-Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md) and on the variables that [do not occur](14-typing.md#strict-positivity) in a term, and the typing will read them for the recursive result of a field nested below a codata type.
+Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the variables that [do not occur](14-typing.md#strict-positivity) in a term and on the [nesting](14-typing.md#nesting) of a type, and the typing will read them for the recursive result of a field nested below a codata type.
 
 ## Definitions
 
@@ -13,6 +13,9 @@ The lifting of the type $`D`$ of a block of codata types $`{\mathcal{D} = \maths
 It has the variables of the block and these: the quality $`s_C`$ of the sorts of its motives, the level $`l_Y`$ of the sort of the motive of each parameter $`Y`$ of $`\Pi`$, written $`\bar l_\Pi`$ together, the grade $`r`$ of the recursor that computes its terms, the ownership $`\varsigma`$ that its destructors require of the value that they observe, and the ownership $`\chi`$ of their results.
 Each motive has a level of its own, since a sort is equal to another at the same level only: a type lifted is a motive of the lifting of an instance whose argument it is, and its level is not the level of the motive of a parameter.
 Its parameters are those of the block, a motive $`C_Y`$ for each parameter $`Y`$ of $`\Pi`$, and a term $`y`$ of the type $`D`$ at these parameters; in the definitions of this section, $`\Pi`$, these variables and these motives are fixed, and a parameter is lifted when it is in $`\Pi`$.
+
+The type of the recursive result of a field nested below a codata type is the type of this field lifted at the types of its block, each of which has the motive of the recursor.
+A block lifted $`\mathcal{B}`$ gives each of its types $`E`$ an instance $`T_E`$ of this type and a motive $`{z.\, C_E}`$, a type over a term $`z`$ of $`T_E`$, of the sort of the quality $`s_C`$ and of a level $`l_E`$; it is fixed as $`\Pi`$ is, and the declaration of a lifting lifts no block.
 
 The level $`{l \sqcup \bigsqcup \bar l'}`$ is the level $`l`$ [joined](06-levels.md) to each of the levels $`\bar l'`$:
 
@@ -86,26 +89,27 @@ It has the constraint of the block, the parameters lifted followed by the term $
 ### Types
 
 The relation $`{\Sigma \vdash A \uparrow u = A' : (s_C)_l}`$ reads: the type $`A'`$, of the level $`l`$, is the type $`A`$ lifted at the term $`u`$ of $`A`$.
-A parameter lifted, applied to arguments in which no parameter lifted occurs, is lifted to its motive at these arguments and at the term, of the level of this motive; an instance of a declared type of which an argument at least is lifted is lifted to the instance of the lifting of this type at the parameters of these arguments, which the signature declares, at the variables of the lifting, at the levels of the arguments lifted, at these arguments and at the term, of the level of the instance joined to these levels:
+A parameter lifted, applied to arguments in which no parameter lifted occurs, is lifted to its motive at these arguments and at the term, of the level of this motive; the instance $`T_E`$ of a type of the block lifted is lifted to its motive at the term, of the level of this motive; an instance of another declared type of which an argument at least is lifted is lifted to the instance of the lifting of this type at the parameters of these arguments, which the signature declares, at the variables of the lifting, at the levels of the arguments lifted, at these arguments and at the term, of the level of the instance joined to these levels:
 
 ```math
 \begin{gathered}
 \frac{\begin{aligned}& Y \in \Pi \\[0.6em] & \text{no parameter of } \Pi \text{ occurs in } \bar t\end{aligned}}{\Sigma \vdash Y[\bar t] \uparrow u = C_Y[\bar t,\ u] : (s_C)_{l_Y}}\;(\uparrow_X) \\[2em]
-\frac{\begin{aligned}& D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : s_l \mathrel{▶} \zeta \in \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l'';\ \bar a') \\[0.6em] & \Pi' \ne \varnothing \\[0.6em] & \mathsf{lifting}_{\Pi'}(\mathcal{D}',\ D,\ \bar d'') \in \Sigma\end{aligned}}{\begin{aligned}& \Sigma \\ & {\vdash}\ D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \uparrow u \\ & {=}\ D^{\Pi'}.\{\bar s', s_C;\ \bar l', \bar l'';\ \bar p', r, \varsigma, \chi\}\ (\bar a',\ u) \\ & {:}\ (s_C)_{l[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \sqcup \bigsqcup \bar l''}\end{aligned}}\;(\uparrow_D)
+\frac{E \text{ is a type of } \mathcal{B}}{\Sigma \vdash T_E \uparrow u = C_E[u / z] : (s_C)_{l_E}}\;(\uparrow_T) \\[2em]
+\frac{\begin{aligned}& D \text{ is not a type of } \mathcal{B} \\[0.6em] & D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : s_l \mathrel{▶} \zeta \in \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l'';\ \bar a') \\[0.6em] & \Pi' \ne \varnothing \\[0.6em] & \mathsf{lifting}_{\Pi'}(\mathcal{D}',\ D,\ \bar d'') \in \Sigma\end{aligned}}{\begin{aligned}& \Sigma \\ & {\vdash}\ D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \uparrow u \\ & {=}\ D^{\Pi'}.\{\bar s', s_C;\ \bar l', \bar l'';\ \bar p', r, \varsigma, \chi\}\ (\bar a',\ u) \\ & {:}\ (s_C)_{l[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \sqcup \bigsqcup \bar l''}\end{aligned}}\;(\uparrow_D)
 \end{gathered}
 ```
 
 In the rule $`(\uparrow_D)`$, $`\mathcal{D}'`$ is the block of the signature that declares $`D`$, and the signature declares the [lifting](#declaration) of $`D`$ at $`\Pi'`$ with some destructors $`\bar d''`$, whatever they are: the type lifted names this lifting, whose parameters and sort its declaration gives without its destructors, while the destructors of a lifting are defined from this relation.
-A type in which no parameter lifted occurs has no lifting, nor has a type in which one occurs otherwise, in a term or below a second-order variable, nor an instance whose lifting the signature does not declare.
+A type in which no parameter lifted occurs and that holds no type of the block lifted has no lifting, nor has a type in which a parameter lifted occurs otherwise, in a term or below a second-order variable, nor an instance of a type of the block lifted other than the one that its motive is over, nor an instance whose lifting the signature does not declare.
 
 The relation $`{\Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a')}`$ reads: the arguments $`\bar a'`$ are the arguments $`\bar a`$ of an instance lifted, $`\Pi'`$ is the set of the parameters of the instance whose arguments are lifted, and $`\bar l`$ are the levels of these arguments lifted, in the order of the parameters.
-An argument in which a parameter lifted occurs is followed by its motive, the argument lifted at a term $`z`$ of its own, under the variables that its abstraction binds, and an argument in which none occurs is kept; in these rules, $`Y`$ is the parameter of the instance whose argument is $`{\bar x.\, B}`$:
+An argument that is lifted is followed by its motive, the argument lifted at a term $`z`$ of its own, under the variables that its abstraction binds, and an argument in which no parameter lifted occurs and whose nesting $`\mathsf{nest}_{\mathcal{B}}(B)`$, which gives a position to each [type of the block](14-typing.md#fields-of-a-block) lifted, has none, is kept; in these rules, $`Y`$ is the parameter of the instance whose argument is $`{\bar x.\, B}`$:
 
 ```math
 \begin{gathered}
 \frac{}{\Sigma \vdash () \uparrow = (\varnothing;\ \varepsilon;\ ())}\;(\uparrow_{\bar a\varepsilon}) \\[2em]
 \frac{\begin{aligned}& \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a') \\[0.6em] & \Sigma \vdash B \uparrow z = B' : (s_C)_{l'}\end{aligned}}{\Sigma \vdash (\bar a,\ \bar x.\, B) \uparrow = (\Pi' \cup \{Y\};\ (\bar l, l');\ (\bar a',\ \bar x.\, B,\ (\bar x, z).\, B'))}\;(\uparrow_{\bar a,}) \\[2em]
-\frac{\begin{aligned}& \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a') \\[0.6em] & \text{no parameter of } \Pi \text{ occurs in } B\end{aligned}}{\Sigma \vdash (\bar a,\ \bar x.\, B) \uparrow = (\Pi';\ \bar l;\ (\bar a',\ \bar x.\, B))}\;(\uparrow_{\bar a\notin})
+\frac{\begin{aligned}& \Sigma \vdash \bar a \uparrow = (\Pi';\ \bar l;\ \bar a') \\[0.6em] & \text{no parameter of } \Pi \text{ occurs in } B \\[0.6em] & \mathsf{nest}_{\mathcal{B}}(B) = \bot\end{aligned}}{\Sigma \vdash (\bar a,\ \bar x.\, B) \uparrow = (\Pi';\ \bar l;\ (\bar a',\ \bar x.\, B))}\;(\uparrow_{\bar a\notin})
 \end{gathered}
 ```
 
