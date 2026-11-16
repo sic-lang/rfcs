@@ -161,7 +161,7 @@ The [usage](12-usage.md#definitions) of the signatures has a rule of its own for
 
 The lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
 
-A well-formed signature gives a well-formed [type declaration](14-typing.md#type-declarations) to the lifting of a codata type of one of its blocks, of which no destructor is recursive, when each parameter lifted is a type, at the variables $`\bar x`$ of its telescope, in the parameters $`\Delta_1`$ before it followed by it, at each instance that the constraint of the block admits: the motive of a parameter is a type over a term of this parameter, which neither the relation of the destructors lifted nor the strict positivity requires to be a type:
+A well-formed signature gives a well-formed [type declaration](14-typing.md#type-declarations) to the lifting of a codata type of one of its blocks, of which no destructor is recursive, when each parameter lifted is a type, at the variables $`\bar x`$ of its telescope, in the parameters $`\Delta_1`$ before it followed by it, at each instance that the constraint of the block admits, and when no entry of the signature introduces its name $`D^\Pi`$: the motive of a parameter is a type over a term of this parameter, which neither the relation of the destructors lifted nor the strict positivity requires to be a type:
 
 ```math
 \begin{aligned}
@@ -170,6 +170,7 @@ A well-formed signature gives a well-formed [type declaration](14-typing.md#type
 & \qquad {}\vdash \Sigma \\
 & \qquad \mathcal{D} \in \Sigma \\
 & \qquad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
+& \qquad \text{no entry of } \Sigma \text{ introduces } D^\Pi \\
 & \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \mathsf{rec}_{\mathcal{D}}(\bar d_D[\bar s' / \bar s,\ \bar p' / \bar p]) = (\bot,\ \dots,\ \bot) \\
 & \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall \Delta_1,\ x,\ A,\ \Delta_2. \\
 & \qquad \quad \text{⟹} \\
