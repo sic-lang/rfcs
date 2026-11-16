@@ -161,11 +161,12 @@ A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, writt
 ```
 
 The lifting is an entry of the signature, whose formation and whose ownership are checked as those of the others, so that a type whose lifting is not well formed, such as a recursive codata type, whose lifting is not at its parameters themselves, or a codata type with a result below a data type, which has no lifting, has no lifting that a well-formed signature holds.
+The [formation](14-typing.md#signatures-and-entries) of the signatures has a rule of its own for it, which asks in addition for these destructors, and gives the name of a lifting to no other entry.
 The [usage](12-usage.md#definitions) of the signatures has a rule of its own for it, which does not check its destructors.
 
 ## Properties
 
-A type has one lifting at most, and the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
+A type has one lifting at most, a well-formed signature holds the liftings that it declares, and the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
 
 In a signature whose [names are distinct](08-syntax.md), a type has one lifting at most at a term and at its nesting, of one level, and the arguments of an instance are lifted in one way at most at their nestings, with the same parameters lifted and the same levels:
 
@@ -183,6 +184,20 @@ In a signature whose [names are distinct](08-syntax.md), a type has one lifting 
 & \qquad \Sigma \vdash \bar a \uparrow_{\bar\lambda} = (\Pi_1;\ \bar l_1;\ \bar a'_1) \\
 & \qquad \Sigma \vdash \bar a \uparrow_{\bar\lambda} = (\Pi_2;\ \bar l_2;\ \bar a'_2) \\
 & \quad \Pi_1 = \Pi_2 \text{ and } \bar l_1 = \bar l_2 \text{ and } \bar a'_1 = \bar a'_2
+\end{aligned}
+```
+
+A well-formed signature holds the lifting that it declares of a type of one of its blocks, with whatever destructors: they are those of this type lifted, which the rule $`(\uparrow_D)`$ therefore need not ask for:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{sig}_{\uparrow}) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \\
+& \qquad \mathcal{D} \in \Sigma \\
+& \qquad D \text{ is a type of } \mathcal{D} \\
+& \qquad \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d') \in \Sigma \\
+& \quad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d'
 \end{aligned}
 ```
 
