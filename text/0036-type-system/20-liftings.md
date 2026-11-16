@@ -201,9 +201,9 @@ A well-formed signature holds the lifting that it declares of a type of one of i
 \end{aligned}
 ```
 
-In a signature whose names are distinct, the destructor of the lifting of $`D`$ at $`\Pi`$ that lifts a destructor $`d`$ of $`D`$, at the instance of the lifting that the instance $`{T = D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ lifted at a term $`t`$ is, has arguments used and required as those of $`d`$, used $`r`$ times more, and its result is the result of $`d`$ at the arguments $`\bar a`$ and at the [observations](09-substitution.md) of $`t`$ by the destructors $`\bar d_1`$ before $`d`$, lifted at the observation of $`t`$ by $`d`$, at the variables $`\bar x`$ of its arguments: the type of the recursive result of this observation.
+In a signature whose names are distinct, the destructor of the lifting of $`D`$ at $`\Pi`$ that lifts a destructor $`d`$ of $`D`$, at the instance of the lifting that the instance $`{T = D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ lifted at a term $`t`$ is, has the arguments of $`d`$ at the arguments $`\bar a`$ and at the [observations](09-substitution.md) of $`t`$ by the destructors $`\bar d_1`$ before $`d`$, used $`r`$ times more, and its result is the result of $`d`$, at these arguments and observations, lifted at the observation of $`t`$ by $`d`$, at the variables $`\bar x`$ of its arguments: the type of the recursive result of this observation.
 The arguments $`\bar a`$ and this result are lifted where no parameter is lifted, whatever the block lifted is, as the type of a field of a block is, while the destructors $`\bar d'`$ are those of the lifting at $`\Pi`$: the arguments lifted $`\bar a'`$ give each parameter of $`\Pi`$ its motive, and the result is lifted at its [nesting](14-typing.md#nesting), where $`{\Lambda = (\Delta \mapsto \bar\lambda)}`$ gives the parameters the nestings of the arguments, no position to the destructors and no object to a declared type.
-The destructors $`\bar d'_1`$ of the lifting before it are given any abstractions $`\bar f`$, on which its result does not depend:
+The destructors $`\bar d'_1`$ of the lifting before it are given any abstractions $`\bar f`$, on which neither its arguments nor its result depend:
 
 ```math
 \begin{aligned}
@@ -221,7 +221,7 @@ The destructors $`\bar d'_1`$ of the lifting before it are given any abstraction
 & \qquad \quad \bar d'[\bar s' / \bar s,\ \bar l', \bar l'' / \bar l, \bar l_\Pi,\ \bar p' / \bar p] \\
 & \qquad \quad (\bar d'_1 \mid d : (\Theta' \vdash B' \mathrel{◀} \psi') \mathrel{▶} p';\ q' \mathrel{◀} \varsigma' \mid \bar d'_2) \\
 & \quad \text{and} \\
-& \qquad \text{the entries of } \Theta' \text{ are used and required as those of } r \cdot \Theta \\
+& \qquad \Theta'[(\bar a',\ t) / (\Delta \uparrow,\ y),\ \bar f / \bar d'_1] = r \cdot \Theta[\bar a / \Delta,\ t.T / \bar d_1] \\
 & \qquad \exists l_0. \\
 & \qquad \quad \Sigma \\
 & \qquad \quad {\vdash}\ B[\bar a / \Delta,\ t.T / \bar d_1] \uparrow_{\mathsf{nest}_\Lambda(B)} t.(T.d)(\bar x) \\
