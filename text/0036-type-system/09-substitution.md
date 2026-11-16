@@ -22,11 +22,11 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\sigma] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma] \\
 & ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\sigma] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).c(\bar t[\sigma]) \\[1em]
 & {=} \\
-& \quad (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
-& \qquad \mathsf{return}\ \bar C \\
+& \quad (\mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
+& \qquad \mathsf{return}\ \bar C : \kappa_C \\
 & \qquad \mathsf{with}\ \bar u)[\sigma] \\
-& \quad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ t[\sigma] \\
-& \qquad \mathsf{return}\ \bar C[\sigma] \\
+& \quad \mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ t[\sigma] \\
+& \qquad \mathsf{return}\ \bar C[\sigma] : \kappa_C \\
 & \qquad \mathsf{with}\ \bar u[\sigma] \\[1em]
 & (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\sigma] = t[\sigma].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).d)(\bar t[\sigma]) \\[1em]
 & {=} \\
@@ -86,11 +86,11 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\theta] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta] \\
 & ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\theta] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).c(\bar t[\theta]) \\[1em]
 & {=} \\
-& \quad (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
-& \qquad \mathsf{return}\ \bar C \\
+& \quad (\mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
+& \qquad \mathsf{return}\ \bar C : \kappa_C \\
 & \qquad \mathsf{with}\ \bar u)[\theta] \\
-& \quad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ t[\theta] \\
-& \qquad \mathsf{return}\ \bar C[\theta] \\
+& \quad \mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ t[\theta] \\
+& \qquad \mathsf{return}\ \bar C[\theta] : \kappa_C \\
 & \qquad \mathsf{with}\ \bar u[\theta] \\[1em]
 & (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\theta] = t[\theta].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).d)(\bar t[\theta]) \\[1em]
 & {=} \\
@@ -219,11 +219,11 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & \quad ((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).c(\bar t))[\bar l' / \bar l] \\
 & \quad (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).c(\bar t[\bar l' / \bar l]) \\[1em]
 & {=} \\
-& \quad (\mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ t \\
-& \qquad \mathsf{return}\ \bar C \\
+& \quad (\mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ t \\
+& \qquad \mathsf{return}\ \bar C : \kappa_C \\
 & \qquad \mathsf{with}\ \bar u)[\bar l' / \bar l] \\
-& \quad \mathsf{rec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ t[\bar l' / \bar l] \\
-& \qquad \mathsf{return}\ \bar C[\bar l' / \bar l] \\
+& \quad \mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ t[\bar l' / \bar l] \\
+& \qquad \mathsf{return}\ \bar C[\bar l' / \bar l] : \kappa_C[\bar l' / \bar l] \\
 & \qquad \mathsf{with}\ \bar u[\bar l' / \bar l] \\[1em]
 & {=} \\
 & \quad (t.((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).d)(\bar t))[\bar l' / \bar l] \\

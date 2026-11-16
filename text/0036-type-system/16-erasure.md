@@ -239,12 +239,12 @@ The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\te
 & \lfloor T.c(\bar t) \rfloor_S = c_i(\lfloor \bar t \rfloor_{S, \mathsf{parameters}_\Sigma(T.c)}) \text{ if } i = \mathsf{case}_\Sigma(D.c) \\
 & \lfloor T.c(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\[1em]
 & {=} \text{ if} \\
-& \quad \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S \\
+& \quad \lfloor \mathsf{rec}_{r;\ \varsigma;\ \chi}\ T\ t\ \mathsf{return}\ \bar C : \kappa_C\ \mathsf{with}\ \bar u \rfloor_S \\
 & \quad \mathsf{rec}_{\mathsf{run}(r)}\ \mathsf{skeleton}_\Sigma(T) \mathrel{◀} \omega \\
 & \qquad \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{parameters}_\Sigma(T.\bar u)} \\
 & \quad r \in S \\[1em]
 & {=} \text{ if} \\
-& \quad \lfloor \mathsf{rec}_r\ T\ t\ \mathsf{return}\ \bar C\ \mathsf{with}\ \bar u \rfloor_S \\
+& \quad \lfloor \mathsf{rec}_{r;\ \varsigma;\ \chi}\ T\ t\ \mathsf{return}\ \bar C : \kappa_C\ \mathsf{with}\ \bar u \rfloor_S \\
 & \quad \mathsf{rec}_{\mathsf{run}(r)}\ \lfloor t \rfloor_S \mathrel{◀} \mathsf{run}(\mathsf{recursion}_\Sigma(T, r)) \\
 & \qquad \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{parameters}_\Sigma(T.\bar u)} \\
 & \quad r \notin S \\[1em]

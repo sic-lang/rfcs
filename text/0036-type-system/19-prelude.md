@@ -74,18 +74,18 @@ The level $`\mathsf{level}_{\bar\kappa}(l)`$ of a packing is the join of the lev
 
 ### Unpacking
 
-The unpacking $`{\mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b}`$ of the term $`u`$ of the packing of $`\Theta`$ into the term $`b`$, over the variables of $`\Theta`$, is a recursor on each pair, then on the unit, each using its term with the grade $`r`$, with the motive $`{z.\, C}`$, which does not depend on the term $`z`$ eliminated; the branch of the pair unpacks its second field into $`b`$, which does not use the variable $`y`$ of this field:
+The unpacking $`{\mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b}`$ of the term $`u`$ of the packing of $`\Theta`$ into the term $`b`$, over the variables of $`\Theta`$, is a recursor on each pair, then on the unit, each using its term with the grade $`r`$, with the motive $`{z.\, C}`$ of the sort $`\kappa`$, which does not depend on the term $`z`$ eliminated; the branch of the pair unpacks its second field into $`b`$, which does not use the variable $`y`$ of this field, and these recursors, on types without nested field, carry the ownership $`{11}^{\mathsf{p}}`$ twice:
 
 ```math
 \begin{aligned}
 & {=} &&(\mathsf{unpack}) \\
-& \quad \mathsf{unpack}_r\ u : \langle \varepsilon \rangle_{();\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \\
-& \quad \mathsf{rec}_r\ (\mathsf{Unit}.\{;\ l;\}\ ())\ u\ \mathsf{return}\ z.\, C\ \mathsf{with}\ \mathsf{Unit}.\mathsf{mk}() \Rightarrow b \\[1em]
+& \quad \mathsf{unpack}_r\ u : \langle \varepsilon \rangle_{();\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \\
+& \quad \mathsf{rec}_{r;\ {11}^{\mathsf{p}};\ {11}^{\mathsf{p}}}\ (\mathsf{Unit}.\{;\ l;\}\ ())\ u\ \mathsf{return}\ z.\, C : \kappa\ \mathsf{with}\ \mathsf{Unit}.\mathsf{mk}() \Rightarrow b \\[1em]
 & {=} \\
-& \quad \mathsf{unpack}_r\ u : \langle x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta \rangle_{(s_{l'},\ \bar\kappa);\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \\
-& \quad \mathsf{rec}_r\ (\mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r'\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l}))\ u \\
-& \qquad \mathsf{return}\ z.\, C \\
-& \qquad \mathsf{with}\ \mathsf{Pair}.\mathsf{mk}(x,\ y) \Rightarrow \mathsf{unpack}_r\ y : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b
+& \quad \mathsf{unpack}_r\ u : \langle x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta \rangle_{(s_{l'},\ \bar\kappa);\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \\
+& \quad \mathsf{rec}_{r;\ {11}^{\mathsf{p}};\ {11}^{\mathsf{p}}}\ (\mathsf{Pair}.\{s;\ l', \mathsf{level}_{\bar\kappa}(l);\ p, r'\}\ (A,\ x.\, \langle \Theta \rangle_{\bar\kappa;\ l}))\ u \\
+& \qquad \mathsf{return}\ z.\, C : \kappa \\
+& \qquad \mathsf{with}\ \mathsf{Pair}.\mathsf{mk}(x,\ y) \Rightarrow \mathsf{unpack}_r\ y : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b
 \end{aligned}
 ```
 
@@ -111,17 +111,17 @@ In a block $`\mathcal{D}`$ of codata types $`{D_1, \dots, D_k}`$, whose states a
 \end{aligned}
 ```
 
-The resumption $`{\mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)}`$ of the position $`v`$ of the instance $`{T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, of the sort $`\kappa`$, by the corecursor of the grade $`r`$ with the states $`\bar\Theta`$ and the branches $`\bar g`$, is a recursor on $`v`$, with the motive $`{z.\, T}`$, which unpacks a new state into the corecursor of $`T`$ from the variables $`\bar y_j`$ of the state $`\Theta_j`$ of $`D_j`$, of the sorts $`\bar\kappa_j`$ and of the join $`{l_j = \mathsf{level}_{\bar\kappa_j}(0)}`$ of their levels, and gives a term already built itself; the resumption $`{\mathsf{resume}_{B;\ r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)}`$ of the term $`v`$ of the branch of a destructor whose result is $`B`$, observed in a corecursor of the instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, is the resumption of $`v`$ by the corecursor of the type of the block that $`B`$ names, if the destructor is recursive, and $`v`$ otherwise:
+The resumption $`{\mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)}`$ of the position $`v`$ of the instance $`{T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, of the sort $`\kappa`$, by the corecursor of the grade $`r`$ with the states $`\bar\Theta`$ and the branches $`\bar g`$, is a recursor on $`v`$, which carries the ownership $`{11}^{\mathsf{p}}`$ twice as those of the unpacking do, with the motive $`{z.\, T}`$, which unpacks a new state into the corecursor of $`T`$ from the variables $`\bar y_j`$ of the state $`\Theta_j`$ of $`D_j`$, of the sorts $`\bar\kappa_j`$ and of the join $`{l_j = \mathsf{level}_{\bar\kappa_j}(0)}`$ of their levels, and gives a term already built itself; the resumption $`{\mathsf{resume}_{B;\ r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g)}`$ of the term $`v`$ of the branch of a destructor whose result is $`B`$, observed in a corecursor of the instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, is the resumption of $`v`$ by the corecursor of the type of the block that $`B`$ names, if the destructor is recursive, and $`v`$ otherwise:
 
 ```math
 \begin{aligned}
 & {=} &&(\mathsf{resume}) \\
 & \quad \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) \\
-& \quad \mathsf{rec}_{{11}^{\mathsf{p}}}\ \mathsf{pos}_{r;\ \chi}(\Theta_j : \bar\kappa_j,\ T : \kappa)\ v \\
-& \qquad \mathsf{return}\ z.\, T \\
+& \quad \mathsf{rec}_{{11}^{\mathsf{p}};\ {11}^{\mathsf{p}};\ {11}^{\mathsf{p}}}\ \mathsf{pos}_{r;\ \chi}(\Theta_j : \bar\kappa_j,\ T : \kappa)\ v \\
+& \qquad \mathsf{return}\ z.\, T : \kappa \\
 & \qquad \mathsf{with} \\
 & \qquad \quad (\mathsf{Step}.\mathsf{next}(x) \Rightarrow \\
-& \qquad \qquad \phantom{(}\mathsf{unpack}_r\ x : \langle \Theta_j \rangle_{\bar\kappa_j;\ l_j}\ \mathsf{return}\ T\ \mathsf{with}\ \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g, \\
+& \qquad \qquad \phantom{(}\mathsf{unpack}_r\ x : \langle \Theta_j \rangle_{\bar\kappa_j;\ l_j}\ \mathsf{return}\ T : \kappa\ \mathsf{with}\ \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g, \\
 & \qquad \quad \phantom{(}\mathsf{Step}.\mathsf{done}(x) \Rightarrow x) \\[1em]
 & {=} \text{ if} &&(\mathsf{resume}_B) \\
 & \quad \mathsf{resume}_{B;\ r;\ \chi}(v,\ D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a : \kappa,\ \bar\Theta,\ \bar g) \\
@@ -182,7 +182,7 @@ In a signature that holds the prelude, the unpacking of a term of the packing of
 & \qquad \Sigma;\ \Gamma \vdash u : \langle \Theta \rangle_{\bar\kappa;\ l} \\
 & \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
 & \qquad \Sigma;\ \Gamma,\ \Theta \vdash b : C \\
-& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b : C \\[1em]
+& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b : C \\[1em]
 & \text{⟹} &&(\mathsf{unpack}_\beta) \\
 & \quad \text{and} \\
 & \qquad \Sigma \ni \mathsf{prelude} \\
@@ -190,7 +190,7 @@ In a signature that holds the prelude, the unpacking of a term of the packing of
 & \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
 & \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
 & \qquad \Sigma;\ \Gamma,\ \Theta \vdash b : C \\
-& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \equiv b[\bar t / \Theta] : C \\[1em]
+& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \equiv b[\bar t / \Theta] : C \\[1em]
 & \text{⟹} &&(\mathsf{unpack}_\eta) \\
 & \quad \text{and} \\
 & \qquad \Sigma \ni \mathsf{prelude} \\
@@ -198,7 +198,7 @@ In a signature that holds the prelude, the unpacking of a term of the packing of
 & \qquad \Sigma;\ \Gamma \vdash u : \langle \Theta \rangle_{\bar\kappa;\ l} \\
 & \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
 & \qquad \Sigma;\ \Gamma,\ z : \langle \Theta \rangle_{\bar\kappa;\ l} \vdash e : C \\
-& \quad \Sigma;\ \Gamma \vdash e[u / z] \equiv \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ e[\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l} / z] : C
+& \quad \Sigma;\ \Gamma \vdash e[u / z] \equiv \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ e[\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l} / z] : C
 \end{aligned}
 ```
 
@@ -213,7 +213,7 @@ In a signature that holds the prelude, the unpacking uses the variables of its t
 & \qquad \Sigma;\ \gamma \vdash u \mathrel{▶} m \odot r \\
 & \qquad \Theta \text{ has the grades } p_1, \dots, p_n \\
 & \qquad \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot r \cdot p_1) \bullet \dots \bullet (\ulcorner m \urcorner \cdot r \cdot p_n) \vdash b \mathrel{▶} m \\
-& \quad \Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \mathrel{▶} m \\[1em]
+& \quad \Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \mathrel{▶} m \\[1em]
 & \text{⟹} &&(\mathsf{unpack}_{◀}) \\
 & \quad \text{and} \\
 & \qquad \Sigma \ni \mathsf{prelude} \\
@@ -221,7 +221,7 @@ In a signature that holds the prelude, the unpacking uses the variables of its t
 & \qquad \text{the entries of } \Theta \text{ require } r_1, \dots, r_n \\
 & \qquad \Theta \text{ has the grades } q_1, \dots, q_n \\
 & \qquad \Sigma;\ \varphi,\ x_1 \mathrel{◀} o \cdot r_1 \cdot (\ulcorner m \urcorner \cdot r \cdot q_1), \dots, x_n \mathrel{◀} o \cdot r_n \cdot (\ulcorner m \urcorner \cdot r \cdot q_n) \vdash b \mathrel{◀} p;\ m \\
-& \quad \Sigma;\ \varphi \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C\ \mathsf{with}\ b \mathrel{◀} p;\ m
+& \quad \Sigma;\ \varphi \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \mathrel{◀} p;\ m
 \end{aligned}
 ```
 
