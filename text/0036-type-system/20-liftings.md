@@ -166,7 +166,7 @@ The [usage](12-usage.md#definitions) of the signatures has a rule of its own for
 
 ## Properties
 
-A type has one lifting at most, a well-formed signature holds the liftings that it declares, and the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
+A type has one lifting at most, a well-formed signature holds the liftings that it declares, the result of a destructor of a lifting, at an instance, is the result of the destructor that it lifts, lifted at an observation, and the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
 
 In a signature whose [names are distinct](08-syntax.md), a type has one lifting at most at a term and at its nesting, of one level, and the arguments of an instance are lifted in one way at most at their nestings, with the same parameters lifted and the same levels:
 
@@ -198,6 +198,35 @@ A well-formed signature holds the lifting that it declares of a type of one of i
 & \qquad D \text{ is a type of } \mathcal{D} \\
 & \qquad \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d') \in \Sigma \\
 & \quad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d'
+\end{aligned}
+```
+
+In a signature whose names are distinct, the destructor of the lifting of $`D`$ at $`\Pi`$ that lifts a destructor $`d`$ of $`D`$, at the instance of the lifting that the instance $`{T = D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ lifted at a term $`t`$ is, has arguments used and required as those of $`d`$, used $`r`$ times more, and its result is the result of $`d`$ at the arguments $`\bar a`$ and at the [observations](09-substitution.md) of $`t`$ by the destructors $`\bar d_1`$ before $`d`$, lifted at the observation of $`t`$ by $`d`$, at the variables $`\bar x`$ of its arguments: the type of the recursive result of this observation.
+The arguments $`\bar a`$ and this result are lifted where no parameter is lifted, whatever the block lifted is, as the type of a field of a block is, while the destructors $`\bar d'`$ are those of the lifting at $`\Pi`$: the arguments lifted $`\bar a'`$ give each parameter of $`\Pi`$ its motive, and the result is lifted at its [nesting](14-typing.md#nesting), where $`{\Lambda = (\Delta \mapsto \bar\lambda)}`$ gives the parameters the nestings of the arguments, no position to the destructors and no object to a declared type.
+The destructors $`\bar d'_1`$ of the lifting before it are given any abstractions $`\bar f`$, on which its result does not depend:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{inst}_{\uparrow}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \mathcal{D} \in \Sigma \\
+& \qquad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
+& \qquad \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\
+& \qquad \Sigma \vdash \bar a \uparrow_{\bar\lambda} = (\Pi;\ \bar l'';\ \bar a') \\
+& \qquad {=} \\
+& \qquad \quad \bar d_D[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\
+& \qquad \quad (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma_0 \mid \bar d_2) \\
+& \qquad {=} \\
+& \qquad \quad \bar d'[\bar s' / \bar s,\ \bar l', \bar l'' / \bar l, \bar l_\Pi,\ \bar p' / \bar p] \\
+& \qquad \quad (\bar d'_1 \mid d : (\Theta' \vdash B' \mathrel{◀} \psi') \mathrel{▶} p';\ q' \mathrel{◀} \varsigma' \mid \bar d'_2) \\
+& \quad \text{and} \\
+& \qquad \text{the entries of } \Theta' \text{ are used and required as those of } r \cdot \Theta \\
+& \qquad \exists l_0. \\
+& \qquad \quad \Sigma \\
+& \qquad \quad {\vdash}\ B[\bar a / \Delta,\ t.T / \bar d_1] \uparrow_{\mathsf{nest}_\Lambda(B)} t.(T.d)(\bar x) \\
+& \qquad \quad {=}\ B'[(\bar a',\ t) / (\Delta \uparrow,\ y),\ \bar f / \bar d'_1] \\
+& \qquad \quad {:}\ (s_C)_{l_0}
 \end{aligned}
 ```
 
