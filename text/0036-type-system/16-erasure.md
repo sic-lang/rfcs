@@ -471,7 +471,50 @@ In the rules, $`{\nu \bullet \bar\pi \bullet \bar\pi'}`$ extends $`\nu`$ by the 
 The judgment $`{\Omega;\ \varphi \vdash M \mathrel{◀} o}`$ reads: the value of the term $`M`$ of the target language has the ownership $`o`$ at run time, a multiplicity, given the ownership $`\varphi(x)`$ of each variable $`x`$ and the ownership $`\Omega(f)`$ of each constant $`f`$; $`{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o}`$ reads: the terms $`\bar M`$ have the ownerships $`\bar o`$, each satisfying the requirement of its position.
 It follows the [ownership](13-ownership.md) on the run-time components that the target language keeps, the ownerships being multiplicities, ordered as the multiplicities are, $`\omega`$ the least, which states nothing, and the value $`\psi[\bar o]`$ of the ownership $`\psi`$ of the result of a destructor at the ownerships $`\bar o`$ of its arguments being defined as $`(\mathsf{value}_\psi)`$ defines it, on multiplicities.
 A variable has the ownership that $`\varphi`$ gives it, a constant the one that $`\Omega`$ gives it, and $`\text{↯}`$, which the evaluation never reads, every ownership; a constructor builds a new value, of the ownership $`1`$, whose fields satisfy the requirements of their positions, $`\bar\varrho(\bar M) \le \bar o`$, as an observation and a corecursor require of their arguments and of their state.
-A recursor has the ownership $`o'`$ of its branches, each checked with the ownership $`o`$ of its term times the requirement $`\varrho`$ of its recursion times the coefficient $`\kappa`$ of each variable of a field, and $`o'`$ times the multiplicity $`\pi'`$ of each variable of a recursive result, written $`{\varphi \bullet o \cdot \bar\kappa \bullet o' \cdot \bar\pi'}`$ as $`(\bullet_\nu)`$ extends a vector; an observation has the ownership $`o`$ of its term times the value of $`\psi`$ at the ownerships of its arguments, and $`o`$ satisfies the requirement $`\varsigma`$ of its destructor on the value that it observes.
+A recursor has the ownership $`o'`$ of its branches, each checked with the ownership $`o`$ of its term times the requirement $`\varrho`$ of its recursion times the coefficient $`\kappa`$ of each variable of a field, and the ownership $`\mathsf{own}_{o'}(w)`$ of each variable of a recursive result times its multiplicity $`\pi'`$, $`o'`$ for a result of the recursor and $`1`$ for a nested result, a new value, written $`{\varphi \bullet o \cdot \bar\kappa \bullet \mathsf{own}_{o'}(\bar w) \cdot \bar\pi'}`$ as $`(\bullet_\nu)`$ extends a vector.
+A recursor also gives its branches the ownership $`\varsigma`$ that the lifted destructors of its nested results require of the value that they observe, and the ownership $`\chi`$ of their results that are motives: the corecursor of a nested result captures the scope, which its observations see at $`{\varsigma \cdot \varphi}`$, and runs the recursor on the observations of the field, whose results have the ownership $`\chi`$, so that each branch is checked a second time, with the scope at $`{\varsigma \cdot \varphi}`$ and the ownership $`\chi`$; every branch is, since a recursion from a nested result may reach any constructor, and a recursor without nested result passes this check with $`{\varsigma = 1}`$ and $`{\chi = o'}`$, where it is the first one.
+The shape of each nested result has the ownerships $`\varsigma`$ and $`\chi`$, written $`{\Xi \mathrel{◀} \varsigma;\ \chi}`$: each lifted destructor requires $`\varsigma`$ of the value that it observes, and its result has the ownership $`\mathsf{own}_\chi(\Upsilon)`$, $`\chi`$ for the recursor itself and $`1`$ for the corecursor of the next lifting, whatever the ownerships of its arguments, as the [lifting](20-liftings.md#destructors) declares them.
+The shape also meets the requirements of the recursions on the observations of the field, whose branches see the term of the recursor at the ownership $`o`$, written $`{\Xi \text{ meets } o;\ \varsigma}`$: for each destructor observed at run time, the requirement $`\varsigma_0`$ of the destructor that it lifts on the value that it observes is within $`o`$, and, for all the ownerships $`\bar o`$ of the arguments of its branch that meet their requirements, the arguments of the observation, of the ownerships $`\bar o'`$, meet the requirements of their positions in it, and the value of the ownership $`\psi_0`$ of its result at $`\bar o'`$ is defined and keeps $`o`$, so that the observation has an ownership within $`o`$, as each level of the recursion has; the observation sees the arguments of the branch at $`\mathsf{scale}_\varsigma(\Upsilon)`$, $`1`$ when the recursor runs on it in the branch, and $`\varsigma`$ when the corecursor of the next lifting captures it, and an erased argument, $`\text{↯}`$, has every ownership, its requirement among them.
+The variable of the field of a nested result, seen at $`\varsigma`$, keeps $`o`$, the ownership of the term of the recursor:
+
+```math
+\begin{aligned}
+& \mathsf{own}_{o'}(\bot) = o' &&(\mathsf{own}_w) \\
+& \mathsf{own}_{o'}(n) = o' \\
+& \mathsf{own}_{o'}(n.\Xi) = 1 \\[1em]
+& \mathsf{own}_\chi(\star_M) = \chi &&(\mathsf{own}_\Upsilon) \\
+& \mathsf{own}_\chi(\Xi) = 1 \\[1em]
+& \mathsf{scale}_\varsigma(\star_M) = 1 &&(\mathsf{scale}_\Upsilon) \\
+& \mathsf{scale}_\varsigma(\Xi) = \varsigma \\[1em]
+& () \mathrel{◀} \varsigma;\ \chi &&(\mathsf{uniform}_\Xi) \\[1em]
+& {\iff} \\
+& \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \mathrel{◀} \varsigma;\ \chi \\
+& \quad \text{and} \\
+& \qquad \varsigma' = \varsigma \\
+& \qquad \psi = \mathsf{own}_\chi(\Upsilon) \\
+& \qquad \Upsilon \mathrel{◀} \varsigma;\ \chi \\
+& \qquad \Xi \mathrel{◀} \varsigma;\ \chi \\[1em]
+& \star_M \mathrel{◀} \varsigma;\ \chi &&(\mathsf{uniform}_\Upsilon) \\[1em]
+& () \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Xi) \\[1em]
+& {\iff} \\
+& \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \text{ meets } o;\ \varsigma \\
+& \quad \text{and} \\
+& \qquad {\implies} \\
+& \qquad \quad \rho' \ne 0 \\
+& \qquad \quad \text{and} \\
+& \qquad \qquad \varsigma_0 \le o \\
+& \qquad \qquad \forall \bar o.\ \bar\varrho' \le \bar o \implies \bar\varrho \le \bar o' \text{ and } \exists v.\ \psi_0[\bar o'] = v \text{ and } o \le o \cdot v \\
+& \qquad \Upsilon \text{ meets } o;\ \varsigma \\
+& \qquad \Xi \text{ meets } o;\ \varsigma \\
+& \quad \text{where} \\
+& \qquad \text{and} \\
+& \qquad \quad o'_k = \varrho_k \text{ if } \pi_k = 0 \\
+& \qquad \quad o'_k = \mathsf{scale}_\varsigma(\Upsilon) \cdot (o_k \cdot \pi'_k) \text{ otherwise} \\[1em]
+& \star_M \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Upsilon)
+\end{aligned}
+```
+
+An observation has the ownership $`o`$ of its term times the value of $`\psi`$ at the ownerships of its arguments, and $`o`$ satisfies the requirement $`\varsigma`$ of its destructor on the value that it observes.
 A corecursor builds a new value, of the ownership $`1`$, and each branch has, for all the ownerships $`\bar o`$ of its arguments that satisfy their requirements $`\bar\varrho'`$, the value of the ownership $`\psi`$ of the result of its destructor at $`\bar o`$, or the ownership $`1`$ of a new value when it resumes the corecursor, $`{k \ne \bot}`$, given the ownership $`\varsigma \cdot \varphi(x)`$ of each variable $`x`$ of the scope, $`\varsigma`$ times its ownership, the ownership $`\varsigma \cdot \varrho \cdot \pi`$ of the variable of each entry of the state, of the requirement $`\varsigma`$ of its destructor on the value that it observes, of the requirement $`\varrho`$ and of the multiplicity $`\pi`$, and $`o \cdot \pi'`$ of the variable of each argument, of the ownership $`o`$ and the multiplicity $`\pi'`$, as the [ownership](13-ownership.md#definitions) of the source language checks them; the ownership $`\psi`$ of the result of a destructor whose branch resumes the corecursor is a constant, as the [ownership of a signature](13-ownership.md#definitions) requires of a recursive destructor, since the evaluation gives the term already built of a position the constant of $`\psi`$ as its requirement, which a factor would let an observation exceed, its value then depending on the ownerships of the arguments.
 A position satisfies its requirement in every case, without the exception of the mode $`{00}^{\mathsf{m}}`$ of the source language: the erasure replaces with $`\text{↯}`$ every position that the source language does not check, whose ownership no value of an ownership $`\psi`$ reads, since $`(d_{◀})`$ admits a factor of $`\psi`$ only on an argument checked in the mode of the observation:
 
@@ -481,20 +524,20 @@ A position satisfies its requirement in every case, without the exception of the
 \frac{}{\Omega;\ \varphi \vdash f.\{\bar s;\ \bar p\} \mathrel{◀} \Omega(f)}\;(\mathsf{own}_M.f) \\[2em]
 \frac{}{\Omega;\ \varphi \vdash \text{↯} \mathrel{◀} o}\;(\mathsf{own}_M.\text{↯}) \\[2em]
 \frac{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o}{\Omega;\ \varphi \vdash c_i(\bar M) \mathrel{◀} 1}\;(\mathsf{own}_M.c) \\[2em]
-\frac{\Omega;\ \varphi \vdash M \mathrel{◀} o \quad \Omega;\ \varphi \vdash \bar N \mathrel{◀} o \cdot \varrho;\ o'}{\Omega;\ \varphi \vdash \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \mathrel{◀} o'}\;(\mathsf{own}_M.\mathsf{rec}) \\[2em]
+\frac{\Omega;\ \varphi \vdash M \mathrel{◀} o \quad \Omega;\ \varphi \vdash \bar N \mathrel{◀} o \cdot \varrho;\ o';\ \varsigma;\ \chi}{\Omega;\ \varphi \vdash \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \mathrel{◀} o'}\;(\mathsf{own}_M.\mathsf{rec}) \\[2em]
 \frac{\begin{aligned}& \Omega;\ \varphi \vdash M \mathrel{◀} o \\[0.6em] & \Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o \\[0.6em] & \psi[\bar o] = v \\[0.6em] & \varsigma \le o\end{aligned}}{\Omega;\ \varphi \vdash M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma \mathrel{◀} o \cdot v}\;(\mathsf{own}_M.d) \\[2em]
 \frac{\Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o \quad \Omega;\ \varphi \vdash \bar P \mathrel{◀}}{\Omega;\ \varphi \vdash \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \mathrel{◀} 1}\;(\mathsf{own}_M.\mathsf{corec}) \\[2em]
 \frac{\Omega;\ \varphi \vdash M \mathrel{◀} p \quad q \le p}{\Omega;\ \varphi \vdash M \mathrel{◀} q}\;(\mathsf{own}_M.\mathsf{sub}) \\[2em]
 \frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} ()}\;(\mathsf{own}_{\bar M}.\varepsilon) \\[2em]
 \frac{\begin{aligned}& \Omega;\ \varphi \vdash M \mathrel{◀} o \\[0.6em] & \varrho \le o \\[0.6em] & \Omega;\ \varphi \vdash \bar M \mathrel{◀} \bar o\end{aligned}}{\Omega;\ \varphi \vdash (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \mathrel{◀} (o,\ \bar o)}\;(\mathsf{own}_{\bar M}.{,}) \\[2em]
-\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.\varepsilon) \\[2em]
-\frac{\begin{aligned}& \Omega;\ \varphi \bullet o \cdot \bar\kappa \bullet o' \cdot \bar\pi' \vdash N \mathrel{◀} o' \\[0.6em] & \Omega;\ \varphi \vdash \bar N \mathrel{◀} o;\ o'\end{aligned}}{\Omega;\ \varphi \vdash ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar w).\, N,\ \bar N) \mathrel{◀} o;\ o'}\;(\mathsf{own}_{\bar N}.{,}) \\[2em]
+\frac{}{\Omega;\ \varphi \vdash () \mathrel{◀} o;\ o';\ \varsigma;\ \chi}\;(\mathsf{own}_{\bar N}.\varepsilon) \\[2em]
+\frac{\begin{aligned}& \Omega;\ \varphi \bullet o \cdot \bar\kappa \bullet \mathsf{own}_{o'}(\bar w) \cdot \bar\pi' \vdash N \mathrel{◀} o' \\[0.6em] & \Omega;\ \varsigma \cdot \varphi \bullet o \cdot \bar\kappa \bullet \mathsf{own}_\chi(\bar w) \cdot \bar\pi' \vdash N \mathrel{◀} \chi \\[0.6em] & \forall j.\ w_j = n.\Xi \implies \Xi \mathrel{◀} \varsigma;\ \chi \text{ and } \Xi \text{ meets } o;\ \varsigma \text{ and } o \le \varsigma \cdot (o \cdot \kappa_n) \\[0.6em] & \Omega;\ \varphi \vdash \bar N \mathrel{◀} o;\ o';\ \varsigma;\ \chi\end{aligned}}{\Omega;\ \varphi \vdash ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar w).\, N,\ \bar N) \mathrel{◀} o;\ o';\ \varsigma;\ \chi}\;(\mathsf{own}_{\bar N}.{,}) \\[2em]
 \frac{}{\Omega;\ \varphi \vdash () \mathrel{◀}}\;(\mathsf{own}_{\bar P}.\varepsilon) \\[2em]
 \frac{\begin{aligned}& \forall \bar o, v. \\ & \quad \text{⟹} \\ & \qquad \text{and} \\ & \qquad \quad \bar\varrho' \le \bar o \\ & \qquad \quad \text{or} \\ & \qquad \qquad \text{and} \\ & \qquad \qquad \quad k = \bot \\ & \qquad \qquad \quad \psi[\bar o] = v \\ & \qquad \qquad \text{and} \\ & \qquad \qquad \quad k \ne \bot \\ & \qquad \qquad \quad v = 1 \\ & \qquad \Omega;\ \varsigma \cdot \varphi \bullet \varsigma \cdot \bar\varrho \cdot \bar\pi \bullet \bar o \cdot \bar\pi' \\ & \qquad {\vdash}\ P \mathrel{◀} v \\[0.6em] & k \ne \bot \implies \exists \chi.\ \psi = \chi \\[0.6em] & \Omega;\ \varphi \vdash \bar P \mathrel{◀}\end{aligned}}{\Omega;\ \varphi \vdash ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) \mathrel{◀}}\;(\mathsf{own}_{\bar P}.{,})
 \end{gathered}
 ```
 
-In the rules, $`o \cdot \bar\kappa`$, $`\bar\varrho \cdot \bar\pi`$ and $`\bar o \cdot \bar\pi'`$ multiply the sequences element by element.
+In the rules, $`o \cdot \bar\kappa`$, $`\mathsf{own}_{o'}(\bar w) \cdot \bar\pi'`$, $`\bar\varrho \cdot \bar\pi`$ and $`\bar o \cdot \bar\pi'`$ multiply the sequences element by element, $`\mathsf{own}_{o'}(\bar w)`$ being the ownership of each of $`\bar w`$.
 
 ## Properties
 
