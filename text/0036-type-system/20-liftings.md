@@ -1,16 +1,16 @@
 # Liftings
 
-This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the parameters of the lifting and its declaration, the lifting of a type at a term, of the arguments of an instance and of the destructors of a codata type, and the signatures that hold it, with the typing and the ownership of the lifting of a codata type without recursive destructor.
+This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the parameters of the lifting and its declaration, the lifting of a type at a term and of the arguments of an instance, the factor of the result of a destructor of a lifting, the lifting of the destructors of a codata type, and the signatures that hold it, with the typing and the ownership of the lifting of a codata type without recursive destructor.
 Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the variables that [do not occur](14-typing.md#strict-positivity) in a term and on the [nesting](14-typing.md#nesting) of a type, and the [recursive results](21-recursive-results.md) read them for the result of a field nested below a codata type.
 
 ## Definitions
 
-This section gives the variables of a lifting, its parameters and its declaration, then the lifting of the types and of the arguments of their instances and of the destructors, and the signatures that hold the lifting.
+This section gives the variables of a lifting, its parameters and its declaration, then the lifting of the types and of the arguments of their instances, the factors of the results of the destructors of a lifting, the lifting of the destructors, and the signatures that hold the lifting.
 
 ### Variables of a Lifting
 
 The lifting of the type $`D`$ of a block of codata types $`{\mathcal{D} = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C_{\mathcal{D}}\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$ at a set $`\Pi`$ of its parameters is named $`D^\Pi`$, a name of the signature that $`D`$ and $`\Pi`$ determine and that determines them: the liftings of two types, or of a type at two sets of its parameters, have distinct names.
-It has the variables of the block and these: the quality $`s_C`$ of the sorts of its motives, the level $`l_Y`$ of the sort of the motive of each parameter $`Y`$ of $`\Pi`$, written $`\bar l_\Pi`$ together, the grade $`r`$ of the recursor that computes its terms, the ownership $`\varsigma`$ that its destructors require of the value that they observe, and the ownership $`\chi`$ of their results.
+It has the variables of the block and these: the quality $`s_C`$ of the sorts of its motives, the level $`l_Y`$ of the sort of the motive of each parameter $`Y`$ of $`\Pi`$, written $`\bar l_\Pi`$ together, the grade $`r`$ of the recursor that computes its terms, the ownership $`\varsigma`$ that its destructors require of the value that they observe, and the ownership $`\chi`$ of their results that are motives.
 Each motive has a level of its own, since a sort is equal to another at the same level only: a type lifted is a motive of the lifting of an instance whose argument it is, and its level is not the level of the motive of a parameter.
 Its parameters are those of the block, a motive $`C_Y`$ for each parameter $`Y`$ of $`\Pi`$, and a term $`y`$ of the type $`D`$ at these parameters; in the definitions of this section, $`\Pi`$, these variables and these motives are fixed, and a parameter is lifted when it is in $`\Pi`$.
 
@@ -116,17 +116,44 @@ An argument that is lifted is followed by its motive, the argument lifted at a t
 \end{gathered}
 ```
 
+### Factors
+
+The relation $`{\Sigma \vdash \mathsf{factor}(B) = \pi}`$ reads: the result $`B`$ of a destructor of a lifting has the factor $`\pi`$, a grade, which multiplies the uses of the scope by the recursive result that this destructor observes; $`{\Sigma \vdash \mathsf{factor}(\bar d) = \hat\pi}`$ reads: the destructors $`\bar d`$ have the meet $`\hat\pi`$ of their grades times the factors of their results, or $`\bot`$ when there is none, where $`{\pi \wedge \bot = \pi}`$.
+A motive at its arguments has the factor $`{11}^{\mathsf{p}}`$, since its recursive result runs the recursor once.
+An instance of a lifting that the signature declares has the meet of the grades of its destructors times their factors, since its recursive result is a corecursor, an observation of which runs one branch, at the grade of its destructor, as the [usage](12-usage.md#definitions) of a corecursor bounds its uses by those of each branch; it has the factor $`{00}^{\mathsf{p}}`$ when the lifting has no destructor, since its recursive result is then never observed:
+
+```math
+\begin{gathered}
+\frac{}{\Sigma \vdash \mathsf{factor}(x[\bar t]) = {11}^{\mathsf{p}}}\;(\mathsf{factor}_X) \\[2em]
+\frac{\begin{aligned}& \mathsf{lifting}_{\Pi'}(\mathcal{D}',\ D,\ \bar d') \in \Sigma \\[0.6em] & \bar s',\ \bar p' \text{ as many as the sort and grade variables of the lifting} \\[0.6em] & \Sigma \vdash \mathsf{factor}(\bar d'[\bar s' / \bar s_\uparrow,\ \bar p' / \bar p_\uparrow]) = \hat\pi \\[0.6em] & \pi = \hat\pi \text{ when } \hat\pi \ne \bot \text{, and } \pi = {00}^{\mathsf{p}} \text{ when } \hat\pi = \bot\end{aligned}}{\Sigma \vdash \mathsf{factor}(D^{\Pi'}.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a) = \pi}\;(\mathsf{factor}_D) \\[2em]
+\frac{}{\Sigma \vdash \mathsf{factor}(\varepsilon) = \bot}\;(\mathsf{factor}_{\bar d\varepsilon}) \\[2em]
+\frac{\Sigma \vdash \mathsf{factor}(B) = \pi \quad \Sigma \vdash \mathsf{factor}(\bar d) = \hat\pi}{\Sigma \vdash \mathsf{factor}(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) = (p \cdot \pi) \wedge \hat\pi}\;(\mathsf{factor}_{\bar d,})
+\end{gathered}
+```
+
+In the rule $`(\mathsf{factor}_D)`$, $`\bar s_\uparrow`$ and $`\bar p_\uparrow`$ are the sort and grade variables of the lifting of $`D`$ at $`\Pi'`$, $`{\bar s, s_C}`$ and $`{\bar p, r, \varsigma, \chi}`$ of its block $`\mathcal{D}'`$.
+The factor is a relation, as the lifting is: an instance of a lifting that the signature does not declare has no factor, and a result of a destructor of a lifting is a motive or an instance of a lifting.
+
+The ownership $`{\mathsf{own}_\chi(B)}`$ of the result $`B`$ of a destructor of a lifting is $`{11}^{\mathsf{p}}`$ when $`B`$ is an instance of a lifting, whose recursive result is a new value, a corecursor, and the ownership $`\chi`$ of the results of the recursor otherwise, when $`B`$ is a motive:
+
+```math
+\begin{aligned}
+& \mathsf{own}_\chi(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = {11}^{\mathsf{p}} &&(\mathsf{own}_{\uparrow}) \\
+& \mathsf{own}_\chi(B) = \chi \text{ otherwise}
+\end{aligned}
+```
+
 ### Destructors
 
 The relation $`{\Sigma \vdash \bar d \uparrow y = \bar d'}`$ reads: the destructors $`\bar d'`$ are the destructors $`\bar d`$ of the type $`D`$ lifted at the term $`y`$ of its instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta}`$ at the parameters themselves.
-The lifting has each destructor whose result, which has no position since the declaration of a lifting lifts no block, is lifted at the observation of $`y`$ by it, at its arguments $`\bar x`$, used $`r`$ times more, since the recursor eliminates this observation $`r`$ times, with this result, of the ownership $`\chi`$ whatever the ownerships of the arguments are, and the requirement $`\varsigma`$; it has no destructor for a destructor in whose result no parameter lifted occurs.
+The lifting has each destructor whose result, which has no position since the declaration of a lifting lifts no block, is lifted at the observation of $`y`$ by it, at its arguments $`\bar x`$, used $`{r \cdot \pi}`$ times more, where $`\pi`$ is the factor of the result lifted, since the recursor eliminates this observation $`r`$ times and the recursive result of the result lifted uses the scope $`\pi`$ times, with this result, of the ownership $`{\mathsf{own}_\chi(B')}`$ whatever the ownerships of the arguments are, and the requirement $`\varsigma`$; it has no destructor for a destructor in whose result no parameter lifted occurs.
 The sort of the result lifted is bounded by the sort $`{\kappa' = (s_C)_{l \sqcup \bigsqcup \bar l_\Pi}}`$ of the lifting, where $`l`$ is the level of the sort of the block, as the [formation](14-typing.md#destructors-of-a-block) of a destructor requires of its result: the relation reads the syntax only, while the level of the lifting of an instance is the level of the type that it lifts, which nothing here compares to the level of the block.
 In the destructors after it, each destructor is the [observation](09-substitution.md) of $`y`$ by it, so that the destructors of the lifting do not depend on one another, and none is used by the types of those after it:
 
 ```math
 \begin{gathered}
 \frac{}{\Sigma \vdash \varepsilon \uparrow y = \varepsilon}\;(\uparrow_{\bar d\varepsilon}) \\[2em]
-\frac{\begin{aligned}& \Sigma \vdash B \uparrow_\bot y.(T.d)(\bar x) = B' : (s_C)_{l'} \\[0.6em] & (s_C)_{l'} \preceq \kappa' \\[0.6em] & \Sigma \vdash \bar d[y.T / d] \uparrow y = \bar d'\end{aligned}}{\begin{aligned}& \Sigma \\ & {\vdash}\ (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y \\ & {=}\ (d : (r \cdot \Theta \vdash B' \mathrel{◀} \chi) \mathrel{▶} \mathsf{grade}_{s_C}(p);\ {00}^{\mathsf{p}} \mathrel{◀} \varsigma \mid \bar d')\end{aligned}}\;(\uparrow_{\bar d|}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash B \uparrow_\bot y.(T.d)(\bar x) = B' : (s_C)_{l'} \\[0.6em] & \Sigma \vdash \mathsf{factor}(B') = \pi \\[0.6em] & (s_C)_{l'} \preceq \kappa' \\[0.6em] & \Sigma \vdash \bar d[y.T / d] \uparrow y = \bar d'\end{aligned}}{\begin{aligned}& \Sigma \\ & {\vdash}\ (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y \\ & {=}\ (d : ((r \cdot \pi) \cdot \Theta \vdash B' \mathrel{◀} \mathsf{own}_\chi(B')) \mathrel{▶} \mathsf{grade}_{s_C}(p);\ {00}^{\mathsf{p}} \mathrel{◀} \varsigma \mid \bar d')\end{aligned}}\;(\uparrow_{\bar d|}) \\[2em]
 \frac{\begin{aligned}& \text{no parameter of } \Pi \text{ occurs in } B \\[0.6em] & \Sigma \vdash \bar d[y.T / d] \uparrow y = \bar d'\end{aligned}}{\Sigma \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d) \uparrow y = \bar d'}\;(\uparrow_{\bar d\notin})
 \end{gathered}
 ```
@@ -167,7 +194,7 @@ The [usage](12-usage.md#definitions) of the signatures has a rule of its own for
 
 ## Properties
 
-A type has one lifting at most, a well-formed signature holds the liftings that it declares, the result of a destructor of a lifting, at an instance, is the result of the destructor that it lifts, lifted at an observation, and the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
+A type has one lifting at most, the result of a destructor of a lifting one factor at most, a well-formed signature holds the liftings that it declares, the result of a destructor of a lifting, at an instance, is the result of the destructor that it lifts, lifted at an observation, and the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
 
 In a signature whose [names are distinct](08-syntax.md), a type has one lifting at most at a term and at its nesting, of one level, and the arguments of an instance are lifted in one way at most at their nestings, with the same parameters lifted and the same levels:
 
@@ -185,6 +212,19 @@ In a signature whose [names are distinct](08-syntax.md), a type has one lifting 
 & \qquad \Sigma \vdash \bar a \uparrow_{\bar\lambda} = (\Pi_1;\ \bar l_1;\ \bar a'_1) \\
 & \qquad \Sigma \vdash \bar a \uparrow_{\bar\lambda} = (\Pi_2;\ \bar l_2;\ \bar a'_2) \\
 & \quad \Pi_1 = \Pi_2 \text{ and } \bar l_1 = \bar l_2 \text{ and } \bar a'_1 = \bar a'_2
+\end{aligned}
+```
+
+In a signature whose names are distinct, the result of a destructor of a lifting has one factor at most, since an instance of a lifting names one declaration:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unique}_{\mathsf{factor}}) \\
+& \quad \text{and} \\
+& \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \Sigma \vdash \mathsf{factor}(B) = \pi_1 \\
+& \qquad \Sigma \vdash \mathsf{factor}(B) = \pi_2 \\
+& \quad \pi_1 = \pi_2
 \end{aligned}
 ```
 
