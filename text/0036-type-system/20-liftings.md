@@ -1,7 +1,7 @@
 # Liftings
 
 This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the parameters of the lifting and its declaration, the lifting of a type at a term, of the arguments of an instance and of the destructors of a codata type, and the signatures that hold it, with the typing and the ownership of the lifting of a codata type without recursive destructor.
-Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the variables that [do not occur](14-typing.md#strict-positivity) in a term and on the [nesting](14-typing.md#nesting) of a type, and the typing will read them for the recursive result of a field nested below a codata type.
+Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the variables that [do not occur](14-typing.md#strict-positivity) in a term and on the [nesting](14-typing.md#nesting) of a type, and the [recursive results](21-recursive-results.md) read them for the result of a field nested below a codata type.
 
 ## Definitions
 
