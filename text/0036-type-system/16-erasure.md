@@ -22,12 +22,20 @@ The target language has variables, all of the first order, the constants at the 
 & \bar M \mathrel{::=} () \mid (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) &&(\mathsf{syntax}_{\bar M}) \\[1em]
 & \bar N \mathrel{::=} () \mid ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar w).\, N,\ \bar N) &&(\mathsf{syntax}_{\bar N}) \\[1em]
 & \bar P \mathrel{::=} () \mid ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) &&(\mathsf{syntax}_{\bar P}) \\[1em]
-& w \mathrel{::=} \bot \mid n &&(\mathsf{syntax}_w) \\[1em]
+& w \mathrel{::=} \bot \mid n \mid n.\Xi &&(\mathsf{syntax}_w) \\[1em]
+& {\mathrel{::=}} &&(\mathsf{syntax}_\Xi) \\
+& \quad \Xi \\
+& \quad {\mid} \\
+& \qquad () \\
+& \qquad ((i,\ \rho,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \\[1em]
+& \Upsilon \mathrel{::=} \star_M \mid \Xi &&(\mathsf{syntax}_\Upsilon) \\[1em]
 & k \mathrel{::=} \bot \mid n \mid \text{↯}_n &&(\mathsf{syntax}_k)
 \end{aligned}
 ```
 
-A branch $`{(\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar w).\, N}`$ binds the variables $`\bar x`$ of the fields and $`\bar y`$ of the recursive results, as a branch of a recursor does, at the [multiplicities](03-multiplicities.md) $`\bar\pi`$ and $`\bar\pi'`$, which count their uses at run time, each variable of a field with the coefficient $`\kappa`$ of its ownership, a multiplicity, which multiplies the ownership at run time of the term of the recursor, and $`\bar w`$ gives each recursive result what computes it: the position $`n`$ of its field among $`\bar x`$, the first one at $`1`$, when the recursor on the field computes it, or $`\bot`$ when the result is erased, so that it is not computed.
+A branch $`{(\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar w).\, N}`$ binds the variables $`\bar x`$ of the fields and $`\bar y`$ of the recursive results, as a branch of a recursor does, at the [multiplicities](03-multiplicities.md) $`\bar\pi`$ and $`\bar\pi'`$, which count their uses at run time, each variable of a field with the coefficient $`\kappa`$ of its ownership, a multiplicity, which multiplies the ownership at run time of the term of the recursor, and $`\bar w`$ gives each recursive result what computes it: the position $`n`$ of its field among $`\bar x`$, the first one at $`1`$, when the recursor on the field computes it, $`n.\Xi`$ when the field at the position $`n`$ is nested and the result is the corecursor of a lifting of the shape $`\Xi`$, which the evaluation builds from the branches of the recursor, as the rule $`(\mathsf{res}_D)`$ of the [terms of the results](21-recursive-results.md#terms-of-the-results) builds it from the observations of the field, or $`\bot`$ when the result is erased, so that it is not computed.
+A shape $`\Xi`$ gives, for each destructor that the lifting keeps, in order, without the terms of its branch, what the evaluation needs to build this branch: the case $`i`$ of the destructor that it lifts in its block, its multiplicity $`\rho`$ at run time, the multiplicities and the requirements $`{\bar\pi \mathrel{◀} \bar\varrho}`$ of its arguments in the observation of the field and $`{\bar\pi' \mathrel{◀} \bar\varrho'}`$ in the lifted destructor, the ownership $`\psi`$ of the result of the lifted destructor and the ownership $`\varsigma`$ that it requires of the value that it observes, the same ownerships $`\psi_0`$ and $`\varsigma_0`$ of the destructor that it lifts, which the observation of the field reads, and the shape $`\Upsilon`$ of its result.
+The shape of a result is $`\star_M`$ when the type lifted is a motive, so that the result is the recursor itself, where $`M`$ is the skeleton of the motive, on which the recursor of the multiplicity $`0`$ runs instead of the observation, and the shape $`\Xi`$ of the next lifting when the type lifted is an instance of a lifting, two levels of nesting deep or more.
 A branch $`{(\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P}`$ binds the variables $`\bar y`$ of the state and $`\bar z`$ of the arguments, as a branch of a corecursor does, at the multiplicities $`\bar\pi`$ and $`\bar\pi'`$ and at the requirements $`\bar\varrho`$ and $`\bar\varrho'`$ of their entries, $`\psi`$ is the ownership of the result of its destructor, $`\varsigma`$ the ownership that its destructor requires of the value that it observes, and $`k`$ is its resumption: $`\bot`$ when its destructor is not recursive, the number $`n`$ of the entries of the state that the branch resumes, which the evaluation unpacks from the new state, or $`\text{↯}_n`$ when these $`n`$ entries are erased, so that the evaluation does not read the new state.
 A term $`{M \mathrel{▶} \pi \mathrel{◀} \varrho}`$ of a field, of an argument or of the state is stored at the multiplicity $`\pi`$ of its position, which bounds the uses of its value through this position, and at the requirement $`\varrho`$ of its position, a multiplicity, which the ownership at run time of its value satisfies, and a recursor $`{\mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N}`$ uses the value of $`M`$ at the multiplicity $`\rho`$, so that a branch reads each field within $`\rho`$ times its multiplicity, and its branches assume of the term of each level of the recursion the ownership of $`M`$ times the requirement $`\varrho`$ of its recursion, which is within the requirement times the uses of each recursive field that a recursion eliminates: a value is computed once, but a cell of the multiplicity $`\omega`$ may read it several times, and each observation of a closure runs a branch again, which the multiplicities of the positions bound.
 The ownerships of the target language are those at run time, multiplicities, since the projection on the run-time multiplicity keeps the product and the meet of the grades: the ownership $`\psi`$ of the result of a destructor has the [syntax](08-syntax.md) of the ownership of the result of a second-order variable, with multiplicities as its constant and its coefficients, and $`\psi_\bot`$ is the ownership without constant and without factor; the requirement $`\varsigma`$ of a destructor on the value that it observes is a multiplicity.
@@ -39,6 +47,62 @@ The multiplicities $`\bar\pi(\bar M)`$ and the requirements $`\bar\varrho(\bar M
 & \bar\pi((M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M)) = (\pi,\ \bar\pi(\bar M)) \\[1em]
 & \bar\varrho(()) = () &&(\mathsf{requirements}_{\bar M}) \\
 & \bar\varrho((M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M)) = (\varrho,\ \bar\varrho(\bar M))
+\end{aligned}
+```
+
+The factor $`\mathsf{factor}(\Xi)`$ of a shape is the multiplicity by which the uses of the scope of the recursor by the result that it shapes are multiplied, as the [factor](20-liftings.md#factors) of a lifting is: the meet of the multiplicities at run time of its destructors times the factors of their results, $`0`$ without destructor, since the result is then never observed, and $`1`$ for the recursor itself; the factor of a recursive result is $`0`$ when it is erased, $`1`$ when the recursor on its field computes it, and the factor of its shape when it is nested:
+
+```math
+\begin{aligned}
+& \mathsf{factor}(()) = 0 &&(\mathsf{factor}_\Xi) \\
+& \mathsf{factor}(((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ ())) = \rho' \cdot \mathsf{factor}(\Upsilon) \\
+& {=} \text{ if } \Xi \ne () \\
+& \quad \mathsf{factor}(((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi)) \\
+& \quad (\rho' \cdot \mathsf{factor}(\Upsilon)) \wedge \mathsf{factor}(\Xi) \\[1em]
+& \mathsf{factor}(\star_M) = 1 &&(\mathsf{factor}_\Upsilon) \\[1em]
+& \mathsf{factor}(\bot) = 0 &&(\mathsf{factor}_w) \\
+& \mathsf{factor}(n) = 1 \\
+& \mathsf{factor}(n.\Xi) = \mathsf{factor}(\Xi)
+\end{aligned}
+```
+
+A shape fits the recursor of the multiplicity $`\rho`$, written $`{\Xi \text{ fits } \rho}`$, when the multiplicity at run time of each argument of each lifted destructor is within $`\rho`$ times the multiplicity at run time of the destructor times the factor of its result times the multiplicity of the argument in the observation, at every depth, as a lifting scales the arguments of the destructors that it lifts, since the observation by the lifted destructor reads its arguments as many times as the recursor reads the observation that it builds, and a destructor never observed reads none:
+
+```math
+\begin{aligned}
+& () \text{ fits } \rho &&(\mathsf{fits}_\Xi) \\[1em]
+& {\iff} \\
+& \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \text{ fits } \rho \\
+& \quad \text{and} \\
+& \qquad \forall k \le |\bar\pi'|.\ \pi'_k \le (\rho \cdot (\rho' \cdot \mathsf{factor}(\Upsilon))) \cdot \pi_k \\
+& \qquad \Upsilon \text{ fits } \rho \\
+& \qquad \Xi \text{ fits } \rho \\[1em]
+& \star_M \text{ fits } \rho &&(\mathsf{fits}_\Upsilon)
+\end{aligned}
+```
+
+The branches $`\mathsf{branches}_{\rho, \varrho}(\Xi,\ O,\ \bar N)`$ built from the shape $`\Xi`$, for the recursor of the multiplicity $`\rho`$, of the requirement $`\varrho`$ of its recursion and of the branches $`\bar N`$, on the observations of the term $`O`$, the path from the field, are a branch for each destructor of the shape, without state, which binds new variables $`\bar z`$ for its arguments, observes $`O`$ by the destructor that it lifts at these arguments, each at the multiplicity and at the requirement of its argument in the observation, or $`\text{↯}`$ at the multiplicity $`0`$, since a value of this multiplicity is never read and must be a skeleton, and gives the result $`\mathsf{body}_{\rho, \varrho}(\Upsilon,\ O',\ \bar N)`$ of this observation $`O'`$, or $`\text{↯}`$ when the destructor is never observed at run time.
+This result is the recursor on the observation, for $`\star_M`$, or the recursor of the multiplicity $`0`$ on the skeleton $`M`$ of the motive when $`\rho`$ is $`0`$, as the erasure of a recursor on an erased term, and the corecursor without state of the next lifting, whose branches observe $`O'`$ in turn, for a shape $`\Xi`$.
+The term $`\mathsf{nested}_{\rho, \varrho}(x,\ \Xi,\ \bar N)`$ of a nested result, at run time, is the corecursor without state of its shape, whose branches observe the field, the variable $`x`$, so that its scope is the scope of the recursor with $`x`$:
+
+```math
+\begin{aligned}
+& \mathsf{branches}_{\rho, \varrho}((),\ O,\ \bar N) = () &&(\mathsf{branches}_\Xi) \\[1em]
+& {=} \\
+& \quad \mathsf{branches}_{\rho, \varrho}(((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi),\ O,\ \bar N) \\
+& \quad ((() \mathrel{▶} () \mathrel{◀} ();\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft \bot \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \mathsf{branches}_{\rho, \varrho}(\Xi,\ O,\ \bar N)) \\
+& \quad \text{where} \\
+& \qquad \text{and} \\
+& \qquad \quad P = \text{↯} \text{ if } \rho' = 0 \\
+& \qquad \quad P = \mathsf{body}_{\rho, \varrho}(\Upsilon,\ O.d_i(\bar M) \mathrel{◀} \psi_0 \mathrel{◀} \varsigma_0,\ \bar N) \text{ otherwise} \\
+& \qquad \quad \bar M = (M_1 \mathrel{▶} \pi_1 \mathrel{◀} \varrho_1,\ \dots,\ M_c \mathrel{▶} \pi_c \mathrel{◀} \varrho_c) \\
+& \qquad \quad M_k = \text{↯} \text{ if } \pi_k = 0 \\
+& \qquad \quad M_k = z_k \text{ otherwise} \\
+& \qquad \quad \bar z = z_1, \dots, z_c \text{ do not occur in } O \text{ nor in } \bar N \\[1em]
+& \mathsf{body}_{\rho, \varrho}(\star_M,\ O,\ \bar N) = \mathsf{rec}_\rho\ O \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \text{ if } \rho \ne 0 &&(\mathsf{body}_\Upsilon) \\
+& \mathsf{body}_{\rho, \varrho}(\star_M,\ O,\ \bar N) = \mathsf{rec}_0\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \text{ if } \rho = 0 \\
+& \mathsf{body}_{\rho, \varrho}(\Xi,\ O,\ \bar N) = \mathsf{corec}\ \mathsf{from}\ ()\ \mathsf{with}\ \mathsf{branches}_{\rho, \varrho}(\Xi,\ O,\ \bar N) \\[1em]
+& \mathsf{nested}_{\rho, \varrho}(x,\ \Xi,\ \bar N) = \mathsf{corec}\ \mathsf{from}\ ()\ \mathsf{with}\ \mathsf{branches}_{\rho, \varrho}(\Xi,\ x,\ \bar N) &&(\mathsf{nested}_\Xi)
 \end{aligned}
 ```
 
