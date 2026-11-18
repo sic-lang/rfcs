@@ -1,7 +1,7 @@
 # Recursive Results
 
 This annex defines the recursive results of the fields of a constructor, which a branch of a recursor binds after its fields: their types, the motive of its type for a recursive field and the type of the field lifted for a field nested below a codata type, their factors, and the terms that the computation of a recursor gives them, with their properties.
-It builds on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](14-typing.md#nesting) of the fields of a block and on the [liftings](20-liftings.md), and the [typing](14-typing.md#terms) and the [reduction](15-reduction.md) of the recursors read its definitions.
+It builds on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](14-typing.md#nesting) of the fields of a block and on the [liftings](20-liftings.md), and the [typing](14-typing.md#terms), the [usage](12-usage.md#definitions) and the [reduction](15-reduction.md) of the recursors read its definitions.
 
 ## Definitions
 
