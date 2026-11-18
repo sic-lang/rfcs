@@ -1,11 +1,11 @@
 # Recursive Results
 
-This annex defines the recursive results of the fields of a constructor, which a branch of a recursor binds after its fields: their types, the motive of its type for a recursive field and the type of the field lifted for a field nested below a codata type, and the terms that the computation of a recursor gives them, with their properties.
+This annex defines the recursive results of the fields of a constructor, which a branch of a recursor binds after its fields: their types, the motive of its type for a recursive field and the type of the field lifted for a field nested below a codata type, their factors, and the terms that the computation of a recursor gives them, with their properties.
 It builds on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](14-typing.md#nesting) of the fields of a block and on the [liftings](20-liftings.md), and the [typing](14-typing.md#terms) and the [reduction](15-reduction.md) of the recursors read its definitions.
 
 ## Definitions
 
-This section gives the types of the recursive results of the fields of a telescope, then the terms of these results.
+This section gives the types and the factors of the recursive results of the fields of a telescope, then the terms of these results.
 In its definitions, the block lifted $`\mathcal{B}`$, the set $`\Pi`$ of the parameters lifted and the variables $`s_C`$, $`r`$, $`\varsigma`$ and $`\chi`$ are fixed, as in the definitions of the [liftings](20-liftings.md#variables-of-a-lifting): a recursor gives them the types of its block, each with its instance and its motive, no parameter lifted, the quality of the sort of its motives, its grade and its two ownerships.
 
 The results are relations, as the lifting is: a field whose type has no lifting, since the signature does not declare it, has no result.
@@ -13,15 +13,15 @@ The [nesting](14-typing.md#fields-of-a-block) of each field, which its declarati
 
 ### Types of the Results
 
-The relation $`{\Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow}}`$ reads: the recursive results $`\Theta^{\uparrow}`$ are those of the fields $`\Theta`$, whose nestings are $`\bar\lambda`$, a variable $`y`$ with its type for each field whose nesting has a position, in order.
-A field without position has no result; the result of a recursive field $`x`$ of the type $`E`$ of the block lifted has the motive of $`E`$ at the field; the result of a nested field $`{x : A}`$ has the type $`A`$ [lifted](20-liftings.md#types) at the field:
+The relation $`{\Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow} \mathrel{\triangleright} \bar\pi}`$ reads: the recursive results $`\Theta^{\uparrow}`$ are those of the fields $`\Theta`$, whose nestings are $`\bar\lambda`$, a variable $`y`$ with its type for each field whose nesting has a position, in order, and $`\bar\pi`$ are their factors, one for each result, in the same order, which multiply the uses of the scope by each use of the result.
+A field without position has no result; the result of a recursive field $`x`$ of the type $`E`$ of the block lifted has the motive of $`E`$ at the field, and the factor $`{11}^{\mathsf{p}}`$, since it runs the recursor once, on the field; the result of a nested field $`{x : A}`$ has the type $`A`$ [lifted](20-liftings.md#types) at the field, and the factor that the lifting gives it:
 
 ```math
 \begin{gathered}
-\frac{}{\Sigma \vdash \varepsilon \uparrow_{()} = \varepsilon}\;(\uparrow_{\Theta\varepsilon}) \\[2em]
-\frac{\Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow}}{\Sigma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta) \uparrow_{(\bot,\ \bar\lambda)} = \Theta^{\uparrow}}\;(\uparrow_{\Theta\bot}) \\[2em]
-\frac{\begin{aligned}& E \text{ is a type of } \mathcal{B} \\[0.6em] & \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow}\end{aligned}}{\Sigma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta) \uparrow_{(E,\ \bar\lambda)} = (y : C_E[x / z],\ \Theta^{\uparrow})}\;(\uparrow_{\Theta T}) \\[2em]
-\frac{\begin{aligned}& \Sigma \vdash A \uparrow_{(\bar\lambda')} x = A' : (s_C)_l \mathrel{\triangleright} \pi;\ \chi' \\[0.6em] & \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow}\end{aligned}}{\Sigma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta) \uparrow_{((\bar\lambda'),\ \bar\lambda)} = (y : A',\ \Theta^{\uparrow})}\;(\uparrow_{\Theta\lambda})
+\frac{}{\Sigma \vdash \varepsilon \uparrow_{()} = \varepsilon \mathrel{\triangleright} ()}\;(\uparrow_{\Theta\varepsilon}) \\[2em]
+\frac{\Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow} \mathrel{\triangleright} \bar\pi}{\Sigma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta) \uparrow_{(\bot,\ \bar\lambda)} = \Theta^{\uparrow} \mathrel{\triangleright} \bar\pi}\;(\uparrow_{\Theta\bot}) \\[2em]
+\frac{\begin{aligned}& E \text{ is a type of } \mathcal{B} \\[0.6em] & \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow} \mathrel{\triangleright} \bar\pi\end{aligned}}{\Sigma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta) \uparrow_{(E,\ \bar\lambda)} = (y : C_E[x / z],\ \Theta^{\uparrow}) \mathrel{\triangleright} ({11}^{\mathsf{p}},\ \bar\pi)}\;(\uparrow_{\Theta T}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash A \uparrow_{(\bar\lambda')} x = A' : (s_C)_l \mathrel{\triangleright} \pi;\ \chi' \\[0.6em] & \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow} \mathrel{\triangleright} \bar\pi\end{aligned}}{\Sigma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta) \uparrow_{((\bar\lambda'),\ \bar\lambda)} = (y : A',\ \Theta^{\uparrow}) \mathrel{\triangleright} (\pi,\ \bar\pi)}\;(\uparrow_{\Theta\lambda})
 \end{gathered}
 ```
 
@@ -59,16 +59,18 @@ The term of a field without position has no result, the result of the term $`t`$
 
 ## Properties
 
-In a signature whose [names are distinct](08-syntax.md), the fields of a telescope have the recursive results of one telescope at most at their nestings, a term has one recursive result at most at its type and at its nesting, and the terms of the fields of a telescope have the recursive results of one sequence of terms at most, since a type has [one lifting at most](20-liftings.md#properties), a name one declaration and a destructor one position in its type:
+In a signature whose [names are distinct](08-syntax.md), the fields of a telescope have the recursive results of one telescope at most at their nestings, with one sequence of factors, a term has one recursive result at most at its type and at its nesting, and the terms of the fields of a telescope have the recursive results of one sequence of terms at most, since a type has [one lifting at most](20-liftings.md#properties), a name one declaration and a destructor one position in its type:
 
 ```math
 \begin{aligned}
 & \text{⟹} &&(\mathsf{unique}_{\uparrow\Theta}) \\
 & \quad \text{and} \\
 & \qquad \text{the names of } \Sigma \text{ are distinct} \\
-& \qquad \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow}_1 \\
-& \qquad \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow}_2 \\
-& \quad \Theta^{\uparrow}_1 = \Theta^{\uparrow}_2 \\[1em]
+& \qquad \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow}_1 \mathrel{\triangleright} \bar\pi_1 \\
+& \qquad \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow}_2 \mathrel{\triangleright} \bar\pi_2 \\
+& \quad \text{and} \\
+& \qquad \Theta^{\uparrow}_1 = \Theta^{\uparrow}_2 \\
+& \qquad \bar\pi_1 = \bar\pi_2 \\[1em]
 & \text{⟹} &&(\mathsf{unique}_{\mathsf{res}}) \\
 & \quad \text{and} \\
 & \qquad \text{the names of } \Sigma \text{ are distinct} \\
@@ -92,7 +94,7 @@ In a well-formed signature, where no parameter is lifted, the terms of fields wh
 & \quad \text{and} \\
 & \qquad {}\vdash \Sigma \\
 & \qquad \Pi = \varnothing \\
-& \qquad \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow} \\
+& \qquad \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow} \mathrel{\triangleright} \bar\pi \\
 & \qquad \bar t \text{ as many as the fields of } \Theta \\
 & \quad \exists \bar t'.\ \Sigma \vdash \mathsf{res}_{f;\ \bar\lambda}(\bar t : \Theta) = \bar t'
 \end{aligned}
