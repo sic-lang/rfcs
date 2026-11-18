@@ -290,6 +290,100 @@ It is built within the depth $`k`$ of the number of the types of the block, at t
 In the skeleton of a constructor $`{c : \Theta}`$, $`M_l`$ is $`\mathsf{skeleton}^n(D')`$ when the element $`l`$ of $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](14-typing.md#fields-of-a-block), is a type $`D'`$ of the block, and $`\text{↯}`$ when it is $`\bot`$.
 The depth is reached only on a type without closed term: along a path of a closed term, from a term to the term of one of its recursive fields, no type of the block comes twice, since each type has one constructor, so that the term would hold a term of the same form, without end.
 
+The shape $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(A,\ \lambda)}`$ of the recursive result whose type is $`A`$, of the nesting $`\lambda`$, is read on the syntax of $`A`$ as the [lifting](20-liftings.md#types) lifts it, at the variables $`s_C`$, $`r`$ and $`\varsigma`$ of a lifting, which the recursor gives: its shape $`\Upsilon`$, its factor $`\pi`$ and its ownership $`\chi'`$, written $`{\Upsilon;\ \pi;\ \chi'}`$, where $`\Lambda`$ gives a variable lifted a position that holds its shape, $`\bot`$ to the other variables, and the shape of the result of the recursor to each type of the block, which a position names, the entries $`\Sigma'`$ of $`\Sigma`$ declare the liftings whose shapes it reads, and $`\Sigma`$ the types lifted and their cases.
+A variable lifted, applied to arguments, has the shape that the position of its nesting holds; an instance of a type of the block, at a position, the shape given to this type; and an instance of another declared type whose nesting is not a position, of which an argument at least has a shape, the shape and the factor of the lifting of this type at the shapes of these arguments, with the ownership $`{11}^{\mathsf{p}}`$, since its recursive result is a corecursor; any other type has no shape.
+The shapes $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda)}`$ of the arguments $`\bar a`$ of an instance, of the nestings $`\bar\lambda`$, are the shape of each argument, under the variables that its abstraction binds, which have no position, or $`\bot`$ when it has none:
+
+```math
+\begin{aligned}
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(x[\bar t],\ \lambda) = h \text{ if } \Lambda(x) \text{ is a position that holds } h &&(\mathsf{shape}_A) \\
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ \lambda) = \Lambda(D) \\
+& \quad \text{if } \lambda \text{ is a position and } \Lambda \text{ gives an object to } D \\
+& {=} \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ \lambda) \\
+& \quad \Xi;\ \pi;\ {11}^{\mathsf{p}} \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad \lambda = \bot \text{ and each of } \bar\lambda \text{ is } \bot \text{, or } \lambda = (\bar\lambda) \\
+& \qquad \quad \bar\lambda' = \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda) \\
+& \qquad \quad \text{not each of } \bar\lambda' \text{ is } \bot \\
+& \qquad \quad \mathsf{shape}_{\Sigma; \Sigma'}(D.\{\bar s;\ \bar p\},\ \bar\lambda') = \Xi;\ \pi \\
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(A,\ \lambda) \text{ is not defined otherwise} \\[1em]
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}((),\ ()) = () &&(\mathsf{shape}_{\bar a}) \\
+& {=} \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
+& \quad (\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda),\ h) \\
+& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \lambda) = h \\
+& {=} \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
+& \quad (\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda),\ \bot) \\
+& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \lambda) \text{ is not defined}
+\end{aligned}
+```
+
+The shape $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d) = \Xi;\ \hat\pi}`$ of the destructors $`\bar d`$ of the type $`D`$ is the shape of the lifting of $`D`$, with an element for each destructor whose result has a shape, in order, and the meet of their grades in the lifting times the factors of their results, or $`\bot`$ when there is none, where $`{\pi \wedge \bot = \pi}`$, as the [factor](20-liftings.md#factors) of a lifting is.
+The element of a destructor is read from the destructor that the lifting lifts, as the [lifting](20-liftings.md#destructors) of the destructors declares it: its case $`i`$ in its block, $`0`$ when the signature gives it none, the multiplicity at run time of its grade in the lifting, the parameters of its arguments in the observation, the same arguments used the grade of the recursor times the factor of its result more and scaled by the mode of its grade in the lifting, as the [erasure](#definitions) of a corecursor scales its arguments, the ownership of the recursive result whose type is its result, the requirement of the lifting, the ownerships of the destructor that it lifts and the shape of its result:
+
+```math
+\begin{aligned}
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \varepsilon) = ();\ \bot &&(\mathsf{shape}_{\bar d}) \\
+& {=} \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ (d : (\Theta \vdash B \mathrel{◀} \psi') \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d)) \\
+& \quad ((i,\ \rho,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho,\ \psi,\ \mathsf{run}(\varsigma),\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi);\ (p' \cdot \pi) \wedge \hat\pi \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \bot) = \Upsilon;\ \pi;\ \chi' \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d) = \Xi;\ \hat\pi \\
+& \qquad \quad p' = \mathsf{grade}_{s_C}(p) \\
+& \qquad \quad \bar q \mathrel{◀} \bar r \text{ are the parameters of } \Theta \\
+& \qquad \quad \rho = \mathsf{run}(p') \\
+& \qquad \quad \bar\pi = \mathsf{run}(\bar q) \\
+& \qquad \quad \bar\varrho = \mathsf{run}(\bar r) \\
+& \qquad \quad \bar\pi' = \mathsf{run}(\ulcorner {11}^{\mathsf{m}} \odot p' \urcorner \cdot ((r \cdot \pi) \cdot \bar q)) \\
+& \qquad \quad \psi = \mathsf{run}(\chi') \\
+& \qquad \quad \psi_0 = \mathsf{run}(\psi') \\
+& \qquad \quad \varsigma_0 = \mathsf{run}(\varsigma') \\
+& \qquad \quad i = \mathsf{case}_\Sigma(D.d) \text{ if it is defined, and } i = 0 \text{ otherwise} \\
+& {=} \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ (d : (\Theta \vdash B \mathrel{◀} \psi') \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d)) \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d) \\
+& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \bot) \text{ is not defined}
+\end{aligned}
+```
+
+The shape $`{\mathsf{shape}_{\Sigma; \Sigma'}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') = \Xi;\ \pi}`$ of the lifting of the type $`D`$ at the instance $`\bar s'`$, $`\bar p'`$, at the shapes $`\bar\lambda'`$ of its parameters, $`\bot`$ for a parameter that is not lifted, is read in the last entry of $`\Sigma'`$ that declares the lifting of $`D`$ at the parameters lifted: it is the shape of the destructors of $`D`$ at this instance, where each parameter lifted has its shape, in the last entry of $`\Sigma`$ that declares a codata type $`D`$ and as many sort and grade variables as $`\bar s'`$ and $`\bar p'`$, with the factor $`{00}^{\mathsf{p}}`$ when the lifting has no destructor.
+The result of a destructor of a lifting is an instance of a lifting that the signature declares before it, since the signature declares its liftings in order, so that the shape of a lifting reads, for the shapes of the results of its destructors, only the entries before it, without a bound on the depth, while it reads the declarations of the types lifted and their cases in the whole signature.
+The shape is a function on the syntax, which the erasure computes, and an instance of a lifting that the signature does not declare has none:
+
+```math
+\begin{aligned}
+& \mathsf{shape}_{\Sigma; \varepsilon}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \text{ is not defined} &&(\mathsf{shape}_\Sigma) \\
+& {=} \\
+& \quad \mathsf{shape}_{\Sigma; (\Sigma',\ e)}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
+& \quad \Xi;\ \pi \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad e = \mathsf{lifting}_{\Pi'}(\mathcal{D}',\ D,\ \bar d'') \text{ for some } \mathcal{D}' \text{ and } \bar d'' \\
+& \qquad \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \qquad \mathsf{where} \\
+& \qquad \qquad \quad \dots;\ D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d;\ \dots \\
+& \qquad \quad \text{is the last entry of } \Sigma \text{ that declares a type } D \\
+& \qquad \quad \text{and as many sort and grade variables as } \bar s' \text{ and } \bar p' \\
+& \qquad \quad \Lambda \text{ gives each parameter } x_j \text{ of } \Delta \text{ the element } \lambda'_j \\
+& \qquad \quad \Lambda \text{ gives no other variable a position and no type an object} \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d[\bar s' / \bar s,\ \bar p' / \bar p]) = \Xi;\ \hat\pi \\
+& \qquad \quad \pi = \hat\pi \text{ when } \hat\pi \ne \bot \text{, and } \pi = {00}^{\mathsf{p}} \text{ when } \hat\pi = \bot \\
+& {=} \\
+& \quad \mathsf{shape}_{\Sigma; (\Sigma',\ e)}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
+& \quad \mathsf{shape}_{\Sigma; \Sigma'}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
+& \quad \text{if } e \text{ is not a lifting of } D \text{ at } \Pi' \\
+& \mathsf{shape}_{\Sigma; (\Sigma',\ e)}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \text{ is not defined otherwise}
+\end{aligned}
+```
+
+In the rule $`(\mathsf{shape}_\Sigma)`$, $`\Pi'`$ is the set of the parameters of $`D`$ whose elements of $`\bar\lambda'`$ are positions, and $`\Pi`$ the parameters at which $`D`$ is strictly positive, which the shape does not read.
+In the rules $`(\mathsf{shape}_A)`$ and $`(\mathsf{shape}_{\bar a})`$, an element of $`\bar\lambda'`$ is a position that holds a shape or $`\bot`$, and $`h`$ is a shape $`{\Upsilon;\ \pi;\ \chi'}`$.
+
 The sorts and the instances have no representation in the target language, and are erased.
 A constructor keeps its case and its fields, each erased at the grade of its field and stored at the multiplicity at run time of this grade and at the requirement at run time of its requirement, and a field whose parameter the signature does not give, in a term that no rule types, is erased, and stored at $`\omega`$ and at the requirement $`\omega`$, which state nothing, as a constructor whose case it does not give is erased; a recursor keeps the multiplicity at run time of its grade $`r`$, its term and the requirement at run time of its recursion when $`r`$ is not in $`S`$, and the skeleton of the type of its term and the requirement $`\omega`$ otherwise, which states nothing, since the variables of the fields of the skeleton have the ownership $`0`$ whatever the ownership of the term, and its branches, which keep, for each recursive result, the position of its field, or $`\bot`$ when its grade is in $`S`$, and loses its instance and its motives, which are types.
 An observation keeps its term, the case of its destructor, the ownership at run time of the result of its destructor, $`\mathsf{run}(\psi)`$, which applies $`\mathsf{run}`$ to its constant and to its coefficients, the ownership at run time $`\mathsf{run}(\varsigma)`$ that its destructor requires of the value that it observes, and its arguments, each erased at the grade of its argument and stored at its multiplicity at run time and at its requirement at run time, and a corecursor keeps its state, each entry erased at its grade times the grade $`r`$ of the corecursor and stored at its multiplicity at run time, since every observation that reaches the state uses it $`r`$ times, and at its requirement at run time, and its branches, each erased at the grade of its destructor, since its usage checks it in the mode of this grade, with the number of the entries of the state it resumes, the ownership at run time of the result of its destructor and the ownership at run time that its destructor requires of the value that it observes, and loses its instance and its states, which are types; the parameters of the entries of the state are those of the state $`\Theta_h`$ of the type $`D_h`$ of its instance, with $`{h = \mathsf{position}_\Sigma(D)}`$, and an entry whose parameter is not given, in a term that no rule types, is erased.
