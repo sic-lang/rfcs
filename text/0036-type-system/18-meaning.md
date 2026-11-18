@@ -492,7 +492,7 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 
 A type below which the types of a block are nested has no relation of run time before the block does, as it has no equality, and the graph $`\mathsf{rt}(U_n)[\lambda]`$ of the nestings gives it one from the relations given for these types: it relates a closed type $`A`$ to the relation $`R`$ of its closed terms to the addresses of their values, written $`{(A,\ R) \in \mathsf{rt}(U_n)[\lambda]}`$, where the [nesting](14-typing.md#nesting) $`\lambda`$ of $`A`$ holds, at each of its positions, a pair $`(T,\ Q)`$ of the closed instance $`T`$ of a type of the block and of the relation of run time $`Q`$ given for its terms.
 A position holds no equality: the relations of run time read the equality of a field or of an abstraction for what depends on it, and nothing depends on a field or on a result whose nesting has a position.
-A type without position computes to a type of a sort that $`U_n`$ bounds, a type at a position is the instance that the position holds, with its relation, the same instance being written with any levels that are [equal](06-levels.md), and a type whose nesting is that of an instance is an instance of a codata type, in a universe whose level $`n`$ bounds, as for the equality: in $`U_l`$, none of its destructors is recursive, and its destructors, alone in its block, are read at the nestings $`\bar\lambda`$ of its arguments, with the relation $`\circledR_d`$ of the relation $`S`$ of its destructors, which no relation of its block changes; in $`\Omega_l`$, its terms, proofs, are erased, and the clause reads neither its destructors nor its truth, which the relation does not depend on:
+A type without position computes to a type of a sort that $`U_n`$ bounds, a type at a position is the instance that the position holds, with its relation, the same instance being written with any levels that are [equal](06-levels.md), and a type whose nesting is that of an instance is an instance of a codata type none of whose destructors is recursive, in a universe whose level $`n`$ bounds, as for the equality: in $`U_l`$, its destructors, alone in its block, are read at the nestings $`\bar\lambda`$ of its arguments, with the relation $`\circledR_d`$ of the relation $`S`$ of its destructors, which no relation of its block changes; in $`\Omega_l`$, its terms, proofs, are erased, and the clause reads neither its destructors nor its truth, which the relation does not depend on:
 
 ```math
 \begin{aligned}
@@ -507,7 +507,8 @@ A type without position computes to a type of a sort that $`U_n`$ bounds, a type
 & (T,\ \{(H,\ t,\ \ell) \mid t \text{ is a closed term}\}) \in \mathsf{rt}(U_n)[(\bar\lambda)] \text{ if} &&(\mathsf{rt}_{\lambda D\Omega}) \\
 & \quad \text{and} \\
 & \qquad T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \text{ is a closed instance of a codata type of a block } \mathcal{D} \text{ of } \Sigma \\
-& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] \le n
+& \qquad \kappa[T] = \Omega_l \text{ and } [\![l]\!] \le n \\
+& \qquad \mathsf{rec}_{\mathcal{D}}(\bar d_j) = (\bot,\ \dots,\ \bot)
 \end{aligned}
 ```
 
