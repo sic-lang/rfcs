@@ -512,7 +512,7 @@ A type without position computes to a type of a sort that $`U_n`$ bounds, a type
 ```
 
 The graph $`\mathsf{rt}_D(U_n)[\Lambda]`$ relates likewise destructors $`\bar d`$ of the type $`D`$, none of which is recursive, and a closed substitution $`\theta`$ of their variables to the relation $`S`$ of the families of closed abstractions for them to the addresses of values, written $`{(\bar d,\ \theta,\ S) \in \mathsf{rt}_D(U_n)[\Lambda]}`$, where $`\Lambda`$ gives their nestings to the variables of the destructors, as in the graph of the nestings of the equality.
-Its clauses are those of the destructors, where the result type of a destructor is read by the graphs of the nestings, at its nesting: a destructor whose result has no position is read as one that is not recursive, and the destructors after a destructor whose result has a position are the same for every abstraction for it, as those after a recursive destructor, its abstraction being related at run time alone:
+Its clauses are those of the destructors, where the result type of a destructor is read by the graphs of the nestings, at its nesting: a destructor whose result has no position is read as one that is not recursive, the destructors after it having the same relation for equal abstractions, as in the graph of the nestings of the equality, so that the relation reads alike the observations of a term and those of the canonical term that it computes to, and the destructors after a destructor whose result has a position are the same for every abstraction for it, as those after a recursive destructor, its abstraction being related at run time alone:
 
 ```math
 \begin{aligned}
@@ -535,7 +535,8 @@ Its clauses are those of the destructors, where the result type of a destructor 
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ F(\bar t)) \in \mathsf{ty}(U_n)[\bot] \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ R(\bar t)) \in \mathsf{rt}(U_n)[\bot] \\
 & \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
-& \qquad \forall (f,\ f) \in E.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{rt}_D(U_n)[\Lambda] \\[1em]
+& \qquad \forall (f,\ f) \in E.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{rt}_D(U_n)[\Lambda] \\
+& \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2) \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\lambda|\lambda}) \\
 & \quad ( \\
 & \qquad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
