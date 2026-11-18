@@ -13,7 +13,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`{n, k}`$ | Natural numbers, such as numbers of uses and values of levels |
 | $`\mathcal{M}`$ | Modalities |
 | $`\xi`$ | Elements of a modality |
-| $`\pi`$ | Multiplicities |
+| $`\pi`$ | Multiplicities, and the factors of the recursive results |
 | $`S`$ | Sets of numbers of uses, of pairs of numbers of uses, or of grades |
 | $`{p, q, r}`$ | Grades |
 | $`I`$ | Sets of indices, which index a family of grades or the elements of a vector |
