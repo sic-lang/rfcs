@@ -300,12 +300,15 @@ The variable of the field $`l`$ of a branch of a recursor, whose parameter is $`
 
 ```math
 \begin{aligned}
-& \pi_l = \mathsf{run}(r \cdot q_l) - \mathsf{run}(e_j \cdot r) \text{ if the } j\text{-th element of } \bar w \text{ is } l &&(\mathsf{erase}_{\bar u}.\pi) \\
+& {=} \text{ if} &&(\mathsf{erase}_{\bar u}.\pi) \\
+& \quad \pi_l \\
+& \quad \mathsf{run}(r \cdot q_l) - \mathsf{run}(e_j \cdot r) \\
+& \quad \text{the } j\text{-th element of } \bar w \text{ is } l \text{ and } \bar e \text{ has a } j\text{-th element} \\
 & {=} \text{ if} \\
 & \quad \pi_l \\
 & \quad \mathsf{run}(r \cdot q_l) - \mathsf{run}(e_j) \cdot (\mathsf{factor}(\Xi) \cdot \mathsf{run}(r)) \\
-& \quad \text{the } j\text{-th element of } \bar w \text{ is } l.\Xi \\
-& \pi_l = \mathsf{run}(r \cdot q_l) \text{ if no element of } \bar w \text{ names } l \\
+& \quad \text{the } j\text{-th element of } \bar w \text{ is } l.\Xi \text{ and } \bar e \text{ has a } j\text{-th element} \\
+& \pi_l = \mathsf{run}(r \cdot q_l) \text{ if no such element of } \bar w \text{ names } l \\
 & \pi_l = \omega \text{ if } \bar q \text{ has no element } l \\[1em]
 & \kappa_l = \mathsf{run}(r_l \cdot (r \cdot q_l)) &&(\mathsf{erase}_{\bar u}.\kappa) \\
 & \kappa_l = \omega \text{ if } \bar q \text{ has no element } l
