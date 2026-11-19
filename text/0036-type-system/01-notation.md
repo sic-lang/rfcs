@@ -16,6 +16,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\pi`$ | Multiplicities, and the factors of the recursive results |
 | $`S`$ | Sets of numbers of uses, of pairs of numbers of uses, or of grades |
 | $`{p, q, r}`$ | Grades |
+| $`\beta`$ | Axes of the grades, their projections on the run-time multiplicity or on the total multiplicity |
 | $`I`$ | Sets of indices, which index a family of grades or the elements of a vector |
 | $`m`$ | Modes |
 | $`l`$ | Levels |

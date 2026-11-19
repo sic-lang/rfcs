@@ -1,6 +1,6 @@
 # Grades
 
-This annex defines the grades, which count uses at run time and in total, with their operations, their order, their projection on the run-time multiplicity, their meaning and their properties.
+This annex defines the grades, which count uses at run time and in total, with their operations, their order, their projections on the run-time multiplicity and on the total multiplicity, their meaning and their properties.
 It builds on the [multiplicities](03-multiplicities.md).
 
 ## Definitions
@@ -67,6 +67,15 @@ The run-time multiplicity of a grade is its projection:
 ```math
 \begin{aligned}
 & \mathsf{run}(\langle \pi_1, \pi_2 \rangle) = \pi_1 &&(\mathsf{run}_p)
+\end{aligned}
+```
+
+The total multiplicity of a grade, which counts all its uses, is its other projection, and an axis $`\beta`$ of the grades is one of the two projections, which reads each grade on one of its multiplicities, so that a definition on the multiplicities is given on each axis:
+
+```math
+\begin{aligned}
+& \mathsf{total}(\langle \pi_1, \pi_2 \rangle) = \pi_2 &&(\mathsf{total}_p) \\[1em]
+& \beta \mathrel{::=} \mathsf{run} \mid \mathsf{total} &&(\mathsf{syntax}_\beta)
 \end{aligned}
 ```
 
