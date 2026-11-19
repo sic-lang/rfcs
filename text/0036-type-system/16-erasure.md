@@ -1,7 +1,7 @@
 # Erasure
 
 This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, the usage and the ownership of the target language, and their properties.
-It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [vectors of multiplicities](10-grade-vectors.md#vectors-of-multiplicities), the [sets of grades](11-grade-sets.md), the [usage](12-usage.md), the [ownership](13-ownership.md) and the fields of a block, which the [typing](14-typing.md#fields-of-a-block) marks.
+It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [vectors of multiplicities](10-grade-vectors.md#vectors-of-multiplicities), the [sets of grades](11-grade-sets.md), the [usage](12-usage.md), the [ownership](13-ownership.md), the fields of a block, which the [typing](14-typing.md#fields-of-a-block) marks, and the skeletons and the shapes of the [recursive results](21-recursive-results.md#skeletons).
 
 ## Definitions
 
@@ -23,19 +23,11 @@ The target language has variables, all of the first order, the constants at the 
 & \bar N \mathrel{::=} () \mid ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar w).\, N,\ \bar N) &&(\mathsf{syntax}_{\bar N}) \\[1em]
 & \bar P \mathrel{::=} () \mid ((\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P,\ \bar P) &&(\mathsf{syntax}_{\bar P}) \\[1em]
 & w \mathrel{::=} \bot \mid n \mid n.\Xi &&(\mathsf{syntax}_w) \\[1em]
-& {\mathrel{::=}} &&(\mathsf{syntax}_\Xi) \\
-& \quad \Xi \\
-& \quad {\mid} \\
-& \qquad () \\
-& \qquad ((i,\ \rho,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \\[1em]
-& \Upsilon \mathrel{::=} \star_M \mid \Xi &&(\mathsf{syntax}_\Upsilon) \\[1em]
 & k \mathrel{::=} \bot \mid n \mid \text{↯}_n &&(\mathsf{syntax}_k)
 \end{aligned}
 ```
 
-A branch $`{(\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar w).\, N}`$ binds the variables $`\bar x`$ of the fields and $`\bar y`$ of the recursive results, as a branch of a recursor does, at the [multiplicities](03-multiplicities.md) $`\bar\pi`$ and $`\bar\pi'`$, which count their uses at run time, each variable of a field with the coefficient $`\kappa`$ of its ownership, a multiplicity, which multiplies the ownership at run time of the term of the recursor, and $`\bar w`$ gives each recursive result what computes it: the position $`n`$ of its field among $`\bar x`$, the first one at $`1`$, when the recursor on the field computes it, $`n.\Xi`$ when the field at the position $`n`$ is nested and the result is the corecursor of a lifting of the shape $`\Xi`$, which the evaluation builds from the branches of the recursor, as the rule $`(\mathsf{res}_D)`$ of the [terms of the results](21-recursive-results.md#terms-of-the-results) builds it from the observations of the field, or $`\bot`$ when the result is erased, so that it is not computed.
-A shape $`\Xi`$ gives, for each destructor that the lifting keeps, in order, without the terms of its branch, what the evaluation needs to build this branch: the case $`i`$ of the destructor that it lifts in its block, its multiplicity $`\rho`$ at run time, the multiplicities and the requirements $`{\bar\pi \mathrel{◀} \bar\varrho}`$ of its arguments in the observation of the field and $`{\bar\pi' \mathrel{◀} \bar\varrho'}`$ in the lifted destructor, the ownership $`\psi`$ of the result of the lifted destructor and the ownership $`\varsigma`$ that it requires of the value that it observes, the same ownerships $`\psi_0`$ and $`\varsigma_0`$ of the destructor that it lifts, which the observation of the field reads, and the shape $`\Upsilon`$ of its result.
-The shape of a result is $`\star_M`$ when the type lifted is a motive, so that the result is the recursor itself, where $`M`$ is the skeleton of the motive, on which the recursor of the multiplicity $`0`$ runs instead of the observation, and the shape $`\Xi`$ of the next lifting when the type lifted is an instance of a lifting, two levels of nesting deep or more.
+A branch $`{(\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar w).\, N}`$ binds the variables $`\bar x`$ of the fields and $`\bar y`$ of the recursive results, as a branch of a recursor does, at the [multiplicities](03-multiplicities.md) $`\bar\pi`$ and $`\bar\pi'`$, which count their uses at run time, each variable of a field with the coefficient $`\kappa`$ of its ownership, a multiplicity, which multiplies the ownership at run time of the term of the recursor, and $`\bar w`$ gives each recursive result what computes it: the position $`n`$ of its field among $`\bar x`$, the first one at $`1`$, when the recursor on the field computes it, $`n.\Xi`$ when the field at the position $`n`$ is nested and the result is the corecursor of a lifting of the [shape](21-recursive-results.md#shapes) $`\Xi`$, which the evaluation builds from the branches of the recursor, as the rule $`(\mathsf{res}_D)`$ of the [terms of the results](21-recursive-results.md#terms-of-the-results) builds it from the observations of the field, or $`\bot`$ when the result is erased, so that it is not computed.
 A branch $`{(\bar y \mathrel{▶} \bar\pi \mathrel{◀} \bar\varrho;\ \bar z \mathrel{▶} \bar\pi' \mathrel{◀} \bar\varrho' \circlearrowleft k \mathrel{◀} \psi \mathrel{◀} \varsigma).\, P}`$ binds the variables $`\bar y`$ of the state and $`\bar z`$ of the arguments, as a branch of a corecursor does, at the multiplicities $`\bar\pi`$ and $`\bar\pi'`$ and at the requirements $`\bar\varrho`$ and $`\bar\varrho'`$ of their entries, $`\psi`$ is the ownership of the result of its destructor, $`\varsigma`$ the ownership that its destructor requires of the value that it observes, and $`k`$ is its resumption: $`\bot`$ when its destructor is not recursive, the number $`n`$ of the entries of the state that the branch resumes, which the evaluation unpacks from the new state, or $`\text{↯}_n`$ when these $`n`$ entries are erased, so that the evaluation does not read the new state.
 A term $`{M \mathrel{▶} \pi \mathrel{◀} \varrho}`$ of a field, of an argument or of the state is stored at the multiplicity $`\pi`$ of its position, which bounds the uses of its value through this position, and at the requirement $`\varrho`$ of its position, a multiplicity, which the ownership at run time of its value satisfies, and a recursor $`{\mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N}`$ uses the value of $`M`$ at the multiplicity $`\rho`$, so that a branch reads each field within $`\rho`$ times its multiplicity, and its branches assume of the term of each level of the recursion the ownership of $`M`$ times the requirement $`\varrho`$ of its recursion, which is within the requirement times the uses of each recursive field that a recursion eliminates: a value is computed once, but a cell of the multiplicity $`\omega`$ may read it several times, and each observation of a closure runs a branch again, which the multiplicities of the positions bound.
 The ownerships of the target language are those at run time, multiplicities, since the projection on the run-time multiplicity keeps the product and the meet of the grades: the ownership $`\psi`$ of the result of a destructor has the [syntax](08-syntax.md) of the ownership of the result of a second-order variable, with multiplicities as its constant and its coefficients, and $`\psi_\bot`$ is the ownership without constant and without factor; the requirement $`\varsigma`$ of a destructor on the value that it observes is a multiplicity.
@@ -50,34 +42,13 @@ The multiplicities $`\bar\pi(\bar M)`$ and the requirements $`\bar\varrho(\bar M
 \end{aligned}
 ```
 
-The factor $`\mathsf{factor}(\Xi)`$ of a shape is the multiplicity by which the uses of the scope of the recursor by the result that it shapes are multiplied, as the [factor](20-liftings.md#factors) of a lifting is: the meet of the multiplicities at run time of its destructors times the factors of their results, $`0`$ without destructor, since the result is then never observed, and $`1`$ for the recursor itself; the factor of a recursive result is $`0`$ when it is erased, $`1`$ when the recursor on its field computes it, and the factor of its shape when it is nested:
+The factor $`\mathsf{factor}(w)`$ of a recursive result is $`0`$ when it is erased, $`1`$ when the recursor on its field computes it, and the factor of its [shape](21-recursive-results.md#shapes) when it is nested:
 
 ```math
 \begin{aligned}
-& \mathsf{factor}(()) = 0 &&(\mathsf{factor}_\Xi) \\
-& \mathsf{factor}(((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ ())) = \rho' \cdot \mathsf{factor}(\Upsilon) \\
-& {=} \text{ if } \Xi \ne () \\
-& \quad \mathsf{factor}(((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi)) \\
-& \quad (\rho' \cdot \mathsf{factor}(\Upsilon)) \wedge \mathsf{factor}(\Xi) \\[1em]
-& \mathsf{factor}(\star_M) = 1 &&(\mathsf{factor}_\Upsilon) \\[1em]
 & \mathsf{factor}(\bot) = 0 &&(\mathsf{factor}_w) \\
 & \mathsf{factor}(n) = 1 \\
 & \mathsf{factor}(n.\Xi) = \mathsf{factor}(\Xi)
-\end{aligned}
-```
-
-A shape fits the recursor of the multiplicity $`\rho`$, written $`{\Xi \text{ fits } \rho}`$, when the multiplicity at run time of each argument of each lifted destructor is within $`\rho`$ times the multiplicity at run time of the destructor times the factor of its result times the multiplicity of the argument in the observation, at every depth, as a lifting scales the arguments of the destructors that it lifts, since the observation by the lifted destructor reads its arguments as many times as the recursor reads the observation that it builds, and a destructor never observed reads none:
-
-```math
-\begin{aligned}
-& () \text{ fits } \rho &&(\mathsf{fits}_\Xi) \\[1em]
-& {\iff} \\
-& \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \text{ fits } \rho \\
-& \quad \text{and} \\
-& \qquad \forall k \le |\bar\pi'|.\ \pi'_k \le (\rho \cdot (\rho' \cdot \mathsf{factor}(\Upsilon))) \cdot \pi_k \\
-& \qquad \Upsilon \text{ fits } \rho \\
-& \qquad \Xi \text{ fits } \rho \\[1em]
-& \star_M \text{ fits } \rho &&(\mathsf{fits}_\Upsilon)
 \end{aligned}
 ```
 
@@ -262,130 +233,8 @@ The arguments $`\mathsf{arguments}_\Sigma(T.\bar g)`$ of the branches of a corec
 \end{aligned}
 ```
 
-The skeleton $`\mathsf{skeleton}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ is the term of the target language that the type $`D`$ gives to its closed terms when each type of its block has one constructor at most: the constructor of the case of the only constructor of $`D`$, applied to $`\text{↯}`$ for each field that is not recursive and to the skeleton of the type of each recursive field, each at the multiplicity $`0`$, since a skeleton holds no value that a use at run time reads, and at the requirement $`\omega`$, which states nothing, and $`\text{↯}`$ when $`D`$ has no constructor or several.
-It is built within the depth $`k`$ of the number of the types of the block, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and is $`\text{↯}`$ when $`\Sigma`$ has no such entry:
-
-```math
-\begin{aligned}
-& \mathsf{skeleton}_\Sigma(T) = \mathsf{skeleton}^k(D) &&(\mathsf{skeleton}_D) \\
-& \quad \text{if} \\
-& \qquad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
-& \qquad \quad \mathsf{where} \\
-& \qquad \qquad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\
-& \qquad \qquad \dots; \\
-& \qquad \qquad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\
-& \qquad \quad \text{is this entry} \\[1em]
-& \mathsf{skeleton}_\Sigma(T) = \text{↯} \text{ if } \Sigma \text{ has no such entry} \\[1em]
-& \mathsf{skeleton}^0(D_j) = \text{↯} \\[1em]
-& \mathsf{skeleton}^{n + 1}(D_j) = c_i(M_1 \mathrel{▶} 0 \mathrel{◀} \omega, \dots, M_a \mathrel{▶} 0 \mathrel{◀} \omega) \\
-& \quad \text{if} \\
-& \qquad \text{and} \\
-& \qquad \quad \bar c_j = (c : \Theta) \\
-& \qquad \quad i = \mathsf{case}_\Sigma(D_j.c) \\
-& \qquad \quad \Theta \text{ has } a \text{ entries} \\[1em]
-& \mathsf{skeleton}^{n + 1}(D_j) = \text{↯} \text{ otherwise}
-\end{aligned}
-```
-
-In the skeleton of a constructor $`{c : \Theta}`$, $`M_l`$ is $`\mathsf{skeleton}^n(D')`$ when the element $`l`$ of $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](14-typing.md#fields-of-a-block), is a type $`D'`$ of the block, and $`\text{↯}`$ when it is $`\bot`$.
-The depth is reached only on a type without closed term: along a path of a closed term, from a term to the term of one of its recursive fields, no type of the block comes twice, since each type has one constructor, so that the term would hold a term of the same form, without end.
-
-The shape $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(A,\ \lambda)}`$ of the recursive result whose type is $`A`$, of the nesting $`\lambda`$, is read on the syntax of $`A`$ as the [lifting](20-liftings.md#types) lifts it, at the variables $`s_C`$, $`r`$ and $`\varsigma`$ of a lifting, which the recursor gives: its shape $`\Upsilon`$, its factor $`\pi`$ and its ownership $`\chi'`$, written $`{\Upsilon;\ \pi;\ \chi'}`$, where $`\Lambda`$ gives a variable lifted a position that holds its shape, $`\bot`$ to the other variables, and the shape of the result of the recursor to each type of the block, which a position names, the entries $`\Sigma'`$ of $`\Sigma`$ declare the liftings whose shapes it reads, and $`\Sigma`$ the types lifted and their cases.
-A variable lifted, applied to arguments, has the shape that the position of its nesting holds; an instance of a type of the block, at a position, the shape given to this type; and an instance of another declared type whose nesting is not a position, of which an argument at least has a shape, the shape and the factor of the lifting of this type at the shapes of these arguments, with the ownership $`{11}^{\mathsf{p}}`$, since its recursive result is a corecursor; any other type has no shape.
-The shapes $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda)}`$ of the arguments $`\bar a`$ of an instance, of the nestings $`\bar\lambda`$, are the shape of each argument, under the variables that its abstraction binds, which have no position, or $`\bot`$ when it has none:
-
-```math
-\begin{aligned}
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(x[\bar t],\ \lambda) = h \text{ if } \Lambda(x) \text{ is a position that holds } h &&(\mathsf{shape}_A) \\
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ \lambda) = \Lambda(D) \\
-& \quad \text{if } \lambda \text{ is a position and } \Lambda \text{ gives an object to } D \\
-& {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ \lambda) \\
-& \quad \Xi;\ \pi;\ {11}^{\mathsf{p}} \\
-& \quad \text{if} \\
-& \qquad \text{and} \\
-& \qquad \quad \lambda = \bot \text{ and each of } \bar\lambda \text{ is } \bot \text{, or } \lambda = (\bar\lambda) \\
-& \qquad \quad \bar\lambda' = \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda) \\
-& \qquad \quad \text{not each of } \bar\lambda' \text{ is } \bot \\
-& \qquad \quad \mathsf{shape}_{\Sigma; \Sigma'}(D.\{\bar s;\ \bar p\},\ \bar\lambda') = \Xi;\ \pi \\
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(A,\ \lambda) \text{ is not defined otherwise} \\[1em]
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}((),\ ()) = () &&(\mathsf{shape}_{\bar a}) \\
-& {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
-& \quad (\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda),\ h) \\
-& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \lambda) = h \\
-& {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
-& \quad (\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda),\ \bot) \\
-& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \lambda) \text{ is not defined}
-\end{aligned}
-```
-
-The shape $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d) = \Xi;\ \hat\pi}`$ of the destructors $`\bar d`$ of the type $`D`$ is the shape of the lifting of $`D`$, with an element for each destructor whose result has a shape, in order, and the meet of their grades in the lifting times the factors of their results, or $`\bot`$ when there is none, where $`{\pi \wedge \bot = \pi}`$, as the [factor](20-liftings.md#factors) of a lifting is.
-The element of a destructor is read from the destructor that the lifting lifts, as the [lifting](20-liftings.md#destructors) of the destructors declares it: its case $`i`$ in its block, $`0`$ when the signature gives it none, the multiplicity at run time of its grade in the lifting, the parameters of its arguments in the observation, the same arguments used the grade of the recursor times the factor of its result more and scaled by the mode of its grade in the lifting, as the [erasure](#definitions) of a corecursor scales its arguments, the ownership of the recursive result whose type is its result, the requirement of the lifting, the ownerships of the destructor that it lifts and the shape of its result:
-
-```math
-\begin{aligned}
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \varepsilon) = ();\ \bot &&(\mathsf{shape}_{\bar d}) \\
-& {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ (d : (\Theta \vdash B \mathrel{◀} \psi') \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d)) \\
-& \quad ((i,\ \rho,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho,\ \psi,\ \mathsf{run}(\varsigma),\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi);\ (p' \cdot \pi) \wedge \hat\pi \\
-& \quad \text{if} \\
-& \qquad \text{and} \\
-& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \bot) = \Upsilon;\ \pi;\ \chi' \\
-& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d) = \Xi;\ \hat\pi \\
-& \qquad \quad p' = \mathsf{grade}_{s_C}(p) \\
-& \qquad \quad \bar q \mathrel{◀} \bar r \text{ are the parameters of } \Theta \\
-& \qquad \quad \rho = \mathsf{run}(p') \\
-& \qquad \quad \bar\pi = \mathsf{run}(\bar q) \\
-& \qquad \quad \bar\varrho = \mathsf{run}(\bar r) \\
-& \qquad \quad \bar\pi' = \mathsf{run}(\ulcorner {11}^{\mathsf{m}} \odot p' \urcorner \cdot ((r \cdot \pi) \cdot \bar q)) \\
-& \qquad \quad \psi = \mathsf{run}(\chi') \\
-& \qquad \quad \psi_0 = \mathsf{run}(\psi') \\
-& \qquad \quad \varsigma_0 = \mathsf{run}(\varsigma') \\
-& \qquad \quad i = \mathsf{case}_\Sigma(D.d) \text{ if it is defined, and } i = 0 \text{ otherwise} \\
-& {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ (d : (\Theta \vdash B \mathrel{◀} \psi') \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d)) \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d) \\
-& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \bot) \text{ is not defined}
-\end{aligned}
-```
-
-The shape $`{\mathsf{shape}_{\Sigma; \Sigma'}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') = \Xi;\ \pi}`$ of the lifting of the type $`D`$ at the instance $`\bar s'`$, $`\bar p'`$, at the shapes $`\bar\lambda'`$ of its parameters, $`\bot`$ for a parameter that is not lifted, is read in the last entry of $`\Sigma'`$ that declares the lifting of $`D`$ at the parameters lifted: it is the shape of the destructors of $`D`$ at this instance, where each parameter lifted has its shape, in the last entry of $`\Sigma`$ that declares a codata type $`D`$ and as many sort and grade variables as $`\bar s'`$ and $`\bar p'`$, with the factor $`{00}^{\mathsf{p}}`$ when the lifting has no destructor.
-The result of a destructor of a lifting is an instance of a lifting that the signature declares before it, since the signature declares its liftings in order, so that the shape of a lifting reads, for the shapes of the results of its destructors, only the entries before it, without a bound on the depth, while it reads the declarations of the types lifted and their cases in the whole signature.
-The shape is a function on the syntax, which the erasure computes, and an instance of a lifting that the signature does not declare has none:
-
-```math
-\begin{aligned}
-& \mathsf{shape}_{\Sigma; \varepsilon}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \text{ is not defined} &&(\mathsf{shape}_\Sigma) \\
-& {=} \\
-& \quad \mathsf{shape}_{\Sigma; (\Sigma',\ e)}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
-& \quad \Xi;\ \pi \\
-& \quad \text{if} \\
-& \qquad \text{and} \\
-& \qquad \quad e = \mathsf{lifting}_{\Pi'}(\mathcal{D}',\ D,\ \bar d'') \text{ for some } \mathcal{D}' \text{ and } \bar d'' \\
-& \qquad \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
-& \qquad \qquad \mathsf{where} \\
-& \qquad \qquad \quad \dots;\ D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d;\ \dots \\
-& \qquad \quad \text{is the last entry of } \Sigma \text{ that declares a type } D \\
-& \qquad \quad \text{and as many sort and grade variables as } \bar s' \text{ and } \bar p' \\
-& \qquad \quad \Lambda \text{ gives each parameter } x_j \text{ of } \Delta \text{ the element } \lambda'_j \\
-& \qquad \quad \Lambda \text{ gives no other variable a position and no type an object} \\
-& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d[\bar s' / \bar s,\ \bar p' / \bar p]) = \Xi;\ \hat\pi \\
-& \qquad \quad \pi = \hat\pi \text{ when } \hat\pi \ne \bot \text{, and } \pi = {00}^{\mathsf{p}} \text{ when } \hat\pi = \bot \\
-& {=} \\
-& \quad \mathsf{shape}_{\Sigma; (\Sigma',\ e)}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
-& \quad \mathsf{shape}_{\Sigma; \Sigma'}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
-& \quad \text{if } e \text{ is not a lifting of } D \text{ at } \Pi' \\
-& \mathsf{shape}_{\Sigma; (\Sigma',\ e)}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \text{ is not defined otherwise}
-\end{aligned}
-```
-
-In the rule $`(\mathsf{shape}_\Sigma)`$, $`\Pi'`$ is the set of the parameters of $`D`$ whose elements of $`\bar\lambda'`$ are positions, and $`\Pi`$ the parameters at which $`D`$ is strictly positive, which the shape does not read.
-In the rules $`(\mathsf{shape}_A)`$ and $`(\mathsf{shape}_{\bar a})`$, an element of $`\bar\lambda'`$ is a position that holds a shape or $`\bot`$, and $`h`$ is a shape $`{\Upsilon;\ \pi;\ \chi'}`$.
-
 The sorts and the instances have no representation in the target language, and are erased.
-A constructor keeps its case and its fields, each erased at the grade of its field and stored at the multiplicity at run time of this grade and at the requirement at run time of its requirement, and a field whose parameter the signature does not give, in a term that no rule types, is erased, and stored at $`\omega`$ and at the requirement $`\omega`$, which state nothing, as a constructor whose case it does not give is erased; a recursor keeps the multiplicity at run time of its grade $`r`$, its term and the requirement at run time of its recursion when $`r`$ is not in $`S`$, and the skeleton of the type of its term and the requirement $`\omega`$ otherwise, which states nothing, since the variables of the fields of the skeleton have the ownership $`0`$ whatever the ownership of the term, and its branches, which keep, for each recursive result, the position of its field, or $`\bot`$ when its grade is in $`S`$, and loses its instance and its motives, which are types.
+A constructor keeps its case and its fields, each erased at the grade of its field and stored at the multiplicity at run time of this grade and at the requirement at run time of its requirement, and a field whose parameter the signature does not give, in a term that no rule types, is erased, and stored at $`\omega`$ and at the requirement $`\omega`$, which state nothing, as a constructor whose case it does not give is erased; a recursor keeps the multiplicity at run time of its grade $`r`$, its term and the requirement at run time of its recursion when $`r`$ is not in $`S`$, and the [skeleton](21-recursive-results.md#skeletons) of the type of its term and the requirement $`\omega`$ otherwise, which states nothing, since the variables of the fields of the skeleton have the ownership $`0`$ whatever the ownership of the term, and its branches, which keep, for each recursive result, the position of its field, or $`\bot`$ when its grade is in $`S`$, and loses its instance and its motives, which are types.
 An observation keeps its term, the case of its destructor, the ownership at run time of the result of its destructor, $`\mathsf{run}(\psi)`$, which applies $`\mathsf{run}`$ to its constant and to its coefficients, the ownership at run time $`\mathsf{run}(\varsigma)`$ that its destructor requires of the value that it observes, and its arguments, each erased at the grade of its argument and stored at its multiplicity at run time and at its requirement at run time, and a corecursor keeps its state, each entry erased at its grade times the grade $`r`$ of the corecursor and stored at its multiplicity at run time, since every observation that reaches the state uses it $`r`$ times, and at its requirement at run time, and its branches, each erased at the grade of its destructor, since its usage checks it in the mode of this grade, with the number of the entries of the state it resumes, the ownership at run time of the result of its destructor and the ownership at run time that its destructor requires of the value that it observes, and loses its instance and its states, which are types; the parameters of the entries of the state are those of the state $`\Theta_h`$ of the type $`D_h`$ of its instance, with $`{h = \mathsf{position}_\Sigma(D)}`$, and an entry whose parameter is not given, in a term that no rule types, is erased.
 The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\text{↯}`$ when $`{p \in S}`$, and $`\lfloor t \rfloor_S`$ otherwise, and the erasure of terms at the parameters $`{\bar p \mathrel{◀} \bar r}`$ stores each at the multiplicity $`\mathsf{run}(p)`$ of its grade and at the requirement $`\mathsf{run}(r)`$ of its requirement:
 
@@ -533,7 +382,7 @@ A variable reads itself once, a constant and $`\text{↯}`$ read no variable, an
 A position $`{M \mathrel{▶} \pi \mathrel{◀} \varrho}`$ is evaluated once, and its value is then read as its multiplicity allows, through a cell or by each observation of a closure, so that the position counts the reads of its term $`\pi`$ times, as the term of a recursor $`\rho`$ times.
 A position of the multiplicity $`0`$ is still evaluated, but its value is never read: a closure that it holds is never observed, and would never release a linear variable that it captures, whether the term reads it or binds it inside, so that its term is a skeleton, which reads no variable and binds none, as the term of a recursor of the multiplicity $`0`$, whose fields are never read; reads of the multiplicity $`\omega`$ would also vanish in the product, and could read a variable of the multiplicity $`0`$.
 A recursor evaluates its term once and runs a branch, which reads the variables of the scope as some $`\delta`$ allows, and its new variables as their binders allow; each recursive result that the branch computes, at the positions $`{w_j \ne \bot}`$, runs the recursor again, which reads the variables of the scope as $`\chi`$ allows again, and is read as its binder allows, so that $`\chi`$ bounds $`\delta`$ plus $`\chi`$ times the sum $`{\Sigma_j\, \pi'_j \cdot \mathsf{factor}(w_j)}`$ of the multiplicities of the binders of the results times their factors, an erased result running no recursion, and a nested result running the branches of its corecursor, which read the scope as often as its shape allows, as the [usage](12-usage.md#definitions) bounds the uses of the branches of a recursor; a result that the branch computes has a multiplicity other than $`0`$, since the recursion that computes it also reads its field, which a result never read would not count.
-The judgment $`{\rho;\ \chi \vdash \bar N \mathrel{▶}}`$ of the branches of a recursor of the multiplicity $`\rho`$ also asks that the shape of each nested result fit $`\rho`$, so that its corecursor reads the arguments of its observations as the observations allow.
+The judgment $`{\rho;\ \chi \vdash \bar N \mathrel{▶}}`$ of the branches of a recursor of the multiplicity $`\rho`$ also asks that the shape of each nested result [fit](21-recursive-results.md#shapes) $`\rho`$, so that its corecursor reads the arguments of its observations as the observations allow.
 A corecursor evaluates its state once and captures its scope in a closure, each observation of which runs one branch, which reads the variables of the scope as some $`\delta_i`$ allows and its new variables as their binders allow, and a branch that resumes the corecursor, $`{k \ne \bot}`$, captures the scope again in a new closure, so that $`\delta`$ bounds $`\delta_i`$, and $`\delta_i`$ plus $`\delta`$ for such a branch.
 In the rules, $`{\nu \bullet \bar\pi \bullet \bar\pi'}`$ extends $`\nu`$ by the multiplicities of the variables that a branch binds, in order:
 
@@ -567,44 +416,14 @@ It follows the [ownership](13-ownership.md) on the run-time components that the 
 A variable has the ownership that $`\varphi`$ gives it, a constant the one that $`\Omega`$ gives it, and $`\text{↯}`$, which the evaluation never reads, every ownership; a constructor builds a new value, of the ownership $`1`$, whose fields satisfy the requirements of their positions, $`\bar\varrho(\bar M) \le \bar o`$, as an observation and a corecursor require of their arguments and of their state.
 A recursor has the ownership $`o'`$ of its branches, each checked with the ownership $`o`$ of its term times the requirement $`\varrho`$ of its recursion times the coefficient $`\kappa`$ of each variable of a field, and the ownership $`\mathsf{own}_{o'}(w)`$ of each variable of a recursive result times its multiplicity $`\pi'`$, $`o'`$ for a result of the recursor and $`1`$ for a nested result, a new value, written $`{\varphi \bullet o \cdot \bar\kappa \bullet \mathsf{own}_{o'}(\bar w) \cdot \bar\pi'}`$ as $`(\bullet_\nu)`$ extends a vector.
 A recursor also gives its branches the ownership $`\varsigma`$ that the lifted destructors of its nested results require of the value that they observe, and the ownership $`\chi`$ of their results that are motives: the corecursor of a nested result captures the scope, which its observations see at $`{\varsigma \cdot \varphi}`$, and runs the recursor on the observations of the field, whose results have the ownership $`\chi`$, so that each branch is checked a second time, with the scope at $`{\varsigma \cdot \varphi}`$ and the ownership $`\chi`$; every branch is, since a recursion from a nested result may reach any constructor, and a recursor without nested result passes this check with $`{\varsigma = 1}`$ and $`{\chi = o'}`$, where it is the first one.
-The shape of each nested result has the ownerships $`\varsigma`$ and $`\chi`$, written $`{\Xi \mathrel{◀} \varsigma;\ \chi}`$: each lifted destructor requires $`\varsigma`$ of the value that it observes, and its result has the ownership $`\mathsf{own}_\chi(\Upsilon)`$, $`\chi`$ for the recursor itself and $`1`$ for the corecursor of the next lifting, whatever the ownerships of its arguments, as the [lifting](20-liftings.md#destructors) declares them.
-The shape also meets the requirements of the recursions on the observations of the field, whose branches see the term of the recursor at the ownership $`o`$, written $`{\Xi \text{ meets } o;\ \varsigma}`$: for each destructor observed at run time, the requirement $`\varsigma_0`$ of the destructor that it lifts on the value that it observes is within $`o`$, and, for all the ownerships $`\bar o`$ of the arguments of its branch that meet their requirements, the arguments of the observation, of the ownerships $`\bar o'`$, meet the requirements of their positions in it, and the value of the ownership $`\psi_0`$ of its result at $`\bar o'`$ is defined and keeps $`o`$, so that the observation has an ownership within $`o`$, as each level of the recursion has; the observation sees the arguments of the branch at $`\mathsf{scale}_\varsigma(\Upsilon)`$, $`1`$ when the recursor runs on it in the branch, and $`\varsigma`$ when the corecursor of the next lifting captures it, and an erased argument, $`\text{↯}`$, has every ownership, its requirement among them.
+The shape of each nested result has the [ownerships](21-recursive-results.md#ownerships-of-the-shapes) $`\varsigma`$ and $`\chi`$, written $`{\Xi \mathrel{◀} \varsigma;\ \chi}`$, and meets the requirements of the recursions on the observations of the field, whose branches see the term of the recursor at the ownership $`o`$, written $`{\Xi \text{ meets } o;\ \varsigma}`$.
 The variable of the field of a nested result, seen at $`\varsigma`$, keeps $`o`$, the ownership of the term of the recursor:
 
 ```math
 \begin{aligned}
 & \mathsf{own}_{o'}(\bot) = o' &&(\mathsf{own}_w) \\
 & \mathsf{own}_{o'}(n) = o' \\
-& \mathsf{own}_{o'}(n.\Xi) = 1 \\[1em]
-& \mathsf{own}_\chi(\star_M) = \chi &&(\mathsf{own}_\Upsilon) \\
-& \mathsf{own}_\chi(\Xi) = 1 \\[1em]
-& \mathsf{scale}_\varsigma(\star_M) = 1 &&(\mathsf{scale}_\Upsilon) \\
-& \mathsf{scale}_\varsigma(\Xi) = \varsigma \\[1em]
-& () \mathrel{◀} \varsigma;\ \chi &&(\mathsf{uniform}_\Xi) \\[1em]
-& {\iff} \\
-& \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \mathrel{◀} \varsigma;\ \chi \\
-& \quad \text{and} \\
-& \qquad \varsigma' = \varsigma \\
-& \qquad \psi = \mathsf{own}_\chi(\Upsilon) \\
-& \qquad \Upsilon \mathrel{◀} \varsigma;\ \chi \\
-& \qquad \Xi \mathrel{◀} \varsigma;\ \chi \\[1em]
-& \star_M \mathrel{◀} \varsigma;\ \chi &&(\mathsf{uniform}_\Upsilon) \\[1em]
-& () \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Xi) \\[1em]
-& {\iff} \\
-& \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \text{ meets } o;\ \varsigma \\
-& \quad \text{and} \\
-& \qquad {\implies} \\
-& \qquad \quad \rho' \ne 0 \\
-& \qquad \quad \text{and} \\
-& \qquad \qquad \varsigma_0 \le o \\
-& \qquad \qquad \forall \bar o.\ \bar\varrho' \le \bar o \implies \bar\varrho \le \bar o' \text{ and } \exists v.\ \psi_0[\bar o'] = v \text{ and } o \le o \cdot v \\
-& \qquad \Upsilon \text{ meets } o;\ \varsigma \\
-& \qquad \Xi \text{ meets } o;\ \varsigma \\
-& \quad \text{where} \\
-& \qquad \text{and} \\
-& \qquad \quad o'_k = \varrho_k \text{ if } \pi_k = 0 \\
-& \qquad \quad o'_k = \mathsf{scale}_\varsigma(\Upsilon) \cdot (o_k \cdot \pi'_k) \text{ otherwise} \\[1em]
-& \star_M \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Upsilon)
+& \mathsf{own}_{o'}(n.\Xi) = 1
 \end{aligned}
 ```
 
