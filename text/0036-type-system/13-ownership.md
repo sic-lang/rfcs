@@ -90,10 +90,10 @@ The requirement $`{\mathsf{recursion}_{\Sigma; m}(\mathcal{D}.\{\bar s';\ \bar p
 & \qquad \text{and} \\
 & \qquad \quad K = \{\ulcorner m \urcorner \cdot r \cdot q_{jil} \mathrel{◀} r_{jil} \mid \\
 & \qquad \qquad \text{the element } l \text{ of } \mathsf{rec}_{\mathcal{D}}(\Theta_{ji}) \text{ is not } \bot\} \\
-& \qquad \quad L(\beta) = \{\beta(\ulcorner m \urcorner \cdot r \cdot q_{jil}) \mathrel{◀} \beta(r_{jil}) \cdot \pi \mid \\
+& \qquad \quad L(\beta) = \{\beta(\ulcorner m \urcorner \cdot r \cdot q_{jil}) \mathrel{◀} \beta(r_{jil}) \cdot v \mid \\
 & \qquad \qquad \text{and} \\
 & \qquad \qquad \quad \Xi_{jil,\beta} \ne \bot \\
-& \qquad \qquad \quad \pi \in \mathsf{recursion}_{\beta(\varsigma)}(\Xi_{jil,\beta})\} \\
+& \qquad \qquad \quad v \in \mathsf{recursion}_{\beta(\varsigma)}(\Xi_{jil,\beta})\} \\
 & \qquad \quad \forall j, i.\ \text{the entries of } \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ require } r_{ji1}, \dots, r_{jik_{ji}} \\
 & \qquad \quad \forall j, i.\ \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ has the grades } q_{ji1}, \dots, q_{jik_{ji}} \\
 & \qquad \quad \forall j, i, \beta.\ \mathsf{shapes}_{\Sigma; m; \beta}(\mathcal{D}.\{\bar s';\ \bar p'\},\ \Theta_{ji}) = \Xi_{ji1,\beta}, \dots, \Xi_{jik_{ji},\beta}
