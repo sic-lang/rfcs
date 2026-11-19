@@ -637,6 +637,14 @@ The names of a well-formed signature are [distinct](08-syntax.md):
 \end{aligned}
 ```
 
+A well-formed signature [declares its liftings in order](13-liftings.md#signatures), since the rule $`(\mathsf{sig}_{\mathsf{lift}})`$ checks each lifting in the entries before it, which hold the block of the type lifted and in which the destructors are those of this type lifted:
+
+```math
+\begin{aligned}
+& \vdash \Sigma \implies \Sigma \text{ declares its liftings in order} &&(\mathsf{order}_\Sigma)
+\end{aligned}
+```
+
 The [prelude](12-prelude.md#declarations) is a well-formed signature: each of its declarations is well formed in the declarations before it, at every instance that its constraint admits:
 
 ```math
