@@ -332,7 +332,7 @@ The arguments $`\bar a`$ of an instance of the declared type $`D`$ are strictly 
 \end{gathered}
 ```
 
-The fields of a constructor are strictly positive in a variable when the type of each of them is, and the destructors of a codata type when the variable does not occur in the arguments of any of them and the result of each of them is strictly positive in it; the rule $`(\bar d_{\kappa\lambda})`$ of the [destructors of a block](#destructors-of-a-block) checks that no destructor depends on a destructor in whose result such a variable occurs:
+The fields of a constructor are strictly positive in a variable when the type of each of them is, and the destructors of a codata type when the variable does not occur in the arguments of any of them and the result of each of them is strictly positive in it; the rule $`(\bar d_{\kappa\lambda})`$ of the [destructors of a block](#formation-of-the-destructors-of-a-block) checks that no destructor depends on a destructor in whose result such a variable occurs:
 
 ```math
 \begin{gathered}
@@ -343,7 +343,7 @@ The fields of a constructor are strictly positive in a variable when the type of
 \end{gathered}
 ```
 
-### Fields of a Block
+### Formation of the Fields of a Block
 
 The fields of a constructor of a block $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, live in a sort when those whose [nesting](08-syntax.md#fields-of-a-block) has no position do, as the entries of a [telescope in a sort](#telescopes-in-a-sort), and each recursive field is a type $`D`$ of the block at this instance, at its level variables and at its [parameters themselves](08-syntax.md#telescopes-and-contexts) $`\bar x_\Delta`$, a field on which no field after it depends.
 A nested field is a type $`A_0`$ in which these instances $`{\bar D\ \bar x_\Delta}`$ of the types of the block replace type variables $`\bar X`$, one of the sort $`\kappa`$ for each type of the block: $`A_0`$ lives in a sort that $`\kappa`$ bounds, which is a universe, in the context extended by $`\bar X`$ and in a signature that holds the [prelude](12-prelude.md#declarations), and is [strictly positive](#strict-positivity) in each of $`\bar X`$; no field after it depends on it either:
@@ -357,7 +357,7 @@ A nested field is a type $`A_0`$ in which these instances $`{\bar D\ \bar x_\Del
 \end{gathered}
 ```
 
-### Destructors of a Block
+### Formation of the Destructors of a Block
 
 The destructors $`\bar d`$ of a codata type of a block $`{\mathcal{D} = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, strictly positive in the parameters $`\Pi`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`{d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mathrel{◀} \varsigma_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n \mathrel{◀} \varsigma_n}`$, or $`\varepsilon`$ when there is none, live in a sort $`\kappa`$ of level $`l`$ when the arguments of each live in the universe $`U_l`$, whatever the quality of $`\kappa`$, so that a proposition may quantify over a type of its level.
 The result of a destructor that is not recursive lives in a sort that $`\kappa`$ [bounds](07-sorts.md), a result that is a proposition having a grade without use at run time; the destructor is a second-order variable of the context of the destructors after it if the [nesting](08-syntax.md#destructors-of-a-block) of its result has no position, and no destructor after it depends on it otherwise, as none depends on a recursive destructor; the result of a recursive destructor is a type $`D`$ of the block at this instance, at its level variables and at its [parameters themselves](08-syntax.md#telescopes-and-contexts) $`\bar x_\Delta`$, as the type of a recursive field is, with a grade without use at run time if $`\kappa`$ is a universe of propositions, and no destructor after it depends on it:
