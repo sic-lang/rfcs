@@ -472,7 +472,7 @@ A closed term run at the weight $`1`$ in the empty heap therefore reads each cel
 \end{aligned}
 ```
 
-The program of a signature has its ownership, when the names of the signature are distinct and its entries have their ownerships, given ownerships $`\Omega`$ of the constants that are the run-time multiplicities of those of their entries, defined or declared: each of its bodies is the erasure at run time of the body of a constant definition of the mode $`{11}^{\mathsf{m}}`$, whose value has the ownership of the definition in the signature before it, and so in the whole signature, $`(\mathsf{ext}_{◀}.t)`$, in which the program erases it, $`(\mathsf{erase}_{◀})`$:
+The program of a signature has its ownership, when the names of the signature are distinct and its entries have their ownerships, given ownerships $`\Omega`$ of the constants that are the run-time multiplicities of those of their entries, defined or declared: each of its bodies is the erasure at run time of the body of a constant definition of the mode $`{11}^{\mathsf{m}}`$, whose value has the ownership of the definition in the signature before it, and so in the whole signature, which has more entries after it, all of distinct names, $`(\mathsf{ext}_{◀}.t)`$, in which the program erases it, $`(\mathsf{erase}_{◀})`$:
 
 ```math
 \begin{aligned}

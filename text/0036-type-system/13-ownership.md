@@ -166,19 +166,20 @@ Ownership is stable under the [renamings](09-substitution.md#renamings): renamed
 \end{aligned}
 ```
 
-Ownership holds in every signature that has the entries of its own, since it reads its signature only by the entries that it has, its constants, its data types and its codata types; the judgment $`{\vdash \Sigma \mathrel{◀}}`$ checks the body of a constant definition in the signature before it, which every later signature extends:
+Ownership holds in every signature that has more entries after its own, all of distinct names, since it reads its signature by the entries that it has, its constants, its data types and its codata types, and by the shapes of the nested fields of a block, which the requirement of the recursion of a recursor reads: each nested field has a shape at each position of its type, and the shape of a lifting reads only the entries before it, so that an entry after them, of another name, is no lifting that a shape reads, while a signature that has the entries of its own among others may give a shape a lifting that it lacked, or an entry of the same name as one of them.
+The judgment $`{\vdash \Sigma \mathrel{◀}}`$ checks the body of a constant definition in the signature before it, which every later signature extends by entries after it:
 
 ```math
 \begin{aligned}
 & \text{⟹} &&(\mathsf{ext}_{◀}.t) \\
 & \quad \text{and} \\
-& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \text{the names of } \Sigma,\ e_1, \dots, e_n \text{ are distinct} \\
 & \qquad \Sigma;\ \varphi \vdash t \mathrel{◀} p;\ m \\
-& \quad \Sigma';\ \varphi \vdash t \mathrel{◀} p;\ m \\[1em]
+& \quad \Sigma,\ e_1, \dots, e_n;\ \varphi \vdash t \mathrel{◀} p;\ m \\[1em]
 & \text{⟹} &&(\mathsf{ext}_{◀}.\bar t) \\
 & \quad \text{and} \\
-& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \text{the names of } \Sigma,\ e_1, \dots, e_n \text{ are distinct} \\
 & \qquad \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \\
-& \quad \Sigma';\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m
+& \quad \Sigma,\ e_1, \dots, e_n;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m
 \end{aligned}
 ```
