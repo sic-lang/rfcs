@@ -1,7 +1,7 @@
 # Recursive Results
 
-This annex defines the recursive results of the fields of a constructor, which a branch of a recursor binds after its fields: their types (the motive of its type for a recursive field and the type of the field lifted for a field nested below a codata type), their factors, and the terms that the computation of a recursor gives them, with their properties, and the skeletons of the data types and the shapes of the recursive results, which the erasure of a recursor reads.
-It builds on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](14-typing.md#nesting) of the fields of a block, on the [liftings](20-liftings.md) and on the target language of the [erasure](16-erasure.md#definitions), and the [typing](14-typing.md#terms), the [usage](12-usage.md#definitions), the [reduction](15-reduction.md) and the [erasure](16-erasure.md) of the recursors read its definitions.
+This annex defines the recursive results of the fields of a constructor, which a branch of a recursor binds after its fields: their types (the motive of its type for a recursive field and the type of the field lifted for a field nested below a codata type), their factors, and the terms that the computation of a recursor gives them, with their properties, and the skeletons of the data types and the shapes of the recursive results, which the ownership and the erasure of a recursor read.
+It builds on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](14-typing.md#nesting) of the fields of a block, on the [liftings](20-liftings.md) and on the target language of the [erasure](16-erasure.md#definitions), and the [usage](12-usage.md#definitions), the [ownership](13-ownership.md#definitions), the [typing](14-typing.md#terms), the [reduction](15-reduction.md) and the [erasure](16-erasure.md) of the recursors read its definitions.
 
 ## Definitions
 
