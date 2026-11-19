@@ -62,19 +62,19 @@ A recursor, written as in its [typing](14-typing.md#terms), has the ownership of
 Here $`\bar\lambda`$ are the [nestings](14-typing.md#fields-of-a-block) of the fields, and $`{\mathsf{own}_p(\bar\lambda) \cdot \bar e}`$ gives each recursive result the ownership $`\mathsf{own}_p(\lambda)`$ of the nesting $`\lambda`$ of its field times its grade, one result for each element of $`\bar\lambda`$ that is not $`\bot`$, in order.
 The requirement $`\hat r`$ of the recursion is the meet, on each [axis](04-grades.md#definitions) of the grades, of $`1`$, of the coefficient of the variable of each recursive field that the recursor uses, the requirement $`r_l`$ of its entry times the grade $`{\ulcorner m \urcorner \cdot r \cdot q_l}`$ with which the branch uses it, and, for each nested field that the recursor uses and each prefix $`{d_1 \dots d_h}`$ of a path of its [shape](21-recursive-results.md#ownerships-of-the-shapes), the empty one included, of the requirement $`r_l`$ times the product $`{\varsigma \cdot \psi^-_1 \cdot \ldots \cdot \psi^-_h}`$ along the prefix times this grade, a field without use being eliminated by no recursion: the branches run at each level of the recursion, on the term and then on a recursive field or on an observation of a nested field, and a recursion is a use of its field, whose ownership is the ownership of the value that holds it times the coefficient of the variable of the field, as that of its variable, or of an observation, whose ownership the products along its path bound, so that they see the term at the ownership $`{o \cdot \hat r}`$, which every level has, since the grades are idempotent, $`{\hat r \cdot \hat r = \hat r}`$, and $`\hat r`$ is below the coefficient of each recursive field that the recursor uses.
 Every value that a recursion observes then keeps the ownership $`{o \cdot \hat r}`$, the value at the end of each prefix of a path, which the next destructor of the path observes, as the value at its end, on which the recursion runs, so that one check of the branches covers the recursions on the observations of the nested fields too.
-The requirement $`\mathsf{recursion}(K;\ N)`$ of a recursion reads a set $`K`$ of pairs $`{u \mathrel{◀} r}`$ of grades, the grade $`u`$ with which a recursive field is used and the requirement $`r`$ of its entry, and, for each axis $`\beta`$, a set $`N(\beta)`$ of pairs $`{\pi \mathrel{◀} \varrho}`$ of multiplicities on the axis, the multiplicity $`\pi`$ with which a nested field is used and its requirement times the product along a prefix of a path of its shape, $`\varrho`$:
+The requirement $`\mathsf{recursion}(K;\ L)`$ of a recursion reads a set $`K`$ of pairs $`{u \mathrel{◀} r}`$ of grades, the grade $`u`$ with which a recursive field is used and the requirement $`r`$ of its entry, and, for each axis $`\beta`$, a set $`L(\beta)`$ of pairs $`{\pi \mathrel{◀} \varrho}`$ of multiplicities on the axis, the multiplicity $`\pi`$ with which a nested field is used and its requirement times the product along a prefix of a path of its shape, $`\varrho`$:
 
 ```math
 \begin{aligned}
 & {=} &&(\mathsf{recursion}_p) \\
-& \quad \mathsf{recursion}(K;\ N) \\
+& \quad \mathsf{recursion}(K;\ L) \\
 & \quad \langle \\
 & \qquad {\wedge} \\
 & \qquad \quad 1 \wedge \bigwedge \{\pi_3 \cdot \pi_1 \mid (\langle \pi_1, \pi_2 \rangle \mathrel{◀} \langle \pi_3, \pi_4 \rangle) \in K,\ \pi_1 \ne 0\} \\
-& \qquad \quad \bigwedge \{\varrho \cdot \pi \mid (\pi \mathrel{◀} \varrho) \in N(\mathsf{run}),\ \pi \ne 0\}, \\
+& \qquad \quad \bigwedge \{\varrho \cdot \pi \mid (\pi \mathrel{◀} \varrho) \in L(\mathsf{run}),\ \pi \ne 0\}, \\
 & \qquad {\wedge} \\
 & \qquad \quad 1 \wedge \bigwedge \{\pi_4 \cdot \pi_2 \mid (\langle \pi_1, \pi_2 \rangle \mathrel{◀} \langle \pi_3, \pi_4 \rangle) \in K,\ \pi_2 \ne 0\} \\
-& \qquad \quad \bigwedge \{\varrho \cdot \pi \mid (\pi \mathrel{◀} \varrho) \in N(\mathsf{total}),\ \pi \ne 0\} \\
+& \qquad \quad \bigwedge \{\varrho \cdot \pi \mid (\pi \mathrel{◀} \varrho) \in L(\mathsf{total}),\ \pi \ne 0\} \\
 & \quad \rangle
 \end{aligned}
 ```
@@ -85,12 +85,12 @@ The requirement $`\mathsf{recursion}_{\Sigma; m}(\mathcal{D}.\{\bar s';\ \bar p'
 \begin{aligned}
 & {=} &&(\mathsf{recursion}_{\mathcal{D}}) \\
 & \quad \mathsf{recursion}_{\Sigma; m}(\mathcal{D}.\{\bar s';\ \bar p'\}) \\
-& \quad \mathsf{recursion}(K;\ N) \\
+& \quad \mathsf{recursion}(K;\ L) \\
 & \quad \text{where} \\
 & \qquad \text{and} \\
 & \qquad \quad K = \{\ulcorner m \urcorner \cdot r \cdot q_{jil} \mathrel{◀} r_{jil} \mid \\
 & \qquad \qquad \text{the element } l \text{ of } \mathsf{rec}_{\mathcal{D}}(\Theta_{ji}) \text{ is not } \bot\} \\
-& \qquad \quad N(\beta) = \{\beta(\ulcorner m \urcorner \cdot r \cdot q_{jil}) \mathrel{◀} \beta(r_{jil}) \cdot \pi \mid \\
+& \qquad \quad L(\beta) = \{\beta(\ulcorner m \urcorner \cdot r \cdot q_{jil}) \mathrel{◀} \beta(r_{jil}) \cdot \pi \mid \\
 & \qquad \qquad \text{and} \\
 & \qquad \qquad \quad \Xi_{jil,\beta} \ne \bot \\
 & \qquad \qquad \quad \pi \in \mathsf{recursion}_{\beta(\varsigma)}(\Xi_{jil,\beta})\} \\
