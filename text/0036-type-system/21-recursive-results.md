@@ -89,7 +89,8 @@ The depth is reached only on a type without closed term: along a path of a close
 
 ### Shapes
 
-A shape $`\Xi`$ gives, for each destructor that the lifting keeps, in order, without the terms of its branch, what the evaluation needs to build this branch: the case $`i`$ of the destructor that it lifts in its block, its multiplicity $`\rho`$ at run time, the multiplicities and the requirements $`{\bar\pi \mathrel{◀} \bar\varrho}`$ of its arguments in the observation of the field and $`{\bar\pi' \mathrel{◀} \bar\varrho'}`$ in the lifted destructor, the ownership $`\psi`$ of the result of the lifted destructor and the ownership $`\varsigma`$ that it requires of the value that it observes, the same ownerships $`\psi_0`$ and $`\varsigma_0`$ of the destructor that it lifts, which the observation of the field reads, and the shape $`\Upsilon`$ of its result.
+A shape $`\Xi`$ gives, for each destructor that the lifting keeps, in order, without the terms of its branch, what the evaluation needs to build this branch: the case $`i`$ of the destructor that it lifts in its block, its multiplicity $`\rho`$, the multiplicities and the requirements $`{\bar\pi \mathrel{◀} \bar\varrho}`$ of its arguments in the observation of the field and $`{\bar\pi' \mathrel{◀} \bar\varrho'}`$ in the lifted destructor, the ownership $`\psi`$ of the result of the lifted destructor and the ownership $`\varsigma`$ that it requires of the value that it observes, the same ownerships $`\psi_0`$ and $`\varsigma_0`$ of the destructor that it lifts, which the observation of the field reads, and the shape $`\Upsilon`$ of its result.
+The multiplicities and the ownerships of a shape are those of an axis of the grades, the uses at run time for the shapes that the erasure reads.
 The shape of a result is $`\star_M`$ when the type lifted is a motive, so that the result is the recursor itself, where $`M`$ is the skeleton of the motive, on which the recursor of the multiplicity $`0`$ runs instead of the observation, and the shape $`\Xi`$ of the next lifting when the type lifted is an instance of a lifting, two levels of nesting deep or more.
 
 ```math
@@ -133,76 +134,76 @@ A shape fits the recursor of the multiplicity $`\rho`$, written $`{\Xi \text{ fi
 
 ### Shapes of the Types
 
-The shape $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(A,\ \lambda)}`$ of the recursive result whose type is $`A`$, of the nesting $`\lambda`$, is read on the syntax of $`A`$ as the [lifting](20-liftings.md#types) lifts it, at the variables $`s_C`$, $`r`$ and $`\varsigma`$ of a lifting, which the recursor gives: its shape $`\Upsilon`$, its factor $`\pi`$ and its ownership $`\chi'`$, written $`{\Upsilon;\ \pi;\ \chi'}`$, where $`\Lambda`$ gives a variable lifted a position that holds its shape, $`\bot`$ to the other variables, and the shape of the result of the recursor to each type of the block, which a position names, the entries $`\Sigma'`$ of $`\Sigma`$ declare the liftings whose shapes it reads, and $`\Sigma`$ the types lifted and their cases.
+The shape $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(A,\ \lambda)}`$ of the recursive result whose type is $`A`$, of the nesting $`\lambda`$, is read on the syntax of $`A`$ as the [lifting](20-liftings.md#types) lifts it, at the variables $`s_C`$, $`r`$ and $`\varsigma`$ of a lifting, which the recursor gives, in the mode $`m`$ and on the [axis](04-grades.md#definitions) $`\beta`$ of the grades: its shape $`\Upsilon`$, its factor $`\pi`$ and its ownership $`\chi'`$, written $`{\Upsilon;\ \pi;\ \chi'}`$, where $`\Lambda`$ gives a variable lifted a position that holds its shape, $`\bot`$ to the other variables, and the shape of the result of the recursor to each type of the block, which a position names, the entries $`\Sigma'`$ of $`\Sigma`$ declare the liftings whose shapes it reads, and $`\Sigma`$ the types lifted and their cases.
 A variable lifted, applied to arguments, has the shape that the position of its nesting holds; an instance of a type of the block, at a position, the shape given to this type; and an instance of another declared type whose nesting is not a position, of which an argument at least has a shape, the shape and the factor of the lifting of this type at the shapes of these arguments, with the ownership $`{11}^{\mathsf{p}}`$, since its recursive result is a corecursor; any other type has no shape.
-The shapes $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda)}`$ of the arguments $`\bar a`$ of an instance, of the nestings $`\bar\lambda`$, are the shape of each argument, under the variables that its abstraction binds, which have no position, or $`\bot`$ when it has none:
+The shapes $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(\bar a,\ \bar\lambda)}`$ of the arguments $`\bar a`$ of an instance, of the nestings $`\bar\lambda`$, are the shape of each argument, under the variables that its abstraction binds, which have no position, or $`\bot`$ when it has none:
 
 ```math
 \begin{aligned}
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(x[\bar t],\ \lambda) = h \text{ if } \Lambda(x) \text{ is a position that holds } h &&(\mathsf{shape}_A) \\
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ \lambda) = \Lambda(D) \\
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(x[\bar t],\ \lambda) = h \text{ if } \Lambda(x) \text{ is a position that holds } h &&(\mathsf{shape}_A) \\
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ \lambda) = \Lambda(D) \\
 & \quad \text{if } \lambda \text{ is a position and } \Lambda \text{ gives an object to } D \\
 & {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ \lambda) \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ \lambda) \\
 & \quad \Xi;\ \pi;\ {11}^{\mathsf{p}} \\
 & \quad \text{if} \\
 & \qquad \text{and} \\
 & \qquad \quad \lambda = \bot \text{ and each of } \bar\lambda \text{ is } \bot \text{, or } \lambda = (\bar\lambda) \\
-& \qquad \quad \bar\lambda' = \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda) \\
+& \qquad \quad \bar\lambda' = \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(\bar a,\ \bar\lambda) \\
 & \qquad \quad \text{not each of } \bar\lambda' \text{ is } \bot \\
-& \qquad \quad \mathsf{shape}_{\Sigma; \Sigma'}(D.\{\bar s;\ \bar p\},\ \bar\lambda') = \Xi;\ \pi \\
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(A,\ \lambda) \text{ is not defined otherwise} \\[1em]
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}((),\ ()) = () &&(\mathsf{shape}_{\bar a}) \\
+& \qquad \quad \mathsf{shape}_{\Sigma; \Sigma'; m; \beta}(D.\{\bar s;\ \bar p\},\ \bar\lambda') = \Xi;\ \pi \\
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(A,\ \lambda) \text{ is not defined otherwise} \\[1em]
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}((),\ ()) = () &&(\mathsf{shape}_{\bar a}) \\
 & {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
-& \quad (\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda),\ h) \\
-& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \lambda) = h \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
+& \quad (\mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(\bar a,\ \bar\lambda),\ h) \\
+& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(B,\ \lambda) = h \\
 & {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
-& \quad (\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(\bar a,\ \bar\lambda),\ \bot) \\
-& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \lambda) \text{ is not defined}
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
+& \quad (\mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(\bar a,\ \bar\lambda),\ \bot) \\
+& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(B,\ \lambda) \text{ is not defined}
 \end{aligned}
 ```
 
-The shape $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d) = \Xi;\ \hat\pi}`$ of the destructors $`\bar d`$ of the type $`D`$ is the shape of the lifting of $`D`$, with an element for each destructor whose result has a shape, in order, and the meet of their grades in the lifting times the factors of their results, or $`\bot`$ when there is none, where $`{\pi \wedge \bot = \pi}`$, as the [factor](20-liftings.md#factors) of a lifting is.
-The element of a destructor is read from the destructor that the lifting lifts, as the [lifting](20-liftings.md#destructors) of the destructors declares it: its case $`i`$ in its block, $`0`$ when the signature gives it none, the multiplicity at run time of its grade in the lifting, the parameters of its arguments in the observation, the same arguments used the grade of the recursor times the factor of its result more and scaled by the mode of its grade in the lifting, as the [erasure](16-erasure.md#definitions) of a corecursor scales its arguments, the ownership of the recursive result whose type is its result, the requirement of the lifting, the ownerships of the destructor that it lifts and the shape of its result:
+The shape $`{\mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(D,\ \bar d) = \Xi;\ \hat\pi}`$ of the destructors $`\bar d`$ of the type $`D`$ is the shape of the lifting of $`D`$, with an element for each destructor whose result has a shape, in order, and the meet of their grades in the lifting times the factors of their results, or $`\bot`$ when there is none, where $`{\pi \wedge \bot = \pi}`$, as the [factor](20-liftings.md#factors) of a lifting is.
+The element of a destructor is read from the destructor that the lifting lifts, as the [lifting](20-liftings.md#destructors) of the destructors declares it, its grades and its ownerships on the axis $`\beta`$: its case $`i`$ in its block, $`0`$ when the signature gives it none, the multiplicity of its grade in the lifting, the parameters of its arguments in the observation, the same arguments used the grade of the recursor times the factor of its result more and scaled by the mode $`{m \odot p'}`$ of its grade $`p'`$ in the lifting, as the [usage](12-usage.md#definitions) of a corecursor scales the variables of a branch in the mode $`m`$, and its [erasure](16-erasure.md#definitions) its arguments in the mode $`{11}^{\mathsf{m}}`$, the ownership of the recursive result whose type is its result, the requirement of the lifting, the ownerships of the destructor that it lifts and the shape of its result:
 
 ```math
 \begin{aligned}
-& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \varepsilon) = ();\ \bot &&(\mathsf{shape}_{\bar d}) \\
+& \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(D,\ \varepsilon) = ();\ \bot &&(\mathsf{shape}_{\bar d}) \\
 & {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ (d : (\Theta \vdash B \mathrel{◀} \psi') \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d)) \\
-& \quad ((i,\ \rho,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho,\ \psi,\ \mathsf{run}(\varsigma),\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi);\ (p' \cdot \pi) \wedge \hat\pi \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(D,\ (d : (\Theta \vdash B \mathrel{◀} \psi') \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d)) \\
+& \quad ((i,\ \rho,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho,\ \psi,\ \beta(\varsigma),\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi);\ (p' \cdot \pi) \wedge \hat\pi \\
 & \quad \text{if} \\
 & \qquad \text{and} \\
-& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \bot) = \Upsilon;\ \pi;\ \chi' \\
-& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d) = \Xi;\ \hat\pi \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(B,\ \bot) = \Upsilon;\ \pi;\ \chi' \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(D,\ \bar d) = \Xi;\ \hat\pi \\
 & \qquad \quad p' = \mathsf{grade}_{s_C}(p) \\
 & \qquad \quad \bar q \mathrel{◀} \bar r \text{ are the parameters of } \Theta \\
-& \qquad \quad \rho = \mathsf{run}(p') \\
-& \qquad \quad \bar\pi = \mathsf{run}(\bar q) \\
-& \qquad \quad \bar\varrho = \mathsf{run}(\bar r) \\
-& \qquad \quad \bar\pi' = \mathsf{run}(\ulcorner {11}^{\mathsf{m}} \odot p' \urcorner \cdot ((r \cdot \pi) \cdot \bar q)) \\
-& \qquad \quad \psi = \mathsf{run}(\chi') \\
-& \qquad \quad \psi_0 = \mathsf{run}(\psi') \\
-& \qquad \quad \varsigma_0 = \mathsf{run}(\varsigma') \\
+& \qquad \quad \rho = \beta(p') \\
+& \qquad \quad \bar\pi = \beta(\bar q) \\
+& \qquad \quad \bar\varrho = \beta(\bar r) \\
+& \qquad \quad \bar\pi' = \beta(\ulcorner m \odot p' \urcorner \cdot ((r \cdot \pi) \cdot \bar q)) \\
+& \qquad \quad \psi = \beta(\chi') \\
+& \qquad \quad \psi_0 = \beta(\psi') \\
+& \qquad \quad \varsigma_0 = \beta(\varsigma') \\
 & \qquad \quad i = \mathsf{case}_\Sigma(D.d) \text{ if it is defined, and } i = 0 \text{ otherwise} \\
 & {=} \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ (d : (\Theta \vdash B \mathrel{◀} \psi') \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d)) \\
-& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d) \\
-& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(B,\ \bot) \text{ is not defined}
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(D,\ (d : (\Theta \vdash B \mathrel{◀} \psi') \mathrel{▶} p;\ q \mathrel{◀} \varsigma' \mid \bar d)) \\
+& \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(D,\ \bar d) \\
+& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(B,\ \bot) \text{ is not defined}
 \end{aligned}
 ```
 
-The shape $`{\mathsf{shape}_{\Sigma; \Sigma'}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') = \Xi;\ \pi}`$ of the lifting of the type $`D`$ at the instance $`\bar s'`$, $`\bar p'`$, at the shapes $`\bar\lambda'`$ of its parameters, $`\bot`$ for a parameter that is not lifted, is read in the last entry of $`\Sigma'`$ that declares the lifting of $`D`$ at the parameters lifted: it is the shape of the destructors of $`D`$ at this instance, where each parameter lifted has its shape, in the last entry of $`\Sigma`$ that declares a codata type $`D`$ and as many sort and grade variables as $`\bar s'`$ and $`\bar p'`$, with the factor $`{00}^{\mathsf{p}}`$ when the lifting has no destructor.
+The shape $`{\mathsf{shape}_{\Sigma; \Sigma'; m; \beta}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') = \Xi;\ \pi}`$ of the lifting of the type $`D`$ at the instance $`\bar s'`$, $`\bar p'`$, at the shapes $`\bar\lambda'`$ of its parameters, $`\bot`$ for a parameter that is not lifted, is read in the last entry of $`\Sigma'`$ that declares the lifting of $`D`$ at the parameters lifted: it is the shape of the destructors of $`D`$ at this instance, where each parameter lifted has its shape, in the last entry of $`\Sigma`$ that declares a codata type $`D`$ and as many sort and grade variables as $`\bar s'`$ and $`\bar p'`$, with the factor $`{00}^{\mathsf{p}}`$ when the lifting has no destructor.
 The result of a destructor of a lifting is an instance of a lifting that the signature declares before it, since the signature declares its liftings in order, so that the shape of a lifting reads, for the shapes of the results of its destructors, only the entries before it, without a bound on the depth, while it reads the declarations of the types lifted and their cases in the whole signature.
-The shape is a function on the syntax, which the erasure computes, and an instance of a lifting that the signature does not declare has none:
+The shape is a function on the syntax, which the erasure computes in the mode $`{11}^{\mathsf{m}}`$ on the axis $`\mathsf{run}`$, and an instance of a lifting that the signature does not declare has none:
 
 ```math
 \begin{aligned}
-& \mathsf{shape}_{\Sigma; \varepsilon}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \text{ is not defined} &&(\mathsf{shape}_\Sigma) \\
+& \mathsf{shape}_{\Sigma; \varepsilon; m; \beta}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \text{ is not defined} &&(\mathsf{shape}_\Sigma) \\
 & {=} \\
-& \quad \mathsf{shape}_{\Sigma; (\Sigma',\ e)}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
+& \quad \mathsf{shape}_{\Sigma; (\Sigma',\ e); m; \beta}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
 & \quad \Xi;\ \pi \\
 & \quad \text{if} \\
 & \qquad \text{and} \\
@@ -214,13 +215,13 @@ The shape is a function on the syntax, which the erasure computes, and an instan
 & \qquad \quad \text{and as many sort and grade variables as } \bar s' \text{ and } \bar p' \\
 & \qquad \quad \Lambda \text{ gives each parameter } x_j \text{ of } \Delta \text{ the element } \lambda'_j \\
 & \qquad \quad \Lambda \text{ gives no other variable a position and no type an object} \\
-& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'}(D,\ \bar d[\bar s' / \bar s,\ \bar p' / \bar p]) = \Xi;\ \hat\pi \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; \Sigma'; m; \beta}(D,\ \bar d[\bar s' / \bar s,\ \bar p' / \bar p]) = \Xi;\ \hat\pi \\
 & \qquad \quad \pi = \hat\pi \text{ when } \hat\pi \ne \bot \text{, and } \pi = {00}^{\mathsf{p}} \text{ when } \hat\pi = \bot \\
 & {=} \\
-& \quad \mathsf{shape}_{\Sigma; (\Sigma',\ e)}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
-& \quad \mathsf{shape}_{\Sigma; \Sigma'}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
+& \quad \mathsf{shape}_{\Sigma; (\Sigma',\ e); m; \beta}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
+& \quad \mathsf{shape}_{\Sigma; \Sigma'; m; \beta}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \\
 & \quad \text{if } e \text{ is not a lifting of } D \text{ at } \Pi' \\
-& \mathsf{shape}_{\Sigma; (\Sigma',\ e)}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \text{ is not defined otherwise}
+& \mathsf{shape}_{\Sigma; (\Sigma',\ e); m; \beta}(D.\{\bar s';\ \bar p'\},\ \bar\lambda') \text{ is not defined otherwise}
 \end{aligned}
 ```
 
