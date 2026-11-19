@@ -204,15 +204,14 @@ The parameters $`\mathsf{parameters}_\Sigma(T.\bar u)`$ of the branches of a rec
 \end{aligned}
 ```
 
-The requirement $`\mathsf{recursion}_\Sigma(T, r)`$ of the recursion of a recursor of the grade $`r`$ on an instance $`T`$ is the requirement $`\hat r`$ that the [ownership](13-ownership.md#definitions) of the recursor gives the term at each level of the recursion, in the mode $`{11}^{\mathsf{m}}`$, read from its recursive fields and the parameters of their entries, a field without parameter, in a term that no rule types, giving the pair $`{{11}^{\mathsf{p}} \mathrel{◀} {\omega\omega}^{\mathsf{p}}}`$, which states nothing:
+The requirement $`\mathsf{recursion}_\Sigma(T,\ \kappa_C,\ r,\ \varsigma,\ \chi)`$ of the recursion of a recursor of the grade $`r`$, of the ownerships $`\varsigma`$ and $`\chi`$ and of motives of the sort $`\kappa_C`$, on an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, is the [requirement](13-ownership.md#definitions) $`\hat r`$ that the ownership of the recursor gives the term at each level of the recursion in the mode $`{11}^{\mathsf{m}}`$, at the variables $`s_C`$, the quality of $`\kappa_C`$, $`r`$, $`\varsigma`$ and $`\chi`$, which the erasure keeps at run time.
+It reads the recursive fields of the block, the parameters of their entries and the shapes of its nested fields, at the instance $`\bar s`$, $`\bar p`$, in the last entry $`\mathcal{D}`$ of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and is $`{11}^{\mathsf{p}}`$, which states nothing more than the ownership of the term, when $`\Sigma`$ has no such entry:
 
 ```math
 \begin{aligned}
-& \mathsf{recursion}_\Sigma(T, r) = \mathsf{recursion}(\{r \cdot q_{il} \mathrel{◀} r_{il} \mid l \in \bar k_i\}) &&(\mathsf{recursion}_c) \\
-& \quad \text{where} \\
-& \qquad \text{and} \\
-& \qquad \quad \mathsf{recursive}_\Sigma(T) = \bar k_1, \dots, \bar k_n \\
-& \qquad \quad \mathsf{parameters}_\Sigma(T.\bar u) = \bar q_1 \mathrel{◀} \bar r_1, \dots, \bar q_n \mathrel{◀} \bar r_n
+& \mathsf{recursion}_\Sigma(T,\ \kappa_C,\ r,\ \varsigma,\ \chi) = \mathsf{recursion}_{\Sigma; {11}^{\mathsf{m}}}(\mathcal{D}.\{\bar s;\ \bar p\}) &&(\mathsf{recursion}_c) \\
+& \quad \text{if } \mathcal{D} \text{ is this entry} \\[1em]
+& \mathsf{recursion}_\Sigma(T,\ \kappa_C,\ r,\ \varsigma,\ \chi) = {11}^{\mathsf{p}} \text{ if } \Sigma \text{ has no such entry}
 \end{aligned}
 ```
 
@@ -253,7 +252,7 @@ The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\te
 & \quad r \in S \\[1em]
 & {=} \text{ if} \\
 & \quad \lfloor \mathsf{rec}_{r;\ \varsigma;\ \chi}\ T\ t\ \mathsf{return}\ \bar C : \kappa_C\ \mathsf{with}\ \bar u \rfloor_S \\
-& \quad \mathsf{rec}_{\mathsf{run}(r)}\ \lfloor t \rfloor_S \mathrel{◀} \mathsf{run}(\mathsf{recursion}_\Sigma(T, r)) \\
+& \quad \mathsf{rec}_{\mathsf{run}(r)}\ \lfloor t \rfloor_S \mathrel{◀} \mathsf{run}(\mathsf{recursion}_\Sigma(T,\ \kappa_C,\ r,\ \varsigma,\ \chi)) \\
 & \qquad \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{parameters}_\Sigma(T.\bar u)} \\
 & \quad r \notin S \\[1em]
 & \lfloor t.(T.d)(\bar t) \rfloor_S = \lfloor t \rfloor_S.d_i(\lfloor \bar t \rfloor_{S, \bar q \mathrel{◀} \bar r}) \mathrel{◀} \mathsf{run}(\psi) \mathrel{◀} \mathsf{run}(\varsigma) \\
