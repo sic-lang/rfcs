@@ -277,8 +277,12 @@ The shapes $`{\mathsf{shapes}_{\Sigma; m; \beta}(\mathcal{D}.\{\bar s';\ \bar p'
 
 ### Ownerships of the Shapes
 
+The ownerships of a shape are those that the lifting gives its destructors, and the requirements that the recursions on the observations of a nested field ask of them, on the axis of the shape.
 The shape of each nested result has the ownerships $`\varsigma`$ and $`\chi`$, written $`{\Xi \mathrel{◀} \varsigma;\ \chi}`$: each lifted destructor requires $`\varsigma`$ of the value that it observes, and its result has the ownership $`\mathsf{own}_\chi(\Upsilon)`$, $`\chi`$ for the recursor itself and $`1`$ for the corecursor of the next lifting, whatever the ownerships of its arguments, as the [lifting](20-liftings.md#destructors) declares them.
-The shape of a nested result also meets the requirements of the recursions on the observations of the field, whose branches see the term of the recursor at the ownership $`o`$, written $`{\Xi \text{ meets } o;\ \varsigma}`$: for each destructor observed at run time, the requirement $`\varsigma_0`$ of the destructor that it lifts on the value that it observes is within $`o`$, and, for all the ownerships $`\bar o`$ of the arguments of its branch that meet their requirements, the arguments of the observation, of the ownerships $`\bar o'`$, meet the requirements of their positions in it, and the value of the ownership $`\psi_0`$ of its result at $`\bar o'`$ is defined and keeps $`o`$, so that the observation has an ownership within $`o`$, as each level of the recursion has; the observation sees the arguments of the branch at $`\mathsf{scale}_\varsigma(\Upsilon)`$, $`1`$ when the recursor runs on it in the branch, and $`\varsigma`$ when the corecursor of the next lifting captures it, and an erased argument, $`\text{↯}`$, has every ownership, its requirement among them.
+The ownerships $`\mathsf{args}_\varsigma(\Upsilon,\ \bar o,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi')`$ of the arguments of the observation that the branch of a lifted destructor builds, given the ownerships $`\bar o`$ of the arguments of its branch, are those of their variables, which the observation sees at $`\mathsf{scale}_\varsigma(\Upsilon)`$, $`1`$ when the recursor runs on it in the branch, and $`\varsigma`$ when the corecursor of the next lifting captures it, times the multiplicities $`\bar\pi'`$ of the arguments of the branch, and the requirement of its position for an erased argument, $`\text{↯}`$, which has every ownership, its requirement among them.
+The shape of a nested result meets the requirements of the recursions on the observations of the field, whose branches see the term of the recursor at the ownership $`o`$, written $`{\Xi \text{ meets } o;\ \varsigma}`$: for each destructor observed on the axis of the shape, the requirement $`\varsigma_0`$ of the destructor that it lifts on the value that it observes is within $`o`$, and, for all the ownerships $`\bar o`$ of the arguments of its branch that meet their requirements, the arguments of the observation meet the requirements of their positions in it, the value of the ownership $`\psi_0`$ of its result at their ownerships is defined, and the shape of its result meets the requirements in turn; a destructor never observed has the branch $`\text{↯}`$, which observes nothing, so that nothing is asked of it nor of its result.
+The observations of the field keep the ownership $`o`$, written $`{\Xi \text{ keeps } o;\ \varsigma}`$, when, for each destructor observed, for all the ownerships of the arguments of its branch that meet their requirements, the value of $`\psi_0`$ at the ownerships of the arguments of the observation, when it is defined, keeps $`o`$, and the observations from the shape of its result keep it in turn.
+The shape requires $`o`$, written $`{\Xi \text{ requires } o;\ \varsigma}`$, when it meets the requirements and keeps $`o`$, so that each observation has an ownership within $`o`$, as each level of the recursion has: the ownership of a recursor asks the first of the shapes of its nested fields, and the [requirement](13-ownership.md#definitions) of its recursion reads the values of the ownerships of the results along the paths of the shapes, for the second.
 
 ```math
 \begin{aligned}
@@ -295,22 +299,52 @@ The shape of a nested result also meets the requirements of the recursions on th
 & \qquad \Upsilon \mathrel{◀} \varsigma;\ \chi \\
 & \qquad \Xi \mathrel{◀} \varsigma;\ \chi \\[1em]
 & \star_M \mathrel{◀} \varsigma;\ \chi &&(\mathsf{uniform}_\Upsilon) \\[1em]
-& () \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Xi) \\[1em]
-& {\iff} \\
-& \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \text{ meets } o;\ \varsigma \\
-& \quad \text{and} \\
-& \qquad {\implies} \\
-& \qquad \quad \rho' \ne 0 \\
-& \qquad \quad \text{and} \\
-& \qquad \qquad \varsigma_0 \le o \\
-& \qquad \qquad \forall \bar o.\ \bar\varrho' \le \bar o \implies \bar\varrho \le \bar o' \text{ and } \exists v.\ \psi_0[\bar o'] = v \text{ and } o \le o \cdot v \\
-& \qquad \Upsilon \text{ meets } o;\ \varsigma \\
-& \qquad \Xi \text{ meets } o;\ \varsigma \\
+& \mathsf{args}_\varsigma(\Upsilon,\ \bar o,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi') = (o'_1, \dots, o'_{|\bar\pi|}) &&(\mathsf{args}_\Xi) \\
 & \quad \text{where} \\
 & \qquad \text{and} \\
 & \qquad \quad o'_k = \varrho_k \text{ if } \pi_k = 0 \\
 & \qquad \quad o'_k = \mathsf{scale}_\varsigma(\Upsilon) \cdot (o_k \cdot \pi'_k) \text{ otherwise} \\[1em]
-& \star_M \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Upsilon)
+& () \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Xi) \\[1em]
+& {\iff} \\
+& \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \text{ meets } o;\ \varsigma \\
+& \quad \text{and} \\
+& \qquad \text{⟹} \\
+& \qquad \quad \rho' \ne 0 \\
+& \qquad \quad \text{and} \\
+& \qquad \qquad \varsigma_0 \le o \\
+& \qquad \qquad \forall \bar o, \bar o'. \\
+& \qquad \qquad \quad \text{⟹} \\
+& \qquad \qquad \qquad \text{and} \\
+& \qquad \qquad \qquad \quad \bar\varrho' \le \bar o \\
+& \qquad \qquad \qquad \quad \bar o' = \mathsf{args}_\varsigma(\Upsilon,\ \bar o,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi') \\
+& \qquad \qquad \qquad \text{and} \\
+& \qquad \qquad \qquad \quad \bar\varrho \le \bar o' \\
+& \qquad \qquad \qquad \quad \exists v.\ \psi_0[\bar o'] = v \\
+& \qquad \qquad \Upsilon \text{ meets } o;\ \varsigma \\
+& \qquad \Xi \text{ meets } o;\ \varsigma \\[1em]
+& \star_M \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Upsilon) \\[1em]
+& () \text{ keeps } o;\ \varsigma &&(\mathsf{keeps}_\Xi) \\[1em]
+& {\iff} \\
+& \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \text{ keeps } o;\ \varsigma \\
+& \quad \text{and} \\
+& \qquad \text{⟹} \\
+& \qquad \quad \rho' \ne 0 \\
+& \qquad \quad \text{and} \\
+& \qquad \qquad \forall \bar o, \bar o', v. \\
+& \qquad \qquad \quad \text{⟹} \\
+& \qquad \qquad \qquad \text{and} \\
+& \qquad \qquad \qquad \quad \bar\varrho' \le \bar o \\
+& \qquad \qquad \qquad \quad \bar o' = \mathsf{args}_\varsigma(\Upsilon,\ \bar o,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi') \\
+& \qquad \qquad \qquad \quad \psi_0[\bar o'] = v \\
+& \qquad \qquad \qquad o \le o \cdot v \\
+& \qquad \qquad \Upsilon \text{ keeps } o;\ \varsigma \\
+& \qquad \Xi \text{ keeps } o;\ \varsigma \\[1em]
+& \star_M \text{ keeps } o;\ \varsigma &&(\mathsf{keeps}_\Upsilon) \\[1em]
+& {\iff} &&(\mathsf{requires}_\Xi) \\
+& \quad \Xi \text{ requires } o;\ \varsigma \\
+& \quad \text{and} \\
+& \qquad \Xi \text{ meets } o;\ \varsigma \\
+& \qquad \Xi \text{ keeps } o;\ \varsigma
 \end{aligned}
 ```
 
