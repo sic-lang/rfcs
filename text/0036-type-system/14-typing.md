@@ -1,7 +1,7 @@
 # Typing
 
 This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, of the strict positivity, of the fields and of the destructors of a block, of the entries of the signatures, of the renamings and of the substitutions of the first order, and their properties.
-It builds on the [sorts](07-sorts.md), the [substitution](09-substitution.md), the definitions of the [prelude](19-prelude.md#definitions), whose properties build on it in turn, and the [recursive results](21-recursive-results.md) of the fields of a constructor, which the rules of the recursors read and whose definitions read the nesting that it defines.
+It builds on the [sorts](07-sorts.md), the nesting and the recursive fields and destructors of the [syntax](08-syntax.md#nesting), the [substitution](09-substitution.md), the definitions of the [prelude](19-prelude.md#definitions), whose properties build on it in turn, and the [recursive results](21-recursive-results.md) of the fields of a constructor, which the rules of the recursors read.
 
 ## Definitions
 
@@ -142,7 +142,7 @@ An instance of a constant, defined or declared, has the type of its entry at thi
 A recursor eliminates a term of an instance of a type of a block, with a motive for each type of the block and a branch for each constructor of each type.
 In its rules, the block $`\mathcal{D}`$ has the types $`{D_1, \dots, D_k}`$, the type $`D_j`$ the constructors $`{\bar c_j = c_{j1} : \Theta_{j1} \mid \dots \mid c_{jn_j} : \Theta_{jn_j}}`$, and the recursor eliminates a term of the type $`D_h`$; at the instance $`{\bar s',\ \bar l',\ \bar p'}`$ of its variables and at the arguments $`\bar a`$, $`T_j`$ is the instance $`{D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ of each type and $`\Theta'_{ji}`$ the fields $`{\Theta_{ji}[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p][\bar a / \Delta]}`$ of each constructor, whose variables are $`\bar x_{ji}`$.
 The parameters are uniform, so that the motives $`{\bar C = (z.\, C_1,\ \dots,\ z.\, C_k)}`$ bind the term only, and the branches $`{\bar u = (D_1.c_{11}(\bar x_{11};\ \bar y_{11} \mathrel{▶} \bar e_{11}) \Rightarrow u_{11},\ \dots,\ D_k.c_{kn_k}(\bar x_{kn_k};\ \bar y_{kn_k} \mathrel{▶} \bar e_{kn_k}) \Rightarrow u_{kn_k})}`$ bind the fields and the recursive results.
-The [recursive results](21-recursive-results.md) $`\Theta^{\uparrow}_{ji}`$ of the fields of a constructor, whose variables are $`\bar y_{ji}`$, are those of the fields $`\Theta'_{ji}`$ at the nestings $`\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})`$ that the [fields of a block](#fields-of-a-block) give them: the motive of its type at the field for a recursive field, and the type of the field lifted for a nested one; their factors $`\bar\pi_{ji}`$ are read by the [usage](12-usage.md#definitions) of the recursor only.
+The [recursive results](21-recursive-results.md) $`\Theta^{\uparrow}_{ji}`$ of the fields of a constructor, whose variables are $`\bar y_{ji}`$, are those of the fields $`\Theta'_{ji}`$ at the nestings $`\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})`$ that the [fields of a block](08-syntax.md#fields-of-a-block) give them: the motive of its type at the field for a recursive field, and the type of the field lifted for a nested one; their factors $`\bar\pi_{ji}`$ are read by the [usage](12-usage.md#definitions) of the recursor only.
 A recursor fixes the variables of their definitions: the block lifted gives each type $`D_j`$ the instance $`T_j`$ and the motive $`{z.\, C_j}`$, at the level of $`\kappa_C`$, no parameter is lifted, $`s_C`$ is the quality of $`\kappa_C`$, and $`r`$, $`\varsigma`$ and $`\chi`$ are the grade and the two ownerships that the recursor carries.
 
 The recursor has the motive of the type of its term at the term; each motive is a type of the sort $`\kappa_C`$ that the recursor carries, over a term of its type, and each branch a term of the motive of its type at its constructor applied to the variables of its fields, in the context extended by its fields and by their recursive results, which the premises ask for, so that a recursor on a block one of whose fields has no recursive result has no type; the motives on a block of propositions that has a constructor are propositions, since the proofs of a proposition need not compute:
@@ -293,7 +293,7 @@ Two telescopes are equal in a sort $`\kappa`$ when their entries have the same g
 ### Strict Positivity
 
 A type is strictly positive in a variable when the variable occurs in it only as the type itself or below instances of declared types, at the parameters in which these types are strictly positive, and never in a term: the judgment $`{\Sigma;\ \mathcal{D} \vdash A \oplus X}`$ reads the type $`A`$ is strictly positive in the variable $`X`$, in the signature $`\Sigma`$ and the block $`\mathcal{D}`$ whose formation checks it.
-The judgment reads that a declared type $`D`$ is strictly positive in its parameter $`X`$, written $`{D \oplus X \in \Sigma;\ \mathcal{D}}`$, when $`D`$ is a type of the block that declares $`X`$ among the parameters $`\Pi`$ in which it is strictly positive, as the type of a recursive field or the result of a recursive destructor is, or when $`D`$ is a codata type of the signature that does and none of whose destructors is [recursive](#destructors-of-a-block), at any instance of its sort and grade variables: the types of a block are nested below such a codata type only, whose own destructors nest its parameters below such types only, since their strict positivity read the same types:
+The judgment reads that a declared type $`D`$ is strictly positive in its parameter $`X`$, written $`{D \oplus X \in \Sigma;\ \mathcal{D}}`$, when $`D`$ is a type of the block that declares $`X`$ among the parameters $`\Pi`$ in which it is strictly positive, as the type of a recursive field or the result of a recursive destructor is, or when $`D`$ is a codata type of the signature that does and none of whose destructors is [recursive](08-syntax.md#destructors-of-a-block), at any instance of its sort and grade variables: the types of a block are nested below such a codata type only, whose own destructors nest its parameters below such types only, since their strict positivity read the same types:
 
 ```math
 \begin{aligned}
@@ -343,77 +343,9 @@ The fields of a constructor are strictly positive in a variable when the type of
 \end{gathered}
 ```
 
-### Nesting
-
-The nesting of a type gives the positions at which the types of a block occur in it, below the instances of other declared types: a nesting $`\lambda`$ is no position, $`\bot`$, a position that holds an object $`h`$, such as the name of a type of the block, or the nestings of the arguments of an instance:
-
-```math
-\begin{aligned}
-& \lambda \mathrel{::=} \bot \mid h \mid (\bar\lambda) &&(\mathsf{syntax}_\lambda)
-\end{aligned}
-```
-
-The nesting $`\mathsf{nest}_\Lambda(A)`$ of a type $`A`$ is read on its syntax, where $`\Lambda`$ gives a nesting to each variable, $`\bot`$ to those it does not name, and the object that a position holds to each type of the block: the nesting of a variable applied to arguments is that of the variable, the nesting of an instance of a type of the block is the position that holds its object, and the nesting of an instance of another declared type is the nestings of its arguments, each under the variables that its abstraction binds, which have no position, or $`\bot`$ when none of them has a position; any other type has no position:
-
-```math
-\begin{aligned}
-& \mathsf{nest}_\Lambda(x[\bar t]) = \Lambda(x) &&(\mathsf{nest}_A) \\
-& \mathsf{nest}_\Lambda(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = \Lambda(D) \text{ if } \Lambda \text{ gives an object to } D \\
-& \mathsf{nest}_\Lambda(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = \mathsf{nest}(\mathsf{nest}_\Lambda(\bar a)) \text{ otherwise} \\
-& \mathsf{nest}_\Lambda(A) = \bot \text{ for any other type } A \\[1em]
-& \mathsf{nest}_\Lambda(()) = () &&(\mathsf{nest}_{\bar a}) \\
-& \mathsf{nest}_\Lambda((\bar a,\ \bar x.\, B)) = (\mathsf{nest}_\Lambda(\bar a),\ \mathsf{nest}_\Lambda(B)) \\[1em]
-& \mathsf{nest}(\bar\lambda) = \bot \text{ if each of } \bar\lambda \text{ is } \bot &&(\mathsf{nest}_{\bar\lambda}) \\
-& \mathsf{nest}(\bar\lambda) = (\bar\lambda) \text{ otherwise}
-\end{aligned}
-```
-
-The nestings $`\bar\lambda`$ of the arguments of an instance give their nestings to the parameters $`\Delta`$ of its type, in order, written $`{\Delta \mapsto \bar\lambda}`$:
-
-```math
-\begin{aligned}
-& (\Delta \mapsto \bar\lambda)(x) = \lambda_i \text{ if } x \text{ is the parameter of } \Delta \text{ at the position } i &&(\mathsf{nest}_\Delta)
-\end{aligned}
-```
-
-A nesting whose positions hold the names of the types of a block gives, for an object $`h_D`$ given for each type $`D`$ of the block, the nesting with the same positions, which hold these objects, written $`{\lambda \mapsto h_D}`$, and $`{\bar\lambda \mapsto h_D}`$ for each of several nestings:
-
-```math
-\begin{aligned}
-& (\bot \mapsto h_D) = \bot &&(\mathsf{map}_\lambda) \\
-& (D \mapsto h_D) = h_D \\
-& ((\bar\lambda) \mapsto h_D) = (\bar\lambda \mapsto h_D)
-\end{aligned}
-```
-
-The nesting reads the instances alone, and neither the terms nor the parameters in which a declared type is strictly positive, which the [strict positivity](#strict-positivity) checks; a substitution keeps the instances of a type, so that the nesting of a type of a declaration is also that of its instances.
-
 ### Fields of a Block
 
-A field of a constructor of a block of data types $`\mathcal{D}`$ is recursive when its type is an instance of a type of the block; $`\mathsf{rec}_{\mathcal{D}}(A)`$ names this type, $`\bot`$ when there is none, and $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$ gives it for each field of a telescope, in order:
-
-```math
-\begin{aligned}
-& \mathsf{rec}_{\mathcal{D}}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = D \text{ if } D \text{ is a type of } \mathcal{D} &&(\mathsf{recursive}_A) \\
-& \mathsf{rec}_{\mathcal{D}}(A) = \bot \text{ otherwise} \\[1em]
-& \mathsf{rec}_{\mathcal{D}}(\varepsilon) = () &&(\mathsf{recursive}_\Theta) \\
-& \mathsf{rec}_{\mathcal{D}}(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) = (\mathsf{rec}_{\mathcal{D}}(A),\ \mathsf{rec}_{\mathcal{D}}(\Theta))
-\end{aligned}
-```
-
-The [nesting](#nesting) $`\mathsf{nest}_{\mathcal{D}}(A)`$ of the type of a field gives the positions of the types of the block in it, each of which holds the name of its type, and no position to the variables; $`\mathsf{nest}_{\mathcal{D}}(\Theta)`$ gives it for each field of a telescope, in order.
-A recursive field of the type $`D`$ has the nesting $`D`$, and a field is nested when its nesting is that of an instance, $`(\bar\lambda)`$, the types of the block occurring below an instance of another declared type:
-
-```math
-\begin{aligned}
-& \mathsf{nest}_{\mathcal{D}}(A) = \mathsf{nest}_\Lambda(A) &&(\mathsf{nest}_{\mathcal{D}}) \\
-& \quad \text{where } \Lambda \text{ gives its name to each type of } \mathcal{D} \text{, and names no variable} \\[1em]
-& \mathsf{nest}_{\mathcal{D}}(\varepsilon) = () &&(\mathsf{nest}_\Theta) \\
-& \mathsf{nest}_{\mathcal{D}}(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) = (\mathsf{nest}_{\mathcal{D}}(A),\ \mathsf{nest}_{\mathcal{D}}(\Theta))
-\end{aligned}
-```
-
-The fields of a constructor of a block $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, live in a sort when those whose nesting has no position do, as the entries of a [telescope in a sort](#telescopes-in-a-sort), and each recursive field is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, the abstraction $`{\bar x.\, X[\bar x]}`$ for a second-order parameter $`X`$, a field on which no field after it depends.
+The fields of a constructor of a block $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, live in a sort when those whose [nesting](08-syntax.md#fields-of-a-block) has no position do, as the entries of a [telescope in a sort](#telescopes-in-a-sort), and each recursive field is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, the abstraction $`{\bar x.\, X[\bar x]}`$ for a second-order parameter $`X`$, a field on which no field after it depends.
 A nested field is a type $`A_0`$ in which these instances $`{\bar D\ \bar x_\Delta}`$ of the types of the block replace type variables $`\bar X`$, one of the sort $`\kappa`$ for each type of the block: $`A_0`$ lives in a sort that $`\kappa`$ bounds, which is a universe, in the context extended by $`\bar X`$ and in a signature that holds the [prelude](19-prelude.md#declarations), and is [strictly positive](#strict-positivity) in each of $`\bar X`$; no field after it depends on it either:
 
 ```math
@@ -427,31 +359,8 @@ A nested field is a type $`A_0`$ in which these instances $`{\bar D\ \bar x_\Del
 
 ### Destructors of a Block
 
-A destructor of a codata type of a block of codata types $`\mathcal{D}`$ is recursive when its result is an instance of a type of the block, as a field is; $`\mathsf{rec}_{\mathcal{D}}(\bar d)`$ gives the type of the result of each destructor, in order:
-
-```math
-\begin{aligned}
-& \mathsf{rec}_{\mathcal{D}}(\varepsilon) = () &&(\mathsf{recursive}_{\bar d}) \\
-& \mathsf{rec}_{\mathcal{D}}(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) = (\mathsf{rec}_{\mathcal{D}}(B),\ \mathsf{rec}_{\mathcal{D}}(\bar d))
-\end{aligned}
-```
-
-The [nesting](#nesting) $`\mathsf{nest}_\Pi(B)`$ of the result of a destructor of a codata type that is strictly positive in the parameters $`\Pi`$ gives the positions of these parameters in it, each of which holds its parameter, and no position to the other variables.
-The nesting $`\mathsf{nest}_{\mathcal{D};\ \Pi}(B)`$ of the result of a destructor is the type of the block if the destructor is recursive, and the nesting of its result otherwise; $`\mathsf{nest}_{\mathcal{D};\ \Pi}(\bar d)`$ gives it for each destructor, in order:
-
-```math
-\begin{aligned}
-& \mathsf{nest}_\Pi(B) = \mathsf{nest}_\Lambda(B) &&(\mathsf{nest}_\Pi) \\
-& \quad \text{where } \Lambda \text{ gives a position that holds it to each parameter of } \Pi \text{ alone} \\[1em]
-& \mathsf{nest}_{\mathcal{D};\ \Pi}(B) = \mathsf{rec}_{\mathcal{D}}(B) \text{ if } \mathsf{rec}_{\mathcal{D}}(B) \ne \bot &&(\mathsf{nest}_B) \\
-& \mathsf{nest}_{\mathcal{D};\ \Pi}(B) = \mathsf{nest}_\Pi(B) \text{ otherwise} \\[1em]
-& \mathsf{nest}_{\mathcal{D};\ \Pi}(\varepsilon) = () &&(\mathsf{nest}_{\bar d}) \\
-& \mathsf{nest}_{\mathcal{D};\ \Pi}(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) = (\mathsf{nest}_{\mathcal{D};\ \Pi}(B),\ \mathsf{nest}_{\mathcal{D};\ \Pi}(\bar d))
-\end{aligned}
-```
-
 The destructors $`\bar d`$ of a codata type of a block $`{\mathcal{D} = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, strictly positive in the parameters $`\Pi`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`{d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mathrel{◀} \varsigma_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n \mathrel{◀} \varsigma_n}`$, or $`\varepsilon`$ when there is none, live in a sort $`\kappa`$ of level $`l`$ when the arguments of each live in the universe $`U_l`$, whatever the quality of $`\kappa`$, so that a proposition may quantify over a type of its level.
-The result of a destructor that is not recursive lives in a sort that $`\kappa`$ [bounds](07-sorts.md), a result that is a proposition having a grade without use at run time; the destructor is a second-order variable of the context of the destructors after it if the nesting of its result has no position, and no destructor after it depends on it otherwise, as none depends on a recursive destructor; the result of a recursive destructor is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, as the type of a recursive field is, with a grade without use at run time if $`\kappa`$ is a universe of propositions, and no destructor after it depends on it:
+The result of a destructor that is not recursive lives in a sort that $`\kappa`$ [bounds](07-sorts.md), a result that is a proposition having a grade without use at run time; the destructor is a second-order variable of the context of the destructors after it if the [nesting](08-syntax.md#destructors-of-a-block) of its result has no position, and no destructor after it depends on it otherwise, as none depends on a recursive destructor; the result of a recursive destructor is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, as the type of a recursive field is, with a grade without use at run time if $`\kappa`$ is a universe of propositions, and no destructor after it depends on it:
 
 ```math
 \begin{gathered}

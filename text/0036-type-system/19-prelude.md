@@ -1,7 +1,7 @@
 # Prelude
 
 This annex defines the prelude, three type declarations that the type system uses for its own needs: a unit, a pair and a type of positions; it then defines the packing of a telescope into nested pairs, and of its arguments into nested constructors of pairs, the unpacking of a term of a packing, and the positions of the recursive destructors and their resumption, with the properties of these packings and of the unpacking.
-Its definitions build on the [substitution](09-substitution.md) and on the [recursive destructors](14-typing.md#destructors-of-a-block), and the typing reads them; its properties build on the [usage](12-usage.md), the [ownership](13-ownership.md) and the [typing](14-typing.md).
+Its definitions build on the [substitution](09-substitution.md) and on the [recursive destructors](08-syntax.md#destructors-of-a-block), and the typing reads them; its properties build on the [usage](12-usage.md), the [ownership](13-ownership.md) and the [typing](14-typing.md).
 
 ## Definitions
 

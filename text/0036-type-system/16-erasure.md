@@ -1,7 +1,7 @@
 # Erasure
 
 This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, the usage and the ownership of the target language, and their properties.
-It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [vectors of multiplicities](10-grade-vectors.md#vectors-of-multiplicities), the [sets of grades](11-grade-sets.md), the [usage](12-usage.md), the [ownership](13-ownership.md), the fields of a block, which the [typing](14-typing.md#fields-of-a-block) marks, and the skeletons and the shapes of the [recursive results](21-recursive-results.md#skeletons).
+It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [vectors of multiplicities](10-grade-vectors.md#vectors-of-multiplicities), the [sets of grades](11-grade-sets.md), the [usage](12-usage.md), the [ownership](13-ownership.md), the recursive fields of a block, which the [syntax](08-syntax.md#fields-of-a-block) marks, and the skeletons and the shapes of the [recursive results](21-recursive-results.md#skeletons).
 
 ## Definitions
 
@@ -165,7 +165,7 @@ The case $`\mathsf{case}_\Sigma(D.c)`$ of the constructor $`c`$ of the type $`D`
 \end{aligned}
 ```
 
-The recursive fields $`\mathsf{recursive}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ give, for each constructor of the block of $`D`$, in the order of the declaration, the positions of its fields whose types are instances of a type of the block, which $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](14-typing.md#fields-of-a-block), marks, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and none when $`\Sigma`$ has no such entry:
+The recursive fields $`\mathsf{recursive}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ give, for each constructor of the block of $`D`$, in the order of the declaration, the positions of its fields whose types are instances of a type of the block, which $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](08-syntax.md#fields-of-a-block), marks, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and none when $`\Sigma`$ has no such entry:
 
 ```math
 \begin{aligned}

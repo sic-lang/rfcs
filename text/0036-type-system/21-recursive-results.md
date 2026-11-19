@@ -1,7 +1,7 @@
 # Recursive Results
 
 This annex defines the recursive results of the fields of a constructor, which a branch of a recursor binds after its fields: their types (the motive of its type for a recursive field and the type of the field lifted for a field nested below a codata type), their factors, and the terms that the computation of a recursor gives them, with their properties, and the skeletons of the data types and the shapes of the recursive results, which the ownership and the erasure of a recursor read.
-It builds on the [grades](04-grades.md), on the [modes](05-modes.md), on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](14-typing.md#nesting) of the fields of a block, on the [liftings](20-liftings.md) and on the target language of the [erasure](16-erasure.md#definitions), and the [usage](12-usage.md#definitions), the [ownership](13-ownership.md#definitions), the [typing](14-typing.md#terms), the [reduction](15-reduction.md) and the [erasure](16-erasure.md) of the recursors read its definitions.
+It builds on the [grades](04-grades.md), on the [modes](05-modes.md), on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](08-syntax.md#nesting) of the fields of a block, on the [liftings](20-liftings.md) and on the target language of the [erasure](16-erasure.md#definitions), and the [usage](12-usage.md#definitions), the [ownership](13-ownership.md#definitions), the [typing](14-typing.md#terms), the [reduction](15-reduction.md) and the [erasure](16-erasure.md) of the recursors read its definitions.
 
 ## Definitions
 
@@ -9,7 +9,7 @@ This section gives the types and the factors of the recursive results of the fie
 In its definitions, the block lifted $`\mathcal{B}`$, the set $`\Pi`$ of the parameters lifted and the variables $`s_C`$, $`r`$, $`\varsigma`$ and $`\chi`$ are fixed, as in the definitions of the [liftings](20-liftings.md#variables-of-a-lifting): a recursor gives them the types of its block, each with its instance and its motive, no parameter lifted, the quality of the sort of its motives, its grade and its two ownerships.
 
 The results are relations, as the lifting is: a field whose type has no lifting, since the signature does not declare it, has no result.
-The [nesting](14-typing.md#fields-of-a-block) of each field, which its declaration gives, tells whether it has a result: a field without position has none, a field whose nesting is a position that holds a type of the block is recursive, and a field whose nesting is that of an instance, $`(\bar\lambda)`$, is nested.
+The [nesting](08-syntax.md#fields-of-a-block) of each field, which its declaration gives, tells whether it has a result: a field without position has none, a field whose nesting is a position that holds a type of the block is recursive, and a field whose nesting is that of an instance, $`(\bar\lambda)`$, is nested.
 
 ### Types of the Results
 
@@ -84,7 +84,7 @@ It is built within the depth $`k`$ of the number of the types of the block, at t
 \end{aligned}
 ```
 
-In the skeleton of a constructor $`{c : \Theta}`$, $`M_l`$ is $`\mathsf{skeleton}^n(D')`$ when the element $`l`$ of $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](14-typing.md#fields-of-a-block), is a type $`D'`$ of the block, and $`\text{↯}`$ when it is $`\bot`$.
+In the skeleton of a constructor $`{c : \Theta}`$, $`M_l`$ is $`\mathsf{skeleton}^n(D')`$ when the element $`l`$ of $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](08-syntax.md#fields-of-a-block), is a type $`D'`$ of the block, and $`\text{↯}`$ when it is $`\bot`$.
 The depth is reached only on a type without closed term: along a path of a closed term, from a term to the term of one of its recursive fields, no type of the block comes twice, since each type has one constructor, so that the term would hold a term of the same form, without end.
 
 ### Shapes
@@ -266,7 +266,7 @@ The shapes $`{\mathsf{shapes}^\Lambda_{\Sigma; m; \beta}(\Theta,\ \bar\lambda)}`
 \end{aligned}
 ```
 
-The shapes $`{\mathsf{shapes}_{\Sigma; m; \beta}(\mathcal{D}.\{\bar s';\ \bar p'\},\ \Theta)}`$ of the nested fields of a constructor $`{c : \Theta}`$ of the block $`\mathcal{D}`$ at the instance $`\bar s'`$, $`\bar p'`$ are those of its fields at this instance, at their [nestings](14-typing.md#fields-of-a-block) $`\mathsf{nest}_{\mathcal{D}}(\Theta)`$, where the types of the block have their shapes $`\Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})`$:
+The shapes $`{\mathsf{shapes}_{\Sigma; m; \beta}(\mathcal{D}.\{\bar s';\ \bar p'\},\ \Theta)}`$ of the nested fields of a constructor $`{c : \Theta}`$ of the block $`\mathcal{D}`$ at the instance $`\bar s'`$, $`\bar p'`$ are those of its fields at this instance, at their [nestings](08-syntax.md#fields-of-a-block) $`\mathsf{nest}_{\mathcal{D}}(\Theta)`$, where the types of the block have their shapes $`\Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})`$:
 
 ```math
 \begin{aligned}

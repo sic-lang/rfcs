@@ -1,7 +1,7 @@
 # Liftings
 
 This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the parameters of the lifting and its declaration, the lifting of a type at a term and of the arguments of an instance, the factor of the result of a destructor of a lifting, the lifting of the destructors of a codata type, and the signatures that hold it, with the typing and the ownership of the lifting of a codata type without recursive destructor.
-Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the variables that [do not occur](14-typing.md#strict-positivity) in a term and on the [nesting](14-typing.md#nesting) of a type, and the [recursive results](21-recursive-results.md) read them for the result of a field nested below a codata type.
+Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the variables that [do not occur](14-typing.md#strict-positivity) in a term and on the [nesting](08-syntax.md#nesting) of a type, and the [recursive results](21-recursive-results.md) read them for the result of a field nested below a codata type.
 
 ## Definitions
 
@@ -16,7 +16,7 @@ Its parameters are those of the block, a motive $`C_Y`$ for each parameter $`Y`$
 
 The type of the recursive result of a field nested below a codata type is the type of this field lifted at the types of its block, each of which has the motive of the recursor.
 A block lifted $`\mathcal{B}`$ gives each of its types $`E`$ an instance $`T_E`$ of this type and a motive $`{z.\, C_E}`$, a type over a term $`z`$ of $`T_E`$, of the sort of the quality $`s_C`$ and of a level $`l_E`$, and the ownership $`\chi`$ of the results of the recursor; it is fixed as $`\Pi`$ is, and the declaration of a lifting lifts no block.
-The positions of the types of the block in the type of the field are those of its [nesting](14-typing.md#fields-of-a-block), which the declaration of the field gives: at an instance, an argument of a parameter of the block may hold a type of the block too, which is no position of the block, so that the lifting follows the nesting rather than the names of the types.
+The positions of the types of the block in the type of the field are those of its [nesting](08-syntax.md#fields-of-a-block), which the declaration of the field gives: at an instance, an argument of a parameter of the block may hold a type of the block too, which is no position of the block, so that the lifting follows the nesting rather than the names of the types.
 
 The level $`{l \sqcup \bigsqcup \bar l'}`$ is the level $`l`$ [joined](06-levels.md) to each of the levels $`\bar l'`$:
 
@@ -186,7 +186,7 @@ The [usage](12-usage.md#definitions) of the signatures has a rule of its own for
 
 ## Properties
 
-A type has one lifting at most, the result of a destructor of a lifting one factor at most, a well-formed signature holds the liftings that it declares, the result of a destructor of a lifting, at an instance, is the result of the destructor that it lifts, lifted at an observation, and the lifting of a codata type of which no destructor is [recursive](14-typing.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
+A type has one lifting at most, the result of a destructor of a lifting one factor at most, a well-formed signature holds the liftings that it declares, the result of a destructor of a lifting, at an instance, is the result of the destructor that it lifts, lifted at an observation, and the lifting of a codata type of which no destructor is [recursive](08-syntax.md#destructors-of-a-block), at any instance, is well formed, and a signature followed by it has the ownerships of its entries.
 
 In a signature whose [names are distinct](08-syntax.md), a type has one lifting at most at a term and at its nesting, of one level, one factor and one ownership, and the arguments of an instance are lifted in one way at most at their nestings, with the same parameters lifted, the same levels, the same factors and the same ownerships:
 
@@ -235,7 +235,7 @@ A well-formed signature holds the lifting that it declares of a type of one of i
 ```
 
 In a signature whose names are distinct, the destructor of the lifting of $`D`$ at $`\Pi`$ that lifts a destructor $`d`$ of $`D`$, at the instance of the lifting that the instance $`{T = D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ lifted at a term $`t`$ is, has the arguments of $`d`$ at the arguments $`\bar a`$ and at the [observations](09-substitution.md) of $`t`$ by the destructors $`\bar d_1`$ before $`d`$, used $`{r \cdot \pi}`$ times more, and its result is the result of $`d`$, at these arguments and observations, lifted at the observation of $`t`$ by $`d`$, at the variables $`\bar x`$ of its arguments: the type of the recursive result of this observation, of the factor $`\pi`$.
-The arguments $`\bar a`$ and this result are lifted where no parameter is lifted, whatever the block lifted is, as the type of a field of a block is, while the destructors $`\bar d'`$ are those of the lifting at $`\Pi`$: the arguments lifted $`\bar a'`$ give each parameter of $`\Pi`$ its motive, $`\overline{\pi'', \chi''}`$ the factor and the ownership of this motive, and the result is lifted at its [nesting](14-typing.md#nesting), where $`{\Lambda = (\Delta \mapsto \bar\lambda)}`$ gives the parameters the nestings of the arguments, no position to the destructors and no object to a declared type.
+The arguments $`\bar a`$ and this result are lifted where no parameter is lifted, whatever the block lifted is, as the type of a field of a block is, while the destructors $`\bar d'`$ are those of the lifting at $`\Pi`$: the arguments lifted $`\bar a'`$ give each parameter of $`\Pi`$ its motive, $`\overline{\pi'', \chi''}`$ the factor and the ownership of this motive, and the result is lifted at its [nesting](08-syntax.md#nesting), where $`{\Lambda = (\Delta \mapsto \bar\lambda)}`$ gives the parameters the nestings of the arguments, no position to the destructors and no object to a declared type.
 The destructors $`\bar d'_1`$ of the lifting before it are given any abstractions $`\bar f`$, on which neither its arguments nor its result depend:
 
 ```math

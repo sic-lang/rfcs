@@ -1,11 +1,11 @@
 # Syntax
 
-This annex defines the terms of the type system, their arguments, the telescopes, the contexts and the signatures, with the variables that each of them binds.
+This annex defines the terms of the type system, their arguments, the telescopes, the contexts and the signatures, with the variables that each of them binds, then the nesting of the types and the recursive fields and destructors of a block, which are read on the syntax.
 It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [levels](06-levels.md) and the [sorts](07-sorts.md).
 
 ## Definitions
 
-This section defines the objects in the order in which they build on each other: the variables and their scopes, the terms and their arguments, the telescopes and the contexts, then the entries of the signatures.
+This section defines the objects in the order in which they build on each other: the variables and their scopes, the terms and their arguments, the telescopes and the contexts, then the entries of the signatures, and then the nesting of the types and the recursive fields and destructors of a block.
 
 ### Variables
 
@@ -276,6 +276,101 @@ The names of a signature are distinct when each of its entries introduces distin
 & \qquad e \text{ introduces each of its names once} \\
 & \qquad \forall e' \in \Sigma.\ \mathsf{names}(e) \cap \mathsf{names}(e') = \varnothing \\
 & \qquad e \text{ names the constructors or the destructors of each of its types once}
+\end{aligned}
+```
+
+### Nesting
+
+The nesting of a type gives the positions at which the types of a block occur in it, below the instances of other declared types: a nesting $`\lambda`$ is no position, $`\bot`$, a position that holds an object $`h`$, such as the name of a type of the block, or the nestings of the arguments of an instance:
+
+```math
+\begin{aligned}
+& \lambda \mathrel{::=} \bot \mid h \mid (\bar\lambda) &&(\mathsf{syntax}_\lambda)
+\end{aligned}
+```
+
+The nesting $`\mathsf{nest}_\Lambda(A)`$ of a type $`A`$ is read on its syntax, where $`\Lambda`$ gives a nesting to each variable, $`\bot`$ to those it does not name, and the object that a position holds to each type of the block: the nesting of a variable applied to arguments is that of the variable, the nesting of an instance of a type of the block is the position that holds its object, and the nesting of an instance of another declared type is the nestings of its arguments, each under the variables that its abstraction binds, which have no position, or $`\bot`$ when none of them has a position; any other type has no position:
+
+```math
+\begin{aligned}
+& \mathsf{nest}_\Lambda(x[\bar t]) = \Lambda(x) &&(\mathsf{nest}_A) \\
+& \mathsf{nest}_\Lambda(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = \Lambda(D) \text{ if } \Lambda \text{ gives an object to } D \\
+& \mathsf{nest}_\Lambda(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = \mathsf{nest}(\mathsf{nest}_\Lambda(\bar a)) \text{ otherwise} \\
+& \mathsf{nest}_\Lambda(A) = \bot \text{ for any other type } A \\[1em]
+& \mathsf{nest}_\Lambda(()) = () &&(\mathsf{nest}_{\bar a}) \\
+& \mathsf{nest}_\Lambda((\bar a,\ \bar x.\, B)) = (\mathsf{nest}_\Lambda(\bar a),\ \mathsf{nest}_\Lambda(B)) \\[1em]
+& \mathsf{nest}(\bar\lambda) = \bot \text{ if each of } \bar\lambda \text{ is } \bot &&(\mathsf{nest}_{\bar\lambda}) \\
+& \mathsf{nest}(\bar\lambda) = (\bar\lambda) \text{ otherwise}
+\end{aligned}
+```
+
+The nestings $`\bar\lambda`$ of the arguments of an instance give their nestings to the parameters $`\Delta`$ of its type, in order, written $`{\Delta \mapsto \bar\lambda}`$:
+
+```math
+\begin{aligned}
+& (\Delta \mapsto \bar\lambda)(x) = \lambda_i \text{ if } x \text{ is the parameter of } \Delta \text{ at the position } i &&(\mathsf{nest}_\Delta)
+\end{aligned}
+```
+
+A nesting whose positions hold the names of the types of a block gives, for an object $`h_D`$ given for each type $`D`$ of the block, the nesting with the same positions, which hold these objects, written $`{\lambda \mapsto h_D}`$, and $`{\bar\lambda \mapsto h_D}`$ for each of several nestings:
+
+```math
+\begin{aligned}
+& (\bot \mapsto h_D) = \bot &&(\mathsf{map}_\lambda) \\
+& (D \mapsto h_D) = h_D \\
+& ((\bar\lambda) \mapsto h_D) = (\bar\lambda \mapsto h_D)
+\end{aligned}
+```
+
+The nesting reads the instances alone, and neither the terms nor the parameters in which a declared type is strictly positive, which the [strict positivity](14-typing.md#strict-positivity) checks; a substitution keeps the instances of a type, so that the nesting of a type of a declaration is also that of its instances.
+
+### Fields of a Block
+
+A field of a constructor of a block of data types $`\mathcal{D}`$ is recursive when its type is an instance of a type of the block; $`\mathsf{rec}_{\mathcal{D}}(A)`$ names this type, $`\bot`$ when there is none, and $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$ gives it for each field of a telescope, in order:
+
+```math
+\begin{aligned}
+& \mathsf{rec}_{\mathcal{D}}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) = D \text{ if } D \text{ is a type of } \mathcal{D} &&(\mathsf{recursive}_A) \\
+& \mathsf{rec}_{\mathcal{D}}(A) = \bot \text{ otherwise} \\[1em]
+& \mathsf{rec}_{\mathcal{D}}(\varepsilon) = () &&(\mathsf{recursive}_\Theta) \\
+& \mathsf{rec}_{\mathcal{D}}(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) = (\mathsf{rec}_{\mathcal{D}}(A),\ \mathsf{rec}_{\mathcal{D}}(\Theta))
+\end{aligned}
+```
+
+The [nesting](#nesting) $`\mathsf{nest}_{\mathcal{D}}(A)`$ of the type of a field gives the positions of the types of the block in it, each of which holds the name of its type, and no position to the variables; $`\mathsf{nest}_{\mathcal{D}}(\Theta)`$ gives it for each field of a telescope, in order.
+A recursive field of the type $`D`$ has the nesting $`D`$, and a field is nested when its nesting is that of an instance, $`(\bar\lambda)`$, the types of the block occurring below an instance of another declared type:
+
+```math
+\begin{aligned}
+& \mathsf{nest}_{\mathcal{D}}(A) = \mathsf{nest}_\Lambda(A) &&(\mathsf{nest}_{\mathcal{D}}) \\
+& \quad \text{where } \Lambda \text{ gives its name to each type of } \mathcal{D} \text{, and names no variable} \\[1em]
+& \mathsf{nest}_{\mathcal{D}}(\varepsilon) = () &&(\mathsf{nest}_\Theta) \\
+& \mathsf{nest}_{\mathcal{D}}(x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) = (\mathsf{nest}_{\mathcal{D}}(A),\ \mathsf{nest}_{\mathcal{D}}(\Theta))
+\end{aligned}
+```
+
+### Destructors of a Block
+
+A destructor of a codata type of a block of codata types $`\mathcal{D}`$ is recursive when its result is an instance of a type of the block, as a field is; $`\mathsf{rec}_{\mathcal{D}}(\bar d)`$ gives the type of the result of each destructor, in order:
+
+```math
+\begin{aligned}
+& \mathsf{rec}_{\mathcal{D}}(\varepsilon) = () &&(\mathsf{recursive}_{\bar d}) \\
+& \mathsf{rec}_{\mathcal{D}}(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) = (\mathsf{rec}_{\mathcal{D}}(B),\ \mathsf{rec}_{\mathcal{D}}(\bar d))
+\end{aligned}
+```
+
+The [nesting](#nesting) $`\mathsf{nest}_\Pi(B)`$ of the result of a destructor of a codata type that is strictly positive in the parameters $`\Pi`$ gives the positions of these parameters in it, each of which holds its parameter, and no position to the other variables.
+The nesting $`\mathsf{nest}_{\mathcal{D};\ \Pi}(B)`$ of the result of a destructor is the type of the block if the destructor is recursive, and the nesting of its result otherwise; $`\mathsf{nest}_{\mathcal{D};\ \Pi}(\bar d)`$ gives it for each destructor, in order:
+
+```math
+\begin{aligned}
+& \mathsf{nest}_\Pi(B) = \mathsf{nest}_\Lambda(B) &&(\mathsf{nest}_\Pi) \\
+& \quad \text{where } \Lambda \text{ gives a position that holds it to each parameter of } \Pi \text{ alone} \\[1em]
+& \mathsf{nest}_{\mathcal{D};\ \Pi}(B) = \mathsf{rec}_{\mathcal{D}}(B) \text{ if } \mathsf{rec}_{\mathcal{D}}(B) \ne \bot &&(\mathsf{nest}_B) \\
+& \mathsf{nest}_{\mathcal{D};\ \Pi}(B) = \mathsf{nest}_\Pi(B) \text{ otherwise} \\[1em]
+& \mathsf{nest}_{\mathcal{D};\ \Pi}(\varepsilon) = () &&(\mathsf{nest}_{\bar d}) \\
+& \mathsf{nest}_{\mathcal{D};\ \Pi}(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) = (\mathsf{nest}_{\mathcal{D};\ \Pi}(B),\ \mathsf{nest}_{\mathcal{D};\ \Pi}(\bar d))
 \end{aligned}
 ```
 
