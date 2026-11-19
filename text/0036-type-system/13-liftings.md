@@ -180,6 +180,24 @@ A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, writt
 \end{aligned}
 ```
 
+A signature declares its liftings in order when each lifting that it declares of a type of one of its blocks comes after this block, and its destructors are those of the type lifted in the entries before it, so that the shape of a lifting reads only these entries:
+
+```math
+\begin{aligned}
+& \text{⟺} &&(\mathsf{order}_{\uparrow}) \\
+& \quad \Sigma \text{ declares its liftings in order} \\
+& \quad \forall \Sigma_1,\ e_1, \dots, e_n,\ \mathcal{D},\ D,\ \Pi,\ \bar d'. \\
+& \qquad \text{⟹} \\
+& \qquad \quad \text{and} \\
+& \qquad \qquad \Sigma = \Sigma_1,\ \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d'),\ e_1, \dots, e_n \\
+& \qquad \qquad \mathcal{D} \in \Sigma \\
+& \qquad \qquad D \text{ is a type of } \mathcal{D} \\
+& \qquad \quad \text{and} \\
+& \qquad \qquad \mathcal{D} \in \Sigma_1 \\
+& \qquad \qquad \Sigma_1;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d'
+\end{aligned}
+```
+
 The lifting is an entry of the signature, whose formation and whose ownership are checked as those of the others, so that a type whose lifting is not well formed, such as a recursive codata type, whose lifting is not at its parameters themselves, or a codata type with a result below a data type, which has no lifting, has no lifting that a well-formed signature holds.
 
 ## Properties
