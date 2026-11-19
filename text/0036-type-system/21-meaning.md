@@ -1,7 +1,7 @@
 # Meaning
 
 This annex defines the meaning of the judgments of the typing, with the interpretation of the constant declarations, the equality of the canonical terms of the sorts and their relations of run time, and its properties.
-It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [typing](14-typing.md), the [reduction](15-reduction.md), the [erasure](16-erasure.md) and the [evaluation](17-evaluation.md).
+It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [typing](15-typing.md), the [reduction](16-reduction.md), the [erasure](19-erasure.md) and the [evaluation](20-evaluation.md).
 
 The judgments mean what the meaning explanations of Martin-Löf type theory say of them, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them: a judgment is true when its terms compute as it says.
 The meaning of the judgments ignores the grades, the modes and the ownerships, as the typing does outside the judgments of usage and of ownership that the rule of the constant definitions reads; only the relations of run time read the grades, to tell which positions the erasure keeps, and the equality of the types compares them, so that two instances of a declared type at grades that erase a field in one and keep it in the other are different types.
@@ -38,7 +38,7 @@ The signature $`\iota(\Sigma)`$ is $`\Sigma`$ in which each constant declaration
 \end{aligned}
 ```
 
-In the meaning, a closed term $`t`$ computes to $`v`$, written $`{t \Downarrow v}`$, when $`{\iota(\Sigma) \vdash t \Downarrow v}`$, as the formula $`{(\Downarrow)}`$ of the [reduction](15-reduction.md) defines it, so that the meaning has the single reduction of the typing.
+In the meaning, a closed term $`t`$ computes to $`v`$, written $`{t \Downarrow v}`$, when $`{\iota(\Sigma) \vdash t \Downarrow v}`$, as the formula $`{(\Downarrow)}`$ of the [reduction](16-reduction.md) defines it, so that the meaning has the single reduction of the typing.
 The computation, the equality $`\mathsf{eq}`$ and the meaning of the judgments all depend on the signature $`\Sigma`$ and on the interpretation $`\iota`$, which their notation omits.
 
 ### Equality of the Canonical Terms
@@ -228,7 +228,7 @@ Destructors are in it when the arguments $`\Theta`$ of the first one are a teles
 A type below which the types of a block are nested, such as a type of functions to a type of the block, has no equality before the block does, and the graph $`\mathsf{ty}(s_n)[\lambda]`$ of the nestings gives it one from the relations given for these types: it relates a closed type $`A`$ to the equality $`F`$ of its closed terms, written $`{(A,\ F) \in \mathsf{ty}(s_n)[\lambda]}`$, where the [nesting](08-syntax.md#nesting) $`\lambda`$ of $`A`$ holds, at each of its positions, a pair $`(T,\ R)`$ of the closed instance $`T`$ of a type of the block and of the relation $`R`$ given for its terms.
 A type without position computes to a type of a sort that $`s_n`$ bounds, a type at a position is the instance that the position holds, of a sort of the quality $`s`$, with its relation, the same instance being written with any levels that are [equal](06-levels.md), and a type whose nesting is that of an instance is an instance of a codata type none of whose destructors is recursive, in a universe $`U_l`$ or $`\Omega_l`$ whose level $`n`$ bounds, whose destructors are read at the nestings $`\bar\lambda`$ of its arguments, with the equality $`\mathsf{eq}_d`$ or the truth $`\mathsf{true}_d`$ of the equality $`S`$ of its destructors, which no relation of its block changes.
 The instance may live below the level $`n`$, when no result of its destructors holds the parameters whose arguments have positions, since the sort of a type does not bound the sorts of its parameters: its destructors are then read at the level $`n`$, whose sorts bound what the sorts of its own level bound.
-The clause reads the destructors of the type alone, and not those of the other types of its block, which need not be [strictly positive](14-typing.md#strict-positivity) in the parameters whose arguments have positions.
+The clause reads the destructors of the type alone, and not those of the other types of its block, which need not be [strictly positive](15-typing.md#strict-positivity) in the parameters whose arguments have positions.
 A position is read in a sort of the quality of the sort of the instance it holds, so that no type of a universe is at a position below a proposition, whose destructors have propositions for results:
 
 ```math
@@ -309,8 +309,8 @@ The relation $`\mathsf{eq}(v)`$ is defined only for the closed canonical types t
 
 ### Relations of Run Time
 
-The relation of run time of a closed type relates its closed terms to the addresses of values of the [target language](16-erasure.md) in a heap, when the value is what the erasure by $`S^{{11}^{\mathsf{m}}}`$ of the term computes; it states what the [run time](22-run-time.md) guarantees of the erasure of a term.
-It is defined on the heaps that the [evaluation](17-evaluation.md) extends, by the graph of the relations of the types of each level, as the equality of the terms of each type is.
+The relation of run time of a closed type relates its closed terms to the addresses of values of the [target language](19-erasure.md) in a heap, when the value is what the erasure by $`S^{{11}^{\mathsf{m}}}`$ of the term computes; it states what the [run time](22-run-time.md) guarantees of the erasure of a term.
+It is defined on the heaps that the [evaluation](20-evaluation.md) extends, by the graph of the relations of the types of each level, as the equality of the terms of each type is.
 It is stated in a program $`\mathcal{P}`$, which gives the constants of the target language their bodies, and in the interpretation of the constant declarations, which the computations $`t \Downarrow v`$ of the closed terms use.
 The notation omits the program, except where the meaning quantifies over the programs, as the equality of the types does, which writes $`\mathsf{rt}_{\mathcal{P}}`$ and $`\circledR_{\mathcal{P}}`$.
 
@@ -600,7 +600,7 @@ Two closed types are equal when they compute to canonical types with the same eq
 
 ### Signatures and Entries
 
-A signature is meaningful when its names are [distinct](08-syntax.md), as the rules of the [signatures](14-typing.md) require, and each of its entries is meaningful in the whole signature, written $`\Sigma \vDash e`$ for an entry $`e`$ of $`\Sigma`$.
+A signature is meaningful when its names are [distinct](08-syntax.md), as the rules of the [signatures](15-typing.md) require, and each of its entries is meaningful in the whole signature, written $`\Sigma \vDash e`$ for an entry $`e`$ of $`\Sigma`$.
 An entry is not made meaningful in the signature before it alone: a type declaration quantifies over the closed terms of its fields, which a larger signature may add, so that a type meaningful in a signature need not be in a larger one, while the typing ensures that it is:
 
 ```math
@@ -742,7 +742,7 @@ Two closed telescopes are equal in a sort $`\kappa`$ when their first types are 
 
 ### Fields of a Block
 
-The fields of a constructor of a block $`\mathcal{D}`$, whose [nestings](08-syntax.md#fields-of-a-block) $`\mathsf{nest}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields whose nesting has no position, and their recursive fields of the type $`D`$, whose nesting is $`D`$, are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, as the rules $`{(\mathsf{fields}_{,})}`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$ of the [fields of a block](14-typing.md#fields-of-a-block) check.
+The fields of a constructor of a block $`\mathcal{D}`$, whose [nestings](08-syntax.md#fields-of-a-block) $`\mathsf{nest}_{\mathcal{D}}`$ gives before any substitution, are equal in a sort $`\kappa`$, at two closed arguments $`\bar a_1`$ and $`\bar a_2`$ of the parameters, as their telescopes are for the fields whose nesting has no position, and their recursive fields of the type $`D`$, whose nesting is $`D`$, are the instances $`T_D(\bar a_1)`$ and $`T_D(\bar a_2)`$ of $`D`$ at these arguments, as the rules $`{(\mathsf{fields}_{,})}`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$ of the [fields of a block](15-typing.md#fields-of-a-block) check.
 A nested field, whose nesting $`(\bar\lambda')`$ is that of an instance, is no type before the types of the block are, which occur in it, so that its meaning is what the clauses of the instances of the block read of it: the graph of the nestings of the sort $`\kappa`$ gives the two types one equality of their terms, whatever the relations $`\bar R`$ given at their positions for the instances of the types of the block, the graph of run time gives them one relation in each program, whatever the relations $`\bar Q`$ given at their positions, if $`\kappa`$ is a universe, and they are equal types of a sort that $`\kappa`$ bounds once the instances of the types of the block are equal types of $`\kappa`$.
 The rest is equal for every pair of equal terms of a field whose nesting has no position, and for every pair of terms of the other fields, on which it does not depend; fields live in a sort in a context when their instances by equal closed substitutions of the context are equal in it, at the parameters themselves substituted:
 
@@ -789,7 +789,7 @@ Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and 
 
 ### Destructors of a Block
 
-The destructors of a codata type of a block $`\mathcal{D}`$, strictly positive in the parameters $`\Pi`$, whose [nestings](08-syntax.md#destructors-of-a-block) $`\mathsf{nest}_{\mathcal{D};\ \Pi}`$ gives before any substitution, are equal in a sort $`\kappa`$ at two closed substitutions $`\theta_1`$ and $`\theta_2`$ of their scope when the premises of the rules $`(\bar d_{\kappa|})`$, $`(\bar d_{\kappa\lambda})`$ and $`(\bar d_{\kappa\mathsf{rec}})`$ of the [destructors of a block](14-typing.md#destructors-of-a-block) are meaningful: the arguments of the first one are equal telescopes in the universe of the level of $`\kappa`$; if it is not recursive, its results at equal arguments are equal types of a sort that $`\kappa`$ bounds, and the destructors after it are equal for every pair of abstractions for it whose instances at equal arguments are equal terms of its result, as $`(\mathsf{eq}_X)`$ relates them, if the nesting of its result has no position, and for every pair of abstractions for it, on which they do not depend, otherwise; if it is recursive, its result is the instance $`T_D(\bar x_\Delta)`$ of the block at the parameters themselves, and the destructors after it are equal for every pair of abstractions for it, on which they do not depend.
+The destructors of a codata type of a block $`\mathcal{D}`$, strictly positive in the parameters $`\Pi`$, whose [nestings](08-syntax.md#destructors-of-a-block) $`\mathsf{nest}_{\mathcal{D};\ \Pi}`$ gives before any substitution, are equal in a sort $`\kappa`$ at two closed substitutions $`\theta_1`$ and $`\theta_2`$ of their scope when the premises of the rules $`(\bar d_{\kappa|})`$, $`(\bar d_{\kappa\lambda})`$ and $`(\bar d_{\kappa\mathsf{rec}})`$ of the [destructors of a block](15-typing.md#destructors-of-a-block) are meaningful: the arguments of the first one are equal telescopes in the universe of the level of $`\kappa`$; if it is not recursive, its results at equal arguments are equal types of a sort that $`\kappa`$ bounds, and the destructors after it are equal for every pair of abstractions for it whose instances at equal arguments are equal terms of its result, as $`(\mathsf{eq}_X)`$ relates them, if the nesting of its result has no position, and for every pair of abstractions for it, on which they do not depend, otherwise; if it is recursive, its result is the instance $`T_D(\bar x_\Delta)`$ of the block at the parameters themselves, and the destructors after it are equal for every pair of abstractions for it, on which they do not depend.
 Destructors live in a sort in a context when they are equal at equal closed substitutions of the context:
 
 ```math
@@ -918,7 +918,7 @@ A type has one relation of run time when the names of the signature are distinct
 \end{aligned}
 ```
 
-The graph of the nestings of run time has these properties at the relations that a nesting holds: the relation of run time that it gives a type is unique at a nesting, and it relates a term to an address in each heap that [extends](17-evaluation.md) a heap in which it relates them, when the relations that the nesting holds do:
+The graph of the nestings of run time has these properties at the relations that a nesting holds: the relation of run time that it gives a type is unique at a nesting, and it relates a term to an address in each heap that [extends](20-evaluation.md) a heap in which it relates them, when the relations that the nesting holds do:
 
 ```math
 \begin{aligned}

@@ -9,7 +9,7 @@ This section defines the vectors over any modality, whose operations act on each
 
 ### Definitions of the Vectors
 
-A vector $`\mu`$ over a set of indices $`I`$, finite for the variables of a scope, or the addresses of the heaps for the [demands](17-evaluation.md#definitions) of the evaluation, gives an element $`\mu(i)`$ of a [modality](02-modalities.md) $`\mathcal{M}`$ to each index $`i`$ of $`I`$, and two vectors over $`I`$ are equal when they give each index the same element:
+A vector $`\mu`$ over a set of indices $`I`$, finite for the variables of a scope, or the addresses of the heaps for the [demands](20-evaluation.md#definitions) of the evaluation, gives an element $`\mu(i)`$ of a [modality](02-modalities.md) $`\mathcal{M}`$ to each index $`i`$ of $`I`$, and two vectors over $`I`$ are equal when they give each index the same element:
 
 ```math
 \begin{aligned}
@@ -136,7 +136,7 @@ The renaming commutes with the operations and keeps the order; under the variabl
 
 ## Vectors of Multiplicities
 
-This section defines the vectors of multiplicities, the vectors that the [usage of the target language](16-erasure.md#definitions) computes, and the projection of a vector of grades on its multiplicities at run time, then states how the projection acts on their operations.
+This section defines the vectors of multiplicities, the vectors that the [usage of the target language](19-erasure.md#definitions) computes, and the projection of a vector of grades on its multiplicities at run time, then states how the projection acts on their operations.
 
 ### Definitions of the Vectors of Multiplicities
 

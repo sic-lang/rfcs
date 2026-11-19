@@ -1,7 +1,7 @@
 # Liftings
 
 This annex defines the lifting of a codata type at a set of its parameters, a codata type declared from it whose terms hold, for each observation of a term of the type, a term of a motive at each position of these parameters in the result; it defines the parameters of the lifting and its declaration, the lifting of a type at a term and of the arguments of an instance, the factor of the result of a destructor of a lifting, the lifting of the destructors of a codata type, and the signatures that hold it, with the uniqueness of the lifting and of its factor and the destructors of the lifting at an instance.
-Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the variables that [do not occur](14-typing.md#strict-positivity) in a term and on the [nesting](08-syntax.md#nesting) of a type, and the [recursive results](21-recursive-results.md) read them for the result of a field nested below a codata type.
+Its definitions build on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the variables that [do not occur](15-typing.md#strict-positivity) in a term and on the [nesting](08-syntax.md#nesting) of a type, and the [recursive results](14-recursive-results.md) read them for the result of a field nested below a codata type.
 
 ## Definitions
 
@@ -27,7 +27,7 @@ The level $`{l \sqcup \bigsqcup \bar l'}`$ is the level $`l`$ [joined](06-levels
 \end{aligned}
 ```
 
-The grade of the result of a destructor of the lifting is the grade of the [mode](05-modes.md) of the grade $`p`$ of the destructor that it lifts, since an observation reads the grade of its destructor by its mode only, without use at run time when the motives are propositions, as the [formation](14-typing.md#destructors-of-a-block) of a destructor whose result is a proposition requires:
+The grade of the result of a destructor of the lifting is the grade of the [mode](05-modes.md) of the grade $`p`$ of the destructor that it lifts, since an observation reads the grade of its destructor by its mode only, without use at run time when the motives are propositions, as the [formation](15-typing.md#destructors-of-a-block) of a destructor whose result is a proposition requires:
 
 ```math
 \begin{aligned}
@@ -120,7 +120,7 @@ An argument that is lifted is followed by its motive, the argument lifted at a t
 
 The relation $`{\Sigma \vdash \mathsf{factor}_{\bar\pi}(B) = \pi}`$ reads: the result $`B`$ of a destructor of a lifting has the factor $`\pi`$, a grade, which multiplies the uses of the scope by the recursive result that this destructor observes, where $`\bar\pi`$ gives the motive of each parameter lifted a factor; $`{\Sigma \vdash \mathsf{factor}_{\bar\pi}(\bar d) = \hat\pi}`$ reads: the destructors $`\bar d`$ have the meet $`\hat\pi`$ of their grades times the factors of their results, or $`\bot`$ when there is none, where $`{\pi \wedge \bot = \pi}`$.
 The motive of a parameter lifted, at its arguments, has the factor that $`\bar\pi`$ gives it, the factor of the recursive results whose type it is, which an instance of the lifting gives.
-An instance of a lifting that the signature declares has the meet of the grades of its destructors times their factors, at the factors that this instance gives the motives of its parameters, since its recursive result is a corecursor, an observation of which runs one branch, at the grade of its destructor, as the [usage](12-usage.md#definitions) of a corecursor bounds its uses by those of each branch; it has the factor $`{00}^{\mathsf{p}}`$ when the lifting has no destructor, since its recursive result is then never observed:
+An instance of a lifting that the signature declares has the meet of the grades of its destructors times their factors, at the factors that this instance gives the motives of its parameters, since its recursive result is a corecursor, an observation of which runs one branch, at the grade of its destructor, as the [usage](17-usage.md#definitions) of a corecursor bounds its uses by those of each branch; it has the factor $`{00}^{\mathsf{p}}`$ when the lifting has no destructor, since its recursive result is then never observed:
 
 ```math
 \begin{gathered}
@@ -138,7 +138,7 @@ The factor is a relation, as the lifting is: an instance of a lifting that the s
 
 The relation $`{\Sigma \vdash \bar d \uparrow y = \bar d'}`$ reads: the destructors $`\bar d'`$ are the destructors $`\bar d`$ of the type $`D`$ lifted at the term $`y`$ of its instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta}`$ at the parameters themselves.
 The lifting has each destructor whose result, which has no position since the declaration of a lifting lifts no block, is lifted at the observation of $`y`$ by it, at its arguments $`\bar x`$, used $`{r \cdot \pi}`$ times more, where $`\pi`$ is the factor of the recursive result whose type is the result lifted, since the recursor eliminates this observation $`r`$ times and this recursive result uses the scope $`\pi`$ times, with this result, of the ownership $`\chi'`$ of this recursive result whatever the ownerships of the arguments are, and the requirement $`\varsigma`$; it has no destructor for a destructor in whose result no parameter lifted occurs.
-The sort of the result lifted is bounded by the sort $`{\kappa' = (s_C)_{l \sqcup \bigsqcup \bar l_\Pi}}`$ of the lifting, where $`l`$ is the level of the sort of the block, as the [formation](14-typing.md#destructors-of-a-block) of a destructor requires of its result: the relation reads the syntax only, while the level of the lifting of an instance is the level of the type that it lifts, which nothing here compares to the level of the block.
+The sort of the result lifted is bounded by the sort $`{\kappa' = (s_C)_{l \sqcup \bigsqcup \bar l_\Pi}}`$ of the lifting, where $`l`$ is the level of the sort of the block, as the [formation](15-typing.md#destructors-of-a-block) of a destructor requires of its result: the relation reads the syntax only, while the level of the lifting of an instance is the level of the type that it lifts, which nothing here compares to the level of the block.
 In the destructors after it, each destructor is the [observation](09-substitution.md) of $`y`$ by it, so that the destructors of the lifting do not depend on one another, and none is used by the types of those after it:
 
 ```math
@@ -166,7 +166,7 @@ The destructors $`\bar d'`$ are those of the lifting of $`D`$ at $`\Pi`$, writte
 \end{aligned}
 ```
 
-A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, written $`{D^\Pi \in \Sigma}`$, when it has a block that declares $`D`$ and the lifting of $`D`$ at $`\Pi`$, with its destructors, as it [holds the prelude](19-prelude.md#declarations):
+A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, written $`{D^\Pi \in \Sigma}`$, when it has a block that declares $`D`$ and the lifting of $`D`$ at $`\Pi`$, with its destructors, as it [holds the prelude](12-prelude.md#declarations):
 
 ```math
 \begin{aligned}
@@ -181,8 +181,8 @@ A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, writt
 ```
 
 The lifting is an entry of the signature, whose formation and whose ownership are checked as those of the others, so that a type whose lifting is not well formed, such as a recursive codata type, whose lifting is not at its parameters themselves, or a codata type with a result below a data type, which has no lifting, has no lifting that a well-formed signature holds.
-The [formation](14-typing.md#signatures-and-entries) of the signatures has a rule of its own for it, which asks in addition for these destructors, and gives the name of a lifting to no other entry.
-The [usage](12-usage.md#definitions) of the signatures has a rule of its own for it, which does not check its destructors.
+The [formation](15-typing.md#signatures-and-entries) of the signatures has a rule of its own for it, which asks in addition for these destructors, and gives the name of a lifting to no other entry.
+The [usage](17-usage.md#definitions) of the signatures has a rule of its own for it, which does not check its destructors.
 
 ## Properties
 

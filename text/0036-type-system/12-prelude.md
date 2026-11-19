@@ -17,7 +17,7 @@ The unit `Unit` has, at each level $`l`$, a single constructor without fields, i
 \end{aligned}
 ```
 
-The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the grade $`p`$ and of the requirement $`r`$, and a term of $`X[x]`$, a type of a universe that depends on $`x`$, used once and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, so that the unpacking keeps the ownership of each entry; it lives in a universe whatever the sort of $`A`$, and its constraint admits the instances at which a proposition $`A`$ has a grade without use at run time, as the [formation of its fields](14-typing.md#fields-of-a-block) requires, and it is [strictly positive](14-typing.md#strict-positivity) in both its parameters:
+The pair `Pair` holds a term $`x`$ of a type $`A`$ of any sort, used with the grade $`p`$ and of the requirement $`r`$, and a term of $`X[x]`$, a type of a universe that depends on $`x`$, used once and requiring the ownership $`{11}^{\mathsf{p}}`$ of a new value, that of every packing of arguments, so that the unpacking keeps the ownership of each entry; it lives in a universe whatever the sort of $`A`$, and its constraint admits the instances at which a proposition $`A`$ has a grade without use at run time, as the [formation of its fields](15-typing.md#fields-of-a-block) requires, and it is [strictly positive](15-typing.md#strict-positivity) in both its parameters:
 
 ```math
 \begin{aligned}
@@ -54,7 +54,7 @@ The prelude is the signature of the three declarations, in this order, and a sig
 
 ### Packing
 
-A telescope packs into nested pairs, which need the sort of each of its entries, given by a [telescope in sorts](14-typing.md#telescopes-in-a-sort).
+A telescope packs into nested pairs, which need the sort of each of its entries, given by a [telescope in sorts](15-typing.md#telescopes-in-a-sort).
 The level $`\mathsf{level}_{\bar\kappa}(l)`$ of a packing is the join of the levels of the sorts $`\bar\kappa`$ and of $`l`$; the packing $`{\langle \Theta \rangle_{\bar\kappa;\ l}}`$ of the telescope $`\Theta`$, whose entries live in the sorts $`\bar\kappa`$, is the pair of its first entry, with its grade and its requirement, and of the packing of the rest, ending with the unit of the level $`l`$; the packing $`{\langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l}}`$ of arguments of $`\Theta`$ is the pair of the first argument and of the packing of the others, as arguments of the rest of the telescope instantiated by the first, ending with the constructor of the unit:
 
 ```math

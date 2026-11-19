@@ -1,7 +1,7 @@
 # Typing
 
 This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, of the strict positivity, of the fields and of the destructors of a block, of the entries of the signatures, of the renamings and of the substitutions of the first order, and their properties.
-It builds on the [sorts](07-sorts.md), the nesting and the recursive fields and destructors of the [syntax](08-syntax.md#nesting), the [substitution](09-substitution.md), the definitions of the [prelude](19-prelude.md#definitions), whose properties build on it in turn, and the [recursive results](21-recursive-results.md) of the fields of a constructor, which the rules of the recursors read.
+It builds on the [sorts](07-sorts.md), the nesting and the recursive fields and destructors of the [syntax](08-syntax.md#nesting), the [substitution](09-substitution.md), the definitions of the [prelude](12-prelude.md#definitions), whose properties build on it in turn, and the [recursive results](14-recursive-results.md) of the fields of a constructor, which the rules of the recursors read.
 
 ## Definitions
 
@@ -36,7 +36,7 @@ The judgments are those of Martin-Löf type theory, as [Nordström, Petersson an
 | $`{\Sigma;\ \Gamma' \vdash \sigma : \Gamma}`$ | $`\sigma`$ is a substitution of the first order of the context $`\Gamma`$ in the context $`\Gamma'`$ |
 
 The judgments are defined together, except the last five, which build on the others.
-Typing and equality carry no grade, and no rule has a premise of the usage or of the ownership: the usage and the ownership of a term are checked by the judgments of [usage](12-usage.md) and of [ownership](13-ownership.md), and those of the entries of a signature by their judgments $`{\vdash \Sigma \mathrel{▶}}`$ and $`{\vdash \Sigma \mathrel{◀}}`$.
+Typing and equality carry no grade, and no rule has a premise of the usage or of the ownership: the usage and the ownership of a term are checked by the judgments of [usage](17-usage.md) and of [ownership](18-ownership.md), and those of the entries of a signature by their judgments $`{\vdash \Sigma \mathrel{▶}}`$ and $`{\vdash \Sigma \mathrel{◀}}`$.
 Equality is written $`\equiv`$, and $`{=}`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](06-levels.md), and for sequences of levels holds on each component.
 
 A context has a variable $`x : A`$, written $`{x : A \in \Gamma}`$, when one of its entries is this variable, and a second-order variable $`{X : (\Theta \vdash A \mathrel{◀} \psi)}`$, written $`{X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma}`$, likewise, by its last entry or by the entries before it; $`{x \notin \Gamma}`$ means that no entry of $`\Gamma`$ is a variable named $`x`$:
@@ -65,7 +65,7 @@ The rules write the [instance of an entry](09-substitution.md#instances-of-the-e
 ### Signatures and Entries
 
 A signature is empty, or a signature extended by an entry that is well formed in it: no entry of the signature introduces the name of a constant, and a type declaration names each of its types once, whose names no entry of the signature introduces either, as its own [formation](#type-declarations) asks.
-None of these names is the name $`D^\Pi`$ of a [lifting](20-liftings.md#declaration), which the lifting of a type of a block of the signature alone has: this lifting is an entry of its own, a well-formed type declaration whose destructors are [those of the type lifted](20-liftings.md#signatures), so that a signature declares under this name nothing else than the lifting:
+None of these names is the name $`D^\Pi`$ of a [lifting](13-liftings.md#declaration), which the lifting of a type of a block of the signature alone has: this lifting is an entry of its own, a well-formed type declaration whose destructors are [those of the type lifted](13-liftings.md#signatures), so that a signature declares under this name nothing else than the lifting:
 
 ```math
 \begin{gathered}
@@ -142,7 +142,7 @@ An instance of a constant, defined or declared, has the type of its entry at thi
 A recursor eliminates a term of an instance of a type of a block, with a motive for each type of the block and a branch for each constructor of each type.
 In its rules, the block $`\mathcal{D}`$ has the types $`{D_1, \dots, D_k}`$, the type $`D_j`$ the constructors $`{\bar c_j = c_{j1} : \Theta_{j1} \mid \dots \mid c_{jn_j} : \Theta_{jn_j}}`$, and the recursor eliminates a term of the type $`D_h`$; at the instance $`{\bar s',\ \bar l',\ \bar p'}`$ of its variables and at the arguments $`\bar a`$, $`T_j`$ is the instance $`{D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ of each type and $`\Theta'_{ji}`$ the fields $`{\Theta_{ji}[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p][\bar a / \Delta]}`$ of each constructor, whose variables are $`\bar x_{ji}`$.
 The parameters are uniform, so that the motives $`{\bar C = (z.\, C_1,\ \dots,\ z.\, C_k)}`$ bind the term only, and the branches $`{\bar u = (D_1.c_{11}(\bar x_{11};\ \bar y_{11} \mathrel{▶} \bar e_{11}) \Rightarrow u_{11},\ \dots,\ D_k.c_{kn_k}(\bar x_{kn_k};\ \bar y_{kn_k} \mathrel{▶} \bar e_{kn_k}) \Rightarrow u_{kn_k})}`$ bind the fields and the recursive results.
-The [recursive results](21-recursive-results.md) $`\Theta^{\uparrow}_{ji}`$ of the fields of a constructor, whose variables are $`\bar y_{ji}`$, are those of the fields $`\Theta'_{ji}`$ at the nestings $`\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})`$ that the [fields of a block](08-syntax.md#fields-of-a-block) give them: the motive of its type at the field for a recursive field, and the type of the field lifted for a nested one; their factors $`\bar\pi_{ji}`$ are read by the [usage](12-usage.md#definitions) of the recursor only.
+The [recursive results](14-recursive-results.md) $`\Theta^{\uparrow}_{ji}`$ of the fields of a constructor, whose variables are $`\bar y_{ji}`$, are those of the fields $`\Theta'_{ji}`$ at the nestings $`\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})`$ that the [fields of a block](08-syntax.md#fields-of-a-block) give them: the motive of its type at the field for a recursive field, and the type of the field lifted for a nested one; their factors $`\bar\pi_{ji}`$ are read by the [usage](17-usage.md#definitions) of the recursor only.
 A recursor fixes the variables of their definitions: the block lifted gives each type $`D_j`$ the instance $`T_j`$ and the motive $`{z.\, C_j}`$, at the level of $`\kappa_C`$, no parameter is lifted, $`s_C`$ is the quality of $`\kappa_C`$, and $`r`$, $`\varsigma`$ and $`\chi`$ are the grade and the two ownerships that the recursor carries.
 
 The recursor has the motive of the type of its term at the term; each motive is a type of the sort $`\kappa_C`$ that the recursor carries, over a term of its type, and each branch a term of the motive of its type at its constructor applied to the variables of its fields, in the context extended by its fields and by their recursive results, which the premises ask for, so that a recursor on a block one of whose fields has no recursive result has no type; the motives on a block of propositions that has a constructor are propositions, since the proofs of a proposition need not compute:
@@ -162,7 +162,7 @@ An observation of a term of an instance, whose arguments are arguments of the pa
 A corecursor builds a term of an instance of a type of a block of codata types from a state, with a state for each type of the block and a branch for each destructor of each type.
 In its rules, the block has the types $`{D_1, \dots, D_k}`$, the type $`D_j`$ the destructors $`\bar d_j`$, and the corecursor builds a term of the type $`D_h`$; at the instance $`{\bar s',\ \bar l',\ \bar p'}`$ of its variables and at the arguments $`\bar a`$, $`T_j`$ is the instance $`{D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ of each type, and $`{\bar d_j[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_{ji,1} \mid d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji} \mathrel{◀} \varsigma_{ji} \mid \bar d_{ji,2})}`$ decomposes the destructors of each type at each of them.
 The recursive destructors have the types of the block at the parameters themselves, which are thus uniform, so that the states $`{\bar\Theta = (\Theta_1 : \bar\kappa_1,\ \dots,\ \Theta_k : \bar\kappa_k)}`$ bind none of them, and the branches $`{\bar g = (D_1.d_{11}(;\ \bar y_1;\ \bar z_{11}) \Rightarrow g_{11},\ \dots,\ D_k.d_{kn_k}(;\ \bar y_k;\ \bar z_{kn_k}) \Rightarrow g_{kn_k})}`$ bind the variables $`\bar y_j`$ of the state of their type and $`\bar z_{ji}`$ of the telescope of their destructor; $`c_j`$ is the corecursor $`{\mathsf{corec}_r\ T_j\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g}`$ of each type from the variables of its state; $`{\kappa' = \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}`$ is the sort of the block at the instance, and $`\chi_{ji}`$ is the constant of the ownership $`\psi_{ji}`$, $`{\omega\omega}^{\mathsf{p}}`$ if it has none.
-A corecursor from arguments of the state of its type is a term of its instance; each state is a telescope in the sorts $`\bar\kappa_j`$ that it carries, below the join $`{l_j = \mathsf{level}_{\bar\kappa_j}(0)}`$ of their [levels](19-prelude.md#packing), and each branch a term of the result of its destructor, over the variables of the state of its type and of the telescope of its destructor, the destructors before it being the observations $`{[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}]}`$ of the corecursor of its type from the variables of its state, or a term of the [positions](19-prelude.md#positions) of this result if the destructor is recursive, a new state or a term already built, in a signature that then holds the prelude:
+A corecursor from arguments of the state of its type is a term of its instance; each state is a telescope in the sorts $`\bar\kappa_j`$ that it carries, below the join $`{l_j = \mathsf{level}_{\bar\kappa_j}(0)}`$ of their [levels](12-prelude.md#packing), and each branch a term of the result of its destructor, over the variables of the state of its type and of the telescope of its destructor, the destructors before it being the observations $`{[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}]}`$ of the corecursor of its type from the variables of its state, or a term of the [positions](12-prelude.md#positions) of this result if the destructor is recursive, a new state or a term already built, in a signature that then holds the prelude:
 
 ```math
 \frac{\begin{aligned}& {\in} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \Sigma \ni \mathsf{prelude} \text{ if a destructor of } \bar d_1, \dots, \bar d_k \text{ is recursive} \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t : \Theta_h \\[0.6em] & \forall j.\ \Sigma;\ \Gamma \vdash \Theta_j : \bar\kappa_j \le l_j \\[0.6em] & \forall j, i. \\ & \quad \Sigma;\ \Gamma,\ \Theta_j,\ \Theta_{ji}[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}] \\ & \quad {\vdash}\ g_{ji} : \mathsf{pos}_{\bar\Theta;\ r;\ \chi_{ji}}(B_{ji},\ B_{ji}[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}] : \kappa')\end{aligned}}{\Sigma;\ \Gamma \vdash \mathsf{corec}_r\ T_h\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g : T_h}\;(\mathsf{corec})
@@ -202,7 +202,7 @@ Equal arguments give equal applications of a second-order variable, a constant d
 \end{gathered}
 ```
 
-Two recursors at equal arguments of the instance, at equal levels, on equal terms, with equal motives of the same sort and equal branches, which give the recursive results the same grades, with the same ownerships $`\varsigma`$ and $`\chi`$, are equal, where $`T_j`$ and $`\Theta'_{ji}`$ are at the levels $`\bar l_1`$ and at the arguments $`\bar a_1`$; the fields have the recursive results of both recursors, $`\Theta^{\uparrow}_{1ji}`$ those of the first, with the motives $`\bar C_1`$, and $`\Theta^{\uparrow}_{2ji}`$ those of the second, with the motives $`\bar C_2`$, whose instances and whose fields $`{\Theta''_{ji} = \Theta_{ji}[\bar s' / \bar s,\ \bar l_2 / \bar l,\ \bar p' / \bar p][\bar a_2 / \Delta]}`$ are at the levels $`\bar l_2`$ and at the arguments $`\bar a_2`$, and the branches are equal in the context of the results of the first; a recursor on a constructor applied to arguments of its fields, with the premises of $`(\mathsf{rec})`$, is equal to the branch of the constructor at these arguments and at their [recursive results](21-recursive-results.md#terms-of-the-results) $`\bar t'`$, where $`{f(D_j, t)}`$ is the recursor $`{\mathsf{rec}_{r;\ \varsigma;\ \chi}\ T_j\ t\ \mathsf{return}\ \bar C : \kappa_C\ \mathsf{with}\ \bar u}`$; and a term $`e`$ over a term $`t`$ of a type whose single constructor has no field with a recursive result, neither recursive nor nested, is equal to the recursor on $`t`$, with the premises of $`(\mathsf{rec})`$, whose motive of the type is that of $`e`$ and whose branch is $`e`$ at the constructor applied to the variables of its fields, so that a recursor on such a type is never stuck:
+Two recursors at equal arguments of the instance, at equal levels, on equal terms, with equal motives of the same sort and equal branches, which give the recursive results the same grades, with the same ownerships $`\varsigma`$ and $`\chi`$, are equal, where $`T_j`$ and $`\Theta'_{ji}`$ are at the levels $`\bar l_1`$ and at the arguments $`\bar a_1`$; the fields have the recursive results of both recursors, $`\Theta^{\uparrow}_{1ji}`$ those of the first, with the motives $`\bar C_1`$, and $`\Theta^{\uparrow}_{2ji}`$ those of the second, with the motives $`\bar C_2`$, whose instances and whose fields $`{\Theta''_{ji} = \Theta_{ji}[\bar s' / \bar s,\ \bar l_2 / \bar l,\ \bar p' / \bar p][\bar a_2 / \Delta]}`$ are at the levels $`\bar l_2`$ and at the arguments $`\bar a_2`$, and the branches are equal in the context of the results of the first; a recursor on a constructor applied to arguments of its fields, with the premises of $`(\mathsf{rec})`$, is equal to the branch of the constructor at these arguments and at their [recursive results](14-recursive-results.md#terms-of-the-results) $`\bar t'`$, where $`{f(D_j, t)}`$ is the recursor $`{\mathsf{rec}_{r;\ \varsigma;\ \chi}\ T_j\ t\ \mathsf{return}\ \bar C : \kappa_C\ \mathsf{with}\ \bar u}`$; and a term $`e`$ over a term $`t`$ of a type whose single constructor has no field with a recursive result, neither recursive nor nested, is equal to the recursor on $`t`$, with the premises of $`(\mathsf{rec})`$, whose motive of the type is that of $`e`$ and whose branch is $`e`$ at the constructor applied to the variables of its fields, so that a recursor on such a type is never stuck:
 
 ```math
 \begin{gathered}
@@ -218,7 +218,7 @@ Two observations by the same destructor, at equal arguments of the instance, at 
 \frac{\begin{aligned}& {\in} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad \dots; \\ & \qquad \quad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d; \\ & \qquad \quad \dots \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \bar l_2 \text{ as many as } \bar l \\[0.6em] & \bar d[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] = (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d_2) \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\[0.6em] & \bar l_1 = \bar l_2 \\[0.6em] & \Sigma;\ \Gamma \vdash t_1 \equiv t_2 : T_1 \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t_1 \equiv \bar t_2 : \Theta[\bar a_1 / \Delta,\ t_1.T_1 / \bar d_1]\end{aligned}}{\Sigma;\ \Gamma \vdash t_1.(T_1.d)(\bar t_1) \equiv t_2.(T_2.d)(\bar t_2) : B[\bar a_1 / \Delta,\ t_1.T_1 / \bar d_1][\bar t_1 / \Theta]}\;(d_\equiv)
 ```
 
-Two corecursors at equal arguments of the instance, at equal levels, from equal states, with equal states, which carry the same sorts $`\bar\kappa_j`$, and equal branches, are equal, where $`T_j`$, the destructors and $`\kappa'`$ are at the levels $`\bar l_1`$ and at the arguments $`\bar a_1`$, and $`c_{1j}`$ is the corecursor $`{\mathsf{corec}_r\ T_j\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta_1\ \mathsf{with}\ \bar g_1}`$ of each type from the variables of its state; an observation of a corecursor by a destructor of its type, at arguments of its telescope, with the premises of $`(\mathsf{corec})`$, is equal to the branch of the destructor, with the terms of the state substituted for the variables of the state and the arguments for those of the telescope, [resumed](19-prelude.md#positions) if the destructor is recursive, where $`t_c`$ is the corecursor $`{\mathsf{corec}_r\ T_h\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g}`$:
+Two corecursors at equal arguments of the instance, at equal levels, from equal states, with equal states, which carry the same sorts $`\bar\kappa_j`$, and equal branches, are equal, where $`T_j`$, the destructors and $`\kappa'`$ are at the levels $`\bar l_1`$ and at the arguments $`\bar a_1`$, and $`c_{1j}`$ is the corecursor $`{\mathsf{corec}_r\ T_j\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta_1\ \mathsf{with}\ \bar g_1}`$ of each type from the variables of its state; an observation of a corecursor by a destructor of its type, at arguments of its telescope, with the premises of $`(\mathsf{corec})`$, is equal to the branch of the destructor, with the terms of the state substituted for the variables of the state and the arguments for those of the telescope, [resumed](12-prelude.md#positions) if the destructor is recursive, where $`t_c`$ is the corecursor $`{\mathsf{corec}_r\ T_h\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g}`$:
 
 ```math
 \begin{gathered}
@@ -272,7 +272,7 @@ A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort th
 \end{gathered}
 ```
 
-A telescope lives in the sorts $`\bar\kappa`$ below the level $`l`$, one sort for each entry, when the type of each entry lives in its sort, of a level below $`l`$, and an entry whose type is a proposition has a grade without use at run time, as in a telescope in a sort; the sorts of the entries, which a sort only bounds, are those that the [packing](19-prelude.md#packing) of the telescope needs:
+A telescope lives in the sorts $`\bar\kappa`$ below the level $`l`$, one sort for each entry, when the type of each entry lives in its sort, of a level below $`l`$, and an entry whose type is a proposition has a grade without use at run time, as in a telescope in a sort; the sorts of the entries, which a sort only bounds, are those that the [packing](12-prelude.md#packing) of the telescope needs:
 
 ```math
 \begin{gathered}
@@ -346,7 +346,7 @@ The fields of a constructor are strictly positive in a variable when the type of
 ### Fields of a Block
 
 The fields of a constructor of a block $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, live in a sort when those whose [nesting](08-syntax.md#fields-of-a-block) has no position do, as the entries of a [telescope in a sort](#telescopes-in-a-sort), and each recursive field is a type $`D`$ of the block at this instance, at its level variables and at its parameters themselves $`\bar x_\Delta`$, the abstraction $`{\bar x.\, X[\bar x]}`$ for a second-order parameter $`X`$, a field on which no field after it depends.
-A nested field is a type $`A_0`$ in which these instances $`{\bar D\ \bar x_\Delta}`$ of the types of the block replace type variables $`\bar X`$, one of the sort $`\kappa`$ for each type of the block: $`A_0`$ lives in a sort that $`\kappa`$ bounds, which is a universe, in the context extended by $`\bar X`$ and in a signature that holds the [prelude](19-prelude.md#declarations), and is [strictly positive](#strict-positivity) in each of $`\bar X`$; no field after it depends on it either:
+A nested field is a type $`A_0`$ in which these instances $`{\bar D\ \bar x_\Delta}`$ of the types of the block replace type variables $`\bar X`$, one of the sort $`\kappa`$ for each type of the block: $`A_0`$ lives in a sort that $`\kappa`$ bounds, which is a universe, in the context extended by $`\bar X`$ and in a signature that holds the [prelude](12-prelude.md#declarations), and is [strictly positive](#strict-positivity) in each of $`\bar X`$; no field after it depends on it either:
 
 ```math
 \begin{gathered}
@@ -637,7 +637,7 @@ The names of a well-formed signature are [distinct](08-syntax.md):
 \end{aligned}
 ```
 
-The [prelude](19-prelude.md#declarations) is a well-formed signature: each of its declarations is well formed in the declarations before it, at every instance that its constraint admits:
+The [prelude](12-prelude.md#declarations) is a well-formed signature: each of its declarations is well formed in the declarations before it, at every instance that its constraint admits:
 
 ```math
 \begin{aligned}
@@ -645,7 +645,7 @@ The [prelude](19-prelude.md#declarations) is a well-formed signature: each of it
 \end{aligned}
 ```
 
-In a signature that holds the prelude, the [packing](19-prelude.md#packing) of a telescope is a type of the universe of its level, and the packing of arguments of the telescope is a term of it:
+In a signature that holds the prelude, the [packing](12-prelude.md#packing) of a telescope is a type of the universe of its level, and the packing of arguments of the telescope is a term of it:
 
 ```math
 \begin{aligned}
@@ -663,7 +663,7 @@ In a signature that holds the prelude, the [packing](19-prelude.md#packing) of a
 \end{aligned}
 ```
 
-In a signature that holds the prelude, the [unpacking](19-prelude.md#unpacking) of a term of the packing of a telescope, into a term over the variables of the telescope whose type does not depend on them, has this type; the unpacking of the packing of arguments is the term at the arguments; and a term over a term $`z`$ of the packing is the unpacking of the term it is at into the term at the packing $`{\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l}}`$ of the variables $`\bar x`$ of the telescope:
+In a signature that holds the prelude, the [unpacking](12-prelude.md#unpacking) of a term of the packing of a telescope, into a term over the variables of the telescope whose type does not depend on them, has this type; the unpacking of the packing of arguments is the term at the arguments; and a term over a term $`z`$ of the packing is the unpacking of the term it is at into the term at the packing $`{\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l}}`$ of the variables $`\bar x`$ of the telescope:
 
 ```math
 \begin{aligned}
@@ -694,7 +694,7 @@ In a signature that holds the prelude, the [unpacking](19-prelude.md#unpacking) 
 \end{aligned}
 ```
 
-A well-formed signature holds the [lifting](20-liftings.md#signatures) that it declares of a type of one of its blocks, with whatever destructors: they are those of this type lifted, which the rule $`(\uparrow_D)`$ therefore need not ask for:
+A well-formed signature holds the [lifting](13-liftings.md#signatures) that it declares of a type of one of its blocks, with whatever destructors: they are those of this type lifted, which the rule $`(\uparrow_D)`$ therefore need not ask for:
 
 ```math
 \begin{aligned}
@@ -708,7 +708,7 @@ A well-formed signature holds the [lifting](20-liftings.md#signatures) that it d
 \end{aligned}
 ```
 
-A well-formed signature gives a well-formed [type declaration](#type-declarations) to the [lifting](20-liftings.md#declaration) of a codata type of one of its blocks, of which no destructor is recursive, when each parameter lifted is a type, at the variables $`\bar x`$ of its telescope, in the parameters $`\Delta_1`$ before it followed by it, at each instance that the constraint of the block admits, and when no entry of the signature introduces its name $`D^\Pi`$: the motive of a parameter is a type over a term of this parameter, which neither the relation of the destructors lifted nor the strict positivity requires to be a type:
+A well-formed signature gives a well-formed [type declaration](#type-declarations) to the [lifting](13-liftings.md#declaration) of a codata type of one of its blocks, of which no destructor is recursive, when each parameter lifted is a type, at the variables $`\bar x`$ of its telescope, in the parameters $`\Delta_1`$ before it followed by it, at each instance that the constraint of the block admits, and when no entry of the signature introduces its name $`D^\Pi`$: the motive of a parameter is a type over a term of this parameter, which neither the relation of the destructors lifted nor the strict positivity requires to be a type:
 
 ```math
 \begin{aligned}
@@ -737,7 +737,7 @@ A well-formed signature gives a well-formed [type declaration](#type-declaration
 \end{aligned}
 ```
 
-In a well-formed signature, where no parameter is lifted, the terms of fields whose [recursive results](21-recursive-results.md#types-of-the-results) have types have [recursive results](21-recursive-results.md#terms-of-the-results), whatever the results $`f`$ of the terms of the types of the block are: the signature declares each lifting after the destructors that it lifts, so that the result of each observation of a term of a type lifted exists, down to the terms of the types of the block, and a recursor on a constructor is never stuck for want of a recursive result:
+In a well-formed signature, where no parameter is lifted, the terms of fields whose [recursive results](14-recursive-results.md#types-of-the-results) have types have [recursive results](14-recursive-results.md#terms-of-the-results), whatever the results $`f`$ of the terms of the types of the block are: the signature declares each lifting after the destructors that it lifts, so that the result of each observation of a term of a type lifted exists, down to the terms of the types of the block, and a recursor on a constructor is never stuck for want of a recursive result:
 
 ```math
 \begin{aligned}

@@ -50,6 +50,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\alpha`$ | Renamings, which give variables to variables |
 | $`{\mu, \nu}`$ | Vectors of elements of a modality, one element per index |
 | $`{\gamma, \delta, \zeta}`$ | Vectors of grades, one grade per variable of a scope, $`\zeta`$ being the grades with which a declared type uses its parameters |
+| $`Z`$ | Skeletons of the data types |
 | $`\varphi`$ | Ownerships of the variables of a scope, one grade per variable whose telescope is empty |
 | $`o`$ | Ownerships of the arguments of a second-order variable |
 | $`{M, N, P}`$ | Terms of the target language of the erasure, $`N`$ being a branch of a recursor and $`P`$ a branch of a corecursor |
@@ -61,7 +62,6 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`{v, w}`$ | Canonical terms |
 | $`R`$ | Relations between closed terms, the equalities of the terms of the closed canonical types |
 | $`b`$ | Truth values of the propositions |
-| $`Z`$ | Skeletons of the data types |
 
 No digit is double-struck: the zero and the unit of a modality, a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\xi`$ for a modality, $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, $`\mu`$ for a vector and $`\gamma`$ for a vector of grades.
 An operation on the modes, on the vectors or on the vectors of grades carries the same exponent, as $`{\cdot^{\mathsf{m}}}`$, $`{+^{\mu}}`$ and $`{+^{\gamma}}`$, so that it is told apart from the operation of the grades.

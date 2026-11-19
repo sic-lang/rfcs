@@ -1,7 +1,7 @@
 # Run Time
 
 This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, the programs that realize a signature, and their properties, among them the fundamental lemma of the run time, by which a term typed and used in the mode $`{11}^{\mathsf{m}}`$ is valid at run time, the soundness of the extraction, by which the erasure of a closed term computes what the term computes, its conservation of the bindings, by which this erasure reads each variable as the run-time multiplicity of its grade allows, and its uniqueness, by which the value of this erasure does not share what it owns alone.
-It builds on the [usage](12-usage.md), the [ownership](13-ownership.md), the [typing](14-typing.md), the [erasure](16-erasure.md), the [evaluation](17-evaluation.md) and the [meaning](18-meaning.md), which gives each closed canonical type its [relation of run time](18-meaning.md#relations-of-run-time).
+It builds on the [usage](17-usage.md), the [ownership](18-ownership.md), the [typing](15-typing.md), the [erasure](19-erasure.md), the [evaluation](20-evaluation.md) and the [meaning](21-meaning.md), which gives each closed canonical type its [relation of run time](21-meaning.md#relations-of-run-time).
 
 ## Definitions
 
@@ -34,7 +34,7 @@ A closed substitution $`\theta`$ of a context whose variables are all of the fir
 \end{aligned}
 ```
 
-A term is valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution $`\theta`$ that the meaning relates to itself and each environment whose [cells](17-evaluation.md#definitions) bind, in a heap, addresses related to it, its erasure by $`S^{{11}^{\mathsf{m}}}`$ evaluates, at each weight, reading some cells, to an address in a heap that extends this heap, to which the substituted term is related at the substituted type:
+A term is valid at run time with the grades $`\gamma`$ in a context whose variables are all of the first order when, for each closed substitution $`\theta`$ that the meaning relates to itself and each environment whose [cells](20-evaluation.md#definitions) bind, in a heap, addresses related to it, its erasure by $`S^{{11}^{\mathsf{m}}}`$ evaluates, at each weight, reading some cells, to an address in a heap that extends this heap, to which the substituted term is related at the substituted type:
 
 ```math
 \begin{aligned}
@@ -87,7 +87,7 @@ Arguments of a telescope $`\Theta`$, whose entries have the grades $`\bar p`$, a
 \end{aligned}
 ```
 
-A program realizes a signature when it gives each constant that the [program of the signature](17-evaluation.md) erased by $`S^{{11}^{\mathsf{m}}}`$ gives a body the same body, and when each constant declaration of the mode $`{11}^{\mathsf{m}}`$, which has no body, is valid at run time in the empty context at each instance of its variables whose levels have no variables, as an [interpretation interprets a signature](18-meaning.md#interpretations-of-a-signature) in the meaning:
+A program realizes a signature when it gives each constant that the [program of the signature](20-evaluation.md) erased by $`S^{{11}^{\mathsf{m}}}`$ gives a body the same body, and when each constant declaration of the mode $`{11}^{\mathsf{m}}`$, which has no body, is valid at run time in the empty context at each instance of its variables whose levels have no variables, as an [interpretation interprets a signature](21-meaning.md#interpretations-of-a-signature) in the meaning:
 
 ```math
 \begin{aligned}
@@ -215,7 +215,7 @@ The extraction conserves the bindings: the erasure by $`S^{{11}^{\mathsf{m}}}`$ 
 \end{aligned}
 ```
 
-The extraction keeps what its value owns alone unshared: the erasure by $`S^{{11}^{\mathsf{m}}}`$ of a closed term used in the mode $`{11}^{\mathsf{m}}`$, whose ownership in this mode has the run-time multiplicity $`1`$, run at the weight $`1`$ in the empty heap under the program of a signature whose names are distinct and whose entries have their usages and their ownerships, gives a value that has a [reach](17-evaluation.md#definitions), under an annotation valid for its heap, which refers once at most to each address that the value [claims](17-evaluation.md#definitions), by $`(\mathsf{erase}_{▶})`$, $`(\mathsf{erase}_{◀})`$, $`(\mathsf{usage}_{\lfloor \Sigma \rfloor})`$, $`(\mathsf{own}_{\lfloor \Sigma \rfloor})`$ and $`(\mathsf{reach}_\Downarrow)`$.
+The extraction keeps what its value owns alone unshared: the erasure by $`S^{{11}^{\mathsf{m}}}`$ of a closed term used in the mode $`{11}^{\mathsf{m}}`$, whose ownership in this mode has the run-time multiplicity $`1`$, run at the weight $`1`$ in the empty heap under the program of a signature whose names are distinct and whose entries have their usages and their ownerships, gives a value that has a [reach](20-evaluation.md#definitions), under an annotation valid for its heap, which refers once at most to each address that the value [claims](20-evaluation.md#definitions), by $`(\mathsf{erase}_{▶})`$, $`(\mathsf{erase}_{◀})`$, $`(\mathsf{usage}_{\lfloor \Sigma \rfloor})`$, $`(\mathsf{own}_{\lfloor \Sigma \rfloor})`$ and $`(\mathsf{reach}_\Downarrow)`$.
 A closed term runs in the empty heap, to which no frame refers, so that $`(\mathsf{uniq}_\Downarrow)`$, which compares the value with a frame, says nothing of it, while it holds of each term that the run evaluates in a heap that the rest of the program still uses; $`(\mathsf{reach}_\Downarrow)`$ is read here at the frame that refers to nothing, and what remains is about the value itself: no value that it holds as owned alone, such as a field whose position requires the ownership $`1`$, is referred to twice along the paths from it.
 As for the conservation of the bindings, the run is the same at every assignment of the level variables, and the usage and the ownership alone bound the references, without the typing:
 
