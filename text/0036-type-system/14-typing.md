@@ -693,6 +693,7 @@ In a signature that holds the prelude, the [unpacking](19-prelude.md#unpacking) 
 & \quad \Sigma;\ \Gamma \vdash e[u / z] \equiv \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ e[\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l} / z] : C
 \end{aligned}
 ```
+
 A well-formed signature holds the [lifting](20-liftings.md#signatures) that it declares of a type of one of its blocks, with whatever destructors: they are those of this type lifted, which the rule $`(\uparrow_D)`$ therefore need not ask for:
 
 ```math
