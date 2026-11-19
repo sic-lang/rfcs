@@ -336,14 +336,14 @@ A variable occurs in a term of the target language when the term is the variable
 
 In $`(\mathsf{occurs}_{\bar N}.N)`$ and $`(\mathsf{occurs}_{\bar P}.P)`$, the variable $`x`$ is not among the variables that the branch binds, since they take names that $`x`$ does not use.
 
-A term of the target language is a skeleton when it is built of constructors and of $`\text{↯}`$ only, and terms are skeletons when each of them is:
+A term of the target language is data when it is built of constructors and of $`\text{↯}`$ only, and terms are data when each of them is:
 
 ```math
 \begin{gathered}
-\frac{}{\text{↯} \text{ is a skeleton}}\;(\mathsf{skeleton}_M.\text{↯}) \\[2em]
-\frac{\bar M \text{ are skeletons}}{c_i(\bar M) \text{ is a skeleton}}\;(\mathsf{skeleton}_M.c) \\[2em]
-\frac{}{() \text{ are skeletons}}\;(\mathsf{skeleton}_{\bar M}.\varepsilon) \\[2em]
-\frac{M \text{ is a skeleton} \quad \bar M \text{ are skeletons}}{(M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \text{ are skeletons}}\;(\mathsf{skeleton}_{\bar M}.{,})
+\frac{}{\text{↯} \text{ is data}}\;(\mathsf{data}_M.\text{↯}) \\[2em]
+\frac{\bar M \text{ are data}}{c_i(\bar M) \text{ is data}}\;(\mathsf{data}_M.c) \\[2em]
+\frac{}{() \text{ are data}}\;(\mathsf{data}_{\bar M}.\varepsilon) \\[2em]
+\frac{M \text{ is data} \quad \bar M \text{ are data}}{(M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \text{ are data}}\;(\mathsf{data}_{\bar M}.{,})
 \end{gathered}
 ```
 
@@ -356,7 +356,7 @@ The judgment $`{M \sqsubseteq N}`$ reads: the term $`M`$ of the target language 
 \frac{}{f.\{\bar s;\ \bar p\} \sqsubseteq f.\{\bar s;\ \bar p\}}\;({\sqsubseteq}.f) \\[2em]
 \frac{\bar M_1 \sqsubseteq \bar M_2}{c_i(\bar M_1) \sqsubseteq c_i(\bar M_2)}\;({\sqsubseteq}.c) \\[2em]
 \frac{M_1 \sqsubseteq M_2 \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}) \\[2em]
-\frac{M_1 \text{ is a skeleton} \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \omega\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}_{\mathsf{skeleton}}) \\[2em]
+\frac{M_1 \text{ is data} \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \omega\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}_{\mathsf{skeleton}}) \\[2em]
 \frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{M_1.d_i(\bar M_1) \mathrel{◀} \psi \mathrel{◀} \varsigma \sqsubseteq M_2.d_i(\bar M_2) \mathrel{◀} \psi \mathrel{◀} \varsigma}\;({\sqsubseteq}.d) \\[2em]
 \frac{\bar M_1 \sqsubseteq \bar M_2 \quad \bar P_1 \sqsubseteq \bar P_2}{\mathsf{corec}\ \mathsf{from}\ \bar M_1\ \mathsf{with}\ \bar P_1 \sqsubseteq \mathsf{corec}\ \mathsf{from}\ \bar M_2\ \mathsf{with}\ \bar P_2}\;({\sqsubseteq}.\mathsf{corec}) \\[2em]
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar M}.\varepsilon) \\[2em]
@@ -389,12 +389,12 @@ In the rules, $`{\nu \bullet \bar\pi \bullet \bar\pi'}`$ extends $`\nu`$ by the 
 \frac{}{0^{\nu} \vdash f.\{\bar s;\ \bar p\} \mathrel{▶}}\;(\mathsf{usage}_M.f) \\[2em]
 \frac{}{0^{\nu} \vdash \text{↯} \mathrel{▶}}\;(\mathsf{usage}_M.\text{↯}) \\[2em]
 \frac{\nu \vdash \bar M \mathrel{▶}}{\nu \vdash c_i(\bar M) \mathrel{▶}}\;(\mathsf{usage}_M.c) \\[2em]
-\frac{\begin{aligned}& \nu \vdash M \mathrel{▶} \\[0.6em] & \rho = 0 \implies M \text{ is a skeleton} \\[0.6em] & \rho;\ \chi \vdash \bar N \mathrel{▶}\end{aligned}}{\rho \cdot^{\nu} \nu +^{\nu} \chi \vdash \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{rec}) \\[2em]
+\frac{\begin{aligned}& \nu \vdash M \mathrel{▶} \\[0.6em] & \rho = 0 \implies M \text{ is data} \\[0.6em] & \rho;\ \chi \vdash \bar N \mathrel{▶}\end{aligned}}{\rho \cdot^{\nu} \nu +^{\nu} \chi \vdash \mathsf{rec}_\rho\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{rec}) \\[2em]
 \frac{\nu_1 \vdash M \mathrel{▶} \quad \nu_2 \vdash \bar M \mathrel{▶}}{\nu_1 +^{\nu} \nu_2 \vdash M.d_i(\bar M) \mathrel{◀} \psi \mathrel{◀} \varsigma \mathrel{▶}}\;(\mathsf{usage}_M.d) \\[2em]
 \frac{\nu \vdash \bar M \mathrel{▶} \quad \delta \vdash \bar P \mathrel{▶}}{\nu +^{\nu} \delta \vdash \mathsf{corec}\ \mathsf{from}\ \bar M\ \mathsf{with}\ \bar P \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{corec}) \\[2em]
 \frac{\nu \vdash M \mathrel{▶} \quad \mu \le^{\nu} \nu}{\mu \vdash M \mathrel{▶}}\;(\mathsf{usage}_M.\mathsf{sub}) \\[2em]
 \frac{}{0^{\nu} \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.\varepsilon) \\[2em]
-\frac{\begin{aligned}& \nu_1 \vdash M \mathrel{▶} \\[0.6em] & \pi = 0 \implies M \text{ is a skeleton} \\[0.6em] & \nu_2 \vdash \bar M \mathrel{▶}\end{aligned}}{\pi \cdot^{\nu} \nu_1 +^{\nu} \nu_2 \vdash (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.{,}) \\[2em]
+\frac{\begin{aligned}& \nu_1 \vdash M \mathrel{▶} \\[0.6em] & \pi = 0 \implies M \text{ is data} \\[0.6em] & \nu_2 \vdash \bar M \mathrel{▶}\end{aligned}}{\pi \cdot^{\nu} \nu_1 +^{\nu} \nu_2 \vdash (M \mathrel{▶} \pi \mathrel{◀} \varrho,\ \bar M) \mathrel{▶}}\;(\mathsf{usage}_{\bar M}.{,}) \\[2em]
 \frac{}{\rho;\ \chi \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.\varepsilon) \\[2em]
 \frac{\begin{aligned}& \delta \bullet \bar\pi \bullet \bar\pi' \vdash N \mathrel{▶} \\[0.6em] & \chi \le^{\nu} \delta +^{\nu} (\Sigma_j\, \pi'_j \cdot \mathsf{factor}(w_j)) \cdot^{\nu} \chi \\[0.6em] & \forall j.\ w_j \ne \bot \implies \pi'_j \ne 0 \\[0.6em] & \forall j.\ w_j = n.\Xi \implies \Xi \text{ fits } \rho \\[0.6em] & \rho;\ \chi \vdash \bar N \mathrel{▶}\end{aligned}}{\rho;\ \chi \vdash ((\bar x \mathrel{▶} \bar\pi \mathrel{◀} \bar\kappa;\ \bar y \mathrel{▶} \bar\pi' \leftarrow \bar w).\, N,\ \bar N) \mathrel{▶}}\;(\mathsf{usage}_{\bar N}.{,}) \\[2em]
 \frac{}{\delta \vdash () \mathrel{▶}}\;(\mathsf{usage}_{\bar P}.\varepsilon) \\[2em]
