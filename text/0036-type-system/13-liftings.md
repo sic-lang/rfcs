@@ -74,7 +74,7 @@ In the fourth case, $`\bar x`$ are the variables of $`\Theta`$.
 ### Declaration
 
 The lifting $`{\mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')}`$ of the type $`D`$ of the block $`\mathcal{D}`$, whose sort is $`{\kappa = s_l}`$, at the parameters $`\Pi`$, with the destructors $`\bar d'`$, is a block of one codata type, since the types of a block share their parameters while each lifting has a term of its own type.
-It has the constraint of the block, the parameters lifted followed by the term $`y`$, and the sort of the quality $`s_C`$ and of the level of the block joined to the levels of the motives; it uses its parameters with the grades $`\zeta`$ that give each of them the least grade $`{\omega\omega}^{\mathsf{p}}`$, which states nothing, and declares no parameter in which it is strictly positive:
+It has the constraint of the block, the parameters lifted followed by the term $`y`$ of the type $`D`$ at its [parameters themselves](08-syntax.md#telescopes-and-contexts) $`\bar x_\Delta`$, and the sort of the quality $`s_C`$ and of the level of the block joined to the levels of the motives; it uses its parameters with the grades $`\zeta`$ that give each of them the least grade $`{\omega\omega}^{\mathsf{p}}`$, which states nothing, and declares no parameter in which it is strictly positive:
 
 ```math
 \begin{aligned}
@@ -136,7 +136,7 @@ The factor is a relation, as the lifting is: an instance of a lifting that the s
 
 ### Destructors
 
-The relation $`{\Sigma \vdash \bar d \uparrow y = \bar d'}`$ reads: the destructors $`\bar d'`$ are the destructors $`\bar d`$ of the type $`D`$ lifted at the term $`y`$ of its instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta}`$ at the parameters themselves.
+The relation $`{\Sigma \vdash \bar d \uparrow y = \bar d'}`$ reads: the destructors $`\bar d'`$ are the destructors $`\bar d`$ of the type $`D`$ lifted at the term $`y`$ of its instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar x_\Delta}`$ at the [parameters themselves](08-syntax.md#telescopes-and-contexts).
 The lifting has each destructor whose result, which has no position since the declaration of a lifting lifts no block, is lifted at the observation of $`y`$ by it, at its arguments $`\bar x`$, used $`{r \cdot \pi}`$ times more, where $`\pi`$ is the factor of the recursive result whose type is the result lifted, since the recursor eliminates this observation $`r`$ times and this recursive result uses the scope $`\pi`$ times, with this result, of the ownership $`\chi'`$ of this recursive result whatever the ownerships of the arguments are, and the requirement $`\varsigma`$; it has no destructor for a destructor in whose result no parameter lifted occurs.
 The sort of the result lifted is bounded by the sort $`{\kappa' = (s_C)_{l \sqcup \bigsqcup \bar l_\Pi}}`$ of the lifting, where $`l`$ is the level of the sort of the block, as the [formation](15-typing.md#destructors-of-a-block) of a destructor requires of its result: the relation reads the syntax only, while the level of the lifting of an instance is the level of the type that it lifts, which nothing here compares to the level of the block.
 In the destructors after it, each destructor is the [observation](09-substitution.md) of $`y`$ by it, so that the destructors of the lifting do not depend on one another, and none is used by the types of those after it:

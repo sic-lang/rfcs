@@ -1,6 +1,6 @@
 # Syntax
 
-This annex defines the terms of the type system, their arguments, the telescopes, the contexts and the signatures, with the variables that each of them binds, and the value of the ownership of the result of a second-order variable, then the nesting of the types, the recursive fields and destructors of a block, and the cases of the constructors and of the destructors in their block, which are read on the syntax.
+This annex defines the terms of the type system, their arguments, the telescopes, the contexts and the signatures, with the variables that each of them binds, the parameters themselves of a context, and the value of the ownership of the result of a second-order variable, then the nesting of the types, the recursive fields and destructors of a block, and the cases of the constructors and of the destructors in their block, which are read on the syntax.
 It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [levels](06-levels.md) and the [sorts](07-sorts.md).
 
 ## Definitions
@@ -156,6 +156,17 @@ The variables are read in order, and $`\psi'`$ is $`\psi`$ without the factor of
 
 The scope of a context is its variables, the last one last, each with its signature.
 A variable $`x : A`$ and a second-order variable $`{X : (\varepsilon \vdash A \mathrel{◀} \psi)}`$ both have an empty telescope, and only their entries in the context tell them apart.
+
+The parameters themselves $`\bar x_\Delta`$ of a context $`\Delta`$, the parameters of a type declaration, are the arguments of an instance that give each parameter itself: the variable $`x`$ for a parameter $`x : A`$, and the abstraction $`{\bar x.\, X[\bar x]}`$ for a second-order parameter $`{X : (\Theta \vdash A \mathrel{◀} \psi)}`$, which applies it to the variables $`\bar x`$ of its telescope, so that an instance at them is the type at its own parameters:
+
+```math
+\begin{aligned}
+& \bar x_\varepsilon = () &&(\mathsf{args}_\Delta) \\
+& \bar x_{(\Delta,\ x : A)} = (\bar x_\Delta,\ x) \\
+& \bar x_{(\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))} = (\bar x_\Delta,\ \bar x.\, X[\bar x]) \\
+& \quad \text{where } \bar x \text{ are the variables of } \Theta
+\end{aligned}
+```
 
 ### Entries and Signatures
 

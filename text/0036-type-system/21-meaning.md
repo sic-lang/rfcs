@@ -785,7 +785,7 @@ The rest is equal for every pair of equal terms of a field whose nesting has no 
 \end{aligned}
 ```
 
-Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`{D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a}`$, $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\mathsf{fields}_{\mathsf{rec}})`$, and $`{(\bar\lambda') \mapsto (T_D(\bar a),\ R_D)}`$ is the [nesting](08-syntax.md#nesting) $`(\bar\lambda')`$ whose positions that hold a type $`D`$ hold the instance $`T_D(\bar a)`$ and the relation $`R_D`$.
+Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`{D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a}`$, $`\bar x_\Delta`$ are the [parameters themselves](08-syntax.md#telescopes-and-contexts), as in the rule $`(\mathsf{fields}_{\mathsf{rec}})`$, and $`{(\bar\lambda') \mapsto (T_D(\bar a),\ R_D)}`$ is the [nesting](08-syntax.md#nesting) $`(\bar\lambda')`$ whose positions that hold a type $`D`$ hold the instance $`T_D(\bar a)`$ and the relation $`R_D`$.
 
 ### Destructors of a Block
 
@@ -824,7 +824,7 @@ Destructors live in a sort in a context when they are equal at equal closed subs
 \end{aligned}
 ```
 
-Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`{D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a}`$, and $`\bar x_\Delta`$ are the parameters themselves, as in the rule $`(\bar d_{\kappa\mathsf{rec}})`$; the destructors are not substituted, and their closed substitutions are written apart, as the graph of the destructors reads them.
+Here $`\mathcal{D}`$ is at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`T_D(\bar a)`$ is $`{D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar a}`$, and $`\bar x_\Delta`$ are the [parameters themselves](08-syntax.md#telescopes-and-contexts), as in the rule $`(\bar d_{\kappa\mathsf{rec}})`$; the destructors are not substituted, and their closed substitutions are written apart, as the graph of the destructors reads them.
 
 ### Level Variables
 
