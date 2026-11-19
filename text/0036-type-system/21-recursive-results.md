@@ -237,6 +237,44 @@ The shape is a function on the syntax, which the erasure computes in the mode $`
 In the rule $`(\mathsf{shape}_\Sigma)`$, $`\Pi'`$ is the set of the parameters of $`D`$ whose elements of $`\bar\lambda'`$ are positions, and $`\Pi`$ the parameters at which $`D`$ is strictly positive, which the shape does not read.
 In the rules $`(\mathsf{shape}_A)`$ and $`(\mathsf{shape}_{\bar a})`$, an element of $`\bar\lambda'`$ is a position that holds a shape or $`\bot`$, and $`h`$ is a shape $`{\Upsilon;\ \pi;\ \chi'}`$.
 
+### Shapes of the Nested Fields
+
+The shapes of the nested fields of a constructor are those of their types, at the nestings of these types in its block, which the ownership of a recursor and its erasure read.
+The shapes $`\Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})`$ of the types of a block of data types $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \dots;\ \dots;\ D_k \mathrel{▶} \dots}`$ at the instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, written $`{\mathcal{D}.\{\bar s';\ \bar p'\}}`$, give each type $`D_j`$ of the block the shape of the recursor itself, on the [skeleton](#skeletons) of $`D_j`$ at this instance, which the recursor of the multiplicity $`0`$ runs on, the factor $`{11}^{\mathsf{p}}`$ and the ownership $`\chi`$, as the [lifting](20-liftings.md#types) of the block gives them, and no position to the variables, since the lifting of a block lifts no variable; the skeleton reads the instance of $`D_j`$ by its sort and grade arguments only, and $`\bar x_\Delta`$ are the parameters of $`\Delta`$ themselves, as in the [fields of a block](14-typing.md#fields-of-a-block):
+
+```math
+\begin{aligned}
+& \Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})(D_j) = \star_M;\ {11}^{\mathsf{p}};\ \chi &&(\mathsf{shape}_{\mathcal{D}}) \\
+& \quad \text{where } M = \mathsf{skeleton}_\Sigma(D_j.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta) \\
+& \Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})(x) = \bot
+\end{aligned}
+```
+
+The shapes $`{\mathsf{shapes}^\Lambda_{\Sigma; m; \beta}(\Theta,\ \bar\lambda)}`$ of the nested fields of the telescope $`\Theta`$, whose nestings are $`\bar\lambda`$, are, for each field, in order, the shape $`\Xi`$ of the lifting of its type when it has one, and $`\bot`$ otherwise: a field without position has no shape, and the shape of a recursive field is $`\star_M`$, the recursor itself, which is not the shape of a lifting:
+
+```math
+\begin{aligned}
+& \mathsf{shapes}^\Lambda_{\Sigma; m; \beta}(\varepsilon,\ ()) = () &&(\mathsf{shapes}_\Theta) \\
+& {=} \\
+& \quad \mathsf{shapes}^\Lambda_{\Sigma; m; \beta}((x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta),\ (\lambda,\ \bar\lambda)) \\
+& \quad (\Xi,\ \mathsf{shapes}^\Lambda_{\Sigma; m; \beta}(\Theta,\ \bar\lambda)) \\
+& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; m; \beta}(A,\ \lambda) = \Xi;\ \pi;\ \chi' \\
+& {=} \text{ otherwise} \\
+& \quad \mathsf{shapes}^\Lambda_{\Sigma; m; \beta}((x : A \mathrel{▶} p;\ q \mathrel{◀} r',\ \Theta),\ (\lambda,\ \bar\lambda)) \\
+& \quad (\bot,\ \mathsf{shapes}^\Lambda_{\Sigma; m; \beta}(\Theta,\ \bar\lambda))
+\end{aligned}
+```
+
+The shapes $`{\mathsf{shapes}_{\Sigma; m; \beta}(\mathcal{D}.\{\bar s';\ \bar p'\},\ \Theta)}`$ of the nested fields of a constructor $`{c : \Theta}`$ of the block $`\mathcal{D}`$ at the instance $`\bar s'`$, $`\bar p'`$ are those of its fields at this instance, at their [nestings](14-typing.md#fields-of-a-block) $`\mathsf{nest}_{\mathcal{D}}(\Theta)`$, where the types of the block have their shapes $`\Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})`$:
+
+```math
+\begin{aligned}
+& {=} &&(\mathsf{shapes}_c) \\
+& \quad \mathsf{shapes}_{\Sigma; m; \beta}(\mathcal{D}.\{\bar s';\ \bar p'\},\ \Theta) \\
+& \quad \mathsf{shapes}^{\Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})}_{\Sigma; m; \beta}(\Theta[\bar s' / \bar s,\ \bar p' / \bar p],\ \mathsf{nest}_{\mathcal{D}}(\Theta))
+\end{aligned}
+```
+
 ### Ownerships of the Shapes
 
 The shape of each nested result has the ownerships $`\varsigma`$ and $`\chi`$, written $`{\Xi \mathrel{◀} \varsigma;\ \chi}`$: each lifted destructor requires $`\varsigma`$ of the value that it observes, and its result has the ownership $`\mathsf{own}_\chi(\Upsilon)`$, $`\chi`$ for the recursor itself and $`1`$ for the corecursor of the next lifting, whatever the ownerships of its arguments, as the [lifting](20-liftings.md#destructors) declares them.
