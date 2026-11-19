@@ -42,6 +42,15 @@ The multiplicities $`\bar\pi(\bar M)`$ and the requirements $`\bar\varrho(\bar M
 \end{aligned}
 ```
 
+The term $`\mathsf{target}(Z)`$ of the target language that a [skeleton](21-recursive-results.md#skeletons) $`Z`$ stands for, in every scope, since it mentions no variable, is $`\text{↯}`$ for $`\text{↯}`$, and the constructor of the same case applied to the terms that its skeletons stand for, each stored at the multiplicity $`0`$, since a skeleton holds no value that a use at run time reads, and at the requirement $`\omega`$, which states nothing:
+
+```math
+\begin{aligned}
+& \mathsf{target}(\text{↯}) = \text{↯} &&(\mathsf{target}_Z) \\
+& \mathsf{target}(c_i(Z_1, \dots, Z_a)) = c_i(\mathsf{target}(Z_1) \mathrel{▶} 0 \mathrel{◀} \omega, \dots, \mathsf{target}(Z_a) \mathrel{▶} 0 \mathrel{◀} \omega)
+\end{aligned}
+```
+
 The factor $`\mathsf{factor}(w)`$ of a recursive result is $`0`$ when it is erased, $`1`$ when the recursor on its field computes it, and the factor of its [shape](21-recursive-results.md#shapes) when it is nested:
 
 ```math
@@ -53,7 +62,7 @@ The factor $`\mathsf{factor}(w)`$ of a recursive result is $`0`$ when it is eras
 ```
 
 The branches $`\mathsf{branches}_{\rho, \varrho}(\Xi,\ O,\ \bar N)`$ built from the shape $`\Xi`$, for the recursor of the multiplicity $`\rho`$, of the requirement $`\varrho`$ of its recursion and of the branches $`\bar N`$, on the observations of the term $`O`$, the path from the field, are a branch for each destructor of the shape, without state, which binds new variables $`\bar z`$ for its arguments, observes $`O`$ by the destructor that it lifts at these arguments, each at the multiplicity and at the requirement of its argument in the observation, or $`\text{↯}`$ at the multiplicity $`0`$, since a value of this multiplicity is never read and must be a skeleton, and gives the result $`\mathsf{body}_{\rho, \varrho}(\Upsilon,\ O',\ \bar N)`$ of this observation $`O'`$, or $`\text{↯}`$ when the destructor is never observed at run time.
-This result is the recursor on the observation, for $`\star_M`$, or the recursor of the multiplicity $`0`$ on the skeleton $`M`$ of the motive when $`\rho`$ is $`0`$, as the erasure of a recursor on an erased term, and the corecursor without state of the next lifting, whose branches observe $`O'`$ in turn, for a shape $`\Xi`$.
+This result is the recursor on the observation, for $`\star_Z`$, or the recursor of the multiplicity $`0`$ on the term of the skeleton $`Z`$ of the motive when $`\rho`$ is $`0`$, as the erasure of a recursor on an erased term, and the corecursor without state of the next lifting, whose branches observe $`O'`$ in turn, for a shape $`\Xi`$.
 The term $`\mathsf{nested}_{\rho, \varrho}(x,\ \Xi,\ \bar N)`$ of a nested result, at run time, is the corecursor without state of its shape, whose branches observe the field, the variable $`x`$, so that its scope is the scope of the recursor with $`x`$:
 
 ```math
@@ -70,8 +79,8 @@ The term $`\mathsf{nested}_{\rho, \varrho}(x,\ \Xi,\ \bar N)`$ of a nested resul
 & \qquad \quad M_k = \text{↯} \text{ if } \pi_k = 0 \\
 & \qquad \quad M_k = z_k \text{ otherwise} \\
 & \qquad \quad \bar z = z_1, \dots, z_c \text{ do not occur in } O \text{ nor in } \bar N \\[1em]
-& \mathsf{body}_{\rho, \varrho}(\star_M,\ O,\ \bar N) = \mathsf{rec}_\rho\ O \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \text{ if } \rho \ne 0 &&(\mathsf{body}_\Upsilon) \\
-& \mathsf{body}_{\rho, \varrho}(\star_M,\ O,\ \bar N) = \mathsf{rec}_0\ M \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \text{ if } \rho = 0 \\
+& \mathsf{body}_{\rho, \varrho}(\star_Z,\ O,\ \bar N) = \mathsf{rec}_\rho\ O \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \text{ if } \rho \ne 0 &&(\mathsf{body}_\Upsilon) \\
+& \mathsf{body}_{\rho, \varrho}(\star_Z,\ O,\ \bar N) = \mathsf{rec}_0\ \mathsf{target}(Z) \mathrel{◀} \varrho\ \mathsf{with}\ \bar N \text{ if } \rho = 0 \\
 & \mathsf{body}_{\rho, \varrho}(\Xi,\ O,\ \bar N) = \mathsf{corec}\ \mathsf{from}\ ()\ \mathsf{with}\ \mathsf{branches}_{\rho, \varrho}(\Xi,\ O,\ \bar N) \\[1em]
 & \mathsf{nested}_{\rho, \varrho}(x,\ \Xi,\ \bar N) = \mathsf{corec}\ \mathsf{from}\ ()\ \mathsf{with}\ \mathsf{branches}_{\rho, \varrho}(\Xi,\ x,\ \bar N) &&(\mathsf{nested}_\Xi)
 \end{aligned}
@@ -216,7 +225,7 @@ The arguments $`\mathsf{arguments}_\Sigma(T.\bar g)`$ of the branches of a corec
 ```
 
 The sorts and the instances have no representation in the target language, and are erased.
-A constructor keeps its case and its fields, each erased at the grade of its field and stored at the multiplicity at run time of this grade and at the requirement at run time of its requirement, and a field whose parameter the signature does not give, in a term that no rule types, is erased, and stored at $`\omega`$ and at the requirement $`\omega`$, which state nothing, as a constructor whose case it does not give is erased; a recursor keeps the multiplicity at run time of its grade $`r`$, its term and the requirement at run time of its recursion when $`r`$ is not in $`S`$, and the [skeleton](21-recursive-results.md#skeletons) of the type of its term and the requirement $`\omega`$ otherwise, which states nothing, since the variables of the fields of the skeleton have the ownership $`0`$ whatever the ownership of the term, and its branches, which keep, for each recursive result, the position of its field, or $`\bot`$ when its grade is in $`S`$, and loses its instance and its motives, which are types.
+A constructor keeps its case and its fields, each erased at the grade of its field and stored at the multiplicity at run time of this grade and at the requirement at run time of its requirement, and a field whose parameter the signature does not give, in a term that no rule types, is erased, and stored at $`\omega`$ and at the requirement $`\omega`$, which state nothing, as a constructor whose case it does not give is erased; a recursor keeps the multiplicity at run time of its grade $`r`$, its term and the requirement at run time of its recursion when $`r`$ is not in $`S`$, and the term of the [skeleton](21-recursive-results.md#skeletons) of the type of its term and the requirement $`\omega`$ otherwise, which states nothing, since the variables of the fields of the skeleton have the ownership $`0`$ whatever the ownership of the term, and its branches, which keep, for each recursive result, the position of its field, or $`\bot`$ when its grade is in $`S`$, and loses its instance and its motives, which are types.
 An observation keeps its term, the case of its destructor, the ownership at run time of the result of its destructor, $`\mathsf{run}(\psi)`$, which applies $`\mathsf{run}`$ to its constant and to its coefficients, the ownership at run time $`\mathsf{run}(\varsigma)`$ that its destructor requires of the value that it observes, and its arguments, each erased at the grade of its argument and stored at its multiplicity at run time and at its requirement at run time, and a corecursor keeps its state, each entry erased at its grade times the grade $`r`$ of the corecursor and stored at its multiplicity at run time, since every observation that reaches the state uses it $`r`$ times, and at its requirement at run time, and its branches, each erased at the grade of its destructor, since its usage checks it in the mode of this grade, with the number of the entries of the state it resumes, the ownership at run time of the result of its destructor and the ownership at run time that its destructor requires of the value that it observes, and loses its instance and its states, which are types; the parameters of the entries of the state are those of the state $`\Theta_h`$ of the type $`D_h`$ of its instance, with $`{h = \mathsf{position}_\Sigma(D)}`$, and an entry whose parameter is not given, in a term that no rule types, is erased.
 The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\text{↯}`$ when $`{p \in S}`$, and $`\lfloor t \rfloor_S`$ otherwise, and the erasure of terms at the parameters $`{\bar p \mathrel{◀} \bar r}`$ stores each at the multiplicity $`\mathsf{run}(p)`$ of its grade and at the requirement $`\mathsf{run}(r)`$ of its requirement:
 
@@ -230,7 +239,7 @@ The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\te
 & \lfloor T.c(\bar t) \rfloor_S = \text{↯} \text{ otherwise} \\[1em]
 & {=} \text{ if} \\
 & \quad \lfloor \mathsf{rec}_{r;\ \varsigma;\ \chi}\ T\ t\ \mathsf{return}\ \bar C : \kappa_C\ \mathsf{with}\ \bar u \rfloor_S \\
-& \quad \mathsf{rec}_{\mathsf{run}(r)}\ \mathsf{skeleton}_\Sigma(T) \mathrel{◀} \omega \\
+& \quad \mathsf{rec}_{\mathsf{run}(r)}\ \mathsf{target}(\mathsf{skeleton}_\Sigma(T)) \mathrel{◀} \omega \\
 & \qquad \mathsf{with}\ \lfloor \bar u \rfloor_{S, r, \mathsf{recursive}_\Sigma(T), \mathsf{parameters}_\Sigma(T.\bar u)} \\
 & \quad r \in S \\[1em]
 & {=} \text{ if} \\

@@ -1,7 +1,7 @@
 # Recursive Results
 
 This annex defines the recursive results of the fields of a constructor, which a branch of a recursor binds after its fields: their types (the motive of its type for a recursive field and the type of the field lifted for a field nested below a codata type), their factors, and the terms that the computation of a recursor gives them, with their properties, and the skeletons of the data types and the shapes of the recursive results, which the ownership and the erasure of a recursor read.
-It builds on the [grades](04-grades.md), on the [modes](05-modes.md), on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](08-syntax.md#nesting) of the fields of a block, on the [liftings](20-liftings.md) and on the target language of the [erasure](16-erasure.md#definitions), and the [usage](12-usage.md#definitions), the [ownership](13-ownership.md#definitions), the [typing](14-typing.md#terms), the [reduction](15-reduction.md) and the [erasure](16-erasure.md) of the recursors read its definitions.
+It builds on the [grades](04-grades.md), on the [modes](05-modes.md), on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](08-syntax.md#nesting) of the fields of a block, and on the [liftings](20-liftings.md), and the [usage](12-usage.md#definitions), the [ownership](13-ownership.md#definitions), the [typing](14-typing.md#terms), the [reduction](15-reduction.md) and the [erasure](16-erasure.md) of the recursors read its definitions.
 
 ## Definitions
 
@@ -59,7 +59,15 @@ The term of a field without position has no result, the result of the term $`t`$
 
 ### Skeletons
 
-The skeleton $`\mathsf{skeleton}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ is the term of the target language that the type $`D`$ gives to its closed terms when each type of its block has one constructor at most: the constructor of the case of the only constructor of $`D`$, applied to $`\text{↯}`$ for each field that is not recursive and to the skeleton of the type of each recursive field, each at the multiplicity $`0`$, since a skeleton holds no value that a use at run time reads, and at the requirement $`\omega`$, which states nothing, and $`\text{↯}`$ when $`D`$ has no constructor or several.
+A skeleton $`Z`$ is $`\text{↯}`$, which holds nothing, or the constructor $`c_i`$ of the case $`i`$ in its block applied to a skeleton for each of its fields:
+
+```math
+\begin{aligned}
+& Z \mathrel{::=} \text{↯} \mid c_i(Z_1, \dots, Z_a) &&(\mathsf{syntax}_Z)
+\end{aligned}
+```
+
+The skeleton $`\mathsf{skeleton}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ is the skeleton that the type $`D`$ gives to its closed terms when each type of its block has one constructor at most: the constructor of the case of the only constructor of $`D`$, applied to $`\text{↯}`$ for each field that is not recursive and to the skeleton of the type of each recursive field, and $`\text{↯}`$ when $`D`$ has no constructor or several.
 It is built within the depth $`k`$ of the number of the types of the block, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and is $`\text{↯}`$ when $`\Sigma`$ has no such entry:
 
 ```math
@@ -74,7 +82,7 @@ It is built within the depth $`k`$ of the number of the types of the block, at t
 & \qquad \quad \text{is this entry} \\[1em]
 & \mathsf{skeleton}_\Sigma(T) = \text{↯} \text{ if } \Sigma \text{ has no such entry} \\[1em]
 & \mathsf{skeleton}^0(D_j) = \text{↯} \\[1em]
-& \mathsf{skeleton}^{n + 1}(D_j) = c_i(M_1 \mathrel{▶} 0 \mathrel{◀} \omega, \dots, M_a \mathrel{▶} 0 \mathrel{◀} \omega) \\
+& \mathsf{skeleton}^{n + 1}(D_j) = c_i(Z_1, \dots, Z_a) \\
 & \quad \text{if} \\
 & \qquad \text{and} \\
 & \qquad \quad \bar c_j = (c : \Theta) \\
@@ -84,14 +92,14 @@ It is built within the depth $`k`$ of the number of the types of the block, at t
 \end{aligned}
 ```
 
-In the skeleton of a constructor $`{c : \Theta}`$, $`M_l`$ is $`\mathsf{skeleton}^n(D')`$ when the element $`l`$ of $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](08-syntax.md#fields-of-a-block), is a type $`D'`$ of the block, and $`\text{↯}`$ when it is $`\bot`$.
+In the skeleton of a constructor $`{c : \Theta}`$, $`Z_l`$ is $`\mathsf{skeleton}^n(D')`$ when the element $`l`$ of $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](08-syntax.md#fields-of-a-block), is a type $`D'`$ of the block, and $`\text{↯}`$ when it is $`\bot`$.
 The depth is reached only on a type without closed term: along a path of a closed term, from a term to the term of one of its recursive fields, no type of the block comes twice, since each type has one constructor, so that the term would hold a term of the same form, without end.
 
 ### Shapes
 
 A shape $`\Xi`$ gives, for each destructor that the lifting keeps, in order, without the terms of its branch, what the evaluation needs to build this branch: the case $`i`$ of the destructor that it lifts in its block, its multiplicity $`\rho`$, the multiplicities and the requirements $`{\bar\pi \mathrel{◀} \bar\varrho}`$ of its arguments in the observation of the field and $`{\bar\pi' \mathrel{◀} \bar\varrho'}`$ in the lifted destructor, the ownership $`\psi`$ of the result of the lifted destructor and the ownership $`\varsigma`$ that it requires of the value that it observes, the same ownerships $`\psi_0`$ and $`\varsigma_0`$ of the destructor that it lifts, which the observation of the field reads, and the shape $`\Upsilon`$ of its result.
 The multiplicities and the ownerships of a shape are those of an axis of the grades, the uses at run time for the shapes that the erasure reads.
-The shape of a result is $`\star_M`$ when the type lifted is a motive, so that the result is the recursor itself, where $`M`$ is the skeleton of the motive, on which the recursor of the multiplicity $`0`$ runs instead of the observation, and the shape $`\Xi`$ of the next lifting when the type lifted is an instance of a lifting, two levels of nesting deep or more.
+The shape of a result is $`\star_Z`$ when the type lifted is a motive, so that the result is the recursor itself, where $`Z`$ is the skeleton of the motive, on which the recursor of the multiplicity $`0`$ runs instead of the observation, and the shape $`\Xi`$ of the next lifting when the type lifted is an instance of a lifting, two levels of nesting deep or more.
 
 ```math
 \begin{aligned}
@@ -100,7 +108,7 @@ The shape of a result is $`\star_M`$ when the type lifted is a motive, so that t
 & \quad {\mid} \\
 & \qquad () \\
 & \qquad ((i,\ \rho,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \\[1em]
-& \Upsilon \mathrel{::=} \star_M \mid \Xi &&(\mathsf{syntax}_\Upsilon)
+& \Upsilon \mathrel{::=} \star_Z \mid \Xi &&(\mathsf{syntax}_\Upsilon)
 \end{aligned}
 ```
 
@@ -113,7 +121,7 @@ The factor $`\mathsf{factor}(\Xi)`$ of a shape is the multiplicity by which the 
 & {=} \text{ if } \Xi \ne () \\
 & \quad \mathsf{factor}(((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma,\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi)) \\
 & \quad (\rho' \cdot \mathsf{factor}(\Upsilon)) \wedge \mathsf{factor}(\Xi) \\[1em]
-& \mathsf{factor}(\star_M) = 1 &&(\mathsf{factor}_\Upsilon)
+& \mathsf{factor}(\star_Z) = 1 &&(\mathsf{factor}_\Upsilon)
 \end{aligned}
 ```
 
@@ -128,7 +136,7 @@ A shape fits the recursor of the multiplicity $`\rho`$, written $`{\Xi \text{ fi
 & \qquad \forall k \le |\bar\pi'|.\ \pi'_k \le (\rho \cdot (\rho' \cdot \mathsf{factor}(\Upsilon))) \cdot \pi_k \\
 & \qquad \Upsilon \text{ fits } \rho \\
 & \qquad \Xi \text{ fits } \rho \\[1em]
-& \star_M \text{ fits } \rho &&(\mathsf{fits}_\Upsilon)
+& \star_Z \text{ fits } \rho &&(\mathsf{fits}_\Upsilon)
 \end{aligned}
 ```
 
@@ -244,14 +252,14 @@ The shapes $`\Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})`$ of the types of
 
 ```math
 \begin{aligned}
-& \Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})(D_j) = \star_M;\ {11}^{\mathsf{p}};\ \chi &&(\mathsf{shape}_{\mathcal{D}}) \\
-& \quad \text{where } M = \mathsf{skeleton}_\Sigma(D_j.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta) \\
+& \Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})(D_j) = \star_Z;\ {11}^{\mathsf{p}};\ \chi &&(\mathsf{shape}_{\mathcal{D}}) \\
+& \quad \text{where } Z = \mathsf{skeleton}_\Sigma(D_j.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta) \\
 & \Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})(D) \text{ is not defined if } D \text{ is not a type of } \mathcal{D} \\
 & \Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})(x) = \bot
 \end{aligned}
 ```
 
-The shapes $`{\mathsf{shapes}^\Lambda_{\Sigma; m; \beta}(\Theta,\ \bar\lambda)}`$ of the nested fields of the telescope $`\Theta`$, whose nestings are $`\bar\lambda`$, are, for each field, in order, the shape $`\Xi`$ of the lifting of its type when it has one, and $`\bot`$ otherwise: a field without position has no shape, and the shape of a recursive field is $`\star_M`$, the recursor itself, which is not the shape of a lifting:
+The shapes $`{\mathsf{shapes}^\Lambda_{\Sigma; m; \beta}(\Theta,\ \bar\lambda)}`$ of the nested fields of the telescope $`\Theta`$, whose nestings are $`\bar\lambda`$, are, for each field, in order, the shape $`\Xi`$ of the lifting of its type when it has one, and $`\bot`$ otherwise: a field without position has no shape, and the shape of a recursive field is $`\star_Z`$, the recursor itself, which is not the shape of a lifting:
 
 ```math
 \begin{aligned}
@@ -287,9 +295,9 @@ The shape requires $`o`$, written $`{\Xi \text{ requires } o;\ \varsigma}`$, whe
 
 ```math
 \begin{aligned}
-& \mathsf{own}_\chi(\star_M) = \chi &&(\mathsf{own}_\Upsilon) \\
+& \mathsf{own}_\chi(\star_Z) = \chi &&(\mathsf{own}_\Upsilon) \\
 & \mathsf{own}_\chi(\Xi) = 1 \\[1em]
-& \mathsf{scale}_\varsigma(\star_M) = 1 &&(\mathsf{scale}_\Upsilon) \\
+& \mathsf{scale}_\varsigma(\star_Z) = 1 &&(\mathsf{scale}_\Upsilon) \\
 & \mathsf{scale}_\varsigma(\Xi) = \varsigma \\[1em]
 & () \mathrel{◀} \varsigma;\ \chi &&(\mathsf{uniform}_\Xi) \\[1em]
 & {\iff} \\
@@ -299,7 +307,7 @@ The shape requires $`o`$, written $`{\Xi \text{ requires } o;\ \varsigma}`$, whe
 & \qquad \psi = \mathsf{own}_\chi(\Upsilon) \\
 & \qquad \Upsilon \mathrel{◀} \varsigma;\ \chi \\
 & \qquad \Xi \mathrel{◀} \varsigma;\ \chi \\[1em]
-& \star_M \mathrel{◀} \varsigma;\ \chi &&(\mathsf{uniform}_\Upsilon) \\[1em]
+& \star_Z \mathrel{◀} \varsigma;\ \chi &&(\mathsf{uniform}_\Upsilon) \\[1em]
 & \mathsf{args}_\varsigma(\Upsilon,\ \bar o,\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi') = (o'_1, \dots, o'_{|\bar\pi|}) &&(\mathsf{args}_\Xi) \\
 & \quad \text{where} \\
 & \qquad \text{and} \\
@@ -323,7 +331,7 @@ The shape requires $`o`$, written $`{\Xi \text{ requires } o;\ \varsigma}`$, whe
 & \qquad \qquad \qquad \quad \exists v.\ \psi_0[\bar o'] = v \\
 & \qquad \qquad \Upsilon \text{ meets } o;\ \varsigma \\
 & \qquad \Xi \text{ meets } o;\ \varsigma \\[1em]
-& \star_M \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Upsilon) \\[1em]
+& \star_Z \text{ meets } o;\ \varsigma &&(\mathsf{meets}_\Upsilon) \\[1em]
 & () \text{ keeps } o;\ \varsigma &&(\mathsf{keeps}_\Xi) \\[1em]
 & {\iff} \\
 & \quad ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi) \text{ keeps } o;\ \varsigma \\
@@ -340,7 +348,7 @@ The shape requires $`o`$, written $`{\Xi \text{ requires } o;\ \varsigma}`$, whe
 & \qquad \qquad \qquad o \le o \cdot v \\
 & \qquad \qquad \Upsilon \text{ keeps } o;\ \varsigma \\
 & \qquad \Xi \text{ keeps } o;\ \varsigma \\[1em]
-& \star_M \text{ keeps } o;\ \varsigma &&(\mathsf{keeps}_\Upsilon) \\[1em]
+& \star_Z \text{ keeps } o;\ \varsigma &&(\mathsf{keeps}_\Upsilon) \\[1em]
 & {\iff} &&(\mathsf{requires}_\Xi) \\
 & \quad \Xi \text{ requires } o;\ \varsigma \\
 & \quad \text{and} \\
@@ -365,7 +373,7 @@ What the shape of a nested field gives the [requirement](13-ownership.md#definit
 & \qquad \text{and} \\
 & \qquad \quad v = \psi_0[\mathsf{args}_\varsigma(\Upsilon,\ \bar\varrho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi')] \text{ if it is defined} \\
 & \qquad \quad v = 1 \text{ otherwise} \\[1em]
-& \mathsf{prefixes}_\varsigma(\pi,\ \star_M) = \varnothing &&(\mathsf{prefixes}_\Upsilon) \\[1em]
+& \mathsf{prefixes}_\varsigma(\pi,\ \star_Z) = \varnothing &&(\mathsf{prefixes}_\Upsilon) \\[1em]
 & \mathsf{recursion}_\varsigma(\Xi) = \{\varsigma\} \cup \mathsf{prefixes}_\varsigma(\varsigma,\ \Xi) &&(\mathsf{recursion}_\Xi)
 \end{aligned}
 ```
