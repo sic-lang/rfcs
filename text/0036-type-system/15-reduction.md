@@ -1,7 +1,7 @@
 # Reduction
 
 This annex defines the weak head reduction, its head normal forms and the computation of the closed terms, and their properties.
-It builds on the [syntax](08-syntax.md), on the instances of the entries, which the [typing](14-typing.md) defines, on the [resumption](19-prelude.md#positions) of the positions and on the [recursive results](21-recursive-results.md) of the terms of the fields of a constructor.
+It builds on the [syntax](08-syntax.md), on the [instances of the entries](09-substitution.md#instances-of-the-entries), on the [resumption](19-prelude.md#positions) of the positions and on the [recursive results](21-recursive-results.md) of the terms of the fields of a constructor.
 
 ## Definitions
 

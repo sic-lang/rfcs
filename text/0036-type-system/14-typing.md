@@ -60,13 +60,7 @@ A context has a variable $`x : A`$, written $`{x : A \in \Gamma}`$, when one of 
 \end{aligned}
 ```
 
-The instance of an entry with the sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$, as many as the variables of each kind, gives its type, its body, its parameters, its sort, and the grades, the constructors and the destructors of its types at the instance $`\bar s'`$, $`\bar p'`$, in which it [instantiates](09-substitution.md) the level variables $`[\bar l' / \bar l]`$; the rules write it $`{A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}`$, as if the instance were substituted, and $`{A[\bar s' / \bar s,\ \bar p' / \bar p]}`$ when it keeps the level variables:
-
-```math
-\begin{aligned}
-& A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = A[\bar s' / \bar s,\ \bar p' / \bar p][\bar l' / \bar l] &&(\mathsf{inst}_e)
-\end{aligned}
-```
+The rules write the [instance of an entry](09-substitution.md#instances-of-the-entries) at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$ as $`{A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}`$, as if the instance were substituted, and $`{A[\bar s' / \bar s,\ \bar p' / \bar p]}`$ when it keeps the level variables.
 
 ### Signatures and Entries
 

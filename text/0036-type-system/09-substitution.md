@@ -1,11 +1,11 @@
 # Substitution
 
-This annex defines the substitutions of the first order, which give terms to variables, the substitutions of the second order, which give abstractions to variables, the renamings, which give variables to variables, the closed substitutions, the instantiation of the level variables, and their properties.
+This annex defines the substitutions of the first order, which give terms to variables, the substitutions of the second order, which give abstractions to variables, the renamings, which give variables to variables, the closed substitutions, the instantiation of the level variables, the instances of the entries, and their properties.
 It builds on the [syntax](08-syntax.md).
 
 ## Definitions
 
-This section defines the substitutions of the first order, then those of the second order, which apply them to the abstractions they give, the renamings, the closed substitutions, and the instantiation of the level variables.
+This section defines the substitutions of the first order, then those of the second order, which apply them to the abstractions they give, the renamings, the closed substitutions, the instantiation of the level variables, and the instances of the entries, which instantiate them.
 A substitution of the first order and one of the second order are defined apart, as the substitution of the variables and the substitution of the metavariables of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), since the second one substitutes the arguments of each application in the abstraction it gives, which is not a part of the term.
 Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
 
@@ -258,6 +258,16 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Gamma) \\
 & (\Gamma,\ x : A)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ x : A[\bar l' / \bar l] \\
 & (\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi))[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ X : (\Theta[\bar l' / \bar l] \vdash A[\bar l' / \bar l] \mathrel{◀} \psi)
+\end{aligned}
+```
+
+### Instances of the Entries
+
+The instance of an entry with the sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$, as many as the variables of each kind, gives its type, its body, its parameters, its sort, and the grades, the constructors and the destructors of its types at the instance $`\bar s'`$, $`\bar p'`$, in which it instantiates the level variables $`[\bar l' / \bar l]`$; the rules write it $`{A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}`$, as if the instance were substituted, and $`{A[\bar s' / \bar s,\ \bar p' / \bar p]}`$ when it keeps the level variables:
+
+```math
+\begin{aligned}
+& A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = A[\bar s' / \bar s,\ \bar p' / \bar p][\bar l' / \bar l] &&(\mathsf{inst}_e)
 \end{aligned}
 ```
 
