@@ -90,7 +90,7 @@ The requirement $`{\mathsf{recursion}_{\Sigma; m}(\mathcal{D}.\{\bar s';\ \bar p
 
 The ownership $`\mathsf{own}_p(\lambda)`$ of the recursive result of a field of the nesting $`\lambda`$, in a branch of a recursor of the ownership $`p`$, is $`{11}^{\mathsf{p}}`$ for a nested field, whose result is the corecursor of a lifting, a new value, and $`p`$ for a recursive field, whose result is a result of the recursor.
 The ownerships $`\mathsf{own}_p(\bar\lambda)`$ of the recursive results of fields of the nestings $`\bar\lambda`$ are one ownership for each element of $`\bar\lambda`$ that is not $`\bot`$, in order, since a field without position has no result.
-The head $`\mathsf{own}`$ names one notion, the ownership of the value of a recursive result, on three syntaxes: the nestings here, the [shapes](14-recursive-results.md#ownerships-of-the-shapes) of the nested results, $`(\mathsf{own}_\Upsilon)`$, and the positions of the recursive results in the target language of the erasure, $`(\mathsf{own}_w)`$:
+The head $`\mathsf{own}`$ names one notion, the ownership of the value of a recursive result, on the nestings here and on the [shapes](14-recursive-results.md#ownerships-of-the-shapes) of the nested results, $`(\mathsf{own}_\Upsilon)`$:
 
 ```math
 \begin{aligned}
