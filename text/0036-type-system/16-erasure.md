@@ -142,28 +142,7 @@ The position $`\mathsf{position}_\Sigma(D)`$ of the declared type $`D`$ is its i
 \end{aligned}
 ```
 
-The case $`\mathsf{case}_\Sigma(D.c)`$ of the constructor $`c`$ of the type $`D`$ is its position $`i`$ among the constructors of the types of its block, in the order of the declaration, which is that of the branches of a recursor, in the last entry of $`\Sigma`$ that declares a type $`D`$ with a constructor $`c`$, and none when $`\Sigma`$ has no such entry; the case $`\mathsf{case}_\Sigma(D.d)`$ of a destructor is its position among the destructors of the types of its block, likewise:
-
-```math
-\begin{aligned}
-& \mathsf{case}_\Sigma(D.c) = i &&(\mathsf{case}_c) \\
-& \quad \text{if} \\
-& \qquad c_i \text{ is the constructor } c \text{ of } D \text{ in} \\
-& \qquad \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
-& \qquad \qquad \mathsf{where} \\
-& \qquad \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} c_1 : \Theta_1 \mid \dots; \\
-& \qquad \qquad \quad \dots; \\
-& \qquad \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots \mid c_n : \Theta_n \\[1em]
-& \mathsf{case}_\Sigma(D.d) = i &&(\mathsf{case}_d) \\
-& \quad \text{if} \\
-& \qquad d_i \text{ is the destructor } d \text{ of } D \text{ in} \\
-& \qquad \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
-& \qquad \qquad \mathsf{where} \\
-& \qquad \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} d_1 : \dots \mid \dots; \\
-& \qquad \qquad \quad \dots; \\
-& \qquad \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots \mid d_n : \dots
-\end{aligned}
-```
+The cases $`\mathsf{case}_\Sigma(D.c)`$ of a constructor and $`\mathsf{case}_\Sigma(D.d)`$ of a destructor are their positions among those of the types of their block, as the [syntax](08-syntax.md#cases) defines them.
 
 The recursive fields $`\mathsf{recursive}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ give, for each constructor of the block of $`D`$, in the order of the declaration, the positions of its fields whose types are instances of a type of the block, which $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](08-syntax.md#fields-of-a-block), marks, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and none when $`\Sigma`$ has no such entry:
 

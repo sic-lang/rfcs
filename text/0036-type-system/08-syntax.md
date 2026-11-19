@@ -1,11 +1,11 @@
 # Syntax
 
-This annex defines the terms of the type system, their arguments, the telescopes, the contexts and the signatures, with the variables that each of them binds, and the value of the ownership of the result of a second-order variable, then the nesting of the types and the recursive fields and destructors of a block, which are read on the syntax.
+This annex defines the terms of the type system, their arguments, the telescopes, the contexts and the signatures, with the variables that each of them binds, and the value of the ownership of the result of a second-order variable, then the nesting of the types, the recursive fields and destructors of a block, and the cases of the constructors and of the destructors in their block, which are read on the syntax.
 It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [levels](06-levels.md) and the [sorts](07-sorts.md).
 
 ## Definitions
 
-This section defines the objects in the order in which they build on each other: the variables and their scopes, the terms and their arguments, the telescopes and the contexts, then the entries of the signatures, and then the nesting of the types and the recursive fields and destructors of a block.
+This section defines the objects in the order in which they build on each other: the variables and their scopes, the terms and their arguments, the telescopes and the contexts, then the entries of the signatures, and then the nesting of the types, the recursive fields and destructors of a block, and the cases.
 
 ### Variables
 
@@ -383,6 +383,31 @@ The nesting $`\mathsf{nest}_{\mathcal{D};\ \Pi}(B)`$ of the result of a destruct
 & \mathsf{nest}_{\mathcal{D};\ \Pi}(B) = \mathsf{nest}_\Pi(B) \text{ otherwise} \\[1em]
 & \mathsf{nest}_{\mathcal{D};\ \Pi}(\varepsilon) = () &&(\mathsf{nest}_{\bar d}) \\
 & \mathsf{nest}_{\mathcal{D};\ \Pi}(d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) = (\mathsf{nest}_{\mathcal{D};\ \Pi}(B),\ \mathsf{nest}_{\mathcal{D};\ \Pi}(\bar d))
+\end{aligned}
+```
+
+### Cases
+
+The case $`\mathsf{case}_\Sigma(D.c)`$ of the constructor $`c`$ of the type $`D`$ is its position $`i`$ among the constructors of the types of its block, in the order of the declaration, which is that of the branches of a recursor, in the last entry of $`\Sigma`$ that declares a type $`D`$ with a constructor $`c`$, and none when $`\Sigma`$ has no such entry; the case $`\mathsf{case}_\Sigma(D.d)`$ of a destructor is its position among the destructors of the types of its block, likewise:
+
+```math
+\begin{aligned}
+& \mathsf{case}_\Sigma(D.c) = i &&(\mathsf{case}_c) \\
+& \quad \text{if} \\
+& \qquad c_i \text{ is the constructor } c \text{ of } D \text{ in} \\
+& \qquad \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \qquad \mathsf{where} \\
+& \qquad \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} c_1 : \Theta_1 \mid \dots; \\
+& \qquad \qquad \quad \dots; \\
+& \qquad \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots \mid c_n : \Theta_n \\[1em]
+& \mathsf{case}_\Sigma(D.d) = i &&(\mathsf{case}_d) \\
+& \quad \text{if} \\
+& \qquad d_i \text{ is the destructor } d \text{ of } D \text{ in} \\
+& \qquad \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \qquad \mathsf{where} \\
+& \qquad \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} d_1 : \dots \mid \dots; \\
+& \qquad \qquad \quad \dots; \\
+& \qquad \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \dots \mid d_n : \dots
 \end{aligned}
 ```
 
