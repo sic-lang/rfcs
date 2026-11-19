@@ -1,7 +1,7 @@
 # Meaning
 
 This annex defines the meaning of the judgments of the typing, with the interpretation of the constant declarations, the equality of the canonical terms of the sorts and their relations of run time, and its properties.
-It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [substitution](09-substitution.md), the [typing](15-typing.md), the [reduction](16-reduction.md), the [erasure](19-erasure.md) and the [evaluation](20-evaluation.md).
+It builds on the [levels](06-levels.md), the [sorts](07-sorts.md), the [syntax](08-syntax.md), with the nesting, the parameters themselves and the cases, the [substitution](09-substitution.md), the [typing](15-typing.md), the [reduction](16-reduction.md), the [erasure](19-erasure.md) and the [evaluation](20-evaluation.md).
 
 The judgments mean what the meaning explanations of Martin-Löf type theory say of them, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them: a judgment is true when its terms compute as it says.
 The meaning of the judgments ignores the grades, the modes and the ownerships, as the typing does outside the judgments of usage and of ownership that the rule of the constant definitions reads; only the relations of run time read the grades, to tell which positions the erasure keeps, and the equality of the types compares them, so that two instances of a declared type at grades that erase a field in one and keep it in the other are different types.

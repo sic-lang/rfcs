@@ -1,7 +1,7 @@
 # Grade Vectors
 
 This annex defines the vectors of the elements of a modality, with their operations, their order and their properties, then the vectors of grades, which give a grade to each variable of a scope, with their renaming, and the vectors of multiplicities, which give a multiplicity to each variable of a term of the target language, with the projection of a vector of grades on its multiplicities at run time.
-It builds on the [modalities](02-modalities.md), the [grades](04-grades.md), the [syntax](08-syntax.md) and the [substitution](09-substitution.md).
+It builds on the [modalities](02-modalities.md), the [multiplicities](03-multiplicities.md), the [grades](04-grades.md), the [syntax](08-syntax.md) and the [substitution](09-substitution.md).
 
 ## Vectors
 

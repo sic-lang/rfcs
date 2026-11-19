@@ -166,7 +166,7 @@ The destructors $`\bar d'`$ are those of the lifting of $`D`$ at $`\Pi`$, writte
 \end{aligned}
 ```
 
-A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, written $`{D^\Pi \in \Sigma}`$, when it has a block that declares $`D`$ and the lifting of $`D`$ at $`\Pi`$, with its destructors, as it [holds the prelude](12-prelude.md#declarations):
+A signature holds the lifting of its type $`D`$ at the parameters $`\Pi`$, written $`{D^\Pi \in \Sigma}`$, when it has a block that declares $`D`$ and the lifting of $`D`$ at $`\Pi`$, with its destructors, as it holds the prelude:
 
 ```math
 \begin{aligned}

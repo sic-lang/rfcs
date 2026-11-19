@@ -1,7 +1,7 @@
 # Erasure
 
 This annex defines the erasure, which compiles a term to an untyped target language by replacing with $`\text{↯}`$ the parts whose grade is in a set of grades, the usage and the ownership of the target language, and their properties.
-It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [vectors of multiplicities](10-grade-vectors.md#vectors-of-multiplicities), the [sets of grades](11-grade-sets.md), the [usage](17-usage.md), the [ownership](18-ownership.md), the recursive fields of a block, which the [syntax](08-syntax.md#fields-of-a-block) marks, and the skeletons and the shapes of the [recursive results](14-recursive-results.md#skeletons).
+It builds on the [multiplicities](03-multiplicities.md), the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [vectors of multiplicities](10-grade-vectors.md#vectors-of-multiplicities), the [sets of grades](11-grade-sets.md), the [usage](17-usage.md), the [ownership](18-ownership.md), the recursive fields of a block, which the [syntax](08-syntax.md#fields-of-a-block) marks, and the skeletons and the shapes of the [recursive results](14-recursive-results.md#skeletons).
 
 ## Definitions
 

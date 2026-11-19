@@ -1,7 +1,7 @@
 # Run Time
 
 This annex defines the relation of run time between the closed terms of a closed type and the values that their erasure computes, which states what the erasure of a term computes when it runs, the validity at run time of a term in a context, which extends it to open terms, the programs that realize a signature, and their properties, among them the fundamental lemma of the run time, by which a term typed and used in the mode $`{11}^{\mathsf{m}}`$ is valid at run time, the soundness of the extraction, by which the erasure of a closed term computes what the term computes, its conservation of the bindings, by which this erasure reads each variable as the run-time multiplicity of its grade allows, and its uniqueness, by which the value of this erasure does not share what it owns alone.
-It builds on the [usage](17-usage.md), the [ownership](18-ownership.md), the [typing](15-typing.md), the [erasure](19-erasure.md), the [evaluation](20-evaluation.md) and the [meaning](21-meaning.md), which gives each closed canonical type its [relation of run time](21-meaning.md#relations-of-run-time).
+It builds on the [syntax](08-syntax.md), the [substitution](09-substitution.md), with the instances of the entries, the [usage](17-usage.md), the [ownership](18-ownership.md), the [typing](15-typing.md), the [erasure](19-erasure.md), the [evaluation](20-evaluation.md) and the [meaning](21-meaning.md), which gives each closed canonical type its [relation of run time](21-meaning.md#relations-of-run-time).
 
 ## Definitions
 

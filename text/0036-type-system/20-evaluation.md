@@ -1,7 +1,7 @@
 # Evaluation
 
 This annex defines the evaluation of the target language of the erasure, the calling convention of Sic, the extension of the heaps, the demands and the reaches of the values and of the environments, the annotations of the heaps and the claims of the values, and their properties, among which the conservation of the bindings, the ownership of the program of a signature and the uniqueness at run time.
-It builds on the [vectors](10-grade-vectors.md#vectors), the [syntax](08-syntax.md), the [erasure](19-erasure.md), its [usage](19-erasure.md#definitions) and its [ownership](19-erasure.md#definitions), and the [type of positions](12-prelude.md#positions) of the prelude.
+It builds on the [multiplicities](03-multiplicities.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md), the [vectors](10-grade-vectors.md#vectors), the [type of positions](12-prelude.md#positions) of the prelude, the [ownership](18-ownership.md), the [erasure](19-erasure.md), its [usage](19-erasure.md#definitions) and its [ownership](19-erasure.md#definitions).
 
 ## Definitions
 
