@@ -42,12 +42,12 @@ The multiplicities $`\bar\pi(\bar M)`$ and the requirements $`\bar\varrho(\bar M
 \end{aligned}
 ```
 
-The term $`\mathsf{target}(Z)`$ of the target language that a [skeleton](14-recursive-results.md#skeletons) $`Z`$ stands for, in every scope, since it mentions no variable, is $`\text{↯}`$ for $`\text{↯}`$, and the constructor of the same case applied to the terms that its skeletons stand for, each stored at the multiplicity $`0`$, since a skeleton holds no value that a use at run time reads, and at the requirement $`\omega`$, which states nothing:
+The term $`\mathsf{target}(Z)`$ of the target language that a [skeleton](14-recursive-results.md#skeletons) $`Z`$ stands for, in every scope, since it mentions no variable, is $`\text{↯}`$ for the empty skeleton $`\square`$, and the constructor of the same case applied to the terms that its skeletons stand for, each stored at the multiplicity $`0`$, since a skeleton holds no value that a use at run time reads, and at the requirement $`\omega`$, which states nothing:
 
 ```math
 \begin{aligned}
-& \mathsf{target}(\text{↯}) = \text{↯} &&(\mathsf{target}_Z) \\
-& \mathsf{target}(c_i(Z_1, \dots, Z_a)) = c_i(\mathsf{target}(Z_1) \mathrel{▶} 0 \mathrel{◀} \omega, \dots, \mathsf{target}(Z_a) \mathrel{▶} 0 \mathrel{◀} \omega)
+& \mathsf{target}(\square) = \text{↯} &&(\mathsf{target}_Z) \\
+& \mathsf{target}(c_i\langle Z_1, \dots, Z_a \rangle) = c_i(\mathsf{target}(Z_1) \mathrel{▶} 0 \mathrel{◀} \omega, \dots, \mathsf{target}(Z_a) \mathrel{▶} 0 \mathrel{◀} \omega)
 \end{aligned}
 ```
 

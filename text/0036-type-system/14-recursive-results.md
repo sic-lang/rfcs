@@ -59,16 +59,16 @@ The term of a field without position has no result, the result of the term $`t`$
 
 ### Skeletons
 
-A skeleton $`Z`$ is $`\text{↯}`$, which holds nothing, or the constructor $`c_i`$ of the case $`i`$ in its block applied to a skeleton for each of its fields:
+A skeleton $`Z`$ is the empty skeleton $`\square`$, which holds nothing, or the constructor $`c_i`$ of the case $`i`$ in its block applied to a skeleton for each of its fields:
 
 ```math
 \begin{aligned}
-& Z \mathrel{::=} \text{↯} \mid c_i(Z_1, \dots, Z_a) &&(\mathsf{syntax}_Z)
+& Z \mathrel{::=} \square \mid c_i\langle Z_1, \dots, Z_a \rangle &&(\mathsf{syntax}_Z)
 \end{aligned}
 ```
 
-The skeleton $`\mathsf{skeleton}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ is the skeleton that the type $`D`$ gives to its closed terms when each type of its block has one constructor at most: the constructor of the case of the only constructor of $`D`$, applied to $`\text{↯}`$ for each field that is not recursive and to the skeleton of the type of each recursive field, and $`\text{↯}`$ when $`D`$ has no constructor or several.
-It is built within the depth $`k`$ of the number of the types of the block, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and is $`\text{↯}`$ when $`\Sigma`$ has no such entry:
+The skeleton $`\mathsf{skeleton}_\Sigma(T)`$ of an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ is the skeleton that the type $`D`$ gives to its closed terms when each type of its block has one constructor at most: the constructor of the case of the only constructor of $`D`$, applied to $`\square`$ for each field that is not recursive and to the skeleton of the type of each recursive field, and $`\square`$ when $`D`$ has no constructor or several.
+It is built within the depth $`k`$ of the number of the types of the block, at the instance $`\bar s`$, $`\bar p`$, in the last entry of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and is $`\square`$ when $`\Sigma`$ has no such entry:
 
 ```math
 \begin{aligned}
@@ -80,19 +80,19 @@ It is built within the depth $`k`$ of the number of the types of the block, at t
 & \qquad \qquad \dots; \\
 & \qquad \qquad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\
 & \qquad \quad \text{is this entry} \\[1em]
-& \mathsf{skeleton}_\Sigma(T) = \text{↯} \text{ if } \Sigma \text{ has no such entry} \\[1em]
-& \mathsf{skeleton}^0(D_j) = \text{↯} \\[1em]
-& \mathsf{skeleton}^{n + 1}(D_j) = c_i(Z_1, \dots, Z_a) \\
+& \mathsf{skeleton}_\Sigma(T) = \square \text{ if } \Sigma \text{ has no such entry} \\[1em]
+& \mathsf{skeleton}^0(D_j) = \square \\[1em]
+& \mathsf{skeleton}^{n + 1}(D_j) = c_i\langle Z_1, \dots, Z_a \rangle \\
 & \quad \text{if} \\
 & \qquad \text{and} \\
 & \qquad \quad \bar c_j = (c : \Theta) \\
 & \qquad \quad i = \mathsf{case}_\Sigma(D_j.c) \\
 & \qquad \quad \Theta \text{ has } a \text{ entries} \\[1em]
-& \mathsf{skeleton}^{n + 1}(D_j) = \text{↯} \text{ otherwise}
+& \mathsf{skeleton}^{n + 1}(D_j) = \square \text{ otherwise}
 \end{aligned}
 ```
 
-In the skeleton of a constructor $`{c : \Theta}`$, $`Z_l`$ is $`\mathsf{skeleton}^n(D')`$ when the element $`l`$ of $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](08-syntax.md#fields-of-a-block), is a type $`D'`$ of the block, and $`\text{↯}`$ when it is $`\bot`$.
+In the skeleton of a constructor $`{c : \Theta}`$, $`Z_l`$ is $`\mathsf{skeleton}^n(D')`$ when the element $`l`$ of $`\mathsf{rec}_{\mathcal{D}}(\Theta)`$, defined with the [fields of a block](08-syntax.md#fields-of-a-block), is a type $`D'`$ of the block, and $`\square`$ when it is $`\bot`$.
 The depth is reached only on a type without closed term: along a path of a closed term, from a term to the term of one of its recursive fields, no type of the block comes twice, since each type has one constructor, so that the term would hold a term of the same form, without end.
 
 ### Shapes
