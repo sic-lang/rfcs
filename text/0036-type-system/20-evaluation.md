@@ -416,7 +416,7 @@ The demand of an environment follows the operations of the usage on its vector, 
 \end{aligned}
 ```
 
-The program of a signature reads its variables as its usage allows, when the names of the signature are distinct, it [declares its liftings in order](14-recursive-results.md#shapes-of-the-types), so that the erasure of each body keeps its usage, and its entries use their variables as their grades allow: each of its bodies is the erasure at run time of the body of a constant definition of the mode $`{11}^{\mathsf{m}}`$, which uses no variable in the signature before it, and so in the whole signature, in which the program erases it:
+The program of a signature reads its variables as its usage allows, when the names of the signature are distinct, it [declares its liftings in order](13-liftings.md#signatures), so that the erasure of each body keeps its usage, and its entries use their variables as their grades allow: each of its bodies is the erasure at run time of the body of a constant definition of the mode $`{11}^{\mathsf{m}}`$, which uses no variable in the signature before it, and so in the whole signature, in which the program erases it:
 
 ```math
 \begin{aligned}

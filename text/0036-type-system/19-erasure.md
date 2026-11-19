@@ -478,7 +478,7 @@ A variable whose grade is in a set $`S`$ is absent from the erasure by $`S`$ of 
 
 The condition on the mode is needed: the variable $`x`$ checked in the mode $`{01}^{\mathsf{m}}`$ uses itself with the grade $`{01}^{\mathsf{p}}`$, which is in $`S^{{11}^{\mathsf{m}}}`$, but $`{\lfloor x \rfloor_{S^{{11}^{\mathsf{m}}}} = x}`$; Abel, Danielsson and Eriksson likewise state the absence for their mode `𝟙ᵐ` only, as [`erased-hasX`](https://github.com/graded-type-theory/graded-type-theory/blob/master/Graded/Erasure/Extraction/Properties/Usage.agda).
 
-The erasure at run time keeps the usage: a term checked in the mode $`{11}^{\mathsf{m}}`$ in a signature whose names are distinct, so that the usage and the erasure read the grades of the fields, of the arguments and of the branches in the same entry, and that [declares its liftings in order](14-recursive-results.md#shapes-of-the-types), so that the factor of the shape that the erasure gives a nested result is the factor of the lifting that the usage reads, has an erasure that reads its variables as the run-time multiplicities of their grades allow:
+The erasure at run time keeps the usage: a term checked in the mode $`{11}^{\mathsf{m}}`$ in a signature whose names are distinct, so that the usage and the erasure read the grades of the fields, of the arguments and of the branches in the same entry, and that [declares its liftings in order](13-liftings.md#signatures), so that the factor of the shape that the erasure gives a nested result is the factor of the lifting that the usage reads, has an erasure that reads its variables as the run-time multiplicities of their grades allow:
 
 ```math
 \begin{aligned}
