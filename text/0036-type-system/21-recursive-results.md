@@ -1,7 +1,7 @@
 # Recursive Results
 
 This annex defines the recursive results of the fields of a constructor, which a branch of a recursor binds after its fields: their types (the motive of its type for a recursive field and the type of the field lifted for a field nested below a codata type), their factors, and the terms that the computation of a recursor gives them, with their properties, and the skeletons of the data types and the shapes of the recursive results, which the ownership and the erasure of a recursor read.
-It builds on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](14-typing.md#nesting) of the fields of a block, on the [liftings](20-liftings.md) and on the target language of the [erasure](16-erasure.md#definitions), and the [usage](12-usage.md#definitions), the [ownership](13-ownership.md#definitions), the [typing](14-typing.md#terms), the [reduction](15-reduction.md) and the [erasure](16-erasure.md) of the recursors read its definitions.
+It builds on the [grades](04-grades.md), on the [modes](05-modes.md), on the [syntax](08-syntax.md), on the [substitution](09-substitution.md), on the [nesting](14-typing.md#nesting) of the fields of a block, on the [liftings](20-liftings.md) and on the target language of the [erasure](16-erasure.md#definitions), and the [usage](12-usage.md#definitions), the [ownership](13-ownership.md#definitions), the [typing](14-typing.md#terms), the [reduction](15-reduction.md) and the [erasure](16-erasure.md) of the recursors read its definitions.
 
 ## Definitions
 
@@ -220,7 +220,7 @@ The shape is a function on the syntax, which the erasure computes in the mode $`
 & \qquad \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
 & \qquad \qquad \mathsf{where} \\
 & \qquad \qquad \quad \dots;\ D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d;\ \dots \\
-& \qquad \quad \text{is the last entry of } \Sigma \text{ that declares a type } D \\
+& \qquad \quad \text{is the last entry of } \Sigma \text{ that declares a codata type } D \\
 & \qquad \quad \text{and as many sort and grade variables as } \bar s' \text{ and } \bar p' \\
 & \qquad \quad \Lambda \text{ gives each parameter } x_j \text{ of } \Delta \text{ the element } \lambda'_j \\
 & \qquad \quad \Lambda \text{ gives no other variable a position and no type an object} \\
@@ -240,12 +240,13 @@ In the rules $`(\mathsf{shape}_A)`$ and $`(\mathsf{shape}_{\bar a})`$, an elemen
 ### Shapes of the Nested Fields
 
 The shapes of the nested fields of a constructor are those of their types, at the nestings of these types in its block, which the ownership of a recursor and its erasure read.
-The shapes $`\Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})`$ of the types of a block of data types $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \dots;\ \dots;\ D_k \mathrel{▶} \dots}`$ at the instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, written $`{\mathcal{D}.\{\bar s';\ \bar p'\}}`$, give each type $`D_j`$ of the block the shape of the recursor itself, on the [skeleton](#skeletons) of $`D_j`$ at this instance, which the recursor of the multiplicity $`0`$ runs on, the factor $`{11}^{\mathsf{p}}`$ and the ownership $`\chi`$, as the [lifting](20-liftings.md#types) of the block gives them, and no position to the variables, since the lifting of a block lifts no variable; the skeleton reads the instance of $`D_j`$ by its sort and grade arguments only, and $`\bar x_\Delta`$ are the parameters of $`\Delta`$ themselves, as in the [fields of a block](14-typing.md#fields-of-a-block):
+The shapes $`\Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})`$ of the types of a block of data types $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \dots;\ \dots;\ D_k \mathrel{▶} \dots}`$ at the instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, written $`{\mathcal{D}.\{\bar s';\ \bar p'\}}`$, give each type $`D_j`$ of the block the shape of the recursor itself, on the [skeleton](#skeletons) of $`D_j`$ at this instance, which the recursor of the multiplicity $`0`$ runs on, the factor $`{11}^{\mathsf{p}}`$ and the ownership $`\chi`$, as the [lifting](20-liftings.md#types) of the block gives them, no object to the other types, and no position to the variables, since the lifting of a block lifts no variable; the skeleton reads the instance of $`D_j`$ by its sort and grade arguments only, and $`\bar x_\Delta`$ are the parameters of $`\Delta`$ themselves, as in the [fields of a block](14-typing.md#fields-of-a-block):
 
 ```math
 \begin{aligned}
 & \Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})(D_j) = \star_M;\ {11}^{\mathsf{p}};\ \chi &&(\mathsf{shape}_{\mathcal{D}}) \\
 & \quad \text{where } M = \mathsf{skeleton}_\Sigma(D_j.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta) \\
+& \Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})(D) \text{ is not defined if } D \text{ is not a type of } \mathcal{D} \\
 & \Lambda_\Sigma(\mathcal{D}.\{\bar s';\ \bar p'\})(x) = \bot
 \end{aligned}
 ```
