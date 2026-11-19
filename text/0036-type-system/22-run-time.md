@@ -187,13 +187,14 @@ The soundness of the extraction is the fundamental lemma for a closed term, run 
 \end{aligned}
 ```
 
-The extraction conserves the bindings: the erasure by $`S^{{11}^{\mathsf{m}}}`$ of a closed term used in the mode $`{11}^{\mathsf{m}}`$, run at the weight $`1`$ in the empty heap under the program of a signature whose names are distinct and whose entries use their variables as their grades allow, reads each cell of its heap as the multiplicity of the cell allows, once the reads that its value can still do are counted, and each cell of the multiplicity $`1`$ exactly once when its value holds no closure, by $`(\mathsf{erase}_{▶})`$, $`(\mathsf{usage}_{\lfloor \Sigma \rfloor})`$, $`(\mathsf{cons})`$ and $`(\mathsf{cons}_{\mathsf{data}})`$, since the grades of the empty context have the run-time multiplicities $`0^{\nu}`$; the erasure keeps no level, so that the run is that of $`(\mathsf{sound}_{\lfloor\rfloor})`$ at every assignment $`\rho`$, and the usage alone bounds the reads, without the typing:
+The extraction conserves the bindings: the erasure by $`S^{{11}^{\mathsf{m}}}`$ of a closed term used in the mode $`{11}^{\mathsf{m}}`$, run at the weight $`1`$ in the empty heap under the program of a signature whose names are distinct, that [declares its liftings in order](14-recursive-results.md#shapes-of-the-types) and whose entries use their variables as their grades allow, reads each cell of its heap as the multiplicity of the cell allows, once the reads that its value can still do are counted, and each cell of the multiplicity $`1`$ exactly once when its value holds no closure, by $`(\mathsf{erase}_{▶})`$, $`(\mathsf{usage}_{\lfloor \Sigma \rfloor})`$, $`(\mathsf{cons})`$ and $`(\mathsf{cons}_{\mathsf{data}})`$, since the grades of the empty context have the run-time multiplicities $`0^{\nu}`$; the erasure keeps no level, so that the run is that of $`(\mathsf{sound}_{\lfloor\rfloor})`$ at every assignment $`\rho`$, and the usage alone bounds the reads, without the typing:
 
 ```math
 \begin{aligned}
 & \text{⟹} &&(\mathsf{cons}_{\lfloor\rfloor}) \\
 & \quad \text{and} \\
 & \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \Sigma \text{ declares its liftings in order} \\
 & \qquad \vdash \Sigma \mathrel{▶} \\
 & \qquad \Sigma;\ \varepsilon \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
 & \qquad \lfloor \Sigma \rfloor_{S^{{11}^{\mathsf{m}}}};\ 1;\ \varepsilon;\ \varepsilon \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
@@ -204,6 +205,7 @@ The extraction conserves the bindings: the erasure by $`S^{{11}^{\mathsf{m}}}`$ 
 & \text{⟹} &&(\mathsf{cons}_{\lfloor\rfloor}.\mathsf{data}) \\
 & \quad \text{and} \\
 & \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \Sigma \text{ declares its liftings in order} \\
 & \qquad \vdash \Sigma \mathrel{▶} \\
 & \qquad \Sigma;\ \varepsilon \vdash t \mathrel{▶} {11}^{\mathsf{m}} \\
 & \qquad \lfloor \Sigma \rfloor_{S^{{11}^{\mathsf{m}}}};\ 1;\ \varepsilon;\ \varepsilon \vdash \lfloor t \rfloor_{S^{{11}^{\mathsf{m}}}} \Downarrow \ell;\ H;\ R \\
@@ -215,7 +217,7 @@ The extraction conserves the bindings: the erasure by $`S^{{11}^{\mathsf{m}}}`$ 
 \end{aligned}
 ```
 
-The extraction keeps what its value owns alone unshared: the erasure by $`S^{{11}^{\mathsf{m}}}`$ of a closed term used in the mode $`{11}^{\mathsf{m}}`$, whose ownership in this mode has the run-time multiplicity $`1`$, run at the weight $`1`$ in the empty heap under the program of a signature whose names are distinct and whose entries have their usages and their ownerships, gives a value that has a [reach](20-evaluation.md#definitions), under an annotation valid for its heap, which refers once at most to each address that the value [claims](20-evaluation.md#definitions), by $`(\mathsf{erase}_{▶})`$, $`(\mathsf{erase}_{◀})`$, $`(\mathsf{usage}_{\lfloor \Sigma \rfloor})`$, $`(\mathsf{own}_{\lfloor \Sigma \rfloor})`$ and $`(\mathsf{reach}_\Downarrow)`$.
+The extraction keeps what its value owns alone unshared: the erasure by $`S^{{11}^{\mathsf{m}}}`$ of a closed term used in the mode $`{11}^{\mathsf{m}}`$, whose ownership in this mode has the run-time multiplicity $`1`$, run at the weight $`1`$ in the empty heap under the program of a signature whose names are distinct, that [declares its liftings in order](14-recursive-results.md#shapes-of-the-types) and whose entries have their usages and their ownerships, gives a value that has a [reach](20-evaluation.md#definitions), under an annotation valid for its heap, which refers once at most to each address that the value [claims](20-evaluation.md#definitions), by $`(\mathsf{erase}_{▶})`$, $`(\mathsf{erase}_{◀})`$, $`(\mathsf{usage}_{\lfloor \Sigma \rfloor})`$, $`(\mathsf{own}_{\lfloor \Sigma \rfloor})`$ and $`(\mathsf{reach}_\Downarrow)`$.
 A closed term runs in the empty heap, to which no frame refers, so that $`(\mathsf{uniq}_\Downarrow)`$, which compares the value with a frame, says nothing of it, while it holds of each term that the run evaluates in a heap that the rest of the program still uses; $`(\mathsf{reach}_\Downarrow)`$ is read here at the frame that refers to nothing, and what remains is about the value itself: no value that it holds as owned alone, such as a field whose position requires the ownership $`1`$, is referred to twice along the paths from it.
 As for the conservation of the bindings, the run is the same at every assignment of the level variables, and the usage and the ownership alone bound the references, without the typing:
 
@@ -224,6 +226,7 @@ As for the conservation of the bindings, the run is the same at every assignment
 & \text{⟹} &&(\mathsf{uniq}_{\lfloor\rfloor}) \\
 & \quad \text{and} \\
 & \qquad \text{the names of } \Sigma \text{ are distinct} \\
+& \qquad \Sigma \text{ declares its liftings in order} \\
 & \qquad \vdash \Sigma \mathrel{▶} \\
 & \qquad \vdash \Sigma \mathrel{◀} \\
 & \qquad \forall f,\ p'.\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p' \text{ is an entry of } \Sigma \implies \Omega(f) = \mathsf{run}(p') \\
