@@ -46,6 +46,11 @@
               tools = [ pkgs.actionlint ];
               command = "actionlint";
             };
+            # Checks that an annex of an RFC links to no later annex (CONTRIBUTING.md).
+            annexes = {
+              tools = [ ];
+              command = lib.getExe checkAnnexes.run;
+            };
             editorconfig = {
               tools = [ pkgs.editorconfig-checker ];
               command = "editorconfig-checker";
@@ -169,6 +174,34 @@
                 echo 'A formula does not render: see the warning of mdbook-katex above.' >&2
                 exit 1
               fi
+            '';
+          };
+          # Checks that an annex of an RFC, a file of the directory named after it whose name starts with
+          # its number, links only to itself and to the annexes before it, which it builds on: a link to
+          # a later annex is reported with its file and its line.
+          checkAnnexes = command {
+            name = "check-annexes";
+            runtimeInputs = [
+              pkgs.git
+              pkgs.gnugrep
+            ];
+            text = ''
+              cd "$(git rev-parse --show-toplevel)"
+              status=0
+              while IFS= read -r -d "" file; do
+                name=''${file##*/}
+                number=''${name%%-*}
+                while IFS=: read -r line target; do
+                  if ((10#''${target%%-*} > 10#$number)); then
+                    echo "$file:$line: links to the later annex $target" >&2
+                    status=1
+                  fi
+                done < <(grep -noP '\]\(\K[0-9]{2}-[^)#/]*\.md' "$file" || true)
+              done < <(git ls-files -z ':(glob)text/*/[0-9][0-9]-*.md')
+              if [ "$status" -ne 0 ]; then
+                echo 'An annex builds only on the annexes before it: reword the link above without it, or move the statement to the later annex.' >&2
+              fi
+              exit "$status"
             '';
           };
           # Checks that no link of the RFCs ends its text with a formula, which GitHub does not render.

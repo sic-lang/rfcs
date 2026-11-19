@@ -119,7 +119,7 @@ The extraction therefore keeps what its value owns alone unshared: the erasure o
 
 ### Annexes
 
-Each annex states one subject, with its definitions, its meaning and its properties, and only them; it names the annexes it builds on, and an annex never builds on a later one.
+Each annex states one subject, with its definitions, its meaning and its properties, and only them; it names the annexes it builds on, all of them before it, and links only to itself and to the annexes before it, while this document links to all of them.
 Its file name starts with a number on two digits, which gives the order of the annexes.
 The examples are in the directory `99-examples` of the annexes, one file per example, named after the number of the annex it illustrates: they are derived from the system, and are not part of it.
 
