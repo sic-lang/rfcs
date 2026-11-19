@@ -74,7 +74,7 @@ A universe is a type of the universe above its level, whose terms are the types 
 \end{aligned}
 ```
 
-A data type $`D_j`$ of a type declaration $`{\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$ of the signature, whose constructors are $`c_{j1} : \Theta_{j1} \mid \dots \mid c_{j n_j} : \Theta_{j n_j}`$, has, at a closed instance $`{T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$, the sort and the fields of its declaration at the instance of its variables and at the arguments of its parameters:
+A data type $`D_j`$ of a type declaration $`{\mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$ of the signature, whose constructors are $`c_{j1} : \Theta_{j1} \mid \dots \mid c_{j n_j} : \Theta_{j n_j}`$, has, at a closed instance $`{T = D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$, the sort and the fields of its declaration at the [instance](09-substitution.md#instances-of-the-entries) of its variables and at the arguments of its parameters:
 
 ```math
 \begin{aligned}
@@ -324,7 +324,7 @@ A closed term is related by $`{\circledR_\Downarrow(R)}`$ to an address when it 
 \end{aligned}
 ```
 
-The canonical terms of an instance of a data type are its constructors, at any instance of its type, as for their equality, and a constructor $`c_{ji}`$ is related to the constructor of its case in the target language whose fields the relation $`S_i`$ of the fields of $`c_{ji}`$ relates to its own, $`(H,\ \bar t,\ \bar\ell) \in S_i`$, and which stores them at the multiplicities at run time of their grades $`\bar q`$ and at the requirements at run time of their requirements $`\bar r`$ at the instance $`\bar s'`$, $`\bar p'`$ of the sort and grade variables, the parameters $`{\bar q \mathrel{◀} \bar r}`$ of the telescope $`\Theta_{ji}`$ of $`c_{ji}`$, $`\mathsf{run}(\bar q)`$ applying $`\mathsf{run}`$ to each:
+The canonical terms of an instance of a data type are its constructors, at any instance of its type, as for their equality, and a constructor $`c_{ji}`$ is related to the constructor of its case in the target language whose fields the relation $`S_i`$ of the fields of $`c_{ji}`$ relates to its own, $`(H,\ \bar t,\ \bar\ell) \in S_i`$, and which stores them at the multiplicities at run time of their grades $`\bar q`$ and at the requirements at run time of their requirements $`\bar r`$ at the [instance](09-substitution.md#instances-of-the-entries) $`\bar s'`$, $`\bar p'`$ of the sort and grade variables, the parameters $`{\bar q \mathrel{◀} \bar r}`$ of the telescope $`\Theta_{ji}`$ of $`c_{ji}`$, $`\mathsf{run}(\bar q)`$ applying $`\mathsf{run}`$ to each:
 
 ```math
 \begin{aligned}
@@ -643,7 +643,7 @@ A block of codata types is meaningful likewise when, at each instance of its sor
 \end{aligned}
 ```
 
-A constant definition is meaningful when its body is a term of its type, and a constant declaration when its interpretation is, at each instance of their sort and grade variables and each assignment of their level variables:
+A constant definition is meaningful when its body is a term of its type, and a constant declaration when its interpretation is, at each [instance](09-substitution.md#instances-of-the-entries) of their sort and grade variables and each assignment of their level variables:
 
 ```math
 \begin{aligned}

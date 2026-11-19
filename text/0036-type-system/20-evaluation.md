@@ -34,7 +34,7 @@ A binder of the variables $`\bar x`$, at the multiplicities $`\bar\pi`$, allocat
 ```
 
 A program $`\mathcal{P}`$ gives a constant at the qualities and the grades of an instance, $`{f.\{\bar s;\ \bar p\}}`$, a closed term of the target language, its body.
-The program $`\lfloor \Sigma \rfloor_S`$ of a signature $`\Sigma`$, erased by a set of grades $`S`$, gives $`{f.\{\bar s';\ \bar p'\}}`$ the erasure by $`S`$ of the body of $`f`$ at this instance, in the last entry of $`\Sigma`$ that defines $`f`$ in the mode $`{11}^{\mathsf{m}}`$ with as many sort and grade variables as $`\bar s'`$ and $`\bar p'`$, and nothing when $`\Sigma`$ has no such entry: a term of the mode $`{11}^{\mathsf{m}}`$ only refers to the constants of this mode, and the usage of the others says nothing at run time:
+The program $`\lfloor \Sigma \rfloor_S`$ of a signature $`\Sigma`$, erased by a set of grades $`S`$, gives $`{f.\{\bar s';\ \bar p'\}}`$ the erasure by $`S`$ of the body of $`f`$ at this [instance](09-substitution.md#instances-of-the-entries), in the last entry of $`\Sigma`$ that defines $`f`$ in the mode $`{11}^{\mathsf{m}}`$ with as many sort and grade variables as $`\bar s'`$ and $`\bar p'`$, and nothing when $`\Sigma`$ has no such entry: a term of the mode $`{11}^{\mathsf{m}}`$ only refers to the constants of this mode, and the usage of the others says nothing at run time:
 
 ```math
 \begin{aligned}

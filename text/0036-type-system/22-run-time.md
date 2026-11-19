@@ -87,7 +87,7 @@ Arguments of a telescope $`\Theta`$, whose entries have the grades $`\bar p`$, a
 \end{aligned}
 ```
 
-A program realizes a signature when it gives each constant that the [program of the signature](20-evaluation.md) erased by $`S^{{11}^{\mathsf{m}}}`$ gives a body the same body, and when each constant declaration of the mode $`{11}^{\mathsf{m}}`$, which has no body, is valid at run time in the empty context at each instance of its variables whose levels have no variables, as an [interpretation interprets a signature](21-meaning.md#interpretations-of-a-signature) in the meaning:
+A program realizes a signature when it gives each constant that the [program of the signature](20-evaluation.md) erased by $`S^{{11}^{\mathsf{m}}}`$ gives a body the same body, and when each constant declaration of the mode $`{11}^{\mathsf{m}}`$, which has no body, is valid at run time in the empty context at each [instance](09-substitution.md#instances-of-the-entries) of its variables whose levels have no variables, as an [interpretation interprets a signature](21-meaning.md#interpretations-of-a-signature) in the meaning:
 
 ```math
 \begin{aligned}
