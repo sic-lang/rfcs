@@ -204,13 +204,17 @@ The parameters $`\mathsf{parameters}_\Sigma(T.\bar u)`$ of the branches of a rec
 \end{aligned}
 ```
 
-The requirement $`\mathsf{recursion}_\Sigma(T,\ \kappa_C,\ r,\ \varsigma,\ \chi)`$ of the recursion of a recursor of the grade $`r`$, of the ownerships $`\varsigma`$ and $`\chi`$ and of motives of the sort $`\kappa_C`$, on an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, is the [requirement](13-ownership.md#definitions) $`\hat r`$ that the ownership of the recursor gives the term at each level of the recursion in the mode $`{11}^{\mathsf{m}}`$, at the variables $`s_C`$, the quality of $`\kappa_C`$, $`r`$, $`\varsigma`$ and $`\chi`$, which the erasure keeps at run time.
+The requirement $`{\mathsf{recursion}_\Sigma(T,\ \kappa_C,\ r,\ \varsigma,\ \chi)}`$ of the recursion of a recursor of the grade $`r`$, of the ownerships $`\varsigma`$ and $`\chi`$ and of motives of the sort $`\kappa_C`$, on an instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, is the [requirement](13-ownership.md#definitions) $`\hat r`$ that the ownership of the recursor gives the term at each level of the recursion in the mode $`{11}^{\mathsf{m}}`$, at the quality $`s_C`$ of $`\kappa_C`$, at $`r`$, at $`\varsigma`$ and at $`\chi`$, which the erasure keeps at run time.
 It reads the recursive fields of the block, the parameters of their entries and the shapes of its nested fields, at the instance $`\bar s`$, $`\bar p`$, in the last entry $`\mathcal{D}`$ of $`\Sigma`$ that declares a type $`D`$ and as many sort and grade variables as $`\bar s`$ and $`\bar p`$, and is $`{11}^{\mathsf{p}}`$, which states nothing more than the ownership of the term, when $`\Sigma`$ has no such entry:
 
 ```math
 \begin{aligned}
-& \mathsf{recursion}_\Sigma(T,\ \kappa_C,\ r,\ \varsigma,\ \chi) = \mathsf{recursion}_{\Sigma; {11}^{\mathsf{m}}}(\mathcal{D}.\{\bar s;\ \bar p\}) &&(\mathsf{recursion}_c) \\
-& \quad \text{if } \mathcal{D} \text{ is this entry} \\[1em]
+& {=} \text{ if} &&(\mathsf{recursion}_c) \\
+& \quad \mathsf{recursion}_\Sigma(T,\ \kappa_C,\ r,\ \varsigma,\ \chi) \\
+& \quad \mathsf{recursion}_{\Sigma; {11}^{\mathsf{m}}}(\mathcal{D}.\{\bar s;\ \bar p\};\ s_C,\ r,\ \varsigma,\ \chi) \\
+& \quad \text{and} \\
+& \qquad \mathcal{D} \text{ is this entry} \\
+& \qquad s_C \text{ is the quality of } \kappa_C \\[1em]
 & \mathsf{recursion}_\Sigma(T,\ \kappa_C,\ r,\ \varsigma,\ \chi) = {11}^{\mathsf{p}} \text{ if } \Sigma \text{ has no such entry}
 \end{aligned}
 ```
