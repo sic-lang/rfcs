@@ -13,20 +13,8 @@ Ownership is defined on the term and the signature alone, without a context, as 
 Unlike the vector of the usage, which each premise computes and the conclusion adds, $`\varphi`$ is the same in every premise, as the context of the typing is.
 The declared types give the ownership of their instances, the data types that of their constructors and of their recursors, and the codata types that of their observations, below.
 
-The value of the ownership $`\psi`$ of the result of a second-order variable, given the ownerships $`\bar o`$ of its arguments, written $`\psi[\bar o / \bar x]`$ where $`\bar x`$ are the variables of its telescope, is the meet of its constant and of its factors, each variable taking the ownership of its argument.
-The constant and the factors being optional, the value may be undefined: a meet with an undefined operand is its other operand, and an absent constant is undefined.
-The variables are read in order, and $`\psi'`$ is $`\psi`$ without the factor of $`x`$:
-
-```math
-\begin{aligned}
-& \psi[(o,\ \bar o) / (x,\ \bar x)] = o \cdot \chi \wedge \psi'[\bar o / \bar x] \text{ if } x \text{ has the coefficient } \chi \text{ in } \psi &&(\mathsf{value}_\psi) \\
-& \psi[(o,\ \bar o) / (x,\ \bar x)] = \psi[\bar o / \bar x] \\
-& \psi[\bar o / \bar x] = \chi_0 \text{ otherwise}
-\end{aligned}
-```
-
 A variable whose telescope is empty has the ownership that $`\varphi`$ gives it.
-An application $`X[\bar t]`$ of a second-order variable has the value of the ownership of its result, when it is defined, given the ownerships of its arguments; each argument $`t_j`$ is checked in the mode $`{m \odot p_j}`$ of the grade $`p_j`$ of its entry, as for the usage, and its ownership satisfies the requirement $`r_j`$ of its entry unless this mode is $`{00}^{\mathsf{m}}`$, in which the argument is not used; each argument on whose variable $`\psi`$ has a factor is checked in the mode $`m`$ of the application, $`{m \odot p_j = m}`$, as for an observation, below:
+An application $`X[\bar t]`$ of a second-order variable has the [value](08-syntax.md#telescopes-and-contexts) of the ownership of its result, when it is defined, given the ownerships of its arguments; each argument $`t_j`$ is checked in the mode $`{m \odot p_j}`$ of the grade $`p_j`$ of its entry, as for the usage, and its ownership satisfies the requirement $`r_j`$ of its entry unless this mode is $`{00}^{\mathsf{m}}`$, in which the argument is not used; each argument on whose variable $`\psi`$ has a factor is checked in the mode $`m`$ of the application, $`{m \odot p_j = m}`$, as for an observation, below:
 
 ```math
 \begin{gathered}

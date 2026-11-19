@@ -1,6 +1,6 @@
 # Syntax
 
-This annex defines the terms of the type system, their arguments, the telescopes, the contexts and the signatures, with the variables that each of them binds, then the nesting of the types and the recursive fields and destructors of a block, which are read on the syntax.
+This annex defines the terms of the type system, their arguments, the telescopes, the contexts and the signatures, with the variables that each of them binds, and the value of the ownership of the result of a second-order variable, then the nesting of the types and the recursive fields and destructors of a block, which are read on the syntax.
 It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [levels](06-levels.md) and the [sorts](07-sorts.md).
 
 ## Definitions
@@ -141,6 +141,18 @@ The ownership $`\psi`$ of the result of $`{X : (\Theta \vdash A \mathrel{◀} \p
 ```
 
 The variables $`x_j`$ stand for the ownerships of the arguments of $`X`$, and $`\psi`$ for the ownership of its result: $`X`$ stands for a term whose value, given arguments of these ownerships, has the ownership $`\psi`$.
+
+The value of the ownership $`\psi`$ of the result of a second-order variable, given the ownerships $`\bar o`$ of its arguments, written $`\psi[\bar o / \bar x]`$ where $`\bar x`$ are the variables of its telescope, is the meet of its constant and of its factors, each variable taking the ownership of its argument.
+The constant and the factors being optional, the value may be undefined: a meet with an undefined operand is its other operand, and an absent constant is undefined.
+The variables are read in order, and $`\psi'`$ is $`\psi`$ without the factor of $`x`$:
+
+```math
+\begin{aligned}
+& \psi[(o,\ \bar o) / (x,\ \bar x)] = o \cdot \chi \wedge \psi'[\bar o / \bar x] \text{ if } x \text{ has the coefficient } \chi \text{ in } \psi &&(\mathsf{value}_\psi) \\
+& \psi[(o,\ \bar o) / (x,\ \bar x)] = \psi[\bar o / \bar x] \\
+& \psi[\bar o / \bar x] = \chi_0 \text{ otherwise}
+\end{aligned}
+```
 
 The scope of a context is its variables, the last one last, each with its signature.
 A variable $`x : A`$ and a second-order variable $`{X : (\varepsilon \vdash A \mathrel{◀} \psi)}`$ both have an empty telescope, and only their entries in the context tell them apart.
