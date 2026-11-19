@@ -135,8 +135,9 @@ A shape fits the recursor of the multiplicity $`\rho`$, written $`{\Xi \text{ fi
 ### Shapes of the Types
 
 The shape $`{\mathsf{shape}^\Lambda_{\Sigma; m; \beta}(A,\ \lambda)}`$ of the recursive result whose type is $`A`$, of the nesting $`\lambda`$, is read on the syntax of $`A`$ as the [lifting](20-liftings.md#types) lifts it, at the variables $`s_C`$, $`r`$ and $`\varsigma`$ of a lifting, which the recursor gives, in the mode $`m`$ and on the [axis](04-grades.md#definitions) $`\beta`$ of the grades: its shape $`\Upsilon`$, its factor $`\pi`$ and its ownership $`\chi'`$, written $`{\Upsilon;\ \pi;\ \chi'}`$, where $`\Lambda`$ gives a variable lifted a position that holds its shape, $`\bot`$ to the other variables, and the shape of the result of the recursor to each type of the block, which a position names, and $`\Sigma`$ declares the liftings whose shapes it reads, the types lifted and their cases.
-A variable lifted, applied to arguments, has the shape that the position of its nesting holds; an instance of a type of the block, at a position, the shape given to this type; and an instance of another declared type whose nesting is not a position, of which an argument at least has a shape, the shape and the factor of the lifting of this type at the shapes of these arguments, with the ownership $`{11}^{\mathsf{p}}`$, since its recursive result is a corecursor; any other type has no shape.
-The shapes $`{\mathsf{shape}^\Lambda_{\Sigma; m; \beta}(\bar a,\ \bar\lambda)}`$ of the arguments $`\bar a`$ of an instance, of the nestings $`\bar\lambda`$, are the shape of each argument, under the variables that its abstraction binds, which have no position, or $`\bot`$ when it has none:
+A variable lifted, applied to arguments, has the shape that the position of its nesting holds; an instance of a type of the block, at a position, the shape given to this type; and an instance of another declared type whose nesting is not a position, of which an argument at least has a shape and each argument whose nesting has a position has one, the shape and the factor of the lifting of this type at the shapes of these arguments, with the ownership $`{11}^{\mathsf{p}}`$, since its recursive result is a corecursor; any other type has no shape.
+The shapes $`{\mathsf{shape}^\Lambda_{\Sigma; m; \beta}(\bar a,\ \bar\lambda)}`$ of the arguments $`\bar a`$ of an instance, of the nestings $`\bar\lambda`$, are the shape of each argument, under the variables that its abstraction binds, which have no position, or $`\bot`$ when it has none and its nesting has no position.
+An argument whose nesting has a position and that has no shape gives the instance no shapes, rather than being left out: the lifting of the instance lifts this argument, and a shape read at fewer parameters would change in a signature that declares the lifting that it lacks:
 
 ```math
 \begin{aligned}
@@ -156,12 +157,20 @@ The shapes $`{\mathsf{shape}^\Lambda_{\Sigma; m; \beta}(\bar a,\ \bar\lambda)}`$
 & \mathsf{shape}^\Lambda_{\Sigma; m; \beta}((),\ ()) = () &&(\mathsf{shape}_{\bar a}) \\
 & {=} \\
 & \quad \mathsf{shape}^\Lambda_{\Sigma; m; \beta}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
-& \quad (\mathsf{shape}^\Lambda_{\Sigma; m; \beta}(\bar a,\ \bar\lambda),\ h) \\
-& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; m; \beta}(B,\ \lambda) = h \\
+& \quad (\bar\lambda',\ h) \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; m; \beta}(\bar a,\ \bar\lambda) = \bar\lambda' \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; m; \beta}(B,\ \lambda) = h \\
 & {=} \\
 & \quad \mathsf{shape}^\Lambda_{\Sigma; m; \beta}((\bar a,\ \bar x.\, B),\ (\bar\lambda,\ \lambda)) \\
-& \quad (\mathsf{shape}^\Lambda_{\Sigma; m; \beta}(\bar a,\ \bar\lambda),\ \bot) \\
-& \quad \text{if } \mathsf{shape}^\Lambda_{\Sigma; m; \beta}(B,\ \lambda) \text{ is not defined}
+& \quad (\bar\lambda',\ \bot) \\
+& \quad \text{if} \\
+& \qquad \text{and} \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; m; \beta}(\bar a,\ \bar\lambda) = \bar\lambda' \\
+& \qquad \quad \mathsf{shape}^\Lambda_{\Sigma; m; \beta}(B,\ \lambda) \text{ is not defined} \\
+& \qquad \quad \lambda = \bot \\
+& \mathsf{shape}^\Lambda_{\Sigma; m; \beta}(\bar a,\ \bar\lambda) \text{ is not defined otherwise}
 \end{aligned}
 ```
 
