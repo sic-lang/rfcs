@@ -1,7 +1,7 @@
 # Usage
 
 This annex defines the judgment of usage, which checks how a term uses the variables of its scope, in a mode, the usage of the entries of a signature, and their properties.
-It builds on the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md), the [grade vectors](10-grade-vectors.md), the definitions of the [liftings](13-liftings.md#definitions) and the [recursive results](14-recursive-results.md) of the fields of a constructor.
+It builds on the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md), the [grade vectors](10-grade-vectors.md), the [prelude](12-prelude.md), the [liftings](13-liftings.md) and the [recursive results](14-recursive-results.md) of the fields of a constructor.
 
 ## Definitions
 
@@ -12,7 +12,7 @@ The judgment $`{\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m}`$ reads: checked 
 The judgment $`{\vdash \Sigma \mathrel{▶}}`$ reads: the entries of the signature $`\Sigma`$ use the variables as their grades allow.
 
 Usage is defined on the term and the signature alone, without a context: the scope gives each variable the grades of its telescope, with which an application uses its arguments, and the signature gives each constant its mode.
-The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, each constructor the grades of its fields, which the usage of the constructors and of the recursors reads at their instance, and each destructor its grade and the grades of its arguments, which the usage of the observations reads at their instance.
+The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, each constructor the grades of its fields, which the usage of the constructors and of the recursors reads at their [instance](09-substitution.md#instances-of-the-entries), and each destructor its grade and the grades of its arguments, which the usage of the observations reads at their instance.
 
 An application $`x[\bar t]`$ uses $`x`$ with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode $`{m \odot p_j}`$; a variable with an empty telescope uses itself only:
 

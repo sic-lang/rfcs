@@ -1,7 +1,7 @@
 # Ownership
 
 This annex defines the judgment of ownership, which checks the ownership of the value of a term, in a mode, the ownership of the entries of a signature, and their properties.
-It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md), and the shapes of the [recursive results](14-recursive-results.md#shapes-of-the-nested-fields), which the ownership of a recursor reads.
+It builds on the [grades](04-grades.md), the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md), the [prelude](12-prelude.md), the [liftings](13-liftings.md) and the shapes of the [recursive results](14-recursive-results.md#shapes-of-the-nested-fields), which the ownership of a recursor reads.
 
 ## Definitions
 
@@ -67,7 +67,7 @@ The requirement $`\mathsf{recursion}(K;\ L)`$ of a recursion reads a set $`K`$ o
 \end{aligned}
 ```
 
-The requirement $`{\mathsf{recursion}_{\Sigma; m}(\mathcal{D}.\{\bar s';\ \bar p'\};\ s_C,\ r,\ \varsigma,\ \chi)}`$ of the recursion of a recursor checked in the mode $`m`$, of the quality $`s_C`$ of the sorts of its motives, of the grade $`r`$ and of the ownerships $`\varsigma`$ and $`\chi`$, on the block of data types $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k}`$, at the instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, where $`\Theta_{ji}`$ is the telescope of the constructor $`c_{ji}`$ of $`\bar c_j`$, reads its recursive fields, those at which $`\mathsf{rec}_{\mathcal{D}}(\Theta_{ji})`$, defined with the [fields of a block](08-syntax.md#fields-of-a-block), is not $`\bot`$, and the [shapes of its nested fields](14-recursive-results.md#shapes-of-the-nested-fields) in the mode $`m`$ on each axis, at these values of the variables $`s_C`$, $`r`$, $`\varsigma`$ and $`\chi`$ that the [recursive results](14-recursive-results.md#definitions) fix:
+The requirement $`{\mathsf{recursion}_{\Sigma; m}(\mathcal{D}.\{\bar s';\ \bar p'\};\ s_C,\ r,\ \varsigma,\ \chi)}`$ of the recursion of a recursor checked in the mode $`m`$, of the quality $`s_C`$ of the sorts of its motives, of the grade $`r`$ and of the ownerships $`\varsigma`$ and $`\chi`$, on the block of data types $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k}`$, at the [instance](09-substitution.md#instances-of-the-entries) $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, where $`\Theta_{ji}`$ is the telescope of the constructor $`c_{ji}`$ of $`\bar c_j`$, reads its recursive fields, those at which $`\mathsf{rec}_{\mathcal{D}}(\Theta_{ji})`$, defined with the [fields of a block](08-syntax.md#fields-of-a-block), is not $`\bot`$, and the [shapes of its nested fields](14-recursive-results.md#shapes-of-the-nested-fields) in the mode $`m`$ on each axis, at these values of the variables $`s_C`$, $`r`$, $`\varsigma`$ and $`\chi`$ that the [recursive results](14-recursive-results.md#definitions) fix:
 
 ```math
 \begin{aligned}
@@ -90,7 +90,7 @@ The requirement $`{\mathsf{recursion}_{\Sigma; m}(\mathcal{D}.\{\bar s';\ \bar p
 
 The ownership $`\mathsf{own}_p(\lambda)`$ of the recursive result of a field of the nesting $`\lambda`$, in a branch of a recursor of the ownership $`p`$, is $`{11}^{\mathsf{p}}`$ for a nested field, whose result is the corecursor of a lifting, a new value, and $`p`$ for a recursive field, whose result is a result of the recursor.
 The ownerships $`\mathsf{own}_p(\bar\lambda)`$ of the recursive results of fields of the nestings $`\bar\lambda`$ are one ownership for each element of $`\bar\lambda`$ that is not $`\bot`$, in order, since a field without position has no result.
-The head $`\mathsf{own}`$ names one notion, the ownership of the value of a recursive result, on three syntaxes: the nestings here, the [shapes](14-recursive-results.md#ownerships-of-the-shapes) of the nested results, $`(\mathsf{own}_\Upsilon)`$, and the positions of the recursive results in the target language of the [erasure](19-erasure.md#definitions), $`(\mathsf{own}_w)`$:
+The head $`\mathsf{own}`$ names one notion, the ownership of the value of a recursive result, on three syntaxes: the nestings here, the [shapes](14-recursive-results.md#ownerships-of-the-shapes) of the nested results, $`(\mathsf{own}_\Upsilon)`$, and the positions of the recursive results in the target language of the erasure, $`(\mathsf{own}_w)`$:
 
 ```math
 \begin{aligned}
