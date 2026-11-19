@@ -348,6 +348,27 @@ The shape requires $`o`$, written $`{\Xi \text{ requires } o;\ \varsigma}`$, whe
 \end{aligned}
 ```
 
+The products $`\mathsf{prefixes}_\varsigma(\pi,\ \Xi)`$ along the prefixes of the paths of a shape, other than the empty one, after a prefix of the product $`\pi`$, give, for each destructor observed, the product $`\pi`$ times the value of the ownership $`\psi_0`$ of the result of the destructor that it lifts at the least ownerships of the arguments of its branch, their requirements, or $`1`$ when this value is not defined, then the products along the prefixes of the paths of the shape of its result, after this one: a destructor never observed extends no path, and the recursor itself ends them.
+What the shape of a nested field gives the [requirement](13-ownership.md#definitions) of the recursion, $`\mathsf{recursion}_\varsigma(\Xi)`$, is the product along each prefix $`{d_1 \dots d_h}`$ of its paths, the empty one included, $`{\varsigma \cdot \psi^-_1 \cdot \ldots \cdot \psi^-_h}`$, of the requirement $`\varsigma`$ of the corecursors on the values that they observe and of the values $`\psi^-`$ of the ownerships of the results of the destructors of the prefix at the least ownerships of their arguments:
+
+```math
+\begin{aligned}
+& \mathsf{prefixes}_\varsigma(\pi,\ ()) = \varnothing &&(\mathsf{prefixes}_\Xi) \\
+& {=} \text{ if } \rho' = 0 \\
+& \quad \mathsf{prefixes}_\varsigma(\pi,\ ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi)) \\
+& \quad \mathsf{prefixes}_\varsigma(\pi,\ \Xi) \\
+& {=} \text{ otherwise} \\
+& \quad \mathsf{prefixes}_\varsigma(\pi,\ ((i,\ \rho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi' \mathrel{◀} \bar\varrho',\ \psi,\ \varsigma',\ \psi_0,\ \varsigma_0,\ \Upsilon),\ \Xi)) \\
+& \quad \{\pi \cdot v\} \cup \mathsf{prefixes}_\varsigma(\pi \cdot v,\ \Upsilon) \cup \mathsf{prefixes}_\varsigma(\pi,\ \Xi) \\
+& \quad \text{where} \\
+& \qquad \text{and} \\
+& \qquad \quad v = \psi_0[\mathsf{args}_\varsigma(\Upsilon,\ \bar\varrho',\ \bar\pi \mathrel{◀} \bar\varrho,\ \bar\pi')] \text{ if it is defined} \\
+& \qquad \quad v = 1 \text{ otherwise} \\[1em]
+& \mathsf{prefixes}_\varsigma(\pi,\ \star_M) = \varnothing &&(\mathsf{prefixes}_\Upsilon) \\[1em]
+& \mathsf{recursion}_\varsigma(\Xi) = \{\varsigma\} \cup \mathsf{prefixes}_\varsigma(\varsigma,\ \Xi) &&(\mathsf{recursion}_\Xi)
+\end{aligned}
+```
+
 ## Properties
 
 In a signature whose [names are distinct](08-syntax.md), the fields of a telescope have the recursive results of one telescope at most at their nestings, with one sequence of factors, a term has one recursive result at most at its type and at its nesting, and the terms of the fields of a telescope have the recursive results of one sequence of terms at most, since a type has [one lifting at most](20-liftings.md#properties), a name one declaration and a destructor one position in its type:
