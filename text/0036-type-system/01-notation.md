@@ -31,6 +31,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\Gamma`$ | Contexts |
 | $`\psi`$ | Ownerships of the results of the second-order variables |
 | $`\chi`$ | Coefficients of the variables in these ownerships, and their constants $`\chi_0`$ |
+| $`o`$ | Ownerships of the arguments of a second-order variable |
 | $`e`$ | Entries of a signature |
 | $`\Delta`$ | Parameters of a type declaration |
 | $`\mathcal{D}`$ | Type declarations, blocks of types declared together |
@@ -52,7 +53,6 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`{\gamma, \delta, \zeta}`$ | Vectors of grades, one grade per variable of a scope, $`\zeta`$ being the grades with which a declared type uses its parameters |
 | $`Z`$ | Skeletons of the data types |
 | $`\varphi`$ | Ownerships of the variables of a scope, one grade per variable whose telescope is empty |
-| $`o`$ | Ownerships of the arguments of a second-order variable |
 | $`{M, N, P}`$ | Terms of the target language of the erasure, $`N`$ being a branch of a recursor and $`P`$ a branch of a corecursor |
 | $`V`$ | Values of the evaluation |
 | $`H`$ | Heaps |
