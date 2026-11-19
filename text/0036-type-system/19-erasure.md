@@ -356,7 +356,7 @@ The judgment $`{M \sqsubseteq N}`$ reads: the term $`M`$ of the target language 
 \frac{}{f.\{\bar s;\ \bar p\} \sqsubseteq f.\{\bar s;\ \bar p\}}\;({\sqsubseteq}.f) \\[2em]
 \frac{\bar M_1 \sqsubseteq \bar M_2}{c_i(\bar M_1) \sqsubseteq c_i(\bar M_2)}\;({\sqsubseteq}.c) \\[2em]
 \frac{M_1 \sqsubseteq M_2 \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}) \\[2em]
-\frac{M_1 \text{ is data} \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \omega\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}_{\mathsf{skeleton}}) \\[2em]
+\frac{M_1 \text{ is data} \quad \bar N_1 \sqsubseteq \bar N_2}{\mathsf{rec}_\rho\ M_1 \mathrel{◀} \omega\ \mathsf{with}\ \bar N_1 \sqsubseteq \mathsf{rec}_\rho\ M_2 \mathrel{◀} \varrho\ \mathsf{with}\ \bar N_2}\;({\sqsubseteq}.\mathsf{rec}_{\mathsf{data}}) \\[2em]
 \frac{M_1 \sqsubseteq M_2 \quad \bar M_1 \sqsubseteq \bar M_2}{M_1.d_i(\bar M_1) \mathrel{◀} \psi \mathrel{◀} \varsigma \sqsubseteq M_2.d_i(\bar M_2) \mathrel{◀} \psi \mathrel{◀} \varsigma}\;({\sqsubseteq}.d) \\[2em]
 \frac{\bar M_1 \sqsubseteq \bar M_2 \quad \bar P_1 \sqsubseteq \bar P_2}{\mathsf{corec}\ \mathsf{from}\ \bar M_1\ \mathsf{with}\ \bar P_1 \sqsubseteq \mathsf{corec}\ \mathsf{from}\ \bar M_2\ \mathsf{with}\ \bar P_2}\;({\sqsubseteq}.\mathsf{corec}) \\[2em]
 \frac{}{() \sqsubseteq ()}\;({\sqsubseteq}_{\bar M}.\varepsilon) \\[2em]
