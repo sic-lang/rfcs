@@ -406,17 +406,3 @@ In a signature whose [names are distinct](08-syntax.md), the fields of a telesco
 & \quad \bar t'_1 = \bar t'_2
 \end{aligned}
 ```
-
-In a well-formed signature, where no parameter is lifted, the terms of fields whose recursive results have types have recursive results, whatever the results $`f`$ of the terms of the types of the block are: the signature declares each lifting after the destructors that it lifts, so that the result of each observation of a term of a type lifted exists, down to the terms of the types of the block, and a recursor on a constructor is never stuck for want of a recursive result:
-
-```math
-\begin{aligned}
-& \text{⟹} &&(\mathsf{exists}_{\mathsf{res}\Theta}) \\
-& \quad \text{and} \\
-& \qquad {}\vdash \Sigma \\
-& \qquad \Pi = \varnothing \\
-& \qquad \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow} \mathrel{\triangleright} \bar\pi \\
-& \qquad \bar t \text{ as many as the fields of } \Theta \\
-& \quad \exists \bar t'.\ \Sigma \vdash \mathsf{res}_{f;\ \bar\lambda}(\bar t : \Theta) = \bar t'
-\end{aligned}
-```

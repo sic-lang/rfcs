@@ -636,3 +636,116 @@ The names of a well-formed signature are [distinct](08-syntax.md):
 & \vdash \Sigma \implies \text{the names of } \Sigma \text{ are distinct} &&(\mathsf{distinct}_\Sigma)
 \end{aligned}
 ```
+
+The [prelude](19-prelude.md#declarations) is a well-formed signature: each of its declarations is well formed in the declarations before it, at every instance that its constraint admits:
+
+```math
+\begin{aligned}
+& \vdash \mathsf{prelude} &&(\mathsf{prelude}_{\vdash})
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [packing](19-prelude.md#packing) of a telescope is a type of the universe of its level, and the packing of arguments of the telescope is a term of it:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{pack}_{\Theta:}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \quad \Sigma;\ \Gamma \vdash \langle \Theta \rangle_{\bar\kappa;\ l} : U_{\mathsf{level}_{\bar\kappa}(l)} \\[1em]
+& \text{⟹} &&(\mathsf{pack}_{\bar t:}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \quad \Sigma;\ \Gamma \vdash \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} : \langle \Theta \rangle_{\bar\kappa;\ l}
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [unpacking](19-prelude.md#unpacking) of a term of the packing of a telescope, into a term over the variables of the telescope whose type does not depend on them, has this type; the unpacking of the packing of arguments is the term at the arguments; and a term over a term $`z`$ of the packing is the unpacking of the term it is at into the term at the packing $`{\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l}}`$ of the variables $`\bar x`$ of the telescope:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unpack}_{:}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash u : \langle \Theta \rangle_{\bar\kappa;\ l} \\
+& \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
+& \qquad \Sigma;\ \Gamma,\ \Theta \vdash b : C \\
+& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b : C \\[1em]
+& \text{⟹} &&(\mathsf{unpack}_\beta) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
+& \qquad \Sigma;\ \Gamma,\ \Theta \vdash b : C \\
+& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \equiv b[\bar t / \Theta] : C \\[1em]
+& \text{⟹} &&(\mathsf{unpack}_\eta) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash u : \langle \Theta \rangle_{\bar\kappa;\ l} \\
+& \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
+& \qquad \Sigma;\ \Gamma,\ z : \langle \Theta \rangle_{\bar\kappa;\ l} \vdash e : C \\
+& \quad \Sigma;\ \Gamma \vdash e[u / z] \equiv \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ e[\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l} / z] : C
+\end{aligned}
+```
+A well-formed signature holds the [lifting](20-liftings.md#signatures) that it declares of a type of one of its blocks, with whatever destructors: they are those of this type lifted, which the rule $`(\uparrow_D)`$ therefore need not ask for:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{sig}_{\uparrow}) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \\
+& \qquad \mathcal{D} \in \Sigma \\
+& \qquad D \text{ is a type of } \mathcal{D} \\
+& \qquad \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d') \in \Sigma \\
+& \quad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d'
+\end{aligned}
+```
+
+A well-formed signature gives a well-formed [type declaration](#type-declarations) to the [lifting](20-liftings.md#declaration) of a codata type of one of its blocks, of which no destructor is recursive, when each parameter lifted is a type, at the variables $`\bar x`$ of its telescope, in the parameters $`\Delta_1`$ before it followed by it, at each instance that the constraint of the block admits, and when no entry of the signature introduces its name $`D^\Pi`$: the motive of a parameter is a type over a term of this parameter, which neither the relation of the destructors lifted nor the strict positivity requires to be a type:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{lift}_\vdash) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \\
+& \qquad \mathcal{D} \in \Sigma \\
+& \qquad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
+& \qquad \text{no entry of } \Sigma \text{ introduces } D^\Pi \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \mathsf{rec}_{\mathcal{D}}(\bar d_D[\bar s' / \bar s,\ \bar p' / \bar p]) = (\bot,\ \dots,\ \bot) \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall \Delta_1,\ x,\ A,\ \Delta_2. \\
+& \qquad \quad \text{⟹} \\
+& \qquad \qquad \text{and} \\
+& \qquad \qquad \quad C_{\mathcal{D}}[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \qquad \quad \Delta[\bar s' / \bar s,\ \bar p' / \bar p] = (\Delta_1,\ x : A,\ \Delta_2) \\
+& \qquad \qquad \quad x \in \Pi \\
+& \qquad \qquad \Sigma;\ \Delta_1,\ x : A \vdash x \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall \Delta_1,\ X,\ \Theta,\ A,\ \psi,\ \Delta_2. \\
+& \qquad \quad \text{⟹} \\
+& \qquad \qquad \text{and} \\
+& \qquad \qquad \quad C_{\mathcal{D}}[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \qquad \quad \Delta[\bar s' / \bar s,\ \bar p' / \bar p] = (\Delta_1,\ X : (\Theta \vdash A \mathrel{◀} \psi),\ \Delta_2) \\
+& \qquad \qquad \quad X \in \Pi \\
+& \qquad \qquad \Sigma;\ \Delta_1,\ X : (\Theta \vdash A \mathrel{◀} \psi),\ \Theta \vdash X[\bar x] \\
+& \quad \Sigma \vdash \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')
+\end{aligned}
+```
+
+In a well-formed signature, where no parameter is lifted, the terms of fields whose [recursive results](21-recursive-results.md#types-of-the-results) have types have [recursive results](21-recursive-results.md#terms-of-the-results), whatever the results $`f`$ of the terms of the types of the block are: the signature declares each lifting after the destructors that it lifts, so that the result of each observation of a term of a type lifted exists, down to the terms of the types of the block, and a recursor on a constructor is never stuck for want of a recursive result:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{exists}_{\mathsf{res}\Theta}) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \\
+& \qquad \Pi = \varnothing \\
+& \qquad \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow} \mathrel{\triangleright} \bar\pi \\
+& \qquad \bar t \text{ as many as the fields of } \Theta \\
+& \quad \exists \bar t'.\ \Sigma \vdash \mathsf{res}_{f;\ \bar\lambda}(\bar t : \Theta) = \bar t'
+\end{aligned}
+```

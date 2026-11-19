@@ -160,3 +160,58 @@ Usage holds in every signature that has the entries of its own, since it reads i
 & \quad \Sigma';\ \gamma \vdash \Theta \mathrel{▶} m
 \end{aligned}
 ```
+
+The constructors of each type of the [prelude](19-prelude.md#declarations) use the parameters as the grades of the type allow:
+
+```math
+\begin{aligned}
+& \vdash \mathsf{prelude} \mathrel{▶} &&(\mathsf{prelude}_{▶})
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [packing](19-prelude.md#packing) of arguments uses the variables as the arguments do, each pair using its first term with the grade of its entry and the rest once:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{pack}_{\bar t▶}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \text{ for the grades } \bar p \text{ of } \Theta \\
+& \quad \Sigma;\ \gamma \vdash \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} \mathrel{▶} m
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [unpacking](19-prelude.md#unpacking) uses the variables of its term $`r`$ times and those of its term $`b`$, which uses the variable of each entry of the telescope $`{\ulcorner m \urcorner \cdot r}`$ times its grade, its motive using no variable, as a [recursor](#definitions) does:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unpack}_{▶}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ {00}^{\gamma} \vdash C \mathrel{▶} {00}^{\mathsf{m}} \\
+& \qquad \Sigma;\ \gamma \vdash u \mathrel{▶} m \odot r \\
+& \qquad \Theta \text{ has the grades } p_1, \dots, p_n \\
+& \qquad \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot r \cdot p_1) \bullet \dots \bullet (\ulcorner m \urcorner \cdot r \cdot p_n) \vdash b \mathrel{▶} m \\
+& \quad \Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \mathrel{▶} m
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [resumption](19-prelude.md#positions) of a position $`v`$ by a corecursor of the grade $`r`$ of the instance $`{T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, of the sort $`\kappa`$ of the quality $`s`$, uses the variables of $`v`$ and those of the corecursor from the variables $`\bar y_j`$ of the state $`\Theta_j`$, which it uses $`{\ulcorner m \urcorner \cdot r}`$ times their grades, as a lower bound $`\eta`$ of the uses $`\delta`$ of the corecursor and of no use allows, in a mode that allows the grade $`q_s`$ of a term already built, since a position resumes the corecursor or gives a term already built, as a [recursor](#definitions) shares the uses of its branches:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{resume}_{▶}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ {00}^{\gamma} \vdash T \mathrel{▶} {00}^{\mathsf{m}} \\
+& \qquad \Sigma;\ \gamma \vdash v \mathrel{▶} m \\
+& \qquad \Theta_j \text{ has the grades } q_1, \dots, q_n \\
+& \qquad \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot r \cdot q_1) \bullet \dots \bullet (\ulcorner m \urcorner \cdot r \cdot q_n) \vdash \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \mathrel{▶} m \\
+& \qquad m \cdot^{\mathsf{m}} \llcorner q_s \lrcorner = m \\
+& \qquad \eta \le^{\gamma} \delta \\
+& \qquad \eta \le^{\gamma} {00}^{\gamma} \\
+& \quad \Sigma;\ \gamma +^{\gamma} \eta \vdash \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) \mathrel{▶} m
+\end{aligned}
+```
+
+This property shows what the rule of a corecursor requires of the branch of a recursive destructor, whose observation resumes its position: the usage of the corecursor bounds its uses by those of the branch plus its own, as the uses of the corecursor resumed.

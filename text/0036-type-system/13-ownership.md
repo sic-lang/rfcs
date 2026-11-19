@@ -176,3 +176,79 @@ The judgment $`{\vdash \Sigma \mathrel{◀}}`$ checks the body of a constant def
 & \quad \Sigma,\ e_1, \dots, e_n;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m
 \end{aligned}
 ```
+
+The values of the entries of the [prelude](19-prelude.md#declarations) have their ownerships, its declarations being data types:
+
+```math
+\begin{aligned}
+& \vdash \mathsf{prelude} \mathrel{◀} &&(\mathsf{prelude}_{◀})
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [packing](19-prelude.md#packing) of arguments that satisfy the requirements of their entries has the ownership $`{11}^{\mathsf{p}}`$ of a new value, as every constructor:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{pack}_{\bar t◀}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \varphi \vdash \bar t \mathrel{◀} \bar o;\ \Theta;\ m \\
+& \quad \Sigma;\ \varphi \vdash \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} \mathrel{◀} {11}^{\mathsf{p}};\ m
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [unpacking](19-prelude.md#unpacking) has the ownership of $`b`$, checked with the ownership $`o`$ of its term times the requirement of each entry, times the grade $`{\ulcorner m \urcorner \cdot r}`$ times the grade of the entry, for the variable of the entry, as a [recursor](#definitions) does, the second field of each pair requiring $`{11}^{\mathsf{p}}`$ and having the grade $`{11}^{\mathsf{p}}`$, and $`{\ulcorner m \urcorner \cdot r}`$ being idempotent, so that the nested recursors scale it once:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unpack}_{◀}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \varphi \vdash u \mathrel{◀} o;\ m \odot r \\
+& \qquad \text{the entries of } \Theta \text{ require } r_1, \dots, r_n \\
+& \qquad \Theta \text{ has the grades } q_1, \dots, q_n \\
+& \qquad \Sigma;\ \varphi,\ x_1 \mathrel{◀} o \cdot r_1 \cdot (\ulcorner m \urcorner \cdot r \cdot q_1), \dots, x_n \mathrel{◀} o \cdot r_n \cdot (\ulcorner m \urcorner \cdot r \cdot q_n) \vdash b \mathrel{◀} p;\ m \\
+& \quad \Sigma;\ \varphi \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \mathrel{◀} p;\ m
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [resumption](19-prelude.md#positions) of a position $`v`$ by a corecursor of the grade $`r`$ of the instance $`{T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, of the sort $`\kappa`$ of the quality $`s`$, has every ownership $`p`$ below the ownership $`{11}^{\mathsf{p}}`$ of the corecursor, a new value, and below the ownership $`{o \cdot \chi \cdot (\ulcorner m \urcorner \cdot q_s)}`$ that a [recursor](#definitions) gives the term already built, of the requirement $`\chi`$ and of the grade $`q_s`$, in a position of the ownership $`o`$, so that it has the ownership $`\chi`$ of the result of a recursive destructor, at run time, when the position is owned alone and $`{\chi \le {11}^{\mathsf{p}}}`$:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{resume}_{◀}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \varphi \vdash v \mathrel{◀} o;\ m \\
+& \qquad \text{the entries of } \Theta_j \text{ require } r_1, \dots, r_n \\
+& \qquad \Theta_j \text{ has the grades } q_1, \dots, q_n \\
+& \qquad \Sigma; \\
+& \qquad \quad \varphi, \\
+& \qquad \quad y_{j1} \mathrel{◀} o \cdot (\ulcorner m \urcorner \cdot r) \cdot r_1 \cdot (\ulcorner m \urcorner \cdot r \cdot q_1), \\
+& \qquad \quad \dots, \\
+& \qquad \quad y_{jn} \mathrel{◀} o \cdot (\ulcorner m \urcorner \cdot r) \cdot r_n \cdot (\ulcorner m \urcorner \cdot r \cdot q_n) \\
+& \qquad {\vdash}\ \mathsf{corec}_r\ T \\
+& \qquad \qquad \mathsf{from}\ \bar y_j \\
+& \qquad \qquad \mathsf{return}\ \bar\Theta \\
+& \qquad \qquad \mathsf{with}\ \bar g \\
+& \qquad \mathrel{◀} {11}^{\mathsf{p}};\ m \\
+& \qquad p \le {11}^{\mathsf{p}} \\
+& \qquad p \le o \cdot \chi \cdot (\ulcorner m \urcorner \cdot q_s) \\
+& \quad \Sigma;\ \varphi \vdash \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) \mathrel{◀} p;\ m
+\end{aligned}
+```
+
+This property shows what the rule of a corecursor requires of the branch of a recursive destructor, whose observation resumes its position: the ownership checks the branch with the ownership $`{11}^{\mathsf{p}}`$ of a new value, which the term already built of a position needs to keep the ownership $`\chi`$.
+
+A signature whose entries have their ownerships, followed by the [lifting](20-liftings.md#declaration) of a codata type of which no destructor is recursive, at any instance, has the ownerships of its entries: the lifting has no recursive destructor either, since the result of each of its destructors is a motive, or an instance of the lifting of another type:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{lift}_{◀}) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \mathrel{◀} \\
+& \qquad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \mathsf{rec}_{\mathcal{D}}(\bar d_D[\bar s' / \bar s,\ \bar p' / \bar p]) = (\bot,\ \dots,\ \bot) \\
+& \quad {}\vdash (\Sigma,\ \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')) \mathrel{◀}
+\end{aligned}
+```
