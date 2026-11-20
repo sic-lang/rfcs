@@ -25,7 +25,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`\kappa`$ | Sorts |
 | $`{x, y, z}`$ | Variables |
 | $`X`$ | Second-order variables, which bind variables |
-| $`{t, u, a, g}`$ | Terms, $`u`$ being a term compared to $`t`$ or a branch of a recursor, $`a`$ a term substituted for a variable, and $`g`$ a branch of a corecursor |
+| $`{t, u, a, g}`$ | Terms, $`u`$ being a term compared to $`t`$, a second term beside $`t`$ or a branch of a recursor, $`a`$ a term substituted for a variable, and $`g`$ a branch of a corecursor |
 | $`{A, B}`$ | Types |
 | $`\Theta`$ | Telescopes |
 | $`\Gamma`$ | Contexts |
@@ -40,7 +40,7 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`d`$ | Destructors of the codata types |
 | $`\varsigma`$ | Ownerships that the destructors require of the values that they observe |
 | $`\Pi`$ | Sets of parameters of a declared type: those in which it is strictly positive, and those at which it is lifted |
-| $`C`$ | Motives of the recursors |
+| $`C`$ | Motives of the recursors and of the transports |
 | $`f`$ | Constants, defined or declared |
 | $`\Sigma`$ | Signatures |
 | $`{\lambda, \Lambda}`$ | Nestings of the types, and the nestings $`\Lambda`$ of the variables of a scope |
