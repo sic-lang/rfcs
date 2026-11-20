@@ -175,7 +175,7 @@ An instance of a codata type in a universe is a type of it, and an instance in a
 \end{aligned}
 ```
 
-An equality is a proposition of the universe of propositions of its level when its type computes to a type of exactly the sort $`s_n`$ that it carries, of its quality $`s`$ at the value $`n`$ of its level, and not of a sort that $`s_n`$ bounds, and it is true when its terms are equal terms of this type, as $`(\mathsf{ty}_\Downarrow)`$ relates them: for a type that is not a proposition, when they compute to canonical terms that the equality of the type relates, and for a proposition, whose terms are its proofs, when the proposition is true:
+An equality is a proposition of the universe of propositions of its level when its type computes to a type of exactly the sort $`s_n`$ that it carries, of its quality $`s`$ at the value $`n`$ of its level, and not of another sort that $`s_n`$ bounds, and it is true when its terms are equal terms of this type, as $`(\mathsf{ty}_\Downarrow)`$ relates them: for a type that is not a proposition, when they compute to canonical terms that the equality of the type relates, and for a proposition, whose terms are its proofs, when the proposition is true:
 
 ```math
 \begin{aligned}
