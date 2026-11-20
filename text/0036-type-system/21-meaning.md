@@ -38,7 +38,7 @@ The signature $`\iota(\Sigma)`$ is $`\Sigma`$ in which each constant declaration
 \end{aligned}
 ```
 
-In the meaning, a closed term $`t`$ computes to $`v`$, written $`{t \Downarrow v}`$, when $`{\iota(\Sigma) \vdash t \Downarrow v}`$, as the formula $`{(\Downarrow)}`$ of the [reduction](16-reduction.md) defines it, so that the meaning has the single reduction of the typing.
+In the meaning, a closed term $`t`$ computes to $`v`$, written $`{t \Downarrow v}`$, when $`{\iota(\Sigma) \vdash t \Downarrow v}`$, as the formula $`{(\Downarrow)}`$ of the [reduction](16-reduction.md) defines it, so that the meaning has no reduction of its own.
 The computation, the equality $`\mathsf{eq}`$ and the meaning of the judgments all depend on the signature $`\Sigma`$ and on the interpretation $`\iota`$, which their notation omits.
 
 ### Equality of the Canonical Terms
