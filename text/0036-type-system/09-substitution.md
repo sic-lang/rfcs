@@ -7,7 +7,7 @@ It builds on the [syntax](08-syntax.md).
 
 This section defines the substitutions of the first order, then those of the second order, which apply them to the abstractions they give, the renamings, the closed substitutions, the instantiation of the level variables, and the instances of the entries, which instantiate them.
 A substitution of the first order and one of the second order are defined apart, as the substitution of the variables and the substitution of the metavariables of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), since the second one substitutes the arguments of each application in the abstraction it gives, which is not a part of the term.
-Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
+Under the variables that an abstraction, a motive, a branch, a state, a telescope or a term of a proof of the equality of two propositions binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
 
 ### Substitutions of the First Order
 
@@ -38,6 +38,14 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & \qquad \mathsf{from}\ \bar t[\sigma] \\
 & \qquad \mathsf{return}\ \bar\Theta[\sigma] \\
 & \qquad \mathsf{with}\ \bar g[\sigma] \\[1em]
+& (t \mathrel{{\sim}.\{s;\ l\}_A} u)[\sigma] = t[\sigma] \mathrel{{\sim}.\{s;\ l\}_{A[\sigma]}} u[\sigma] \\
+& (\mathsf{refl}.\{s;\ l\}_A(t))[\sigma] = \mathsf{refl}.\{s;\ l\}_{A[\sigma]}(t[\sigma]) \\[1em]
+& {=} \\
+& \quad \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u)[\sigma] \\
+& \quad \mathsf{transp}(A[\sigma],\ t_1[\sigma],\ t_2[\sigma],\ x.\, C[\sigma],\ t[\sigma],\ u[\sigma]) \\[1em]
+& {=} \\
+& \quad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)[\sigma] \\
+& \quad \mathsf{propext}.\{l\}(A[\sigma],\ B[\sigma],\ x.\, t[\sigma],\ y.\, u[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar t) \\
 & (t,\ \bar t)[\sigma] = (t[\sigma],\ \bar t[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar a) \\
@@ -102,6 +110,14 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & \qquad \mathsf{from}\ \bar t[\theta] \\
 & \qquad \mathsf{return}\ \bar\Theta[\theta] \\
 & \qquad \mathsf{with}\ \bar g[\theta] \\[1em]
+& (t \mathrel{{\sim}.\{s;\ l\}_A} u)[\theta] = t[\theta] \mathrel{{\sim}.\{s;\ l\}_{A[\theta]}} u[\theta] \\
+& (\mathsf{refl}.\{s;\ l\}_A(t))[\theta] = \mathsf{refl}.\{s;\ l\}_{A[\theta]}(t[\theta]) \\[1em]
+& {=} \\
+& \quad \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u)[\theta] \\
+& \quad \mathsf{transp}(A[\theta],\ t_1[\theta],\ t_2[\theta],\ x.\, C[\theta],\ t[\theta],\ u[\theta]) \\[1em]
+& {=} \\
+& \quad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)[\theta] \\
+& \quad \mathsf{propext}.\{l\}(A[\theta],\ B[\theta],\ x.\, t[\theta],\ y.\, u[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar t) \\
 & (t,\ \bar t)[\theta] = (t[\theta],\ \bar t[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar a) \\
@@ -121,7 +137,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 \end{aligned}
 ```
 
-Under the variables that an abstraction, a motive, a branch, a state or a telescope binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`{\bar x.\, d[\bar x]}`$ of the identity.
+Under the variables that an abstraction, a motive, a branch, a state, a telescope or a term of a proof of the equality of two propositions binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`{\bar x.\, d[\bar x]}`$ of the identity.
 The identity gives each variable $`x`$ the abstraction $`{\bar x.\, x[\bar x]}`$:
 
 ```math
@@ -237,6 +253,22 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & \qquad \mathsf{from}\ \bar t[\bar l' / \bar l] \\
 & \qquad \mathsf{return}\ \bar\Theta[\bar l' / \bar l] \\
 & \qquad \mathsf{with}\ \bar g[\bar l' / \bar l] \\[1em]
+& {=} \\
+& \quad (t \mathrel{{\sim}.\{s;\ l_1\}_A} u)[\bar l' / \bar l] \\
+& \quad t[\bar l' / \bar l] \mathrel{{\sim}.\{s;\ l_1[\bar l' / \bar l]\}_{A[\bar l' / \bar l]}} u[\bar l' / \bar l] \\[1em]
+& {=} \\
+& \quad (\mathsf{refl}.\{s;\ l_1\}_A(t))[\bar l' / \bar l] \\
+& \quad \mathsf{refl}.\{s;\ l_1[\bar l' / \bar l]\}_{A[\bar l' / \bar l]}(t[\bar l' / \bar l]) \\[1em]
+& {=} \\
+& \quad \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u)[\bar l' / \bar l] \\
+& \quad \mathsf{transp}( \\
+& \qquad A[\bar l' / \bar l],\ t_1[\bar l' / \bar l],\ t_2[\bar l' / \bar l], \\
+& \qquad x.\, C[\bar l' / \bar l],\ t[\bar l' / \bar l],\ u[\bar l' / \bar l]) \\[1em]
+& {=} \\
+& \quad \mathsf{propext}.\{l_1\}(A,\ B,\ x.\, t,\ y.\, u)[\bar l' / \bar l] \\
+& \quad \mathsf{propext}.\{l_1[\bar l' / \bar l]\}( \\
+& \qquad A[\bar l' / \bar l],\ B[\bar l' / \bar l], \\
+& \qquad x.\, t[\bar l' / \bar l],\ y.\, u[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar t) \\
 & (t,\ \bar t)[\bar l' / \bar l] = (t[\bar l' / \bar l],\ \bar t[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar a) \\
