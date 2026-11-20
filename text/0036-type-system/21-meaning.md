@@ -216,22 +216,22 @@ Destructors are in it when the arguments $`\Theta`$ of the first one are a teles
 \begin{aligned}
 & (\varepsilon,\ \{(\bar f,\ \bar g) \mid \bar f \text{ and } \bar g \text{ are families of closed abstractions}\}) \in \mathsf{ty}(s_n)[\bar R] &&(\mathsf{ty}_{\bar d\varepsilon}) \\[1em]
 & \in \text{ if} &&(\mathsf{ty}_{\bar d|}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G(f_d)\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in W \text{ and } (\bar f,\ \bar g) \in G(f_d)\}) \\
 & \quad \mathsf{ty}(s_n)[\bot,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad (\Theta,\ S_\Theta) \in \mathsf{ty}(U_n) \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ \exists v.\ B[\bar t / \bar x] \Downarrow v \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ \forall v.\ B[\bar t / \bar x] \Downarrow v \implies \exists \kappa_1 \preceq s_n.\ (v,\ F(\bar t)) \in \mathsf{ty}_\Downarrow(\kappa_1) \\
 & \qquad \forall (\bar t_1,\ \bar t_2) \in S_\Theta.\ F(\bar t_1) = F(\bar t_2) \\
-& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
-& \qquad \forall (f,\ f) \in E.\ (\bar d[f / d],\ G(f)) \in \mathsf{ty}(s_n)[\bar R] \\
-& \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2) \\[1em]
+& \qquad W = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
+& \qquad \forall (f,\ f) \in W.\ (\bar d[f / d],\ G(f)) \in \mathsf{ty}(s_n)[\bar R] \\
+& \qquad \forall (f_1,\ f_2) \in W.\ G(f_1) = G(f_2) \\[1em]
 & \in \text{ if} &&(\mathsf{ty}_{\bar d\mathsf{rec}}) \\
-& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G\}) \\
+& \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d),\ \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in W \text{ and } (\bar f,\ \bar g) \in G\}) \\
 & \quad \mathsf{ty}(s_n)[R,\ \bar R] \\
 & \quad \text{and} \\
 & \qquad (\Theta,\ S_\Theta) \in \mathsf{ty}(U_n) \\
-& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in R\} \\
+& \qquad W = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in R\} \\
 & \qquad \forall f.\ (\bar d[f / d],\ G) \in \mathsf{ty}(s_n)[\bar R]
 \end{aligned}
 ```
@@ -274,28 +274,28 @@ The relations that a nesting holds are any relations, so that an abstraction tha
 & \quad ( \\
 & \qquad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
 & \qquad \theta, \\
-& \qquad \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G(f_d)\}) \\
+& \qquad \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in W \text{ and } (\bar f,\ \bar g) \in G(f_d)\}) \\
 & \quad \mathsf{ty}(s_n)[\Lambda] \\
 & \quad \text{and} \\
 & \qquad \mathsf{nest}_\Lambda(B) = \bot \\
 & \qquad (\Theta[\theta],\ S_\Theta) \in \mathsf{ty}(U_n) \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ F(\bar t)) \in \mathsf{ty}(s_n)[\bot] \\
 & \qquad \forall (\bar t_1,\ \bar t_2) \in S_\Theta.\ F(\bar t_1) = F(\bar t_2) \\
-& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
-& \qquad \forall (f,\ f) \in E.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{ty}(s_n)[\Lambda] \\
-& \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2) \\[1em]
+& \qquad W = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
+& \qquad \forall (f,\ f) \in W.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{ty}(s_n)[\Lambda] \\
+& \qquad \forall (f_1,\ f_2) \in W.\ G(f_1) = G(f_2) \\[1em]
 & \in \text{ if} &&(\mathsf{ty}_{\lambda|\lambda}) \\
 & \quad ( \\
 & \qquad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
 & \qquad \theta, \\
-& \qquad \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in E \text{ and } (\bar f,\ \bar g) \in G\}) \\
+& \qquad \{(\bar f,\ \bar g) \mid (f_d,\ g_d) \in W \text{ and } (\bar f,\ \bar g) \in G\}) \\
 & \quad \mathsf{ty}(s_n)[\Lambda] \\
 & \quad \text{and} \\
 & \qquad \mathsf{nest}_\Lambda(B) \neq \bot \\
 & \qquad (\Theta[\theta],\ S_\Theta) \in \mathsf{ty}(U_n) \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ F(\bar t)) \in \mathsf{ty}(s_n)[\mathsf{nest}_\Lambda(B)] \\
 & \qquad \forall (\bar t_1,\ \bar t_2) \in S_\Theta.\ F(\bar t_1) = F(\bar t_2) \\
-& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
+& \qquad W = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
 & \qquad \forall f.\ (\bar d,\ (\theta,\ f / d),\ G) \in \mathsf{ty}(s_n)[\Lambda]
 \end{aligned}
 ```
@@ -474,7 +474,7 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 & \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
 & \quad \phantom{(}\{(H,\ \bar f,\ \ell) \mid \\
 & \qquad \text{and} \\
-& \qquad \quad (f_d,\ f_d) \in E \\
+& \qquad \quad (f_d,\ f_d) \in W \\
 & \qquad \quad (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ R)) \\
 & \qquad \quad (H,\ \bar f,\ \ell) \in G(f_d)\}) \\
 & \quad \mathsf{rt}_D(U_n)[\bot,\ \bar R] \\
@@ -485,8 +485,8 @@ If it is recursive, its results have the relation $`R`$ that $`\bar R`$ gives it
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ \exists v.\ B[\bar t / \bar x] \Downarrow v \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ \forall v.\ B[\bar t / \bar x] \Downarrow v \implies \exists \kappa_1 \preceq U_n.\ (v,\ F(\bar t)) \in \mathsf{ty}_\Downarrow(\kappa_1) \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ \forall v.\ B[\bar t / \bar x] \Downarrow v \implies (v,\ R(\bar t)) \in \mathsf{rt}_\Downarrow(U_n) \\
-& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
-& \qquad \forall (f,\ f) \in E.\ (\bar d[f / d],\ G(f)) \in \mathsf{rt}_D(U_n)[\bar R] \\[1em]
+& \qquad W = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
+& \qquad \forall (f,\ f) \in W.\ (\bar d[f / d],\ G(f)) \in \mathsf{rt}_D(U_n)[\bar R] \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\bar d\mathsf{rec}}) \\
 & \quad ((d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
 & \quad \phantom{(}\{(H,\ \bar f,\ \ell) \mid \\
@@ -537,7 +537,7 @@ Its clauses are those of the destructors, where the result type of a destructor 
 & \qquad \theta, \\
 & \qquad \{(H,\ \bar f,\ \ell) \mid \\
 & \qquad \quad \text{and} \\
-& \qquad \qquad (f_d,\ f_d) \in E \\
+& \qquad \qquad (f_d,\ f_d) \in W \\
 & \qquad \qquad (p \notin S^{{11}^{\mathsf{m}}} \implies (H,\ f_d,\ \ell) \in \circledR_{\bar x}(i,\ \bar q' \mathrel{◀} \bar r',\ \psi,\ \varsigma,\ R_\Theta,\ R)) \\
 & \qquad \qquad (H,\ \bar f,\ \ell) \in G(f_d)\}) \\
 & \quad \mathsf{rt}_D(U_n)[\Lambda] \\
@@ -548,9 +548,9 @@ Its clauses are those of the destructors, where the result type of a destructor 
 & \qquad (\Theta[\theta],\ R_\Theta) \in \mathsf{rt}(U_n) \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ F(\bar t)) \in \mathsf{ty}(U_n)[\bot] \\
 & \qquad \forall (\bar t,\ \bar t) \in S_\Theta.\ (B[\theta,\ \bar t / \bar x],\ R(\bar t)) \in \mathsf{rt}(U_n)[\bot] \\
-& \qquad E = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
-& \qquad \forall (f,\ f) \in E.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{rt}_D(U_n)[\Lambda] \\
-& \qquad \forall (f_1,\ f_2) \in E.\ G(f_1) = G(f_2) \\[1em]
+& \qquad W = \{(f_1,\ f_2) \mid \forall (\bar t,\ \bar u) \in S_\Theta.\ (f_1[\bar t / \bar x],\ f_2[\bar u / \bar x]) \in F(\bar t)\} \\
+& \qquad \forall (f,\ f) \in W.\ (\bar d,\ (\theta,\ f / d),\ G(f)) \in \mathsf{rt}_D(U_n)[\Lambda] \\
+& \qquad \forall (f_1,\ f_2) \in W.\ G(f_1) = G(f_2) \\[1em]
 & \in \text{ if} &&(\mathsf{rt}_{\lambda|\lambda}) \\
 & \quad ( \\
 & \qquad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d), \\
