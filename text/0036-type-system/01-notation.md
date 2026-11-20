@@ -62,6 +62,10 @@ The letters follow the order of the annexes that define their objects, and, with
 | $`{v, w}`$ | Canonical terms |
 | $`R`$ | Relations between closed terms, the equalities of the terms of the closed canonical types |
 | $`b`$ | Truth values of the propositions |
+| $`F`$ | Equalities of the closed terms of a type, as a graph reads them from the computation of the type or at its nesting, which relate terms that need not be canonical, unlike $`R`$, $`F(\bar t)`$ being that of a result type at the arguments $`\bar t`$ |
+| $`G`$ | Equalities and relations of run time of the rest of a telescope or of the destructors after the first one, $`G(a)`$ and $`G(f)`$ being those for the term $`a`$ of the first entry or the abstraction $`f`$ for the first destructor |
+| $`W`$ | Equalities of the closed abstractions for a destructor, which relate two abstractions when their results at equal arguments are equal |
+| $`Q`$ | Relations of run time, which relate closed terms to addresses in a heap |
 
 No digit is double-struck: the zero and the unit of a modality, a grade, a mode or a vector of grades written with digits has plain digits and, as an exponent, the letter of its kind: $`\xi`$ for a modality, $`\mathsf{p}`$ for a grade and $`\mathsf{m}`$ for a mode, upright, $`\mu`$ for a vector and $`\gamma`$ for a vector of grades.
 An operation on the modes, on the vectors or on the vectors of grades carries the same exponent, as $`{\cdot^{\mathsf{m}}}`$, $`{+^{\mu}}`$ and $`{+^{\gamma}}`$, so that it is told apart from the operation of the grades.
