@@ -27,7 +27,7 @@ The term of the branch is [resumed](12-prelude.md#positions) if the destructor i
 \end{gathered}
 ```
 
-A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, or a recursor or an observation of a neutral term, and a head normal form when it is a sort, an instance of a declared type, a constructor applied to the terms of its fields, which it does not compute, a corecursor, which computes only when it is observed, or a neutral term; a recursor on a neutral term of a type with a single constructor is neutral too, since the reduction does not apply $`(\eta_c)`$, which only the [equality](15-typing.md) gives:
+A term is neutral when its reduction is stuck on a variable or on a declared constant, which has no body to unfold, or a recursor or an observation of a neutral term, and a head normal form when it is a sort, an instance of a declared type, a constructor applied to the terms of its fields, which it does not compute, a corecursor, which computes only when it is observed, an equality $`{t \mathrel{{\sim}.\{s;\ l\}_A} u}`$, which no rule computes, whatever its type and its terms, or a neutral term; a recursor on a neutral term of a type with a single constructor is neutral too, since the reduction does not apply $`(\eta_c)`$, which only the [equality](15-typing.md) gives:
 
 ```math
 \begin{aligned}
@@ -45,6 +45,7 @@ A term is neutral when its reduction is stuck on a variable or on a declared con
 & \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \\
 & \qquad (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t) \\
 & \qquad \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \\
+& \qquad t \mathrel{{\sim}.\{s;\ l\}_A} u \\
 & \qquad \text{a neutral term in } \Sigma
 \end{aligned}
 ```
