@@ -9,7 +9,7 @@ What the usage and the ownership of a term guarantee of its erasure when it runs
 
 ## Definitions
 
-This section gives the levels without variables, the interpretation of the constant declarations, the equality of the canonical terms of the sorts, of the data types and of the codata types and their relations of run time, then the meaning of each judgment of the typing, by the objects it checks, and the interpretations that give each constant declaration a term of its type.
+This section gives the levels without variables, the interpretation of the constant declarations, the equality of the canonical terms of the sorts, of the data types, of the codata types and of the equalities, and their relations of run time, then the meaning of each judgment of the typing, by the objects it checks, and the interpretations that give each constant declaration a term of its type.
 The meaning of a judgment is written with $`\vDash`$ in place of $`{\vdash}`$.
 
 ### Levels Without Variables
@@ -43,7 +43,7 @@ The computation, the equality $`\mathsf{eq}`$ and the meaning of the judgments a
 
 ### Equality of the Canonical Terms
 
-A closed canonical type $`v`$ is known by its canonical terms and by their equality $`\mathsf{eq}(v)`$, a relation between closed terms, which the sorts, the data types and the codata types give, together with the types themselves.
+A closed canonical type $`v`$ is known by its canonical terms and by their equality $`\mathsf{eq}(v)`$, a relation between closed terms, which the sorts, the data types, the codata types and the equalities give, together with the types themselves.
 The graph $`\mathsf{ty}(U_n)`$ of the universe $`U_n`$ relates each of its types $`v`$ to the equality $`R`$ of its canonical terms, written $`{(v,\ R) \in \mathsf{ty}(U_n)}`$, and the graph $`\mathsf{ty}(\Omega_n)`$ of the universe of propositions $`\Omega_n`$ relates each of its propositions $`v`$ to its truth $`b`$, written $`{(v,\ b) \in \mathsf{ty}(\Omega_n)}`$.
 A graph gives one type at a time, and two types are equal when they have the same equality of terms and, in each program, the same relations of run time, which the graph $`\mathsf{rt}_{\mathcal{P}}(U_n)`$ of the [relations of run time](#relations-of-run-time) in the program $`\mathcal{P}`$ gives at each level together with $`\mathsf{ty}(U_n)`$, so that two types that the typing does not equate may be equal in the meaning, such as two data types without constructors.
 The value $`[\![l]\!]`$ of a level $`l`$ without variables is its [value](06-levels.md) under any assignment.
@@ -175,6 +175,17 @@ An instance of a codata type in a universe is a type of it, and an instance in a
 \end{aligned}
 ```
 
+An equality is a proposition of the universe of propositions of its level when its type computes to a type of exactly the sort $`s_n`$ that it carries, of its quality $`s`$ at the value $`n`$ of its level, and not of a sort that $`s_n`$ bounds, and it is true when its terms are equal terms of this type, as $`(\mathsf{ty}_\Downarrow)`$ relates them: for a type that is not a proposition, when they compute to canonical terms that the equality of the type relates, and for a proposition, whose terms are its proofs, when the proposition is true:
+
+```math
+\begin{aligned}
+& (t \mathrel{{\sim}.\{s;\ l\}_A} u,\ (t,\ u) \in F) \in \mathsf{ty}(\Omega_n) \text{ if} &&(\mathsf{ty}_\sim) \\
+& \quad \text{and} \\
+& \qquad [\![l]\!] = n \\
+& \qquad \exists v.\ A \Downarrow v \text{ and } (v,\ F) \in \mathsf{ty}_\Downarrow(s_n)
+\end{aligned}
+```
+
 The graph $`\mathsf{ty}(s_n)[\bar\lambda]`$ of the telescopes in the sort $`s_n`$, of the quality $`s`$ at the level $`n`$, relates a closed telescope $`\Theta`$ to the equality $`S`$ of the terms of its fields, written $`{(\Theta,\ S) \in \mathsf{ty}(s_n)[\bar\lambda]}`$, where $`\bar\lambda`$ gives the [nesting](08-syntax.md#nesting) of each field of $`\Theta`$, which holds, at each of its positions, a pair $`(T,\ R)`$ of the closed instance $`T`$ of a type of a block and of the relation $`R`$ given for its terms; $`\mathsf{ty}(s_n)`$ is the graph of the telescopes without position, $`\bar\lambda`$ being $`\bot`$ everywhere.
 A telescope is in it when its first type, if its nesting has no position, computes to a type of a sort that $`s_n`$ [bounds](07-sorts.md), and its rest is for each term of it, the same for equal terms, as the condition on the families of types of [Abel, Öhman and Vezzosi](https://doi.org/10.1145/3158111) requires, and when its first type, if its nesting $`\lambda`$ has a position, as that of a recursive field has, is read by the graph $`\mathsf{ty}(s_n)[\lambda]`$ of the nestings, defined below, the rest being the same for every term of it, on which it does not depend:
 
@@ -289,7 +300,7 @@ The relations that a nesting holds are any relations, so that an abstraction tha
 \end{aligned}
 ```
 
-At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$, $`\mathsf{ty}(s_n)[\bar\lambda]`$, of the telescopes, $`\mathsf{ty}(s_n)[\bar R]`$, of the destructors, and $`\mathsf{ty}(s_n)[\lambda]`$ and $`\mathsf{ty}(s_n)[\Lambda]`$, of the nestings, where $`\mathsf{ty}(s_n)`$ is the graph without position, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
+At each level $`n`$, the relations $`\mathsf{ty}(U_n)`$, $`\mathsf{ty}(\Omega_n)`$, $`\mathsf{ty}(s_n)[\bar\lambda]`$, of the telescopes, $`\mathsf{ty}(s_n)[\bar R]`$, of the destructors, and $`\mathsf{ty}(s_n)[\lambda]`$ and $`\mathsf{ty}(s_n)[\Lambda]`$, of the nestings, where $`\mathsf{ty}(s_n)`$ is the graph without position, are the least relations with these clauses, given the relations of the levels below $`n`$, which the clauses read for the universes of these levels and for the fields and the results of destructors whose types are of a sort below $`s_n`$, while $`(\mathsf{ty}_\sim)`$ reads the type of an equality in $`\mathsf{ty}(U_n)`$ or $`\mathsf{ty}(\Omega_n)`$, at its own level, with which it is defined, as a proposition declared as a codata type reads its destructors; the levels are defined one after the other, and at each level a least relation defines the equality of the terms of each type it gives together with the types themselves.
 The fields of an instance whose nesting has no position and the destructors of an instance that are not recursive are of types given before its block, its recursive fields and the results of its recursive destructors have the relations that the clauses $`(\mathsf{ty}_D)`$ and $`(\mathsf{ty}_d)`$ give them, and its nested fields are instances of codata types given before its block, which the graph of the nestings reads at these relations, so that its relations are not circular.
 
 A closed canonical type has the equality that a universe gives it, and a proposition the equality of its proofs: all the closed terms when it is true, and none when it is false; a closed canonical type is a proposition when a universe of propositions gives it, and a closed type computes to a proposition when its canonical form is one:
