@@ -76,10 +76,11 @@ A judgment holds when its rules derive it: $`{\vdash}`$ separates what it assume
 After a term or a variable, the colon gives its type, $`{\mathrel{▶}}`$ its usage and $`{\mathrel{◀}}`$ its ownership, in this order, each followed by what it states, and the mode in which it is checked comes last, after a semicolon, as $`{x : A \mathrel{▶} p;\ q \mathrel{◀} r}`$ for an entry of a telescope and $`{\Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m}`$ for the usage of arguments.
 The three symbols carry no index nor exponent, so that what each states is read in the same place in the entries and in the judgments.
 
-## Sequences and Subscripts
+## Sequences, Subscripts and Primes
 
 A bar marks a sequence, as the arguments $`\bar a`$ of an instance or the variables $`\bar x`$ of a telescope, and a double bar a sequence of sequences.
 A subscript numbers objects of the same kind that come from different premises or from different parts of a context, as $`\gamma_1`$ and $`\gamma_2`$: an object alone of its kind has none, and several are all numbered; a subscript never selects a component.
+A prime marks an object of the kind of the one without it that a rule or a formula relates to it, as the term $`t'`$ to which $`t`$ reduces in $`{\Sigma \vdash t \longrightarrow t'}`$ or the arguments $`\bar s'`$ of an instance in place of the variables $`\bar s`$; a rule of equality whose objects already have their letters and their subscripts, as those of a transport, writes with a prime the object equal to each, as $`{t_1 \equiv t_1'}`$.
 
 ## Names of Rules and Formulas
 
