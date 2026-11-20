@@ -7,7 +7,7 @@ It builds on the [syntax](08-syntax.md).
 
 This section defines the substitutions of the first order, then those of the second order, which apply them to the abstractions they give, the renamings, the closed substitutions, the instantiation of the level variables, and the instances of the entries, which instantiate them.
 A substitution of the first order and one of the second order are defined apart, as the substitution of the variables and the substitution of the metavariables of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), since the second one substitutes the arguments of each application in the abstraction it gives, which is not a part of the term.
-Under the variables that an abstraction, a motive, a branch, a state, a telescope or a term of a proof of the equality of two propositions binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
+Under the variables that an abstraction, a motive, a branch, a state, a telescope or a proof of the equality of two propositions binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
 
 ### Substitutions of the First Order
 
@@ -137,7 +137,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 \end{aligned}
 ```
 
-Under the variables that an abstraction, a motive, a branch, a state, a telescope or a term of a proof of the equality of two propositions binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`{\bar x.\, d[\bar x]}`$ of the identity.
+Under the variables that an abstraction, a motive, a branch, a state, a telescope or a proof of the equality of two propositions binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`{\bar x.\, d[\bar x]}`$ of the identity.
 The identity gives each variable $`x`$ the abstraction $`{\bar x.\, x[\bar x]}`$:
 
 ```math
