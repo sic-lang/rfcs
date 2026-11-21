@@ -117,7 +117,7 @@ The branches $`\bar g`$ of the destructors, those of a corecursor or of a proof 
 
 The branch of a destructor binds the variables $`\bar x`$, then the variables $`\bar y`$, then the variables $`\bar z`$, each with an empty telescope, and its term $`g`$ is in the scope extended by them; the branch of the destructor $`d`$ of the type $`D`$ is written $`{D.d(\bar x;\ \bar y;\ \bar z) \Rightarrow g}`$.
 In a corecursor, $`\bar x`$ are a variable for each non-uniform parameter of the type of the destructor, $`\bar y`$ a variable for each entry of the state of this type and $`\bar z`$ a variable for each argument of the destructor, and $`g`$ is the result of the observation.
-In a proof by coinduction, $`\bar x`$ is empty, $`\bar y`$ are a variable for each of two terms of the type of the destructor and a variable for the hypothesis that the relation of this type relates them, and $`\bar z`$ a variable for each argument of the destructor.
+In a proof by coinduction, $`\bar x`$ is empty, $`\bar y`$ are a variable for each of two terms of the type of the destructor and a variable for the hypothesis that the relation of this type relates them, $`\bar z`$ a variable for each argument of the destructor, and $`g`$ is the proof that the observations of the two terms by the destructor are equal, or that the relation of the type of its result relates them if the destructor is recursive.
 
 ### Telescopes and Contexts
 
