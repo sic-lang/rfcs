@@ -1,0 +1,767 @@
+# Typing
+
+This annex defines the judgments of typing and of equality, with those of the signatures, of the contexts, of the arguments of the telescopes and of the instances, of the telescopes in a sort, of the strict positivity, of the fields and of the destructors of a block, of the entries of the signatures, of the renamings and of the substitutions of the first order, and their properties.
+It builds on the [modes](05-modes.md), the [levels](06-levels.md), the [sorts](07-sorts.md), the [syntax](08-syntax.md), with the [nesting](08-syntax.md#nesting) and the recursive fields and destructors of a block, the [substitution](09-substitution.md), the [prelude](12-prelude.md), the [liftings](13-liftings.md) and the [recursive results](14-recursive-results.md) of the fields of a constructor, which the rules of the recursors read.
+
+## Definitions
+
+This section gives the judgments, then their rules, by the objects they check: the signatures and their entries, the contexts, the types, the terms, the arguments, the telescopes in a sort, the strict positivity, and the fields and the destructors of a block, then the renamings and the substitutions of the first order.
+
+### Judgments
+
+The judgments are those of Martin-Löf type theory, as [Nordström, Petersson and Smith](https://intuitionistic.wordpress.com/wp-content/uploads/2010/07/nordstrom-et-al-type-theory.pdf) present them, with judgments for the signatures and their entries, the contexts, the arguments and the telescopes in a sort:
+
+| Judgment | Reading |
+| --- | --- |
+| $`{\vdash \Sigma}`$ | $`\Sigma`$ is a well-formed signature |
+| $`{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t}`$ | The constant definition is well formed |
+| $`{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p}`$ | The constant declaration is well formed |
+| $`{\Sigma \vdash \Gamma}`$ | $`\Gamma`$ is a well-formed context |
+| $`{\Sigma;\ \Gamma \vdash A}`$ | $`A`$ is a type |
+| $`{\Sigma;\ \Gamma \vdash A \equiv B}`$ | $`A`$ and $`B`$ are equal types |
+| $`{\Sigma;\ \Gamma \vdash t : A}`$ | $`t`$ is a term of type $`A`$ |
+| $`{\Sigma;\ \Gamma \vdash t \equiv u : A}`$ | $`t`$ and $`u`$ are equal terms of type $`A`$ |
+| $`{\Sigma;\ \Gamma \vdash \bar t : \Theta}`$ | $`\bar t`$ are arguments of the telescope $`\Theta`$ |
+| $`{\Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta}`$ | $`\bar t`$ and $`\bar u`$ are equal arguments of $`\Theta`$ |
+| $`{\Sigma;\ \Gamma \vdash \bar a : \Delta}`$ | $`\bar a`$ are arguments of the parameters $`\Delta`$ |
+| $`{\Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta}`$ | $`\bar a_1`$ and $`\bar a_2`$ are equal arguments of $`\Delta`$ |
+| $`{\Sigma;\ \Gamma \vdash \Theta : \kappa}`$ | The telescope $`\Theta`$ lives in the sort $`\kappa`$ |
+| $`{\Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l}`$ | The telescope $`\Theta`$ lives in the sorts $`\bar\kappa`$ below the level $`l`$ |
+| $`{\Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa}`$ | $`\Theta_1`$ and $`\Theta_2`$ are equal telescopes in the sort $`\kappa`$ |
+| $`{\Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa}`$ | The fields $`\Theta`$ of a constructor of the block $`\mathcal{D}`$ live in the sort $`\kappa`$ |
+| $`{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa}`$ | The destructors $`\bar d`$ of a codata type of the block $`\mathcal{D}`$, strictly positive in the parameters $`\Pi`$, live in the sort $`\kappa`$ |
+| $`{\Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k}`$ | The type declaration is well formed |
+| $`{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k}`$ | The type declaration is well formed |
+| $`{\Sigma;\ \Gamma' \vdash \alpha : \Gamma}`$ | $`\alpha`$ is a renaming of the context $`\Gamma`$ in the context $`\Gamma'`$ |
+| $`{\Sigma;\ \Gamma' \vdash \sigma : \Gamma}`$ | $`\sigma`$ is a substitution of the first order of the context $`\Gamma`$ in the context $`\Gamma'`$ |
+
+The judgments are defined together, except the last five, which build on the others.
+Typing and equality carry no grade, and no rule has a premise of the usage or of the ownership: the usage and the ownership of a term are checked by the judgments of usage and of ownership, and those of the entries of a signature by their judgments $`{\vdash \Sigma \mathrel{▶}}`$ and $`{\vdash \Sigma \mathrel{◀}}`$.
+Equality is written $`\equiv`$, and $`{=}`$ in the premises of a rule is the equality of the metalanguage, which for the levels is the one of the [levels](06-levels.md), and for sequences of levels holds on each component.
+
+A context has a variable $`x : A`$, written $`{x : A \in \Gamma}`$, when one of its entries is this variable, and a second-order variable $`{X : (\Theta \vdash A \mathrel{◀} \psi)}`$, written $`{X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma}`$, likewise, by its last entry or by the entries before it; $`{x \notin \Gamma}`$ means that no entry of $`\Gamma`$ is a variable named $`x`$:
+
+```math
+\begin{gathered}
+\frac{}{x : A \in (\Gamma,\ x : A)}\;(\in_\Gamma.x) \\[2em]
+\frac{x : A \in \Gamma}{x : A \in (\Gamma,\ y : B)}\;(\in_\Gamma.x,y) \\[2em]
+\frac{x : A \in \Gamma}{x : A \in (\Gamma,\ Y : (\Theta \vdash B \mathrel{◀} \psi))}\;(\in_\Gamma.x,Y) \\[2em]
+\frac{}{X : (\Theta \vdash A \mathrel{◀} \psi) \in (\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi))}\;(\in_\Gamma.X) \\[2em]
+\frac{X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma}{X : (\Theta \vdash A \mathrel{◀} \psi) \in (\Gamma,\ y : B)}\;(\in_\Gamma.X,y) \\[2em]
+\frac{X : (\Theta_1 \vdash A \mathrel{◀} \psi_1) \in \Gamma}{X : (\Theta_1 \vdash A \mathrel{◀} \psi_1) \in (\Gamma,\ Y : (\Theta_2 \vdash B \mathrel{◀} \psi_2))}\;(\in_\Gamma.X,Y)
+\end{gathered}
+```
+
+```math
+\begin{aligned}
+& x \notin \varepsilon &&(\notin_\Gamma) \\
+& x \notin (\Gamma,\ y : B) \iff x \ne y \text{ and } x \notin \Gamma \\
+& x \notin (\Gamma,\ Y : (\Theta \vdash B \mathrel{◀} \psi)) \iff x \ne Y \text{ and } x \notin \Gamma
+\end{aligned}
+```
+
+The rules write the [instance of an entry](09-substitution.md#instances-of-the-entries) at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$ as $`{A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}`$, as if the instance were substituted, and $`{A[\bar s' / \bar s,\ \bar p' / \bar p]}`$ when it keeps the level variables.
+
+### Signatures and Entries
+
+A signature is empty, or a signature extended by an entry that is well formed in it: no entry of the signature introduces the name of a constant, and a type declaration names each of its types once, whose names no entry of the signature introduces either, as its own [formation](#type-declarations) asks.
+None of these names is the name $`D^\Pi`$ of a [lifting](13-liftings.md#declaration), which the lifting of a type of a block of the signature alone has: this lifting is an entry of its own, a well-formed type declaration whose destructors are [those of the type lifted](13-liftings.md#signatures), so that a signature declares under this name nothing else than the lifting:
+
+```math
+\begin{gathered}
+\frac{}{\vdash \varnothing}\;(\mathsf{sig}_\varnothing) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t \\[0.6em] & \text{no entry of } \Sigma \text{ introduces } f\end{aligned}}{\vdash \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t}\;(\mathsf{sig}_{\mathsf{def}}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \\[0.6em] & \text{no entry of } \Sigma \text{ introduces } f\end{aligned}}{\vdash \Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p}\;(\mathsf{sig}_{\mathsf{decl}}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\[0.6em] & \text{the names } D_1, \dots, D_k \text{ are distinct} \\[0.6em] & \text{none of } D_1, \dots, D_k \text{ is the name of a lifting}\end{aligned}}{\vdash \Sigma,\ \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k}\;(\mathsf{sig}_{\mathsf{data}}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\[0.6em] & \text{the names } D_1, \dots, D_k \text{ are distinct} \\[0.6em] & \text{none of } D_1, \dots, D_k \text{ is the name of a lifting}\end{aligned}}{\vdash \Sigma,\ \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k}\;(\mathsf{sig}_{\mathsf{codata}}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d') \\[0.6em] & \mathcal{D} \in \Sigma \\[0.6em] & \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d'\end{aligned}}{\vdash \Sigma,\ \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')}\;(\mathsf{sig}_{\mathsf{lift}})
+\end{gathered}
+```
+
+An entry is checked in the empty context, once with its level variables, and for each instance of its sort and grade variables, which are finitely many, so that its rules hold whatever instantiates them; a type declaration only for the instances that its constraint $`C`$ admits, which are those at which its types exist.
+At each instance of its sort and grade variables, the type of a constant definition or declaration is a type of some sort, which may depend on the instance, and the body of a constant definition is a term of its type:
+
+```math
+\begin{gathered}
+\frac{\begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa. \\ & \quad \text{and} \\ & \qquad \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa \\ & \qquad \Sigma;\ \varepsilon \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar p' / \bar p]\end{aligned}}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t}\;(\mathsf{def}) \\[2em]
+\frac{\forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \exists \kappa.\ \Sigma;\ \varepsilon \vdash A[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa}{\Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p}\;(\mathsf{decl})
+\end{gathered}
+```
+
+### Contexts
+
+A context is empty, in a well-formed signature, or a context extended by a variable whose type is a type in it, or by a second-order variable whose type is a type in it extended by its telescope, with a name that the context does not have:
+
+```math
+\begin{gathered}
+\frac{\vdash \Sigma}{\Sigma \vdash \varepsilon}\;(\mathsf{ctx}_\varepsilon) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A \\[0.6em] & x \notin \Gamma\end{aligned}}{\Sigma \vdash \Gamma,\ x : A}\;(\mathsf{ctx}_x) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma,\ \Theta \vdash A \\[0.6em] & X \notin \Gamma\end{aligned}}{\Sigma \vdash \Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi)}\;(\mathsf{ctx}_X)
+\end{gathered}
+```
+
+### Types
+
+A term of a sort is a type, and two equal terms of a sort are equal types; the equality of types is an equivalence:
+
+```math
+\begin{gathered}
+\frac{\Sigma;\ \Gamma \vdash A : U_l}{\Sigma;\ \Gamma \vdash A}\;(U_{\mathsf{type}}) \\[2em]
+\frac{\Sigma;\ \Gamma \vdash A : \Omega_l}{\Sigma;\ \Gamma \vdash A}\;(\Omega_{\mathsf{type}}) \\[2em]
+\frac{\Sigma;\ \Gamma \vdash A}{\Sigma;\ \Gamma \vdash A \equiv A}\;(\mathsf{refl}_{\mathsf{type}}) \\[2em]
+\frac{\Sigma;\ \Gamma \vdash A \equiv B}{\Sigma;\ \Gamma \vdash B \equiv A}\;(\mathsf{sym}_{\mathsf{type}}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A_1 \equiv A_2 \\[0.6em] & \Sigma;\ \Gamma \vdash A_2 \equiv A_3\end{aligned}}{\Sigma;\ \Gamma \vdash A_1 \equiv A_3}\;(\mathsf{trans}_{\mathsf{type}}) \\[2em]
+\frac{\Sigma;\ \Gamma \vdash A \equiv B : U_l}{\Sigma;\ \Gamma \vdash A \equiv B}\;(U_{\mathsf{type}\equiv}) \\[2em]
+\frac{\Sigma;\ \Gamma \vdash A \equiv B : \Omega_l}{\Sigma;\ \Gamma \vdash A \equiv B}\;(\Omega_{\mathsf{type}\equiv})
+\end{gathered}
+```
+
+### Terms
+
+A variable has the type of its entry, and an application of a second-order variable to arguments of its telescope has its type, in which the arguments are substituted for the variables of the telescope:
+
+```math
+\begin{gathered}
+\frac{\begin{aligned}& \Sigma \vdash \Gamma \\[0.6em] & x : A \in \Gamma\end{aligned}}{\Sigma;\ \Gamma \vdash x : A}\;(\mathsf{var}) \\[2em]
+\frac{\begin{aligned}& X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t : \Theta\end{aligned}}{\Sigma;\ \Gamma \vdash X[\bar t] : A[\bar t / \Theta]}\;(\mathsf{var}_X)
+\end{gathered}
+```
+
+An instance of a constant, defined or declared, has the type of its entry at this instance; a sort $`U_l`$ or $`\Omega_l`$ is in the universe above its level; an instance of a declared type, which the constraint of its type declaration admits and whose arguments are arguments of its parameters, is in the sort of its type declaration; the equality of two terms of a type, which is in the sort that the equality carries, is a proposition at the level of this sort; the proof by reflexivity of the equality of a term of a type with itself, which is in the sort that the proof carries, is a proof of this equality; the transport of a term of the motive at the first of two terms of a type, along a proof of their equality, is a term of the motive at the second, the motive being a type of any sort over a term of the type; the proof by extensionality of the equality of two propositions of a level that imply each other is a proof of their equality as terms of the universe of propositions of this level; a constructor of one of the types of a type declaration, applied to arguments of its fields at the instance that it carries, is a term of this instance:
+
+```math
+\begin{gathered}
+\frac{\begin{aligned}& \Sigma \vdash \Gamma \\[0.6em] & f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{aligned}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(f) \\[2em]
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash U_l : U_{l + 1}}\;(U) \\[2em]
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \Omega_l : U_{l + 1}}\;(\Omega) \\[2em]
+\frac{\begin{aligned}& D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]\end{aligned}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a : \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(D) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A : s_l \\[0.6em] & \Sigma;\ \Gamma \vdash t : A \\[0.6em] & \Sigma;\ \Gamma \vdash u : A\end{aligned}}{\Sigma;\ \Gamma \vdash t \mathrel{{\sim}.\{s;\ l\}_A} u : \Omega_l}\;(\sim) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A : s_l \\[0.6em] & \Sigma;\ \Gamma \vdash t : A\end{aligned}}{\Sigma;\ \Gamma \vdash \mathsf{refl}.\{s;\ l\}_A(t) : t \mathrel{{\sim}.\{s;\ l\}_A} t}\;(\mathsf{refl}_\sim) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A : s_l \\[0.6em] & \Sigma;\ \Gamma \vdash t_1 : A \\[0.6em] & \Sigma;\ \Gamma \vdash t_2 : A \\[0.6em] & \Sigma;\ \Gamma,\ x : A \vdash C : \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash t : t_1 \mathrel{{\sim}.\{s;\ l\}_A} t_2 \\[0.6em] & \Sigma;\ \Gamma \vdash u : C[t_1 / x]\end{aligned}}{\Sigma;\ \Gamma \vdash \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u) : C[t_2 / x]}\;(\mathsf{transp}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A : \Omega_l \\[0.6em] & \Sigma;\ \Gamma \vdash B : \Omega_l \\[0.6em] & \Sigma;\ \Gamma,\ x : A \vdash t : B \\[0.6em] & \Sigma;\ \Gamma,\ y : B \vdash u : A\end{aligned}}{\Sigma;\ \Gamma \vdash \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u) : A \mathrel{{\sim}.\{U;\ l + 1\}_{\Omega_l}} B}\;(\mathsf{propext}) \\[2em]
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad \dots; \\ & \qquad \quad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots \mid c : \Theta \mid \dots; \\ & \qquad \quad \dots \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t : \Theta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p][\bar a / \Delta]\end{aligned}}{\Sigma;\ \Gamma \vdash (D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).c(\bar t) : D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}\;(c)
+\end{gathered}
+```
+
+A recursor eliminates a term of an instance of a type of a block, with a motive for each type of the block and a branch for each constructor of each type.
+In its rules, the block $`\mathcal{D}`$ has the types $`{D_1, \dots, D_k}`$, the type $`D_j`$ the constructors $`{\bar c_j = c_{j1} : \Theta_{j1} \mid \dots \mid c_{jn_j} : \Theta_{jn_j}}`$, and the recursor eliminates a term of the type $`D_h`$; at the instance $`{\bar s',\ \bar l',\ \bar p'}`$ of its variables and at the arguments $`\bar a`$, $`T_j`$ is the instance $`{D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ of each type and $`\Theta'_{ji}`$ the fields $`{\Theta_{ji}[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p][\bar a / \Delta]}`$ of each constructor, whose variables are $`\bar x_{ji}`$.
+The parameters are uniform, so that the motives $`{\bar C = (z.\, C_1,\ \dots,\ z.\, C_k)}`$ bind the term only, and the branches $`{\bar u = (D_1.c_{11}(\bar x_{11};\ \bar y_{11} \mathrel{▶} \bar e_{11}) \Rightarrow u_{11},\ \dots,\ D_k.c_{kn_k}(\bar x_{kn_k};\ \bar y_{kn_k} \mathrel{▶} \bar e_{kn_k}) \Rightarrow u_{kn_k})}`$ bind the fields and the recursive results.
+The [recursive results](14-recursive-results.md) $`\Theta^{\uparrow}_{ji}`$ of the fields of a constructor, whose variables are $`\bar y_{ji}`$, are those of the fields $`\Theta'_{ji}`$ at the nestings $`\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})`$ that the [fields of a block](08-syntax.md#fields-of-a-block) give them: the motive of its type at the field for a recursive field, and the type of the field lifted for a nested one; their factors $`\bar\pi_{ji}`$ are read by the usage of the recursor only.
+A recursor fixes the variables of their definitions: the block lifted gives each type $`D_j`$ the instance $`T_j`$ and the motive $`{z.\, C_j}`$, at the level of $`\kappa_C`$, no parameter is lifted, $`s_C`$ is the quality of $`\kappa_C`$, and $`r`$, $`\varsigma`$ and $`\chi`$ are the grade and the two ownerships that the recursor carries.
+
+The recursor has the motive of the type of its term at the term; each motive is a type of the sort $`\kappa_C`$ that the recursor carries, over a term of its type, and each branch a term of the motive of its type at its constructor applied to the variables of its fields, in the context extended by its fields and by their recursive results, which the premises ask for, so that a recursor on a block one of whose fields has no recursive result has no type; the motives on a block of propositions that has a constructor are propositions, since the proofs of a proposition need not compute:
+
+```math
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash t : T_h \\[0.6em] & \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_j : \kappa_C \\[0.6em] & \forall j, i.\ \Sigma \vdash \Theta'_{ji} \uparrow_{\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})} = \Theta^{\uparrow}_{ji} \mathrel{\triangleright} \bar\pi_{ji} \\[0.6em] & \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji},\ \Theta^{\uparrow}_{ji} \vdash u_{ji} : C_j[T_j.c_{ji}(\bar x_{ji}) / z] \\[0.6em] & \kappa_C \text{ is a universe of propositions} \\ & \quad \text{if} \\ & \qquad \text{and} \\ & \qquad \quad \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one} \\ & \qquad \quad \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{aligned}}{\Sigma;\ \Gamma \vdash \mathsf{rec}_{r;\ \varsigma;\ \chi}\ T_h\ t\ \mathsf{return}\ \bar C : \kappa_C\ \mathsf{with}\ \bar u : C_h[t / z]}\;(\mathsf{rec})
+```
+
+A codata type is observed by its destructors.
+In the rules of the observations, the codata type $`D`$ has the destructors $`\bar d`$, and $`T`$ is its instance $`{D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$; the instance $`{\bar d[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d_2)}`$ of the destructors decomposes them at the destructor $`d`$ observed, whose telescope and result are in the scope of the parameters extended by the destructors $`\bar d_1`$ before it.
+An observation of a term of an instance, whose arguments are arguments of the parameters, by one of its destructors, applied to arguments of its telescope, is a term of its result at these arguments, the destructors before it being the [observations](09-substitution.md) $`{[\bar a / \Delta,\ t.T / \bar d_1]}`$ of the term by them:
+
+```math
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad \dots; \\ & \qquad \quad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d; \\ & \qquad \quad \dots \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \bar d[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d_2) \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash t : T \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t : \Theta[\bar a / \Delta,\ t.T / \bar d_1]\end{aligned}}{\Sigma;\ \Gamma \vdash t.(T.d)(\bar t) : B[\bar a / \Delta,\ t.T / \bar d_1][\bar t / \Theta]}\;(d)
+```
+
+A corecursor builds a term of an instance of a type of a block of codata types from a state, with a state for each type of the block and a branch for each destructor of each type.
+In its rules, the block has the types $`{D_1, \dots, D_k}`$, the type $`D_j`$ the destructors $`\bar d_j`$, and the corecursor builds a term of the type $`D_h`$; at the instance $`{\bar s',\ \bar l',\ \bar p'}`$ of its variables and at the arguments $`\bar a`$, $`T_j`$ is the instance $`{D_j.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ of each type, and $`{\bar d_j[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_{ji,1} \mid d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q_{ji} \mathrel{◀} \varsigma_{ji} \mid \bar d_{ji,2})}`$ decomposes the destructors of each type at each of them.
+The recursive destructors have the types of the block at the parameters themselves, which are thus uniform, so that the states $`{\bar\Theta = (\Theta_1 : \bar\kappa_1,\ \dots,\ \Theta_k : \bar\kappa_k)}`$ bind none of them, and the branches $`{\bar g = (D_1.d_{11}(;\ \bar y_1;\ \bar z_{11}) \Rightarrow g_{11},\ \dots,\ D_k.d_{kn_k}(;\ \bar y_k;\ \bar z_{kn_k}) \Rightarrow g_{kn_k})}`$ bind the variables $`\bar y_j`$ of the state of their type and $`\bar z_{ji}`$ of the telescope of their destructor; $`c_j`$ is the corecursor $`{\mathsf{corec}_r\ T_j\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g}`$ of each type from the variables of its state; $`{\kappa' = \kappa[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}`$ is the sort of the block at the instance, and $`\chi_{ji}`$ is the constant of the ownership $`\psi_{ji}`$, $`{\omega\omega}^{\mathsf{p}}`$ if it has none.
+A corecursor from arguments of the state of its type is a term of its instance; each state is a telescope in the sorts $`\bar\kappa_j`$ that it carries, below the join $`{l_j = \mathsf{level}_{\bar\kappa_j}(0)}`$ of their [levels](12-prelude.md#packing), and each branch a term of the result of its destructor, over the variables of the state of its type and of the telescope of its destructor, the destructors before it being the observations $`{[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}]}`$ of the corecursor of its type from the variables of its state, or a term of the [positions](12-prelude.md#positions) of this result if the destructor is recursive, a new state or a term already built, in a signature that then holds the prelude:
+
+```math
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \Sigma \ni \mathsf{prelude} \text{ if a destructor of } \bar d_1, \dots, \bar d_k \text{ is recursive} \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t : \Theta_h \\[0.6em] & \forall j.\ \Sigma;\ \Gamma \vdash \Theta_j : \bar\kappa_j \le l_j \\[0.6em] & \forall j, i. \\ & \quad \Sigma;\ \Gamma,\ \Theta_j,\ \Theta_{ji}[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}] \\ & \quad {\vdash}\ g_{ji} : \mathsf{pos}_{\bar\Theta;\ r;\ \chi_{ji}}(B_{ji},\ B_{ji}[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}] : \kappa')\end{aligned}}{\Sigma;\ \Gamma \vdash \mathsf{corec}_r\ T_h\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g : T_h}\;(\mathsf{corec})
+```
+
+A term has every type equal to its own:
+
+```math
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash t : A \\[0.6em] & \Sigma;\ \Gamma \vdash A \equiv B\end{aligned}}{\Sigma;\ \Gamma \vdash t : B}\;(\mathsf{conv})
+```
+
+### Equal Terms
+
+The equality of terms is an equivalence, which holds at every type equal to its own, and two proofs of a proposition are equal:
+
+```math
+\begin{gathered}
+\frac{\Sigma;\ \Gamma \vdash t : A}{\Sigma;\ \Gamma \vdash t \equiv t : A}\;(\mathsf{refl}) \\[2em]
+\frac{\Sigma;\ \Gamma \vdash t \equiv u : A}{\Sigma;\ \Gamma \vdash u \equiv t : A}\;(\mathsf{sym}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash t_1 \equiv t_2 : A \\[0.6em] & \Sigma;\ \Gamma \vdash t_2 \equiv t_3 : A\end{aligned}}{\Sigma;\ \Gamma \vdash t_1 \equiv t_3 : A}\;(\mathsf{trans}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash t \equiv u : A \\[0.6em] & \Sigma;\ \Gamma \vdash A \equiv B\end{aligned}}{\Sigma;\ \Gamma \vdash t \equiv u : B}\;(\mathsf{conv}_\equiv) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash t : A \\[0.6em] & \Sigma;\ \Gamma \vdash u : A \\[0.6em] & \Sigma;\ \Gamma \vdash A : \Omega_l\end{aligned}}{\Sigma;\ \Gamma \vdash t \equiv u : A}\;(\mathsf{irr})
+\end{gathered}
+```
+
+Equal arguments give equal applications of a second-order variable, a constant definition unfolds to its body, and two instances of a constant, two sorts, two instances of a declared type with equal arguments, two equalities of equal terms of equal types, two transports of equal terms along equal proofs of the equality of equal terms of equal types, with equal motives, or two applications of a constructor at equal arguments of the instance and of its fields, at equal levels, are equal, and a transport between two equal instances of its motive, those at the two terms of the equality, is its term:
+
+```math
+\begin{gathered}
+\frac{\begin{aligned}& X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta\end{aligned}}{\Sigma;\ \Gamma \vdash X[\bar t] \equiv X[\bar u] : A[\bar t / \Theta]}\;(\mathsf{var}_{X\equiv}) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash \Gamma \\[0.6em] & f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t \in \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p\end{aligned}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \equiv t[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] : A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}\;(\delta) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash \Gamma \\[0.6em] & f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \in \Sigma \\[0.6em] & \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & \bar l_2 \text{ as many as } \bar l \\[0.6em] & \bar l_1 = \bar l_2\end{aligned}}{\Sigma;\ \Gamma \vdash f.\{\bar s';\ \bar l_1;\ \bar p'\} \equiv f.\{\bar s';\ \bar l_2;\ \bar p'\} : A[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(f_\equiv) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash \Gamma \\[0.6em] & l_1 = l_2\end{aligned}}{\Sigma;\ \Gamma \vdash U_{l_1} \equiv U_{l_2} : U_{l_1 + 1}}\;(U_\equiv) \\[2em]
+\frac{\begin{aligned}& \Sigma \vdash \Gamma \\[0.6em] & l_1 = l_2\end{aligned}}{\Sigma;\ \Gamma \vdash \Omega_{l_1} \equiv \Omega_{l_2} : U_{l_1 + 1}}\;(\Omega_\equiv) \\[2em]
+\frac{\begin{aligned}& D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\[0.6em] & \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \bar l_2 \text{ as many as } \bar l \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\[0.6em] & \bar l_1 = \bar l_2\end{aligned}}{\Sigma;\ \Gamma \vdash D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1 \equiv D.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2 : \kappa[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p]}\;(D_\equiv) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A_1 \equiv A_2 : s_{l_1} \\[0.6em] & \Sigma;\ \Gamma \vdash t_1 \equiv t_2 : A_1 \\[0.6em] & \Sigma;\ \Gamma \vdash u_1 \equiv u_2 : A_1 \\[0.6em] & l_1 = l_2\end{aligned}}{\Sigma;\ \Gamma \vdash t_1 \mathrel{{\sim}.\{s;\ l_1\}_{A_1}} u_1 \equiv t_2 \mathrel{{\sim}.\{s;\ l_2\}_{A_2}} u_2 : \Omega_{l_1}}\;(\sim_\equiv) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A \equiv A' : s_l \\[0.6em] & \Sigma;\ \Gamma \vdash t_1 \equiv t_1' : A \\[0.6em] & \Sigma;\ \Gamma \vdash t_2 \equiv t_2' : A \\[0.6em] & \Sigma;\ \Gamma,\ x : A \vdash C \equiv C' : \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash t \equiv t' : t_1 \mathrel{{\sim}.\{s;\ l\}_A} t_2 \\[0.6em] & \Sigma;\ \Gamma \vdash u \equiv u' : C[t_1 / x]\end{aligned}}{\begin{aligned}& \Sigma;\ \Gamma \\ & {\vdash}\ \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u) \\ & {\equiv}\ \mathsf{transp}(A',\ t_1',\ t_2',\ x.\, C',\ t',\ u') \\ & {:}\ C[t_2 / x]\end{aligned}}\;(\mathsf{transp}_\equiv) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A : s_l \\[0.6em] & \Sigma;\ \Gamma \vdash t_1 : A \\[0.6em] & \Sigma;\ \Gamma \vdash t_2 : A \\[0.6em] & \Sigma;\ \Gamma,\ x : A \vdash C : \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash t : t_1 \mathrel{{\sim}.\{s;\ l\}_A} t_2 \\[0.6em] & \Sigma;\ \Gamma \vdash u : C[t_1 / x] \\[0.6em] & \Sigma;\ \Gamma \vdash C[t_1 / x] \equiv C[t_2 / x] : \kappa\end{aligned}}{\Sigma;\ \Gamma \vdash \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u) \equiv u : C[t_2 / x]}\;(\mathsf{transp}_\mathsf{same}) \\[2em]
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad \dots; \\ & \qquad \quad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots \mid c : \Theta \mid \dots; \\ & \qquad \quad \dots \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \bar l_2 \text{ as many as } \bar l \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\[0.6em] & \bar l_1 = \bar l_2 \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p][\bar a_1 / \Delta]\end{aligned}}{\begin{aligned}& \Sigma;\ \Gamma \\ & {\vdash}\ (D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1).c(\bar t) \\ & {\equiv}\ (D.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2).c(\bar u) \\ & {:}\ D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1\end{aligned}}\;(c_\equiv)
+\end{gathered}
+```
+
+Two recursors at equal arguments of the instance, at equal levels, on equal terms, with equal motives of the same sort and equal branches, which give the recursive results the same grades, with the same ownerships $`\varsigma`$ and $`\chi`$, are equal, where $`T_j`$ and $`\Theta'_{ji}`$ are at the levels $`\bar l_1`$ and at the arguments $`\bar a_1`$; the fields have the recursive results of both recursors, $`\Theta^{\uparrow}_{1ji}`$ those of the first, with the motives $`\bar C_1`$, and $`\Theta^{\uparrow}_{2ji}`$ those of the second, with the motives $`\bar C_2`$, whose instances and whose fields $`{\Theta''_{ji} = \Theta_{ji}[\bar s' / \bar s,\ \bar l_2 / \bar l,\ \bar p' / \bar p][\bar a_2 / \Delta]}`$ are at the levels $`\bar l_2`$ and at the arguments $`\bar a_2`$, and the branches are equal in the context of the results of the first; a recursor on a constructor applied to arguments of its fields, with the premises of $`(\mathsf{rec})`$, is equal to the branch of the constructor at these arguments and at their [recursive results](14-recursive-results.md#terms-of-the-results) $`\bar t'`$, where $`{f(D_j, t)}`$ is the recursor $`{\mathsf{rec}_{r;\ \varsigma;\ \chi}\ T_j\ t\ \mathsf{return}\ \bar C : \kappa_C\ \mathsf{with}\ \bar u}`$; and a term $`e`$ over a term $`t`$ of a type whose single constructor has no field with a recursive result, neither recursive nor nested, is equal to the recursor on $`t`$, with the premises of $`(\mathsf{rec})`$, whose motive of the type is that of $`e`$ and whose branch is $`e`$ at the constructor applied to the variables of its fields, so that a recursor on such a type is never stuck:
+
+```math
+\begin{gathered}
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \bar l_2 \text{ as many as } \bar l \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\[0.6em] & \bar l_1 = \bar l_2 \\[0.6em] & \Sigma;\ \Gamma \vdash t_1 \equiv t_2 : T_h \\[0.6em] & \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_{1j} \equiv C_{2j} : \kappa_C \\[0.6em] & \text{the branches of } \bar u_1 \text{ and } \bar u_2 \text{ give the recursive results the same grades} \\[0.6em] & \forall j, i.\ \Sigma \vdash \Theta'_{ji} \uparrow_{\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})} = \Theta^{\uparrow}_{1ji} \mathrel{\triangleright} \bar\pi_{1ji} \\[0.6em] & \forall j, i.\ \Sigma \vdash \Theta''_{ji} \uparrow_{\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})} = \Theta^{\uparrow}_{2ji} \mathrel{\triangleright} \bar\pi_{2ji} \\[0.6em] & \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji},\ \Theta^{\uparrow}_{1ji} \vdash u_{1ji} \equiv u_{2ji} : C_{1j}[T_j.c_{ji}(\bar x_{ji}) / z] \\[0.6em] & \kappa_C \text{ is a universe of propositions} \\ & \quad \text{if} \\ & \qquad \text{and} \\ & \qquad \quad \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one} \\ & \qquad \quad \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{aligned}}{\begin{aligned}& \Sigma;\ \Gamma \\ & {\vdash}\ \mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D_h.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1)\ t_1 \\ & \qquad \mathsf{return}\ \bar C_1 : \kappa_C \\ & \qquad \mathsf{with}\ \bar u_1 \\ & {\equiv}\ \mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D_h.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2)\ t_2 \\ & \qquad \mathsf{return}\ \bar C_2 : \kappa_C \\ & \qquad \mathsf{with}\ \bar u_2 \\ & {:}\ C_{1h}[t_1 / z]\end{aligned}}\;(\mathsf{rec}_\equiv) \\[2em]
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t : \Theta'_{hi} \\[0.6em] & \Sigma \vdash \mathsf{res}_{f;\ \mathsf{nest}_{\mathcal{D}}(\Theta_{hi})}(\bar t : \Theta'_{hi}) = \bar t' \\[0.6em] & \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_j : \kappa_C \\[0.6em] & \forall j, i.\ \Sigma \vdash \Theta'_{ji} \uparrow_{\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})} = \Theta^{\uparrow}_{ji} \mathrel{\triangleright} \bar\pi_{ji} \\[0.6em] & \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji},\ \Theta^{\uparrow}_{ji} \vdash u_{ji} : C_j[T_j.c_{ji}(\bar x_{ji}) / z] \\[0.6em] & \kappa_C \text{ is a universe of propositions} \\ & \quad \text{if} \\ & \qquad \text{and} \\ & \qquad \quad \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one} \\ & \qquad \quad \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{aligned}}{\begin{aligned}& \Sigma;\ \Gamma \\ & {\vdash}\ \mathsf{rec}_{r;\ \varsigma;\ \chi}\ T_h\ (T_h.c_{hi}(\bar t)) \\ & \qquad \mathsf{return}\ \bar C : \kappa_C \\ & \qquad \mathsf{with}\ \bar u \\ & {\equiv}\ u_{hi}[\bar t / \bar x_{hi},\ \bar t' / \bar y_{hi}] \\ & {:}\ C_h[T_h.c_{hi}(\bar t) / z]\end{aligned}}\;(\iota) \\[2em]
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \bar c_h = c_{h1} : \Theta_{h1} \\[0.6em] & \mathsf{nest}_{\mathcal{D}}(\Theta_{h1}) = (\bot,\ \dots,\ \bot) \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash t : T_h \\[0.6em] & \Sigma;\ \Gamma,\ z : T_h \vdash e : C_h \\[0.6em] & D_h.c_{h1}(\bar x_{h1}) \Rightarrow e[T_h.c_{h1}(\bar x_{h1}) / z] \text{ is the branch of } c_{h1} \text{ in } \bar u \\[0.6em] & \forall j.\ \Sigma;\ \Gamma,\ z : T_j \vdash C_j : \kappa_C \\[0.6em] & \forall j, i.\ \Sigma \vdash \Theta'_{ji} \uparrow_{\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})} = \Theta^{\uparrow}_{ji} \mathrel{\triangleright} \bar\pi_{ji} \\[0.6em] & \forall j, i.\ \Sigma;\ \Gamma,\ \Theta'_{ji},\ \Theta^{\uparrow}_{ji} \vdash u_{ji} : C_j[T_j.c_{ji}(\bar x_{ji}) / z] \\[0.6em] & \kappa_C \text{ is a universe of propositions} \\ & \quad \text{if} \\ & \qquad \text{and} \\ & \qquad \quad \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is one} \\ & \qquad \quad \bar c_1, \dots, \bar c_k \text{ are not all empty}\end{aligned}}{\Sigma;\ \Gamma \vdash e[t / z] \equiv \mathsf{rec}_{r;\ \varsigma;\ \chi}\ T_h\ t\ \mathsf{return}\ \bar C : \kappa_C\ \mathsf{with}\ \bar u : C_h[t / z]}\;(\eta_c)
+\end{gathered}
+```
+
+Two observations by the same destructor, at equal arguments of the instance, at equal levels, of equal terms, at equal arguments of its telescope, are equal, where $`T_1`$ and $`T_2`$ are the instances $`{D.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1}`$ and $`{D.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2}`$:
+
+```math
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad \dots; \\ & \qquad \quad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d; \\ & \qquad \quad \dots \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \bar l_2 \text{ as many as } \bar l \\[0.6em] & \bar d[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] = (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d_2) \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\[0.6em] & \bar l_1 = \bar l_2 \\[0.6em] & \Sigma;\ \Gamma \vdash t_1 \equiv t_2 : T_1 \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t_1 \equiv \bar t_2 : \Theta[\bar a_1 / \Delta,\ t_1.T_1 / \bar d_1]\end{aligned}}{\Sigma;\ \Gamma \vdash t_1.(T_1.d)(\bar t_1) \equiv t_2.(T_2.d)(\bar t_2) : B[\bar a_1 / \Delta,\ t_1.T_1 / \bar d_1][\bar t_1 / \Theta]}\;(d_\equiv)
+```
+
+Two corecursors at equal arguments of the instance, at equal levels, from equal states, with equal states, which carry the same sorts $`\bar\kappa_j`$, and equal branches, are equal, where $`T_j`$, the destructors and $`\kappa'`$ are at the levels $`\bar l_1`$ and at the arguments $`\bar a_1`$, and $`c_{1j}`$ is the corecursor $`{\mathsf{corec}_r\ T_j\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta_1\ \mathsf{with}\ \bar g_1}`$ of each type from the variables of its state; an observation of a corecursor by a destructor of its type, at arguments of its telescope, with the premises of $`(\mathsf{corec})`$, is equal to the branch of the destructor, with the terms of the state substituted for the variables of the state and the arguments for those of the telescope, [resumed](12-prelude.md#positions) if the destructor is recursive, where $`t_c`$ is the corecursor $`{\mathsf{corec}_r\ T_h\ \mathsf{from}\ \bar t\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g}`$:
+
+```math
+\begin{gathered}
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l_1,\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \Sigma \ni \mathsf{prelude} \text{ if a destructor of } \bar d_1, \dots, \bar d_k \text{ is recursive} \\[0.6em] & \bar l_2 \text{ as many as } \bar l \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta[\bar s' / \bar s,\ \bar l_1 / \bar l,\ \bar p' / \bar p] \\[0.6em] & \bar l_1 = \bar l_2 \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t_1 \equiv \bar t_2 : \Theta_{1h} \\[0.6em] & \forall j.\ \Sigma;\ \Gamma \vdash \Theta_{1j} : \bar\kappa_j \le l_j \\[0.6em] & \forall j.\ \Sigma;\ \Gamma \vdash \Theta_{1j} \equiv \Theta_{2j} : U_{l_j} \\[0.6em] & \forall j, i. \\ & \quad \Sigma;\ \Gamma,\ \Theta_{1j},\ \Theta_{ji}[\bar a_1 / \Delta,\ c_{1j}.T_j / \bar d_{ji,1}] \\ & \quad {\vdash}\ g_{1ji} \\ & \quad {\equiv}\ g_{2ji} \\ & \quad {:}\ \mathsf{pos}_{\bar\Theta_1;\ r;\ \chi_{ji}}(B_{ji},\ B_{ji}[\bar a_1 / \Delta,\ c_{1j}.T_j / \bar d_{ji,1}] : \kappa')\end{aligned}}{\begin{aligned}& \Sigma;\ \Gamma \\ & {\vdash}\ \mathsf{corec}_r\ (D_h.\{\bar s';\ \bar l_1;\ \bar p'\}\ \bar a_1) \\ & \qquad \mathsf{from}\ \bar t_1 \\ & \qquad \mathsf{return}\ \bar\Theta_1 \\ & \qquad \mathsf{with}\ \bar g_1 \\ & {\equiv}\ \mathsf{corec}_r\ (D_h.\{\bar s';\ \bar l_2;\ \bar p'\}\ \bar a_2) \\ & \qquad \mathsf{from}\ \bar t_2 \\ & \qquad \mathsf{return}\ \bar\Theta_2 \\ & \qquad \mathsf{with}\ \bar g_2 \\ & {:}\ T_h\end{aligned}}\;(\mathsf{corec}_\equiv) \\[2em]
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \Sigma \ni \mathsf{prelude} \text{ if a destructor of } \bar d_1, \dots, \bar d_k \text{ is recursive} \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t : \Theta_h \\[0.6em] & \Sigma;\ \Gamma \vdash \bar u : \Theta_{hi}[\bar a / \Delta,\ t_c.T_h / \bar d_{hi,1}] \\[0.6em] & \forall j.\ \Sigma;\ \Gamma \vdash \Theta_j : \bar\kappa_j \le l_j \\[0.6em] & \forall j, i. \\ & \quad \Sigma;\ \Gamma,\ \Theta_j,\ \Theta_{ji}[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}] \\ & \quad {\vdash}\ g_{ji} : \mathsf{pos}_{\bar\Theta;\ r;\ \chi_{ji}}(B_{ji},\ B_{ji}[\bar a / \Delta,\ c_j.T_j / \bar d_{ji,1}] : \kappa')\end{aligned}}{\begin{aligned}& \Sigma;\ \Gamma \\ & {\vdash}\ t_c.(T_h.d_{hi})(\bar u) \\ & {\equiv}\ \mathsf{resume}_{B_{hi};\ r;\ \chi_{hi}}(g_{hi}[\bar t / \bar y_h,\ \bar u / \bar z_{hi}],\ T_h : \kappa',\ \bar\Theta,\ \bar g) \\ & {:}\ B_{hi}[\bar a / \Delta,\ t_c.T_h / \bar d_{hi,1}][\bar u / \Theta_{hi}]\end{aligned}}\;(\beta)
+\end{gathered}
+```
+
+Two terms of an instance of a type without recursive destructor, whose arguments are arguments of the parameters, whose observations by each destructor, at the variables $`\bar z_i`$ of its telescope, are equal, the destructors before it being the observations of the first term, are equal, so that a term of a codata type is determined by its observations, where $`T`$ is the instance $`{D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a}`$ and $`{\bar d[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = (\bar d_{i,1} \mid d_i : (\Theta_i \vdash B_i \mathrel{◀} \psi_i) \mathrel{▶} p_i;\ q_i \mathrel{◀} \varsigma_i \mid \bar d_{i,2})}`$ decomposes the destructors at each of them:
+
+```math
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad \dots; \\ & \qquad \quad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d; \\ & \qquad \quad \dots \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \mathsf{rec}_{\mathcal{D}}(\bar d) = (\bot,\ \dots,\ \bot) \\[0.6em] & \Sigma;\ \Gamma \vdash \bar a : \Delta[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] \\[0.6em] & \Sigma;\ \Gamma \vdash t : T \\[0.6em] & \Sigma;\ \Gamma \vdash u : T \\[0.6em] & \forall i. \\ & \quad \Sigma;\ \Gamma,\ \Theta_i[\bar a / \Delta,\ t.T / \bar d_{i,1}] \\ & \quad {\vdash}\ t.(T.d_i)(\bar z_i) \equiv u.(T.d_i)(\bar z_i) : B_i[\bar a / \Delta,\ t.T / \bar d_{i,1}]\end{aligned}}{\Sigma;\ \Gamma \vdash t \equiv u : T}\;(\eta_d)
+```
+
+No rule equates two instances with different qualities or grades: two types that differ only by a grade are different types.
+
+### Arguments
+
+The arguments of a telescope are typed by its entries, each argument instantiating the types after it, whose grades typing ignores:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () : \varepsilon}\;(\mathsf{tel}_\varepsilon) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash t : A \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t : \Theta[t / x]\end{aligned}}{\Sigma;\ \Gamma \vdash (t,\ \bar t) : (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)}\;(\mathsf{tel}_{,}) \\[2em]
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{tel}_{\varepsilon\equiv}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash t \equiv u : A \\[0.6em] & \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta[t / x]\end{aligned}}{\Sigma;\ \Gamma \vdash (t,\ \bar t) \equiv (u,\ \bar u) : (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)}\;(\mathsf{tel}_{,\equiv})
+\end{gathered}
+```
+
+The arguments of an instance are typed by the parameters of its type declaration, each argument instantiating the types after it, as a substitution of the second order of the parameters; the abstraction for a second-order variable is a term of its type under the variables $`\bar x`$ of its telescope:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () : \varepsilon}\;(\mathsf{arg}_\varepsilon) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash \bar a : \Delta \\[0.6em] & \Sigma;\ \Gamma \vdash a : A[\bar a / \Delta]\end{aligned}}{\Sigma;\ \Gamma \vdash (\bar a,\ a) : (\Delta,\ x : A)}\;(\mathsf{arg}_x) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash \bar a : \Delta \\[0.6em] & \Sigma;\ \Gamma,\ \Theta[\bar a / \Delta] \vdash B : A[\bar a / \Delta]\end{aligned}}{\Sigma;\ \Gamma \vdash (\bar a,\ \bar x.\, B) : (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))}\;(\mathsf{arg}_X) \\[2em]
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash () \equiv () : \varepsilon}\;(\mathsf{arg}_{\varepsilon\equiv}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\[0.6em] & \Sigma;\ \Gamma \vdash a_1 \equiv a_2 : A[\bar a_1 / \Delta]\end{aligned}}{\Sigma;\ \Gamma \vdash (\bar a_1,\ a_1) \equiv (\bar a_2,\ a_2) : (\Delta,\ x : A)}\;(\mathsf{arg}_{x\equiv}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\[0.6em] & \Sigma;\ \Gamma,\ \Theta[\bar a_1 / \Delta] \vdash B_1 \equiv B_2 : A[\bar a_1 / \Delta]\end{aligned}}{\Sigma;\ \Gamma \vdash (\bar a_1,\ \bar x.\, B_1) \equiv (\bar a_2,\ \bar x.\, B_2) : (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))}\;(\mathsf{arg}_{X\equiv})
+\end{gathered}
+```
+
+### Telescopes in a Sort
+
+A telescope lives in a sort $`\kappa`$ when each of its types lives in a sort that $`\kappa`$ [bounds](07-sorts.md), and an entry whose type is a proposition has a grade without use at run time:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : \kappa}\;(\mathsf{tel}_{\kappa\varepsilon}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa_2 \\[0.6em] & \Sigma;\ \Gamma,\ x : A \vdash \Theta : \kappa_2 \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{aligned}}{\Sigma;\ \Gamma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa_2}\;(\mathsf{tel}_{\kappa,})
+\end{gathered}
+```
+
+A telescope lives in the sorts $`\bar\kappa`$ below the level $`l`$, one sort for each entry, when the type of each entry lives in its sort, of a level below $`l`$, and an entry whose type is a proposition has a grade without use at run time, as in a telescope in a sort; the sorts of the entries, which a sort only bounds, are those that the [packing](12-prelude.md#packing) of the telescope needs:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon : () \le l}\;(\mathsf{tel}_{\bar\kappa\varepsilon}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A : s_{l'} \\[0.6em] & l' \le l \\[0.6em] & \Sigma;\ \Gamma,\ x : A \vdash \Theta : \bar\kappa \le l \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if } s \text{ is } \Omega\end{aligned}}{\Sigma;\ \Gamma \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : (s_{l'},\ \bar\kappa) \le l}\;(\mathsf{tel}_{\bar\kappa,})
+\end{gathered}
+```
+
+Two telescopes are equal in a sort $`\kappa`$ when their entries have the same grades, their types are equal types of sorts that $`\kappa`$ bounds, each under the entries before it in the first telescope, and an entry whose type is a proposition has a grade without use at run time:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash \varepsilon \equiv \varepsilon : \kappa}\;(\mathsf{tel}_{\kappa\varepsilon\equiv}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \Gamma \vdash A_1 \equiv A_2 : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa_2 \\[0.6em] & \Sigma;\ \Gamma,\ x : A_1 \vdash \Theta_1 \equiv \Theta_2 : \kappa_2 \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{aligned}}{\Sigma;\ \Gamma \vdash (x : A_1 \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta_1) \equiv (x : A_2 \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta_2) : \kappa_2}\;(\mathsf{tel}_{\kappa,\equiv})
+\end{gathered}
+```
+
+### Strict Positivity
+
+A type is strictly positive in a variable when the variable occurs in it only as the type itself or below instances of declared types, at the parameters in which these types are strictly positive, and never in a term: the judgment $`{\Sigma;\ \mathcal{D} \vdash A \oplus X}`$ reads the type $`A`$ is strictly positive in the variable $`X`$, in the signature $`\Sigma`$ and the block $`\mathcal{D}`$ whose formation checks it.
+The judgment reads that a declared type $`D`$ is strictly positive in its parameter $`X`$, written $`{D \oplus X \in \Sigma;\ \mathcal{D}}`$, when $`D`$ is a type of the block that declares $`X`$ among the parameters $`\Pi`$ in which it is strictly positive, as the type of a recursive field or the result of a recursive destructor is, or when $`D`$ is a codata type of the signature that does and none of whose destructors is [recursive](08-syntax.md#destructors-of-a-block), at any instance of its sort and grade variables: the types of a block are nested below such a codata type only, whose own destructors nest its parameters below such types only, since their strict positivity read the same types:
+
+```math
+\begin{aligned}
+& \text{⟺} &&(\in_{\oplus\mathcal{D}}) \\
+& \quad D \oplus X \in \Sigma;\ \mathcal{D} \\
+& \quad \text{or} \\
+& \qquad \text{and} \\
+& \qquad \quad \mathcal{D} \text{ declares } D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots \\
+& \qquad \quad X \in \Pi \\
+& \qquad \text{and} \\
+& \qquad \quad {\in} \\
+& \qquad \qquad \mathcal{D}' = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots;\ D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d;\ \dots \\
+& \qquad \qquad \Sigma \\
+& \qquad \quad X \in \Pi \\
+& \qquad \quad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \mathsf{rec}_{\mathcal{D}'}(\bar d[\bar s' / \bar s,\ \bar p' / \bar p]) = (\bot,\ \dots,\ \bot)
+\end{aligned}
+```
+
+A type in which the variable does not occur is strictly positive in it, as is the variable applied to arguments in which it does not occur, and an instance of a declared type whose arguments are:
+
+```math
+\begin{gathered}
+\frac{X \text{ does not occur in } A}{\Sigma;\ \mathcal{D} \vdash A \oplus X}\;(\oplus_{\notin}) \\[2em]
+\frac{X \text{ does not occur in } \bar t}{\Sigma;\ \mathcal{D} \vdash X[\bar t] \oplus X}\;(\oplus_X) \\[2em]
+\frac{\Sigma;\ \mathcal{D} \vdash_D \bar a \oplus X}{\Sigma;\ \mathcal{D} \vdash D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a \oplus X}\;(\oplus_D)
+\end{gathered}
+```
+
+The arguments $`\bar a`$ of an instance of the declared type $`D`$ are strictly positive in a variable, written $`{\Sigma;\ \mathcal{D} \vdash_D \bar a \oplus X}`$, when the argument of each parameter in which $`D`$ is read strictly positive is strictly positive in the variable, under the variables that its abstraction binds, and the variable does not occur in the arguments of the other parameters; in these rules, $`Y`$ is the parameter of $`D`$ whose argument is $`{\bar x.\, B}`$:
+
+```math
+\begin{gathered}
+\frac{}{\Sigma;\ \mathcal{D} \vdash_D () \oplus X}\;(\oplus_{\bar a\varepsilon}) \\[2em]
+\frac{\begin{aligned}& D \oplus Y \in \Sigma;\ \mathcal{D} \\[0.6em] & \Sigma;\ \mathcal{D} \vdash_D \bar a \oplus X \\[0.6em] & \Sigma;\ \mathcal{D} \vdash B \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash_D (\bar a,\ \bar x.\, B) \oplus X}\;(\oplus_{\bar a,}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \mathcal{D} \vdash_D \bar a \oplus X \\[0.6em] & X \text{ does not occur in } B\end{aligned}}{\Sigma;\ \mathcal{D} \vdash_D (\bar a,\ \bar x.\, B) \oplus X}\;(\oplus_{\bar a\notin})
+\end{gathered}
+```
+
+The fields of a constructor are strictly positive in a variable when the type of each of them is, and the destructors of a codata type when the variable does not occur in the arguments of any of them and the result of each of them is strictly positive in it; the rule $`(\bar d_{\kappa\lambda})`$ of the [destructors of a block](#formation-of-the-destructors-of-a-block) checks that no destructor depends on a destructor in whose result such a variable occurs:
+
+```math
+\begin{gathered}
+\frac{}{\Sigma;\ \mathcal{D} \vdash \varepsilon \oplus X}\;(\oplus_\varepsilon) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \mathcal{D} \vdash A \oplus X \\[0.6em] & \Sigma;\ \mathcal{D} \vdash \Theta \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) \oplus X}\;(\oplus_{\Theta,}) \\[2em]
+\frac{}{\Sigma;\ \mathcal{D} \vdash \varepsilon \oplus X}\;(\oplus_{\bar d\varepsilon}) \\[2em]
+\frac{\begin{aligned}& X \text{ does not occur in } \Theta \\[0.6em] & \Sigma;\ \mathcal{D} \vdash B \oplus X \\[0.6em] & \Sigma;\ \mathcal{D} \vdash \bar d \oplus X\end{aligned}}{\Sigma;\ \mathcal{D} \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) \oplus X}\;(\oplus_{\bar d|})
+\end{gathered}
+```
+
+### Formation of the Fields of a Block
+
+The fields of a constructor of a block $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, live in a sort when those whose [nesting](08-syntax.md#fields-of-a-block) has no position do, as the entries of a [telescope in a sort](#telescopes-in-a-sort), and each recursive field is a type $`D`$ of the block at this instance, at its level variables and at its [parameters themselves](08-syntax.md#telescopes-and-contexts) $`\bar x_\Delta`$, a field on which no field after it depends.
+A nested field is a type $`A_0`$ in which these instances $`{\bar D\ \bar x_\Delta}`$ of the types of the block replace type variables $`\bar X`$, one of the sort $`\kappa`$ for each type of the block: $`A_0`$ lives in a sort that $`\kappa`$ bounds, which is a universe, in the context extended by $`\bar X`$ and in a signature that holds the [prelude](12-prelude.md#declarations), and is [strictly positive](#strict-positivity) in each of $`\bar X`$; no field after it depends on it either:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} \varepsilon : \kappa}\;(\mathsf{fields}_\varepsilon) \\[2em]
+\frac{\begin{aligned}& \mathsf{nest}_{\mathcal{D}}(A) = \bot \\[0.6em] & \Sigma;\ \Gamma \vdash A : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa \\[0.6em] & \Sigma;\ \Gamma,\ x : A \vdash_{\mathcal{D}} \Theta : \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa}\;(\mathsf{fields}_{,}) \\[2em]
+\frac{\begin{aligned}& D \text{ is a type of } \mathcal{D} \\[0.6em] & x \text{ does not occur in } \Theta \\[0.6em] & \Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa \text{ is } \Omega\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (x : D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa}\;(\mathsf{fields}_{\mathsf{rec}}) \\[2em]
+\frac{\begin{aligned}& \mathsf{nest}_{\mathcal{D}}(A_0[\bar D\ \bar x_\Delta / \bar X]) = (\bar\lambda) \\[0.6em] & \Sigma;\ \Gamma,\ \bar X : \kappa \vdash A_0 : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa \\[0.6em] & \text{the quality of } \kappa \text{ is } U \\[0.6em] & \forall X \in \bar X.\ \Sigma;\ \mathcal{D} \vdash A_0 \oplus X \\[0.6em] & \Sigma \ni \mathsf{prelude} \\[0.6em] & x \text{ does not occur in } \Theta \\[0.6em] & \Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D}} (x : A_0[\bar D\ \bar x_\Delta / \bar X] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) : \kappa}\;(\mathsf{fields}_\lambda)
+\end{gathered}
+```
+
+### Formation of the Destructors of a Block
+
+The destructors $`\bar d`$ of a codata type of a block $`{\mathcal{D} = \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ \dots}`$, strictly positive in the parameters $`\Pi`$, at an instance $`\bar s'`$, $`\bar p'`$ of its sort and grade variables, $`{d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mathrel{◀} \varsigma_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n \mathrel{◀} \varsigma_n}`$, or $`\varepsilon`$ when there is none, live in a sort $`\kappa`$ of level $`l`$ when the arguments of each live in the universe $`U_l`$, whatever the quality of $`\kappa`$, so that a proposition may quantify over a type of its level.
+The result of a destructor that is not recursive lives in a sort that $`\kappa`$ [bounds](07-sorts.md), a result that is a proposition having a grade without use at run time; the destructor is a second-order variable of the context of the destructors after it if the [nesting](08-syntax.md#destructors-of-a-block) of its result has no position, and no destructor after it depends on it otherwise, as none depends on a recursive destructor; the result of a recursive destructor is a type $`D`$ of the block at this instance, at its level variables and at its [parameters themselves](08-syntax.md#telescopes-and-contexts) $`\bar x_\Delta`$, as the type of a recursive field is, with a grade without use at run time if $`\kappa`$ is a universe of propositions, and no destructor after it depends on it:
+
+```math
+\begin{gathered}
+\frac{\Sigma \vdash \Gamma}{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \varepsilon : \kappa}\;(\bar d_{\kappa\varepsilon}) \\[2em]
+\frac{\begin{aligned}& \mathsf{rec}_{\mathcal{D}}(B) = \bot \\[0.6em] & \mathsf{nest}_\Pi(B) = \bot \\[0.6em] & l \text{ is the level of } \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash \Theta : U_l \\[0.6em] & \Sigma;\ \Gamma,\ \Theta \vdash B : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega \\[0.6em] & \Sigma;\ \Gamma,\ d : (\Theta \vdash B \mathrel{◀} \psi) \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa}\;(\bar d_{\kappa|}) \\[2em]
+\frac{\begin{aligned}& \mathsf{rec}_{\mathcal{D}}(B) = \bot \\[0.6em] & \mathsf{nest}_\Pi(B) \ne \bot \\[0.6em] & l \text{ is the level of } \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash \Theta : U_l \\[0.6em] & \Sigma;\ \Gamma,\ \Theta \vdash B : \kappa_1 \\[0.6em] & \kappa_1 \preceq \kappa \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa_1 \text{ is } \Omega \\[0.6em] & d \text{ does not occur in } \bar d \\[0.6em] & \Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa}\;(\bar d_{\kappa\lambda}) \\[2em]
+\frac{\begin{aligned}& D \text{ is a type of } \mathcal{D} \\[0.6em] & l \text{ is the level of } \kappa \\[0.6em] & \Sigma;\ \Gamma \vdash \Theta : U_l \\[0.6em] & \llcorner p \lrcorner \ne {11}^{\mathsf{m}} \text{ if the quality of } \kappa \text{ is } \Omega \\[0.6em] & d \text{ does not occur in } \bar d \\[0.6em] & \Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa\end{aligned}}{\Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} (d : (\Theta \vdash D.\{\bar s';\ \bar l;\ \bar p'\}\ \bar x_\Delta \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) : \kappa}\;(\bar d_{\kappa\mathsf{rec}})
+\end{gathered}
+```
+
+### Type Declarations
+
+A block of data types $`{\mathcal{D} = \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k}`$ is well formed when its constraint $`C`$ admits an instance of its sort and grade variables and, at each instance it admits, its parameters form a context, the fields of each constructor live in its sort, and they are [strictly positive](#strict-positivity) in each parameter in which their type declares that it is, in the signature and the block, whose types declare the parameters in which the types of the recursive fields are strictly positive; the constructors of each type have distinct names.
+No entry of the signature introduces the name of one of its types, so that an instance of a type of one of these names is an instance of a type of the block.
+The fields that are not recursive are checked in the signature $`\Sigma`$, which the block does not extend, so that the types of the block occur only as the types of the recursive fields and at the positions of the nested fields, at its parameters.
+The fields of a type in a universe of propositions are propositions, by the rules $`{(\mathsf{fields}_{,})}`$ and $`(\mathsf{fields}_{\mathsf{rec}})`$, and none of them is nested, by the rule $`(\mathsf{fields}_\lambda)`$:
+
+```math
+\frac{\begin{aligned}& \exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j, i. \\ & \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \qquad {\vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p]}}\ \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j, i.\ \forall X \in \Pi_j.\ \Sigma;\ \mathcal{D} \vdash \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \oplus X\end{aligned} \\[0.6em] & \forall j.\ \text{the names } c_{j1}, \dots, c_{j n_j} \text{ are distinct} \\[0.6em] & \text{no entry of } \Sigma \text{ introduces one of } D_1, \dots, D_k\end{aligned}}{\Sigma \vdash \mathcal{D}}\;(\mathsf{data})
+```
+
+A block of codata types is well formed likewise, with the destructors $`\bar d_j`$ of each type $`D_j`$ in place of its constructors: its constraint admits an instance and, at each instance it admits, its parameters form a context, the destructors of each type live in its sort, at the parameters in which the type declares that it is strictly positive, and they are strictly positive in each parameter in which their type declares that it is; the destructors of each type have distinct names, and no entry of the signature introduces the name of one of its types.
+The arguments of the destructors and the results of those that are not recursive are checked in the signature $`\Sigma`$, which the block does not extend, so that the types of the block occur only as the results of the recursive destructors, at its parameters:
+
+```math
+\frac{\begin{aligned}& \exists \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ C[\bar s' / \bar s,\ \bar p' / \bar p] \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \text{and} \\ & \qquad \quad \Sigma \vdash \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j. \\ & \qquad \qquad \Sigma;\ \Delta[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \qquad {\vdash_{\mathcal{D}[\bar s' / \bar s,\ \bar p' / \bar p];\ \Pi_j}}\ \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] : \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \quad \forall j.\ \forall X \in \Pi_j.\ \Sigma;\ \mathcal{D} \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \oplus X\end{aligned} \\[0.6em] & \forall j.\ \text{the names } d_{j1}, \dots, d_{j n_j} \text{ are distinct} \\[0.6em] & \text{no entry of } \Sigma \text{ introduces one of } D_1, \dots, D_k\end{aligned}}{\Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa\ \mathsf{where}\ D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1;\ \dots;\ D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k}\;(\mathsf{codata})
+```
+
+### Renamings
+
+A [renaming](09-substitution.md#renamings) $`\alpha`$ of the scope of a context $`\Gamma`$ in the scope of a context $`\Gamma'`$ is typed when $`\Gamma'`$ is a well-formed context that has the image of each variable of $`\Gamma`$, with its type and its telescope renamed:
+
+```math
+\frac{\begin{aligned}& \Sigma \vdash \Gamma' \\[0.6em] & \forall x : A \in \Gamma.\ \alpha(x) : A[\alpha] \in \Gamma' \\[0.6em] & \forall X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma.\ \alpha(X) : (\Theta[\alpha] \vdash A[\alpha] \mathrel{◀} \psi) \in \Gamma'\end{aligned}}{\Sigma;\ \Gamma' \vdash \alpha : \Gamma}\;(\mathsf{ren}_\vdash)
+```
+
+### Substitutions of the First Order
+
+A [substitution of the first order](09-substitution.md#substitutions-of-the-first-order) $`\sigma`$ of the scope of a context $`\Gamma`$ in the scope of a context $`\Gamma'`$ is typed when $`\Gamma'`$ is a well-formed context in which the term that $`\sigma`$ gives each variable of $`\Gamma`$ has its type, substituted, and which has each second-order variable of $`\Gamma`$, which $`\sigma`$ leaves, with its telescope and its type substituted:
+
+```math
+\frac{\begin{aligned}& \Sigma \vdash \Gamma' \\[0.6em] & \forall x : A \in \Gamma.\ \Sigma;\ \Gamma' \vdash \sigma(x) : A[\sigma] \\[0.6em] & \forall X : (\Theta \vdash A \mathrel{◀} \psi) \in \Gamma.\ X : (\Theta[\sigma] \vdash A[\sigma] \mathrel{◀} \psi) \in \Gamma'\end{aligned}}{\Sigma;\ \Gamma' \vdash \sigma : \Gamma}\;(\mathsf{subst}_\vdash)
+```
+
+## Properties
+
+Every judgment holds in a well-formed signature, and the signature that a well-formed signature extends is well formed:
+
+```math
+\begin{aligned}
+& \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{def}) \\[1em]
+& \Sigma \vdash f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{decl}) \\[1em]
+& \Sigma \vdash \Gamma \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Gamma) \\[1em]
+& \Sigma;\ \Gamma \vdash A \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.A) \\[1em]
+& \Sigma;\ \Gamma \vdash A \equiv B \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.A_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.t) \\[1em]
+& \Sigma;\ \Gamma \vdash t \equiv u : A \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t : \Theta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar t) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta_{\bar\kappa}) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\Theta_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash_{\mathcal{D}} \Theta : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\mathsf{fields}) \\[1em]
+& \Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.\bar d) \\[1em]
+& \text{⟹} &&(\mathsf{presup}_\Sigma.\mathsf{data}) \\
+& \quad \Sigma \vdash \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \mathsf{where} \\
+& \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\
+& \qquad \quad \dots; \\
+& \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\
+& \quad \vdash \Sigma \\[1em]
+& \text{⟹} &&(\mathsf{presup}_\Sigma.\mathsf{codata}) \\
+& \quad \Sigma \vdash \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\
+& \qquad \mathsf{where} \\
+& \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\
+& \qquad \quad \dots; \\
+& \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\
+& \quad \vdash \Sigma \\[1em]
+& {\vdash \Sigma,\ e} \implies \vdash \Sigma &&(\mathsf{presup}_\Sigma.e)
+\end{aligned}
+```
+
+Every judgment in a context holds in a well-formed context, which its rules check down to a rule of the variables, of the sorts, of the constants or of the empty arguments:
+
+```math
+\begin{aligned}
+& \Sigma;\ \Gamma \vdash A \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.A) \\[1em]
+& \Sigma;\ \Gamma \vdash A \equiv B \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.A_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.t) \\[1em]
+& \Sigma;\ \Gamma \vdash t \equiv u : A \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t : \Theta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar t) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a : \Delta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar a) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta_{\bar\kappa}) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \implies \Sigma \vdash \Gamma &&(\mathsf{presup}_\Gamma.\Theta_\equiv)
+\end{aligned}
+```
+
+Every judgment in a context holds in every context in which a renaming of it is typed, renamed; the arguments of an instance keep their parameters, which are closed:
+
+```math
+\begin{aligned}
+& \Sigma;\ \Gamma \vdash A \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\alpha] &&(\mathsf{ren}_\vdash.A) \\[1em]
+& \Sigma;\ \Gamma \vdash A \equiv B \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\alpha] \equiv B[\alpha] &&(\mathsf{ren}_\vdash.A_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\alpha] : A[\alpha] &&(\mathsf{ren}_\vdash.t) \\[1em]
+& \Sigma;\ \Gamma \vdash t \equiv u : A \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\alpha] \equiv u[\alpha] : A[\alpha] &&(\mathsf{ren}_\vdash.t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\alpha] : \Theta[\alpha] &&(\mathsf{ren}_\vdash.\bar t) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\alpha] \equiv \bar u[\alpha] : \Theta[\alpha] &&(\mathsf{ren}_\vdash.\bar t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a[\alpha] : \Delta &&(\mathsf{ren}_\vdash.\bar a) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a_1[\alpha] \equiv \bar a_2[\alpha] : \Delta &&(\mathsf{ren}_\vdash.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\alpha] : \kappa &&(\mathsf{ren}_\vdash.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\alpha] : \bar\kappa \le l &&(\mathsf{ren}_\vdash.\Theta_{\bar\kappa}) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \alpha : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta_1[\alpha] \equiv \Theta_2[\alpha] : \kappa &&(\mathsf{ren}_\vdash.\Theta_\equiv)
+\end{aligned}
+```
+
+Every judgment in a context holds in every context in which a substitution of the first order of it is typed, substituted, and the substitution of a term of a type for a variable of this type is typed:
+
+```math
+\begin{aligned}
+& \Sigma;\ \Gamma \vdash A \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\sigma] &&(\mathsf{subst}_\vdash.A) \\[1em]
+& \Sigma;\ \Gamma \vdash A \equiv B \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash A[\sigma] \equiv B[\sigma] &&(\mathsf{subst}_\vdash.A_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\sigma] : A[\sigma] &&(\mathsf{subst}_\vdash.t) \\[1em]
+& \Sigma;\ \Gamma \vdash t \equiv u : A \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash t[\sigma] \equiv u[\sigma] : A[\sigma] &&(\mathsf{subst}_\vdash.t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\sigma] : \Theta[\sigma] &&(\mathsf{subst}_\vdash.\bar t) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar t[\sigma] \equiv \bar u[\sigma] : \Theta[\sigma] &&(\mathsf{subst}_\vdash.\bar t_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a[\sigma] : \Delta &&(\mathsf{subst}_\vdash.\bar a) \\[1em]
+& \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \bar a_1[\sigma] \equiv \bar a_2[\sigma] : \Delta &&(\mathsf{subst}_\vdash.\bar a_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\sigma] : \kappa &&(\mathsf{subst}_\vdash.\Theta) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta[\sigma] : \bar\kappa \le l &&(\mathsf{subst}_\vdash.\Theta_{\bar\kappa}) \\[1em]
+& \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \text{ and } \Sigma;\ \Gamma' \vdash \sigma : \Gamma \implies \Sigma;\ \Gamma' \vdash \Theta_1[\sigma] \equiv \Theta_2[\sigma] : \kappa &&(\mathsf{subst}_\vdash.\Theta_\equiv) \\[1em]
+& \Sigma;\ \Gamma \vdash t : A \implies \Sigma;\ \Gamma \vdash [t / x] : (\Gamma,\ x : A) &&(\mathsf{subst}_\vdash.\mathsf{single})
+\end{aligned}
+```
+
+Every judgment in a context, and the judgment of the destructors of a block, holds in every well-formed signature that has the entries of its own, since it reads its signature only by the entries that it has, its constants, its declared types and the prelude; the judgment $`{\vdash \Sigma}`$ checks an entry in the signature before it, which every later signature extends:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{ext}_\vdash.\Gamma) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma \vdash \Gamma \\
+& \quad \Sigma' \vdash \Gamma \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.A) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash A \\
+& \quad \Sigma';\ \Gamma \vdash A \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.A_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash A \equiv B \\
+& \quad \Sigma';\ \Gamma \vdash A \equiv B \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash t : A \\
+& \quad \Sigma';\ \Gamma \vdash t : A \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.t_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash t \equiv u : A \\
+& \quad \Sigma';\ \Gamma \vdash t \equiv u : A \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \quad \Sigma';\ \Gamma \vdash \bar t : \Theta \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar t_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \\
+& \quad \Sigma';\ \Gamma \vdash \bar t \equiv \bar u : \Theta \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar a) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \bar a : \Delta \\
+& \quad \Sigma';\ \Gamma \vdash \bar a : \Delta \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar a_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\
+& \quad \Sigma';\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\Theta) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \kappa \\
+& \quad \Sigma';\ \Gamma \vdash \Theta : \kappa \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\Theta_{\bar\kappa}) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \quad \Sigma';\ \Gamma \vdash \Theta : \bar\kappa \le l \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\Theta_\equiv) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \\
+& \quad \Sigma';\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \\[1em]
+& \text{⟹} &&(\mathsf{ext}_\vdash.\bar d) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad {}\vdash \Sigma' \\
+& \qquad \Sigma;\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa \\
+& \quad \Sigma';\ \Gamma \vdash_{\mathcal{D};\ \Pi} \bar d : \kappa
+\end{aligned}
+```
+
+A rule reads the levels only by their equality and their order, which every instantiation keeps, and by the instances of the entries of the signature, whose levels are instantiated in turn.
+Every judgment in a context thus holds once levels $`\bar l'`$ replace the level variables $`\bar l`$ of its context, of its terms, of its telescopes and of its sorts, the sorts $`\bar\kappa`$ one by one:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{lvl}_\vdash.\Gamma) \\
+& \quad \Sigma \vdash \Gamma \\
+& \quad \Sigma \vdash \Gamma[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.A) \\
+& \quad \Sigma;\ \Gamma \vdash A \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash A[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.A_\equiv) \\
+& \quad \Sigma;\ \Gamma \vdash A \equiv B \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash A[\bar l' / \bar l] \equiv B[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.t) \\
+& \quad \Sigma;\ \Gamma \vdash t : A \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash t[\bar l' / \bar l] : A[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.t_\equiv) \\
+& \quad \Sigma;\ \Gamma \vdash t \equiv u : A \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash t[\bar l' / \bar l] \equiv u[\bar l' / \bar l] : A[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.\bar t) \\
+& \quad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \bar t[\bar l' / \bar l] : \Theta[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.\bar t_\equiv) \\
+& \quad \Sigma;\ \Gamma \vdash \bar t \equiv \bar u : \Theta \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \bar t[\bar l' / \bar l] \equiv \bar u[\bar l' / \bar l] : \Theta[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.\bar a) \\
+& \quad \Sigma;\ \Gamma \vdash \bar a : \Delta \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \bar a[\bar l' / \bar l] : \Delta[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.\bar a_\equiv) \\
+& \quad \Sigma;\ \Gamma \vdash \bar a_1 \equiv \bar a_2 : \Delta \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \bar a_1[\bar l' / \bar l] \equiv \bar a_2[\bar l' / \bar l] : \Delta[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.\Theta) \\
+& \quad \Sigma;\ \Gamma \vdash \Theta : \kappa \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \Theta[\bar l' / \bar l] : \kappa[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.\Theta_{\bar\kappa}) \\
+& \quad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \Theta[\bar l' / \bar l] : \bar\kappa[\bar l' / \bar l] \le l[\bar l' / \bar l] \\[1em]
+& \text{⟹} &&(\mathsf{lvl}_\vdash.\Theta_\equiv) \\
+& \quad \Sigma;\ \Gamma \vdash \Theta_1 \equiv \Theta_2 : \kappa \\
+& \quad \Sigma;\ \Gamma[\bar l' / \bar l] \vdash \Theta_1[\bar l' / \bar l] \equiv \Theta_2[\bar l' / \bar l] : \kappa[\bar l' / \bar l]
+\end{aligned}
+```
+
+The names of a well-formed signature are [distinct](08-syntax.md):
+
+```math
+\begin{aligned}
+& \vdash \Sigma \implies \text{the names of } \Sigma \text{ are distinct} &&(\mathsf{distinct}_\Sigma)
+\end{aligned}
+```
+
+A well-formed signature [declares its liftings in order](13-liftings.md#signatures), since the rule $`(\mathsf{sig}_{\mathsf{lift}})`$ checks each lifting in the entries before it, which hold the block of the type lifted and in which the destructors are those of this type lifted:
+
+```math
+\begin{aligned}
+& \vdash \Sigma \implies \Sigma \text{ declares its liftings in order} &&(\mathsf{order}_\Sigma)
+\end{aligned}
+```
+
+The [prelude](12-prelude.md#declarations) is a well-formed signature: each of its declarations is well formed in the declarations before it, at every instance that its constraint admits:
+
+```math
+\begin{aligned}
+& \vdash \mathsf{prelude} &&(\mathsf{prelude}_{\vdash})
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [packing](12-prelude.md#packing) of a telescope is a type of the universe of its level, and the packing of arguments of the telescope is a term of it:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{pack}_{\Theta:}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \quad \Sigma;\ \Gamma \vdash \langle \Theta \rangle_{\bar\kappa;\ l} : U_{\mathsf{level}_{\bar\kappa}(l)} \\[1em]
+& \text{⟹} &&(\mathsf{pack}_{\bar t:}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \quad \Sigma;\ \Gamma \vdash \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} : \langle \Theta \rangle_{\bar\kappa;\ l}
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [unpacking](12-prelude.md#unpacking) of a term of the packing of a telescope, into a term over the variables of the telescope whose type does not depend on them, has this type; the unpacking of the packing of arguments is the term at the arguments; and a term over a term $`z`$ of the packing is the unpacking of the term it is at into the term at the packing $`{\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l}}`$ of the variables $`\bar x`$ of the telescope:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unpack}_{:}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash u : \langle \Theta \rangle_{\bar\kappa;\ l} \\
+& \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
+& \qquad \Sigma;\ \Gamma,\ \Theta \vdash b : C \\
+& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b : C \\[1em]
+& \text{⟹} &&(\mathsf{unpack}_\beta) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash \bar t : \Theta \\
+& \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
+& \qquad \Sigma;\ \Gamma,\ \Theta \vdash b : C \\
+& \quad \Sigma;\ \Gamma \vdash \mathsf{unpack}_r\ \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \equiv b[\bar t / \Theta] : C \\[1em]
+& \text{⟹} &&(\mathsf{unpack}_\eta) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \Gamma \vdash \Theta : \bar\kappa \le l \\
+& \qquad \Sigma;\ \Gamma \vdash u : \langle \Theta \rangle_{\bar\kappa;\ l} \\
+& \qquad \Sigma;\ \Gamma \vdash C : \kappa \\
+& \qquad \Sigma;\ \Gamma,\ z : \langle \Theta \rangle_{\bar\kappa;\ l} \vdash e : C \\
+& \quad \Sigma;\ \Gamma \vdash e[u / z] \equiv \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ e[\langle \bar x \rangle_{\Theta;\ \bar\kappa;\ l} / z] : C
+\end{aligned}
+```
+
+A well-formed signature holds the [lifting](13-liftings.md#signatures) that it declares of a type of one of its blocks, with whatever destructors: they are those of this type lifted, which the rule $`(\uparrow_D)`$ therefore need not ask for:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{sig}_{\uparrow}) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \\
+& \qquad \mathcal{D} \in \Sigma \\
+& \qquad D \text{ is a type of } \mathcal{D} \\
+& \qquad \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d') \in \Sigma \\
+& \quad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d'
+\end{aligned}
+```
+
+A well-formed signature gives a well-formed [type declaration](#type-declarations) to the [lifting](13-liftings.md#declaration) of a codata type of one of its blocks, of which no destructor is recursive, when each parameter lifted is a type, at the variables $`\bar x`$ of its telescope, in the parameters $`\Delta_1`$ before it followed by it, at each instance that the constraint of the block admits, and when no entry of the signature introduces its name $`D^\Pi`$: the motive of a parameter is a type over a term of this parameter, which neither the relation of the destructors lifted nor the strict positivity requires to be a type:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{lift}_\vdash) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \\
+& \qquad \mathcal{D} \in \Sigma \\
+& \qquad \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d' \\
+& \qquad \text{no entry of } \Sigma \text{ introduces } D^\Pi \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \mathsf{rec}_{\mathcal{D}}(\bar d_D[\bar s' / \bar s,\ \bar p' / \bar p]) = (\bot,\ \dots,\ \bot) \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall \Delta_1,\ x,\ A,\ \Delta_2. \\
+& \qquad \quad \text{⟹} \\
+& \qquad \qquad \text{and} \\
+& \qquad \qquad \quad C_{\mathcal{D}}[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \qquad \quad \Delta[\bar s' / \bar s,\ \bar p' / \bar p] = (\Delta_1,\ x : A,\ \Delta_2) \\
+& \qquad \qquad \quad x \in \Pi \\
+& \qquad \qquad \Sigma;\ \Delta_1,\ x : A \vdash x \\
+& \qquad \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall \Delta_1,\ X,\ \Theta,\ A,\ \psi,\ \Delta_2. \\
+& \qquad \quad \text{⟹} \\
+& \qquad \qquad \text{and} \\
+& \qquad \qquad \quad C_{\mathcal{D}}[\bar s' / \bar s,\ \bar p' / \bar p] \\
+& \qquad \qquad \quad \Delta[\bar s' / \bar s,\ \bar p' / \bar p] = (\Delta_1,\ X : (\Theta \vdash A \mathrel{◀} \psi),\ \Delta_2) \\
+& \qquad \qquad \quad X \in \Pi \\
+& \qquad \qquad \Sigma;\ \Delta_1,\ X : (\Theta \vdash A \mathrel{◀} \psi),\ \Theta \vdash X[\bar x] \\
+& \quad \Sigma \vdash \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')
+\end{aligned}
+```
+
+In a well-formed signature, where no parameter is lifted, the terms of fields whose [recursive results](14-recursive-results.md#types-of-the-results) have types have [recursive results](14-recursive-results.md#terms-of-the-results), whatever the results $`f`$ of the terms of the types of the block are: the signature declares each lifting after the destructors that it lifts, so that the result of each observation of a term of a type lifted exists, down to the terms of the types of the block, and a recursor on a constructor is never stuck for want of a recursive result:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{exists}_{\mathsf{res}\Theta}) \\
+& \quad \text{and} \\
+& \qquad {}\vdash \Sigma \\
+& \qquad \Pi = \varnothing \\
+& \qquad \Sigma \vdash \Theta \uparrow_{\bar\lambda} = \Theta^{\uparrow} \mathrel{\triangleright} \bar\pi \\
+& \qquad \bar t \text{ as many as the fields of } \Theta \\
+& \quad \exists \bar t'.\ \Sigma \vdash \mathsf{res}_{f;\ \bar\lambda}(\bar t : \Theta) = \bar t'
+\end{aligned}
+```
