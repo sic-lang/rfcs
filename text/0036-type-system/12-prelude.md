@@ -102,7 +102,7 @@ The grade $`q_s`$ of a term already built, of the quality $`s`$, is $`{11}^{\mat
 \end{aligned}
 ```
 
-In a block $`\mathcal{D}`$ of codata types $`{D_1, \dots, D_k}`$, whose states are $`{\bar\Theta = (\Theta_1 : \bar\kappa_1,\ \dots,\ \Theta_k : \bar\kappa_k)}`$, the type $`{\mathsf{pos}_{\bar\Theta;\ r;\ \chi}(B,\ T : \kappa)}`$ of the branch of a destructor whose result is $`B`$, at the type $`T`$ of this result, is the type of the positions of the state of the type of the block that $`B`$ names, if the destructor is recursive, and $`T`$ otherwise:
+In a block $`\mathcal{D}`$ of codata types $`{D_1, \dots, D_k}`$, whose states are $`{\bar\Theta = (\Theta_1 : \bar\kappa_1,\ \dots,\ \Theta_k : \bar\kappa_k)}`$, the type $`{\mathsf{pos}_{\bar\Theta;\ r;\ \chi}(B,\ T : \kappa)}`$ of the branch of a destructor whose result is $`B`$, in a corecursor, at the type $`T`$ of this result, is the type of the positions of the state of the type of the block that $`B`$ names, if the destructor is recursive, and $`T`$ otherwise:
 
 ```math
 \begin{aligned}
