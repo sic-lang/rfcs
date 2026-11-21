@@ -17,7 +17,7 @@ A term uses only the variables of its scope, each applied to an argument for eac
 
 ### Terms
 
-A term in a scope is one of twelve cases:
+A term in a scope is one of thirteen cases:
 
 ```math
 \begin{aligned}
@@ -35,7 +35,8 @@ A term in a scope is one of twelve cases:
 & \qquad t \mathrel{{\sim}.\{s;\ l\}_A} u \\
 & \qquad \mathsf{refl}.\{s;\ l\}_A(t) \\
 & \qquad \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u) \\
-& \qquad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)
+& \qquad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u) \\
+& \qquad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ x_1\, x_2.\, \bar A,\ t,\ \bar g)
 \end{aligned}
 ```
 
@@ -53,6 +54,7 @@ The cases are:
 - A proof $`{\mathsf{refl}.\{s;\ l\}_A(t)}`$ of the equality of the term $`t`$ of the type $`A`$ with itself, which carries the type of its term and the quality and the level of the sort of this type, as the equality does, so that the term determines its type.
 - A transport $`{\mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u)}`$ of the term $`u`$ along the proof $`t`$ of the equality of the terms $`t_1`$ and $`t_2`$ of the type $`A`$, with the motive $`{x.\, C}`$, which binds the variable $`x`$, with an empty telescope, and whose term $`C`$ is in the scope extended by it: the transport carries the type and the two terms of the equality, so that the term determines its type.
 - A proof $`{\mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)}`$ of the equality of the propositions $`A`$ and $`B`$ of the level $`l`$, from two terms, each over a new variable, the hypothesis, with an empty telescope: the term $`t`$, a proof of $`B`$ over a proof $`x`$ of $`A`$, and the term $`u`$, a proof of $`A`$ over a proof $`y`$ of $`B`$, each in the scope extended by its variable; the proof carries the level and the two propositions, so that the term determines its type.
+- A proof $`{\mathsf{coind}(T,\ t_1,\ t_2,\ x_1\, x_2.\, \bar A,\ t,\ \bar g)}`$ by coinduction of the equality of the terms $`t_1`$ and $`t_2`$ of the instance $`{T = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$ of a codata type, with the relations $`\bar A`$, a term for each type of the block of $`D`$, the first one first, as the arguments $`\bar t`$ are, each a proposition over two new variables $`x_1`$ and $`x_2`$, with empty telescopes, the two terms that it relates, and in the scope extended by them, the proof $`t`$ that the relation of $`D`$ relates $`t_1`$ and $`t_2`$, and the branches $`\bar g`$ of the destructors, one for each destructor of each type of the block, in the order of the declaration, each over two terms of the type of its destructor, the hypothesis that its relation relates them and the arguments of the destructor: the proof carries its instance and its two terms, so that the term determines its type.
 
 The levels of a term use only the level variables of the entry of the signature in which it appears, and none when it appears in no entry.
 
@@ -105,7 +107,7 @@ The states $`\bar\Theta`$ of a corecursor are a state for each type of the block
 
 The state of a type binds the variables $`\bar x`$, one for each non-uniform parameter of the type, each with an empty telescope, and its telescope $`\Theta`$ is in the scope extended by them; it carries the sorts $`\bar\kappa`$ of the entries of $`\Theta`$, one for each entry, which the packing of the state needs and the telescope does not give.
 
-The branches $`\bar g`$ of a corecursor are a branch for each destructor, the first one first: they are either empty, written $`()`$, or a branch $`{(\bar x;\ \bar y;\ \bar z).\, g}`$ followed by branches $`\bar g`$, written $`{((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)}`$:
+The branches $`\bar g`$ of the destructors, those of a corecursor or of a proof by coinduction, are a branch for each destructor of each type of a block, the first one first: they are either empty, written $`()`$, or a branch $`{(\bar x;\ \bar y;\ \bar z).\, g}`$ followed by branches $`\bar g`$, written $`{((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)}`$:
 
 ```math
 \begin{aligned}
@@ -113,7 +115,9 @@ The branches $`\bar g`$ of a corecursor are a branch for each destructor, the fi
 \end{aligned}
 ```
 
-The branch of a destructor binds the variables $`\bar x`$, one for each non-uniform parameter of its type, then the variables $`\bar y`$, one for each entry of the state of its type, then the variables $`\bar z`$, one for each argument of the destructor, each with an empty telescope, and its term $`g`$, the result of the observation, is in the scope extended by them; the branch of the destructor $`d`$ of the type $`D`$ is written $`{D.d(\bar x;\ \bar y;\ \bar z) \Rightarrow g}`$.
+The branch of a destructor binds the variables $`\bar x`$, then the variables $`\bar y`$, then the variables $`\bar z`$, each with an empty telescope, and its term $`g`$ is in the scope extended by them; the branch of the destructor $`d`$ of the type $`D`$ is written $`{D.d(\bar x;\ \bar y;\ \bar z) \Rightarrow g}`$.
+In a corecursor, $`\bar x`$ are a variable for each non-uniform parameter of the type of the destructor, $`\bar y`$ a variable for each entry of the state of this type and $`\bar z`$ a variable for each argument of the destructor, and $`g`$ is the result of the observation.
+In a proof by coinduction, $`\bar x`$ is empty, $`\bar y`$ are a variable for each of two terms of the type of the destructor and a variable for the hypothesis that the relation of this type relates them, and $`\bar z`$ a variable for each argument of the destructor.
 
 ### Telescopes and Contexts
 
