@@ -47,10 +47,10 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & \quad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)[\sigma] \\
 & \quad \mathsf{propext}.\{l\}(A[\sigma],\ B[\sigma],\ x.\, t[\sigma],\ y.\, u[\sigma]) \\[1em]
 & {=} \\
-& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ x_1\, x_2.\, \bar A,\ t,\ \bar g)[\sigma] \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ (x_1,\ x_2).\, \bar A,\ t,\ \bar g)[\sigma] \\
 & \quad \mathsf{coind}( \\
 & \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma],\ t_1[\sigma],\ t_2[\sigma], \\
-& \qquad x_1\, x_2.\, \bar A[\sigma],\ t[\sigma],\ \bar g[\sigma]) \\[1em]
+& \qquad (x_1,\ x_2).\, \bar A[\sigma],\ t[\sigma],\ \bar g[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar t) \\
 & (t,\ \bar t)[\sigma] = (t[\sigma],\ \bar t[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar a) \\
@@ -124,10 +124,10 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & \quad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)[\theta] \\
 & \quad \mathsf{propext}.\{l\}(A[\theta],\ B[\theta],\ x.\, t[\theta],\ y.\, u[\theta]) \\[1em]
 & {=} \\
-& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ x_1\, x_2.\, \bar A,\ t,\ \bar g)[\theta] \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ (x_1,\ x_2).\, \bar A,\ t,\ \bar g)[\theta] \\
 & \quad \mathsf{coind}( \\
 & \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta],\ t_1[\theta],\ t_2[\theta], \\
-& \qquad x_1\, x_2.\, \bar A[\theta],\ t[\theta],\ \bar g[\theta]) \\[1em]
+& \qquad (x_1,\ x_2).\, \bar A[\theta],\ t[\theta],\ \bar g[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar t) \\
 & (t,\ \bar t)[\theta] = (t[\theta],\ \bar t[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar a) \\
@@ -280,11 +280,11 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & \qquad A[\bar l' / \bar l],\ B[\bar l' / \bar l], \\
 & \qquad x.\, t[\bar l' / \bar l],\ y.\, u[\bar l' / \bar l]) \\[1em]
 & {=} \\
-& \quad \mathsf{coind}(D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ x_1\, x_2.\, \bar A,\ t,\ \bar g)[\bar l' / \bar l] \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ (x_1,\ x_2).\, \bar A,\ t,\ \bar g)[\bar l' / \bar l] \\
 & \quad \mathsf{coind}( \\
 & \qquad D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l], \\
 & \qquad t_1[\bar l' / \bar l],\ t_2[\bar l' / \bar l], \\
-& \qquad x_1\, x_2.\, \bar A[\bar l' / \bar l],\ t[\bar l' / \bar l],\ \bar g[\bar l' / \bar l]) \\[1em]
+& \qquad (x_1,\ x_2).\, \bar A[\bar l' / \bar l],\ t[\bar l' / \bar l],\ \bar g[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar t) \\
 & (t,\ \bar t)[\bar l' / \bar l] = (t[\bar l' / \bar l],\ \bar t[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar a) \\

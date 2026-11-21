@@ -275,7 +275,7 @@ The erasure $`{\lfloor t \rfloor_{S, p}}`$ of a position of grade $`p`$ is $`\te
 & \lfloor \mathsf{refl}.\{s;\ l\}_A(t) \rfloor_S = \text{↯} \\
 & \lfloor \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u) \rfloor_S = \lfloor u \rfloor_S \\
 & \lfloor \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u) \rfloor_S = \text{↯} \\
-& \lfloor \mathsf{coind}(T,\ t_1,\ t_2,\ x_1\, x_2.\, \bar A,\ t,\ \bar g) \rfloor_S = \text{↯} \\[1em]
+& \lfloor \mathsf{coind}(T,\ t_1,\ t_2,\ (x_1,\ x_2).\, \bar A,\ t,\ \bar g) \rfloor_S = \text{↯} \\[1em]
 & \lfloor t \rfloor_{S, p} = \text{↯} \text{ if } p \in S \\
 & \lfloor t \rfloor_{S, p} = \lfloor t \rfloor_S \text{ if } p \notin S \\[1em]
 & \lfloor () \rfloor_{S, \bar p \mathrel{◀} \bar r} = () &&(\mathsf{erase}_{\bar t}) \\
