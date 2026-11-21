@@ -7,7 +7,7 @@ It builds on the [syntax](08-syntax.md).
 
 This section defines the substitutions of the first order, then those of the second order, which apply them to the abstractions they give, the renamings, the closed substitutions, the instantiation of the level variables, and the instances of the entries, which instantiate them.
 A substitution of the first order and one of the second order are defined apart, as the substitution of the variables and the substitution of the metavariables of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), since the second one substitutes the arguments of each application in the abstraction it gives, which is not a part of the term.
-Under the variables that an abstraction, a motive, a branch, a state, a telescope or a proof of the equality of two propositions binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
+Under the variables that an abstraction, a motive, a branch, a state, a telescope, a proof of the equality of two propositions or a proof by coinduction binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
 
 ### Substitutions of the First Order
 
@@ -46,6 +46,11 @@ A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each 
 & {=} \\
 & \quad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)[\sigma] \\
 & \quad \mathsf{propext}.\{l\}(A[\sigma],\ B[\sigma],\ x.\, t[\sigma],\ y.\, u[\sigma]) \\[1em]
+& {=} \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ x_1\, x_2.\, \bar A,\ t,\ \bar g)[\sigma] \\
+& \quad \mathsf{coind}( \\
+& \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma],\ t_1[\sigma],\ t_2[\sigma], \\
+& \qquad x_1\, x_2.\, \bar A[\sigma],\ t[\sigma],\ \bar g[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar t) \\
 & (t,\ \bar t)[\sigma] = (t[\sigma],\ \bar t[\sigma]) \\[1em]
 & ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar a) \\
@@ -118,6 +123,11 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 & {=} \\
 & \quad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)[\theta] \\
 & \quad \mathsf{propext}.\{l\}(A[\theta],\ B[\theta],\ x.\, t[\theta],\ y.\, u[\theta]) \\[1em]
+& {=} \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ x_1\, x_2.\, \bar A,\ t,\ \bar g)[\theta] \\
+& \quad \mathsf{coind}( \\
+& \qquad D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta],\ t_1[\theta],\ t_2[\theta], \\
+& \qquad x_1\, x_2.\, \bar A[\theta],\ t[\theta],\ \bar g[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar t) \\
 & (t,\ \bar t)[\theta] = (t[\theta],\ \bar t[\theta]) \\[1em]
 & ()[\theta] = () &&(\mathsf{subst}_\theta.\bar a) \\
@@ -137,7 +147,7 @@ A substitution $`\theta`$ of the second order gives each variable $`x`$ of a sco
 \end{aligned}
 ```
 
-Under the variables that an abstraction, a motive, a branch, a state, a telescope or a proof of the equality of two propositions binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`{\bar x.\, d[\bar x]}`$ of the identity.
+Under the variables that an abstraction, a motive, a branch, a state, a telescope, a proof of the equality of two propositions or a proof by coinduction binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`{\bar x.\, d[\bar x]}`$ of the identity.
 The identity gives each variable $`x`$ the abstraction $`{\bar x.\, x[\bar x]}`$:
 
 ```math
@@ -269,6 +279,12 @@ It instantiates the level of a sort, and the levels of every term, argument, mot
 & \quad \mathsf{propext}.\{l_1[\bar l' / \bar l]\}( \\
 & \qquad A[\bar l' / \bar l],\ B[\bar l' / \bar l], \\
 & \qquad x.\, t[\bar l' / \bar l],\ y.\, u[\bar l' / \bar l]) \\[1em]
+& {=} \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ x_1\, x_2.\, \bar A,\ t,\ \bar g)[\bar l' / \bar l] \\
+& \quad \mathsf{coind}( \\
+& \qquad D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l], \\
+& \qquad t_1[\bar l' / \bar l],\ t_2[\bar l' / \bar l], \\
+& \qquad x_1\, x_2.\, \bar A[\bar l' / \bar l],\ t[\bar l' / \bar l],\ \bar g[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar t) \\
 & (t,\ \bar t)[\bar l' / \bar l] = (t[\bar l' / \bar l],\ \bar t[\bar l' / \bar l]) \\[1em]
 & ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar a) \\
