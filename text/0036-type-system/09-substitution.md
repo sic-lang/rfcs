@@ -1,0 +1,386 @@
+# Substitution
+
+This annex defines the substitutions of the first order, which give terms to variables, the substitutions of the second order, which give abstractions to variables, the renamings, which give variables to variables, the closed substitutions, the instantiation of the level variables, the instances of the entries, and their properties.
+It builds on the [syntax](08-syntax.md).
+
+## Definitions
+
+This section defines the substitutions of the first order, then those of the second order, which apply them to the abstractions they give, the renamings, the closed substitutions, the instantiation of the level variables, and the instances of the entries, which instantiate them.
+A substitution of the first order and one of the second order are defined apart, as the substitution of the variables and the substitution of the metavariables of [Nanevski, Pfenning and Pientka](https://doi.org/10.1145/1352582.1352591), since the second one substitutes the arguments of each application in the abstraction it gives, which is not a part of the term.
+Under the variables that an abstraction, a motive, a branch, a state, a telescope, a proof of the equality of two propositions or a proof by coinduction binds, a substitution gives each of them itself, and they take names that the terms it gives do not use.
+
+### Substitutions of the First Order
+
+A substitution $`\sigma`$ of the first order gives a term $`\sigma(x)`$ to each variable $`x`$ of a scope whose telescope is empty, and leaves the other variables, only substituting their arguments:
+
+```math
+\begin{aligned}
+& x[\sigma] = \sigma(x) \text{ if the telescope of } x \text{ is empty} &&(\mathsf{subst}_\sigma.t) \\
+& x[\bar t][\sigma] = x[\bar t[\sigma]] \text{ if the telescope of } x \text{ is not empty} \\
+& \kappa[\sigma] = \kappa \\
+& f.\{\bar s;\ \bar l;\ \bar p\}[\sigma] = f.\{\bar s;\ \bar l;\ \bar p\} \\
+& (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\sigma] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma] \\
+& ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\sigma] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).c(\bar t[\sigma]) \\[1em]
+& {=} \\
+& \quad (\mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
+& \qquad \mathsf{return}\ \bar C : \kappa_C \\
+& \qquad \mathsf{with}\ \bar u)[\sigma] \\
+& \quad \mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma])\ t[\sigma] \\
+& \qquad \mathsf{return}\ \bar C[\sigma] : \kappa_C \\
+& \qquad \mathsf{with}\ \bar u[\sigma] \\[1em]
+& (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\sigma] = t[\sigma].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]).d)(\bar t[\sigma]) \\[1em]
+& {=} \\
+& \quad (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \\
+& \qquad \mathsf{from}\ \bar t \\
+& \qquad \mathsf{return}\ \bar\Theta \\
+& \qquad \mathsf{with}\ \bar g)[\sigma] \\
+& \quad \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma]) \\
+& \qquad \mathsf{from}\ \bar t[\sigma] \\
+& \qquad \mathsf{return}\ \bar\Theta[\sigma] \\
+& \qquad \mathsf{with}\ \bar g[\sigma] \\[1em]
+& (t \mathrel{{\sim}.\{s;\ l\}_A} u)[\sigma] = t[\sigma] \mathrel{{\sim}.\{s;\ l\}_{A[\sigma]}} u[\sigma] \\
+& (\mathsf{refl}.\{s;\ l\}_A(t))[\sigma] = \mathsf{refl}.\{s;\ l\}_{A[\sigma]}(t[\sigma]) \\[1em]
+& {=} \\
+& \quad \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u)[\sigma] \\
+& \quad \mathsf{transp}(A[\sigma],\ t_1[\sigma],\ t_2[\sigma],\ x.\, C[\sigma],\ t[\sigma],\ u[\sigma]) \\[1em]
+& {=} \\
+& \quad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)[\sigma] \\
+& \quad \mathsf{propext}.\{l\}(A[\sigma],\ B[\sigma],\ x.\, t[\sigma],\ y.\, u[\sigma]) \\[1em]
+& {=} \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ (x_1,\ x_2).\, \bar A,\ t,\ \bar g)[\sigma] \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\sigma],\ t_1[\sigma],\ t_2[\sigma],\ (x_1,\ x_2).\, \bar A[\sigma],\ t[\sigma],\ \bar g[\sigma]) \\[1em]
+& ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar t) \\
+& (t,\ \bar t)[\sigma] = (t[\sigma],\ \bar t[\sigma]) \\[1em]
+& ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar a) \\
+& (\bar a,\ \bar x.\, B)[\sigma] = (\bar a[\sigma],\ \bar x.\, B[\sigma]) \\[1em]
+& ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar C) \\
+& ((\bar x,\ z).\, C,\ \bar C)[\sigma] = ((\bar x,\ z).\, C[\sigma],\ \bar C[\sigma]) \\[1em]
+& ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar u) \\
+& ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u)[\sigma] = ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u[\sigma],\ \bar u[\sigma]) \\[1em]
+& ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar\Theta) \\
+& (\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)[\sigma] = (\bar x.\, \Theta[\sigma] : \bar\kappa,\ \bar\Theta[\sigma]) \\[1em]
+& ()[\sigma] = () &&(\mathsf{subst}_\sigma.\bar g) \\
+& ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\sigma] = ((\bar x;\ \bar y;\ \bar z).\, g[\sigma],\ \bar g[\sigma]) \\[1em]
+& \varepsilon[\sigma] = \varepsilon &&(\mathsf{subst}_\sigma.\Theta) \\
+& (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\sigma] = (x : A[\sigma] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\sigma])
+\end{aligned}
+```
+
+The identity gives each variable with an empty telescope itself, and the substitution $`[t / x]`$ gives the term $`t`$ to the variable $`x`$ and each other variable itself:
+
+```math
+\begin{aligned}
+& \mathsf{id}(x) = x &&(\mathsf{identity}_\sigma) \\[1em]
+& [t / x](x) = t &&(\mathsf{single}_\sigma) \\
+& [t / x](y) = y \text{ if } y \ne x
+\end{aligned}
+```
+
+The substitution $`B[\bar t / \bar x]`$ of arguments $`\bar t`$ for variables $`\bar x`$ with empty telescopes substitutes the first argument for the first variable, then the others, and is written $`B[\bar t / \Theta]`$ when $`\bar x`$ are the variables of the telescope $`\Theta`$:
+
+```math
+\begin{aligned}
+& B[() / ()] = B &&(\mathsf{subst}_\Theta) \\
+& B[(t,\ \bar t) / (x,\ \bar x)] = B[t / x][\bar t / \bar x]
+\end{aligned}
+```
+
+### Substitutions of the Second Order
+
+A substitution $`\theta`$ of the second order gives each variable $`x`$ of a scope an abstraction $`\theta(x)`$, over a variable for each entry of the telescope of $`x`$, which is a term when the telescope is empty, and replaces each application of a variable by its abstraction, in which it substitutes the arguments:
+
+```math
+\begin{aligned}
+& x[\bar t][\theta] = B[\bar t[\theta] / \bar x] \text{ if } \theta(x) = \bar x.\, B &&(\mathsf{subst}_\theta.t) \\
+& \kappa[\theta] = \kappa \\
+& f.\{\bar s;\ \bar l;\ \bar p\}[\theta] = f.\{\bar s;\ \bar l;\ \bar p\} \\
+& (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)[\theta] = D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta] \\
+& ((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).c(\bar t))[\theta] = (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).c(\bar t[\theta]) \\[1em]
+& {=} \\
+& \quad (\mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a)\ t \\
+& \qquad \mathsf{return}\ \bar C : \kappa_C \\
+& \qquad \mathsf{with}\ \bar u)[\theta] \\
+& \quad \mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta])\ t[\theta] \\
+& \qquad \mathsf{return}\ \bar C[\theta] : \kappa_C \\
+& \qquad \mathsf{with}\ \bar u[\theta] \\[1em]
+& (t.((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a).d)(\bar t))[\theta] = t[\theta].((D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]).d)(\bar t[\theta]) \\[1em]
+& {=} \\
+& \quad (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a) \\
+& \qquad \mathsf{from}\ \bar t \\
+& \qquad \mathsf{return}\ \bar\Theta \\
+& \qquad \mathsf{with}\ \bar g)[\theta] \\
+& \quad \mathsf{corec}_r\ (D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta]) \\
+& \qquad \mathsf{from}\ \bar t[\theta] \\
+& \qquad \mathsf{return}\ \bar\Theta[\theta] \\
+& \qquad \mathsf{with}\ \bar g[\theta] \\[1em]
+& (t \mathrel{{\sim}.\{s;\ l\}_A} u)[\theta] = t[\theta] \mathrel{{\sim}.\{s;\ l\}_{A[\theta]}} u[\theta] \\
+& (\mathsf{refl}.\{s;\ l\}_A(t))[\theta] = \mathsf{refl}.\{s;\ l\}_{A[\theta]}(t[\theta]) \\[1em]
+& {=} \\
+& \quad \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u)[\theta] \\
+& \quad \mathsf{transp}(A[\theta],\ t_1[\theta],\ t_2[\theta],\ x.\, C[\theta],\ t[\theta],\ u[\theta]) \\[1em]
+& {=} \\
+& \quad \mathsf{propext}.\{l\}(A,\ B,\ x.\, t,\ y.\, u)[\theta] \\
+& \quad \mathsf{propext}.\{l\}(A[\theta],\ B[\theta],\ x.\, t[\theta],\ y.\, u[\theta]) \\[1em]
+& {=} \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ (x_1,\ x_2).\, \bar A,\ t,\ \bar g)[\theta] \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l;\ \bar p\}\ \bar a[\theta],\ t_1[\theta],\ t_2[\theta],\ (x_1,\ x_2).\, \bar A[\theta],\ t[\theta],\ \bar g[\theta]) \\[1em]
+& ()[\theta] = () &&(\mathsf{subst}_\theta.\bar t) \\
+& (t,\ \bar t)[\theta] = (t[\theta],\ \bar t[\theta]) \\[1em]
+& ()[\theta] = () &&(\mathsf{subst}_\theta.\bar a) \\
+& (\bar a,\ \bar x.\, B)[\theta] = (\bar a[\theta],\ \bar x.\, B[\theta]) \\[1em]
+& ()[\theta] = () &&(\mathsf{subst}_\theta.\bar C) \\
+& ((\bar x,\ z).\, C,\ \bar C)[\theta] = ((\bar x,\ z).\, C[\theta],\ \bar C[\theta]) \\[1em]
+& ()[\theta] = () &&(\mathsf{subst}_\theta.\bar u) \\
+& ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u)[\theta] = ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u[\theta],\ \bar u[\theta]) \\[1em]
+& ()[\theta] = () &&(\mathsf{subst}_\theta.\bar\Theta) \\
+& (\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)[\theta] = (\bar x.\, \Theta[\theta] : \bar\kappa,\ \bar\Theta[\theta]) \\[1em]
+& ()[\theta] = () &&(\mathsf{subst}_\theta.\bar g) \\
+& ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\theta] = ((\bar x;\ \bar y;\ \bar z).\, g[\theta],\ \bar g[\theta]) \\[1em]
+& \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\Theta) \\
+& (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\theta] = (x : A[\theta] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\theta]) \\[1em]
+& \varepsilon[\theta] = \varepsilon &&(\mathsf{subst}_\theta.\bar d) \\
+& (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d)[\theta] = (d : (\Theta[\theta] \vdash B[\theta] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d[\theta])
+\end{aligned}
+```
+
+Under the variables that an abstraction, a motive, a branch, a state, a telescope, a proof of the equality of two propositions or a proof by coinduction binds, $`\theta`$ gives each of them itself, as a term, since their telescopes are empty, and under the destructors before a destructor, each of them the abstraction $`{\bar x.\, d[\bar x]}`$ of the identity.
+The identity gives each variable $`x`$ the abstraction $`{\bar x.\, x[\bar x]}`$:
+
+```math
+\begin{aligned}
+& \mathsf{id}(x) = \bar x.\, x[\bar x] &&(\mathsf{identity}_\theta)
+\end{aligned}
+```
+
+The substitution $`[\bar a / \Delta]`$ of the arguments of an instance for the parameters $`\Delta`$ of its type declaration is of the second order: $`{[(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))]}`$ gives the abstraction $`{\bar x.\, B}`$ to $`X`$, and to each parameter of $`\Delta`$ what $`[\bar a / \Delta]`$ gives it, and likewise when the last parameter is a variable $`x : A`$, whose abstraction is a term:
+
+```math
+\begin{aligned}
+& [(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))](X) = \bar x.\, B &&(\mathsf{params}_\theta) \\
+& [(\bar a,\ \bar x.\, B) / (\Delta,\ X : (\Theta \vdash A \mathrel{◀} \psi))](y) = [\bar a / \Delta](y) \text{ if } y \ne X \\
+& [(\bar a,\ B) / (\Delta,\ x : A)](x) = B \\
+& [(\bar a,\ B) / (\Delta,\ x : A)](y) = [\bar a / \Delta](y) \text{ if } y \ne x
+\end{aligned}
+```
+
+The telescope and the result of a destructor of a codata type are in the scope of the parameters $`\Delta`$ of its type declaration extended by the destructors $`\bar d_1`$ before it, as second-order variables; the substitution $`{[\bar a / \Delta,\ t.T / \bar d_1]}`$ gives each parameter its argument in $`\bar a`$, as $`[\bar a / \Delta]`$ does, and each destructor $`d'`$ of $`\bar d_1`$ the observation $`{\bar x.\, t.(T.d')(\bar x)}`$ of the term $`t`$ of the instance $`T`$ by $`d'`$, over the variables $`\bar x`$ of its telescope, the first destructor first:
+
+```math
+\begin{aligned}
+& [\bar a / \Delta,\ t.T / \varepsilon] = [\bar a / \Delta] &&(\mathsf{obs}_\theta) \\[1em]
+& {=} \\
+& \quad [\bar a / \Delta,\ t.T / (d' : (\Theta' \vdash B' \mathrel{◀} \psi') \mathrel{▶} p';\ q' \mathrel{◀} \varsigma' \mid \bar d_1)] \\
+& \quad [(\bar a,\ \bar x.\, t.(T.d')(\bar x)) / (\Delta,\ d' : (\Theta' \vdash B' \mathrel{◀} \psi')),\ t.T / \bar d_1]
+\end{aligned}
+```
+
+A context $`\Gamma`$ extended by a telescope $`\Theta`$ in its scope, written $`{\Gamma,\ \Theta}`$, is extended by a variable for each entry of $`\Theta`$, whose grades and requirements it drops:
+
+```math
+\begin{aligned}
+& \Gamma,\ \varepsilon = \Gamma &&(\mathsf{append}_\Gamma) \\
+& \Gamma,\ (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) = (\Gamma,\ x : A),\ \Theta
+\end{aligned}
+```
+
+### Renamings
+
+A renaming $`\alpha`$ of a scope $`\Gamma`$ in a scope $`\Gamma'`$ gives each variable $`x`$ of $`\Gamma`$ a variable $`\alpha(x)`$ of $`\Gamma'`$ with the same telescope, and renames a term $`t`$ to $`t[\alpha]`$, the substitution of the second order that gives each variable $`x`$ the abstraction $`{\bar y.\, \alpha(x)[\bar y]}`$.
+It may rename two variables to the same one.
+
+### Closed Substitutions
+
+A substitution of the second order is closed when the abstractions it gives are in the empty scope extended by their variables:
+
+```math
+\begin{aligned}
+& \theta \text{ is closed} \iff \forall x.\ \exists \bar x,\ B.\ \theta(x) = \bar x.\, B \text{ and } B \text{ is in the scope } \bar x &&(\mathsf{closedness}_\theta)
+\end{aligned}
+```
+
+The closed substitution $`{(\theta_1,\ \theta_2)}`$ of the scope of $`\Gamma`$ extended by variables $`\bar x`$ with empty telescopes gives each variable of $`\Gamma`$ what the closed substitution $`\theta_1`$ gives it, and each variable of $`\bar x`$ what the closed substitution $`\theta_2`$ of $`\bar x`$ gives it:
+
+```math
+\begin{aligned}
+& (\theta_1,\ \theta_2)(y) = \theta_1(y) \text{ if } y \text{ is a variable of } \Gamma &&(\mathsf{pair}_\theta) \\
+& (\theta_1,\ \theta_2)(y) = \theta_2(y) \text{ if } y \text{ is a variable of } \bar x
+\end{aligned}
+```
+
+The closed substitution of closed arguments $`\bar t`$ for variables $`\bar x`$ with empty telescopes gives the first argument to the first variable, then the others: $`{(t,\ \bar t)}`$ gives $`t`$ to $`x`$, and to $`\bar x`$ what $`\bar t`$ gives them:
+
+```math
+\begin{aligned}
+& (t,\ \bar t)(x) = t &&(\mathsf{args}_\theta) \\
+& (t,\ \bar t)(y) = \bar t(y) \text{ if } y \text{ is a variable of } \bar x
+\end{aligned}
+```
+
+### Instantiation of the Level Variables
+
+The instantiation $`[\bar l' / \bar l]`$ of the level variables $`\bar l`$ by the levels $`\bar l'`$, as many, replaces each variable by its level:
+
+```math
+\begin{aligned}
+& 0[\bar l' / \bar l] = 0 &&(\mathsf{subst}_l) \\
+& (l + 1)[\bar l' / \bar l] = l[\bar l' / \bar l] + 1 \\
+& (l_1 \sqcup l_2)[\bar l' / \bar l] = l_1[\bar l' / \bar l] \sqcup l_2[\bar l' / \bar l] \\
+& l_i[\bar l' / \bar l] = l'_i
+\end{aligned}
+```
+
+It instantiates the level of a sort, and the levels of every term, argument, motive, branch, state, telescope, list of destructors and context, which it leaves the same otherwise:
+
+```math
+\begin{aligned}
+& (s_l)[\bar l' / \bar l] = s_{l[\bar l' / \bar l]} &&(\mathsf{inst}_l.\kappa) \\[1em]
+& x[\bar t][\bar l' / \bar l] = x[\bar t[\bar l' / \bar l]] &&(\mathsf{inst}_l.t) \\
+& f.\{\bar s;\ \bar l_1;\ \bar p\}[\bar l' / \bar l] = f.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\} \\
+& (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)[\bar l' / \bar l] = D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l] \\[1em]
+& {=} \\
+& \quad ((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).c(\bar t))[\bar l' / \bar l] \\
+& \quad (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).c(\bar t[\bar l' / \bar l]) \\[1em]
+& {=} \\
+& \quad (\mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a)\ t \\
+& \qquad \mathsf{return}\ \bar C : \kappa_C \\
+& \qquad \mathsf{with}\ \bar u)[\bar l' / \bar l] \\
+& \quad \mathsf{rec}_{r;\ \varsigma;\ \chi}\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l])\ t[\bar l' / \bar l] \\
+& \qquad \mathsf{return}\ \bar C[\bar l' / \bar l] : \kappa_C[\bar l' / \bar l] \\
+& \qquad \mathsf{with}\ \bar u[\bar l' / \bar l] \\[1em]
+& {=} \\
+& \quad (t.((D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a).d)(\bar t))[\bar l' / \bar l] \\
+& \quad t[\bar l' / \bar l].((D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]).d)(\bar t[\bar l' / \bar l]) \\[1em]
+& {=} \\
+& \quad (\mathsf{corec}_r\ (D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a) \\
+& \qquad \mathsf{from}\ \bar t \\
+& \qquad \mathsf{return}\ \bar\Theta \\
+& \qquad \mathsf{with}\ \bar g)[\bar l' / \bar l] \\
+& \quad \mathsf{corec}_r\ (D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l]) \\
+& \qquad \mathsf{from}\ \bar t[\bar l' / \bar l] \\
+& \qquad \mathsf{return}\ \bar\Theta[\bar l' / \bar l] \\
+& \qquad \mathsf{with}\ \bar g[\bar l' / \bar l] \\[1em]
+& {=} \\
+& \quad (t \mathrel{{\sim}.\{s;\ l_1\}_A} u)[\bar l' / \bar l] \\
+& \quad t[\bar l' / \bar l] \mathrel{{\sim}.\{s;\ l_1[\bar l' / \bar l]\}_{A[\bar l' / \bar l]}} u[\bar l' / \bar l] \\[1em]
+& {=} \\
+& \quad (\mathsf{refl}.\{s;\ l_1\}_A(t))[\bar l' / \bar l] \\
+& \quad \mathsf{refl}.\{s;\ l_1[\bar l' / \bar l]\}_{A[\bar l' / \bar l]}(t[\bar l' / \bar l]) \\[1em]
+& {=} \\
+& \quad \mathsf{transp}(A,\ t_1,\ t_2,\ x.\, C,\ t,\ u)[\bar l' / \bar l] \\
+& \quad \mathsf{transp}( \\
+& \qquad A[\bar l' / \bar l],\ t_1[\bar l' / \bar l],\ t_2[\bar l' / \bar l], \\
+& \qquad x.\, C[\bar l' / \bar l],\ t[\bar l' / \bar l],\ u[\bar l' / \bar l]) \\[1em]
+& {=} \\
+& \quad \mathsf{propext}.\{l_1\}(A,\ B,\ x.\, t,\ y.\, u)[\bar l' / \bar l] \\
+& \quad \mathsf{propext}.\{l_1[\bar l' / \bar l]\}( \\
+& \qquad A[\bar l' / \bar l],\ B[\bar l' / \bar l], \\
+& \qquad x.\, t[\bar l' / \bar l],\ y.\, u[\bar l' / \bar l]) \\[1em]
+& {=} \\
+& \quad \mathsf{coind}(D.\{\bar s;\ \bar l_1;\ \bar p\}\ \bar a,\ t_1,\ t_2,\ (x_1,\ x_2).\, \bar A,\ t,\ \bar g)[\bar l' / \bar l] \\
+& \quad \mathsf{coind}( \\
+& \qquad D.\{\bar s;\ \bar l_1[\bar l' / \bar l];\ \bar p\}\ \bar a[\bar l' / \bar l],\ t_1[\bar l' / \bar l],\ t_2[\bar l' / \bar l], \\
+& \qquad (x_1,\ x_2).\, \bar A[\bar l' / \bar l],\ t[\bar l' / \bar l],\ \bar g[\bar l' / \bar l]) \\[1em]
+& ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar t) \\
+& (t,\ \bar t)[\bar l' / \bar l] = (t[\bar l' / \bar l],\ \bar t[\bar l' / \bar l]) \\[1em]
+& ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar a) \\
+& (\bar a,\ \bar x.\, B)[\bar l' / \bar l] = (\bar a[\bar l' / \bar l],\ \bar x.\, B[\bar l' / \bar l]) \\[1em]
+& ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar C) \\
+& ((\bar x,\ z).\, C,\ \bar C)[\bar l' / \bar l] = ((\bar x,\ z).\, C[\bar l' / \bar l],\ \bar C[\bar l' / \bar l]) \\[1em]
+& ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar u) \\
+& ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u,\ \bar u)[\bar l' / \bar l] = ((\bar x;\ \bar y \mathrel{▶} \bar e).\, u[\bar l' / \bar l],\ \bar u[\bar l' / \bar l]) \\[1em]
+& ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar\Theta) \\
+& (\bar x.\, \Theta : \bar\kappa,\ \bar\Theta)[\bar l' / \bar l] = (\bar x.\, \Theta[\bar l' / \bar l] : \bar\kappa[\bar l' / \bar l],\ \bar\Theta[\bar l' / \bar l]) \\[1em]
+& ()[\bar l' / \bar l] = () &&(\mathsf{inst}_l.\bar g) \\
+& ((\bar x;\ \bar y;\ \bar z).\, g,\ \bar g)[\bar l' / \bar l] = ((\bar x;\ \bar y;\ \bar z).\, g[\bar l' / \bar l],\ \bar g[\bar l' / \bar l]) \\[1em]
+& \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Theta) \\
+& (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta)[\bar l' / \bar l] = (x : A[\bar l' / \bar l] \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta[\bar l' / \bar l]) \\[1em]
+& \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\bar d) \\[1em]
+& {=} \\
+& \quad (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d)[\bar l' / \bar l] \\
+& \quad (d : (\Theta[\bar l' / \bar l] \vdash B[\bar l' / \bar l] \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d[\bar l' / \bar l]) \\[1em]
+& \varepsilon[\bar l' / \bar l] = \varepsilon &&(\mathsf{inst}_l.\Gamma) \\
+& (\Gamma,\ x : A)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ x : A[\bar l' / \bar l] \\
+& (\Gamma,\ X : (\Theta \vdash A \mathrel{◀} \psi))[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ X : (\Theta[\bar l' / \bar l] \vdash A[\bar l' / \bar l] \mathrel{◀} \psi)
+\end{aligned}
+```
+
+### Instances of the Entries
+
+The instance of an entry with the sort variables $`\bar s`$, the level variables $`\bar l`$ and the grade variables $`\bar p`$ at the qualities $`\bar s'`$, the levels $`\bar l'`$ and the grades $`\bar p'`$, as many as the variables of each kind, gives its type, its body, its parameters, its sort, and the grades, the constructors and the destructors of its types at the instance $`\bar s'`$, $`\bar p'`$, in which it [instantiates](#instantiation-of-the-level-variables) the level variables $`[\bar l' / \bar l]`$; the rules write it $`{A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p]}`$, as if the instance were substituted, and $`{A[\bar s' / \bar s,\ \bar p' / \bar p]}`$ when it keeps the level variables:
+
+```math
+\begin{aligned}
+& A[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p] = A[\bar s' / \bar s,\ \bar p' / \bar p][\bar l' / \bar l] &&(\mathsf{inst}_e)
+\end{aligned}
+```
+
+## Properties
+
+The identities change nothing:
+
+```math
+\begin{aligned}
+& t[\sigma] = t \text{ if } \sigma(x) = x \text{ for each } x &&(\mathsf{id}_\sigma.t) \\[1em]
+& \Theta[\sigma] = \Theta \text{ if } \sigma(x) = x \text{ for each } x &&(\mathsf{id}_\sigma.\Theta) \\[1em]
+& t[\theta] = t \text{ if } \theta(x) = \bar x.\, x[\bar x] \text{ for each } x &&(\mathsf{id}_\theta)
+\end{aligned}
+```
+
+A substitution followed by another one is a single one, which substitutes the second in what the first gives each variable, whatever the orders of the two:
+
+```math
+\begin{aligned}
+& t[\sigma][\tau] = t[\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\tau] \text{ for each } x &&(\mathsf{comp}_\sigma) \\[1em]
+& t[\theta_1][\theta_2] = t[\theta_3] &&(\mathsf{comp}_\theta.t) \\
+& \quad \text{if}\ \theta_3(x) = \bar x.\, B[\theta_2] \text{ for each } x \text{ such that } \theta_1(x) = \bar x.\, B \\[1em]
+& \Theta[\theta_1][\theta_2] = \Theta[\theta_3] &&(\mathsf{comp}_\theta.\Theta) \\
+& \quad \text{if}\ \theta_3(x) = \bar x.\, B[\theta_2] \text{ for each } x \text{ such that } \theta_1(x) = \bar x.\, B \\[1em]
+& \text{⟹} &&(\mathsf{comp}_{\sigma\theta}.t) \\
+& \quad \text{and} \\
+& \qquad \theta_2(x) = \sigma(x)[\theta_1] \text{ for each } x \text{ whose telescope is empty} \\
+& \qquad \theta_2(x) = \theta_1(x) \text{ for each } x \text{ whose telescope is not empty} \\
+& \quad t[\sigma][\theta_1] = t[\theta_2] \\[1em]
+& \text{⟹} &&(\mathsf{comp}_{\sigma\theta}.\Theta) \\
+& \quad \text{and} \\
+& \qquad \theta_2(x) = \sigma(x)[\theta_1] \text{ for each } x \text{ whose telescope is empty} \\
+& \qquad \theta_2(x) = \theta_1(x) \text{ for each } x \text{ whose telescope is not empty} \\
+& \quad \Theta[\sigma][\theta_1] = \Theta[\theta_2]
+\end{aligned}
+```
+
+The substitution of arguments for the variables of a telescope commutes with the substitutions of both orders, and is, for closed arguments, the closed substitution of these arguments:
+
+```math
+\begin{aligned}
+& B[\bar t / \bar x][\sigma] = B[\sigma][\bar t[\sigma] / \bar x] &&(\mathsf{inst}_\sigma) \\[1em]
+& B[\bar t / \bar x][\theta] = B[\theta][\bar t[\theta] / \bar x] &&(\mathsf{inst}_\theta) \\[1em]
+& \text{⟹} &&(\mathsf{closed}_\theta) \\
+& \quad \text{and} \\
+& \qquad B \text{ is in the empty scope extended by } \bar x \\
+& \qquad \bar t \text{ are closed} \\
+& \qquad \theta \text{ is the closed substitution of } \bar t \text{ for } \bar x \\
+& \quad B[\bar t / \bar x] = B[\theta]
+\end{aligned}
+```
+
+The value of an instantiated level is the value of the level under the values of the levels that replace its variables, the instantiations compose, and they commute with the substitutions of both orders:
+
+```math
+\begin{aligned}
+& [\![l[\bar l' / \bar l]]\!]_\rho = [\![l]\!]_{\rho'} \text{ if } \rho'(l_i) = [\![l'_i]\!]_\rho \text{ for each } i &&(\mathsf{instance}_l) \\[1em]
+& l[\bar l_1 / \bar l][\bar l_2 / \bar l'] = l[\bar l_1[\bar l_2 / \bar l'] / \bar l] &&(\mathsf{comp}_l.l) \\[1em]
+& t[\bar l_1 / \bar l][\bar l_2 / \bar l'] = t[\bar l_1[\bar l_2 / \bar l'] / \bar l] &&(\mathsf{comp}_l.t) \\[1em]
+& \Theta[\bar l_1 / \bar l][\bar l_2 / \bar l'] = \Theta[\bar l_1[\bar l_2 / \bar l'] / \bar l] &&(\mathsf{comp}_l.\Theta) \\[1em]
+& \Gamma[\bar l_1 / \bar l][\bar l_2 / \bar l'] = \Gamma[\bar l_1[\bar l_2 / \bar l'] / \bar l] &&(\mathsf{comp}_l.\Gamma) \\[1em]
+& t[\sigma][\bar l' / \bar l] = t[\bar l' / \bar l][\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\bar l' / \bar l] \text{ for each } x &&(\mathsf{comm}_{l\sigma}.t) \\[1em]
+& \Theta[\sigma][\bar l' / \bar l] = \Theta[\bar l' / \bar l][\sigma'] \text{ if } \sigma'(x) = \sigma(x)[\bar l' / \bar l] \text{ for each } x &&(\mathsf{comm}_{l\sigma}.\Theta) \\[1em]
+& t[\theta][\bar l' / \bar l] = t[\bar l' / \bar l][\theta'] &&(\mathsf{comm}_{l\theta}.t) \\
+& \quad \text{if}\ \theta'(x) = \bar x.\, B[\bar l' / \bar l] \text{ for each } x \text{ such that } \theta(x) = \bar x.\, B \\[1em]
+& \Theta[\theta][\bar l' / \bar l] = \Theta[\bar l' / \bar l][\theta'] &&(\mathsf{comm}_{l\theta}.\Theta) \\
+& \quad \text{if}\ \theta'(x) = \bar x.\, B[\bar l' / \bar l] \text{ for each } x \text{ such that } \theta(x) = \bar x.\, B \\[1em]
+& B[\bar t / \bar x][\bar l' / \bar l] = B[\bar l' / \bar l][\bar t[\bar l' / \bar l] / \bar x] &&(\mathsf{comm}_l.\bar t) \\[1em]
+& (\Gamma,\ \Theta)[\bar l' / \bar l] = \Gamma[\bar l' / \bar l],\ \Theta[\bar l' / \bar l] &&(\mathsf{comm}_l.\Gamma)
+\end{aligned}
+```
+
+In $`(\mathsf{comp}_l)`$, $`\bar l'`$ are the level variables of the levels $`\bar l_1`$.

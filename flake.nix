@@ -46,6 +46,12 @@
               tools = [ pkgs.actionlint ];
               command = "actionlint";
             };
+            # Checks that an annex of an RFC links to no later annex nor to its main document
+            # (CONTRIBUTING.md).
+            annexes = {
+              tools = [ ];
+              command = lib.getExe checkAnnexes.run;
+            };
             editorconfig = {
               tools = [ pkgs.editorconfig-checker ];
               command = "editorconfig-checker";
@@ -171,6 +177,48 @@
               fi
             '';
           };
+          # Checks that an annex of an RFC, a file of the directory named after it whose name starts with
+          # its number, links only to itself and to the annexes before it, which it builds on, and not to
+          # the main document of its RFC. It reads the targets of the inline links, ](target), and of the
+          # definitions of the reference links, [label]: target, on any line; a target is resolved from the
+          # directory of the annex, after its anchor, ./ and ../<directory>/ are removed, and a link to a
+          # later annex or to ../<directory>.md is reported with its file and its line.
+          checkAnnexes = command {
+            name = "check-annexes";
+            runtimeInputs = [
+              pkgs.git
+              pkgs.gnugrep
+            ];
+            text = ''
+              cd "$(git rev-parse --show-toplevel)"
+              status=0
+              while IFS= read -r -d "" file; do
+                directory=''${file%/*}
+                directory=''${directory##*/}
+                name=''${file##*/}
+                number=''${name%%-*}
+                while IFS=: read -r line target; do
+                  target=''${target%%#*}
+                  target=''${target#<}
+                  target=''${target%>}
+                  target=''${target#./}
+                  target=''${target#"../$directory/"}
+                  if [ "$target" = "../$directory.md" ]; then
+                    echo "$file:$line: links to the main document of its RFC" >&2
+                    status=1
+                  elif [[ $target =~ ^[0-9]{2}-[^/]*\.md$ ]] && ((10#''${target%%-*} > 10#$number)); then
+                    echo "$file:$line: links to the later annex $target" >&2
+                    status=1
+                  fi
+                done < <(grep -noP '\]\(\K[^)\s]+|^\s*\[[^\]]+\]:\s*\K\S+' "$file" || true)
+              done < <(git ls-files -z ':(glob)text/*/[0-9][0-9]-*.md')
+              if [ "$status" -ne 0 ]; then
+                echo 'An annex builds only on the annexes before it: reword the link above without it, or move the statement to the later annex.' >&2
+              fi
+              exit "$status"
+            '';
+          };
+
           # Checks that no link of the RFCs ends its text with a formula, which GitHub does not render.
           checkLinks = command {
             name = "check-links";
@@ -205,8 +253,9 @@
               if [ ''${#files[@]} -eq 0 ]; then
                 exit 0
               fi
-              # A name, then the end of its line, which may break the formula with \\ or \\[1em].
-              name='\([^()]*\)(?=\s*(\\\\(\[1em\])?)?\s*$)'
+              # A name, then the end of its line, which may break the formula with \\, or with a space
+              # as \\[1em] after a formula and \\[2em] after a rule.
+              name='\([^()]*\)(?=\s*(\\\\(\[[12]em\])?)?\s*$)'
               status=0
               if grep -nP '&&' "''${files[@]}" | grep -vP "&&$name"; then
                 echo 'A column && of a formula must end its line with the name of the formula, as &&(\mathsf{op}_p).' >&2

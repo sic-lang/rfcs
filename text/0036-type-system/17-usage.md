@@ -1,0 +1,217 @@
+# Usage
+
+This annex defines the judgment of usage, which checks how a term uses the variables of its scope, in a mode, the usage of the entries of a signature, and their properties.
+It builds on the [modes](05-modes.md), the [syntax](08-syntax.md), the [substitution](09-substitution.md), the [grade vectors](10-grade-vectors.md), the [prelude](12-prelude.md), the [liftings](13-liftings.md) and the [recursive results](14-recursive-results.md) of the fields of a constructor.
+
+## Definitions
+
+The judgment $`{\Sigma;\ \gamma \vdash t \mathrel{▶} m}`$ reads: checked in the mode $`m`$, the term $`t`$ uses each variable of its scope as the grade that the vector $`\gamma`$, over this scope, gives it allows.
+The judgment $`{\Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m}`$ reads: checked in the mode $`m`$, the arguments $`\bar t`$ of a telescope whose grades are $`\bar p`$ use the variables of their scope as $`\gamma`$ allows.
+The judgment $`{\Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m}`$ reads: checked in the mode $`m`$, the arguments $`\bar a`$ of an instance whose type uses its parameters with the grades $`\zeta`$ use the variables of their scope as $`\gamma`$ allows.
+The judgment $`{\Sigma;\ \gamma \vdash \Theta \mathrel{▶} m}`$ reads: checked in the mode $`m`$, the types of the telescope $`\Theta`$ use the variables of its scope as $`\gamma`$ allows, the judgment $`{\Sigma;\ \gamma \vdash \bar c \mathrel{▶} m}`$ likewise for the telescopes of the fields of the constructors $`\bar c`$ of a data type, and the judgment $`{\Sigma;\ \gamma \vdash \bar d \mathrel{▶} m}`$ likewise for the arguments and the results of the destructors $`\bar d`$ of a codata type, which the usage of the type declarations reads.
+The judgment $`{\vdash \Sigma \mathrel{▶}}`$ reads: the entries of the signature $`\Sigma`$ use the variables as their grades allow.
+
+Usage is defined on the term and the signature alone, without a context: the scope gives each variable the grades of its telescope, with which an application uses its arguments, and the signature gives each constant its mode.
+The signature also gives each declared type the grades $`\zeta`$ with which it uses its parameters, each constructor the grades of its fields, which the usage of the constructors and of the recursors reads at their [instance](09-substitution.md#instances-of-the-entries), and each destructor its grade and the grades of its arguments, which the usage of the observations reads at their instance.
+
+An application $`x[\bar t]`$ uses $`x`$ with the grade of the mode, and each argument $`t_j`$ with the grade $`p_j`$ of its entry, checked in the mode $`{m \odot p_j}`$; a variable with an empty telescope uses itself only:
+
+```math
+\begin{gathered}
+\frac{\begin{aligned}& x \text{ has the grades } \bar p \text{ in the scope of } x[\bar t] \\[0.6em] & \Sigma;\ \delta \vdash \bar t \mathrel{▶} \bar p;\ m\end{aligned}}{\Sigma;\ ({00}^{\gamma},\ x \mathrel{≔} \ulcorner m \urcorner) +^{\gamma} \delta \vdash x[\bar t] \mathrel{▶} m}\;(\mathsf{var}_{X▶}) \\[2em]
+\frac{}{\Sigma;\ {00}^{\gamma} \vdash () \mathrel{▶} ();\ m}\;(\mathsf{tel}_{\varepsilon▶}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \gamma \vdash t \mathrel{▶} m \odot p \\[0.6em] & \Sigma;\ \delta \vdash \bar t \mathrel{▶} \bar p;\ m\end{aligned}}{\Sigma;\ (p \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash (t,\ \bar t) \mathrel{▶} (p,\ \bar p);\ m}\;(\mathsf{tel}_{,▶})
+\end{gathered}
+```
+
+A constant, defined or declared, uses no variable, in a mode $`m_1`$ that the mode $`m_2`$ of its entry allows, which $`{m_1 \cdot^{\mathsf{m}} m_2 = m_1}`$ states: a constant of the mode $`{00}^{\mathsf{m}}`$ is used in this mode only, one of the mode $`{01}^{\mathsf{m}}`$ in the modes $`{00}^{\mathsf{m}}`$ and $`{01}^{\mathsf{m}}`$, and one of the mode $`{11}^{\mathsf{m}}`$ in every mode.
+A sort uses no variable:
+
+```math
+\begin{gathered}
+\frac{\begin{aligned}& f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m_2 \mathrel{◀} p \in \Sigma \\[0.6em] & m_1 \cdot^{\mathsf{m}} m_2 = m_1\end{aligned}}{\Sigma;\ {00}^{\gamma} \vdash f.\{\bar s';\ \bar l';\ \bar p'\} \mathrel{▶} m_1}\;(f_{▶}) \\[2em]
+\frac{}{\Sigma;\ {00}^{\gamma} \vdash \kappa \mathrel{▶} m}\;(\kappa_{▶})
+\end{gathered}
+```
+
+An instance of a declared type, a type that the run time erases, is a position of the grade $`{01}^{\mathsf{p}}`$: it uses the variables of its arguments as many times as its type uses its parameters, as its grades $`\zeta`$ at the instance say, each argument checked in the mode of its grade, as the application of a second-order variable uses its arguments, these uses checked in the mode $`{m \odot {01}^{\mathsf{p}}}`$ and counted $`{01}^{\mathsf{p}}`$ times, so that a type uses no variable at run time; a constructor uses the variables of its fields as the arguments of its telescope at the instance do, and the instance that it carries uses none; the abstraction $`{\bar x.\, B}`$ for a second-order parameter uses the variables $`\bar x`$ of its telescope as their grades allow, in the mode of its term:
+
+```math
+\begin{gathered}
+\frac{\begin{aligned}& D.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \mathrel{▶} \zeta \in \Sigma \\[0.6em] & \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\[0.6em] & \Sigma;\ \delta \vdash \bar a \mathrel{▶} \zeta[\bar s' / \bar s,\ \bar p' / \bar p];\ m \odot {01}^{\mathsf{p}}\end{aligned}}{\Sigma;\ {01}^{\mathsf{p}} \cdot^{\gamma} \delta \vdash D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a \mathrel{▶} m}\;(D_{▶}) \\[2em]
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad \dots; \\ & \qquad \quad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \dots \mid c : \Theta \mid \dots; \\ & \qquad \quad \dots \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\[0.6em] & \Theta[\bar s' / \bar s,\ \bar p' / \bar p] \text{ has the grades } \bar q \\[0.6em] & \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar q;\ m\end{aligned}}{\Sigma;\ \gamma \vdash (D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).c(\bar t) \mathrel{▶} m}\;(c_{▶}) \\[2em]
+\frac{}{\Sigma;\ {00}^{\gamma} \vdash () \mathrel{▶} \zeta;\ m}\;(\mathsf{arg}_{\varepsilon▶}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \\[0.6em] & \Sigma;\ \delta \vdash a \mathrel{▶} m \odot p\end{aligned}}{\Sigma;\ \gamma +^{\gamma} (p \cdot^{\gamma} \delta) \vdash (\bar a,\ a) \mathrel{▶} \zeta \bullet p;\ m}\;(\mathsf{arg}_{x▶}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \\[0.6em] & X \text{, the parameter of } \bar x.\, B \text{, has the grades } p_1, \dots, p_n \\[0.6em] & \Sigma;\ \delta \bullet (\ulcorner m \odot p \urcorner \cdot p_1) \bullet \dots \bullet (\ulcorner m \odot p \urcorner \cdot p_n) \vdash B \mathrel{▶} m \odot p\end{aligned}}{\Sigma;\ \gamma +^{\gamma} (p \cdot^{\gamma} \delta) \vdash (\bar a,\ \bar x.\, B) \mathrel{▶} \zeta \bullet p;\ m}\;(\mathsf{arg}_{X▶})
+\end{gathered}
+```
+
+A recursor, written as in its typing, uses the variables of its term $`r`$ times, the term checked in the mode $`{m \odot r}`$, and those of its branches, as the eliminations of the pairs and of the natural numbers without $`\mathsf{nr}`$ of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda) do.
+The second ownership that the recursor carries is written $`\chi'`$ here, since $`\chi`$ names the uses of the variables of the scope by its recursions.
+The [recursive results](14-recursive-results.md) $`\Theta^{\uparrow}_{ji}`$ of the fields of each constructor, whose variables are $`\bar y_{ji}`$, are those of the fields $`{\Theta'_{ji} = \Theta_{ji}[\bar s' / \bar s,\ \bar l' / \bar l,\ \bar p' / \bar p][\bar a / \Delta]}`$ at the instance and at the arguments of the recursor, at the nestings $`\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})`$, the recursor fixing the variables of their definitions as the [recursive results](14-recursive-results.md#definitions) say, with the second ownership $`\chi'`$; the relation gives them their factors $`\bar\pi_{ji}`$: a result for each field whose nesting has a position, recursive or nested, and none for a field without position.
+Each branch uses the variables of the scope as $`\delta_{ji}`$, the variable of its field $`x_{jil}`$ with the grade $`g_{jil}`$ and that of the recursive result of this field with the grade $`e_{jil}`$ that the branch gives it in its grades $`\bar e_{ji}`$, those of the results in order, the result having the factor $`\pi_{jil}`$, and the grade $`e_{jil}`$ and the factor $`\pi_{jil}`$ of a field without result being $`0`$.
+A use of the recursive result of a field runs the recursion on the field again, as many times as the factor of the result: $`{11}^{\mathsf{p}}`$ for a recursive field, whose result is the recursor on the field, and the factor of the lifting of its type for a nested field, whose result is a corecursor that reads the scope as often as its destructors allow; each run uses the field $`r`$ times and the variables of the scope as $`\chi`$, so that a result counts its grade times its factor: the uses of a field and of its recursive result must cover $`{\ulcorner m \urcorner \cdot r}`$ times the grade of the field, and $`\chi`$ the uses of each branch and of its recursive results, since one branch runs at each step.
+Its motives, which are types, use no variable, checked in the mode $`{00}^{\mathsf{m}}`$; in the mode $`{11}^{\mathsf{m}}`$, a recursor on a block of which a type has two constructors or more uses its term at run time, since the constructor of the term chooses the branch that runs, and a recursor on a block of propositions that has a constructor, whose motives are then propositions, is checked only in a mode other than $`{11}^{\mathsf{m}}`$, as an observation whose result is a proof, since it builds a proof from a proof, and no proof is a value at run time that a recursor could eliminate:
+
+```math
+\frac{\begin{aligned}& \mathcal{D} \in \Sigma \\[0.6em] & {=} \\ & \quad \mathcal{D} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\[0.6em] & \bar s',\ \bar l',\ \bar p' \text{ as many as } \bar s,\ \bar l,\ \bar p \\[0.6em] & \forall j.\ \Sigma;\ {00}^{\gamma} \vdash C_j \mathrel{▶} {00}^{\mathsf{m}} \\[0.6em] & \Sigma;\ \gamma \vdash t \mathrel{▶} m \odot r \\[0.6em] & \forall j, i.\ \Theta_{ji}[\bar s' / \bar s,\ \bar p' / \bar p] \text{ has the grades } q_{ji1}, \dots, q_{jik_{ji}} \\[0.6em] & \bar u = (D_1.c_{11}(\bar x_{11};\ \bar y_{11} \mathrel{▶} \bar e_{11}) \Rightarrow u_{11},\ \dots,\ D_k.c_{kn_k}(\bar x_{kn_k};\ \bar y_{kn_k} \mathrel{▶} \bar e_{kn_k}) \Rightarrow u_{kn_k}) \\[0.6em] & \forall j, i.\ \Sigma \vdash \Theta'_{ji} \uparrow_{\mathsf{nest}_{\mathcal{D}}(\Theta_{ji})} = \Theta^{\uparrow}_{ji} \mathrel{\triangleright} \bar\pi_{ji} \\[0.6em] & \forall j, i. \\ & \quad \bar e_{ji} \text{ are the grades } e_{jil} \text{ at the positions } l \text{ at which } \mathsf{nest}_{\mathcal{D}}(\Theta_{ji}) \text{ is not } \bot \text{, in order} \\[0.6em] & \forall j, i. \\ & \quad \bar\pi_{ji} \text{ are the grades } \pi_{jil} \text{ at the positions } l \text{ at which } \mathsf{nest}_{\mathcal{D}}(\Theta_{ji}) \text{ is not } \bot \text{, in order} \\[0.6em] & \forall j, i, l.\ e_{jil} = \pi_{jil} = 0 \text{ if } \mathsf{nest}_{\mathcal{D}}(\Theta_{ji}) \text{ is } \bot \text{ at } l \\[0.6em] & \forall j, i.\ \Sigma;\ \delta_{ji} \bullet g_{ji1} \bullet \dots \bullet g_{jik_{ji}} \bullet \bar e_{ji} \vdash u_{ji} \mathrel{▶} m \\[0.6em] & \forall j, i, l.\ \ulcorner m \urcorner \cdot r \cdot q_{jil} \le g_{jil} + e_{jil} \cdot \pi_{jil} \cdot r \\[0.6em] & \forall j, i.\ \chi \le^{\gamma} \delta_{ji} +^{\gamma} (e_{ji1} \cdot \pi_{ji1} + \dots + e_{jik_{ji}} \cdot \pi_{jik_{ji}}) \cdot^{\gamma} \chi \\[0.6em] & \llcorner r \lrcorner = {11}^{\mathsf{m}} \\ & \quad \text{if} \\ & \qquad \text{and} \\ & \qquad \quad m = {11}^{\mathsf{m}} \\ & \qquad \quad \text{one of } \bar c_1, \dots, \bar c_k \text{ has two constructors or more} \\[0.6em] & m \ne {11}^{\mathsf{m}} \\ & \quad \text{if} \\ & \qquad \text{and} \\ & \qquad \quad \text{the quality of } \kappa[\bar s' / \bar s,\ \bar p' / \bar p] \text{ is } \Omega \\ & \qquad \quad \text{one of } \bar c_1, \dots, \bar c_k \text{ has a constructor}\end{aligned}}{\begin{aligned}& \Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \chi \\ & {\vdash}\ \mathsf{rec}_{r;\ \varsigma;\ \chi'}\ (D_h.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a)\ t \\ & \qquad \mathsf{return}\ \bar C : \kappa_C \\ & \qquad \mathsf{with}\ \bar u \\ & \mathrel{▶} m\end{aligned}}\;(\mathsf{rec}_{▶})
+```
+
+An observation, written as in its typing, uses the variables of its term once, the term checked in the mode $`m`$, and those of its arguments as the arguments of the telescope of the destructor at the instance do, and the instance it carries uses none; the mode must allow the grade $`p`$ of the destructor, as the mode of a constant must, so that a result without use at run time is observed only in a term without use at run time:
+
+```math
+\frac{\begin{aligned}& {\in} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad \dots; \\ & \qquad \quad D \mathrel{▶} \zeta \oplus \Pi \mathrel{≔} \bar d; \\ & \qquad \quad \dots \\ & \quad \Sigma \\[0.6em] & \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\[0.6em] & \bar d[\bar s' / \bar s,\ \bar p' / \bar p] = (\bar d_1 \mid d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d_2) \\[0.6em] & \Theta \text{ has the grades } p_1, \dots, p_n \\[0.6em] & \Sigma;\ \gamma \vdash t \mathrel{▶} m \\[0.6em] & \Sigma;\ \delta \vdash \bar t \mathrel{▶} p_1, \dots, p_n;\ m \\[0.6em] & m \cdot^{\mathsf{m}} \llcorner p \lrcorner = m\end{aligned}}{\Sigma;\ \gamma +^{\gamma} \delta \vdash t.((D.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a).d)(\bar t) \mathrel{▶} m}\;(d_{▶})
+```
+
+A corecursor, written as in its typing, uses the variables of its state $`r`$ times, the state checked in the mode $`{m \odot r}`$ as arguments of the state of its type, and those of its branches, each checked in the mode $`{m_{ji} = m \odot p_{ji}}`$ of the grade of its destructor, with uses $`\delta_{ji}`$ counted $`p_{ji}`$ times: an observation runs one branch, so that the corecursor uses the variables as a lower bound $`\delta`$ of these uses allows, as the eliminations of the pairs of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda) share the uses of their branches.
+An observation of a [recursive](08-syntax.md#destructors-of-a-block) destructor resumes the [position](12-prelude.md#positions) that its branch gives into the corecursor, which uses the variables again, or gives the term already built, so that $`\delta`$ is also a lower bound of the uses of the branch plus those of the corecursor, both counted $`p_{ji}`$ times, as the eliminator of the natural numbers of Abel, Danielsson and Eriksson bounds its uses by those of its branch for the successor plus its own uses again.
+Each branch uses the variable of an entry of the state as $`{\ulcorner m_{ji} \urcorner \cdot r}`$ times the grade of the entry allows, and that of an argument as $`\ulcorner m_{ji} \urcorner`$ times the grade of its entry allows, as the result of a destructor uses its arguments; its states, which are types, use no variable, checked in the mode $`{00}^{\mathsf{m}}`$, and the instance it carries uses none:
+
+```math
+\frac{\begin{aligned}& \mathcal{D} \in \Sigma \\[0.6em] & {=} \\ & \quad \mathcal{D} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\[0.6em] & \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p \\[0.6em] & \forall j.\ \Sigma;\ {00}^{\gamma} \vdash \Theta_j \mathrel{▶} {00}^{\mathsf{m}} \\[0.6em] & \forall j.\ \Theta_j \text{ has the grades } q_{j1}, \dots, q_{jn_j} \\[0.6em] & \Sigma;\ \gamma \vdash \bar t \mathrel{▶} q_{h1}, \dots, q_{hn_h};\ m \odot r \\[0.6em] & \forall j, i.\ \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] = (\bar d_{ji,1} \mid d_{ji} : (\Theta_{ji} \vdash B_{ji} \mathrel{◀} \psi_{ji}) \mathrel{▶} p_{ji};\ q' \mathrel{◀} \varsigma_{ji} \mid \bar d_{ji,2}) \\[0.6em] & \forall j, i.\ m_{ji} = m \odot p_{ji} \\[0.6em] & \forall j, i.\ \Theta_{ji} \text{ has the grades } p_{ji1}, \dots, p_{jia_{ji}} \\[0.6em] & \forall j, i. \\ & \quad \Sigma; \\ & \qquad {\bullet} \\ & \qquad \quad \delta_{ji} \\ & \qquad \quad (\ulcorner m_{ji} \urcorner \cdot r \cdot q_{j1}) \bullet \dots \bullet (\ulcorner m_{ji} \urcorner \cdot r \cdot q_{jn_j}) \\ & \qquad \quad (\ulcorner m_{ji} \urcorner \cdot p_{ji1}) \bullet \dots \bullet (\ulcorner m_{ji} \urcorner \cdot p_{jia_{ji}}) \\ & \quad {\vdash}\ g_{ji} \mathrel{▶} m_{ji} \\[0.6em] & \forall j, i.\ \delta \le^{\gamma} p_{ji} \cdot^{\gamma} \delta_{ji} \\[0.6em] & \forall j, i.\ \mathsf{rec}_{\mathcal{D}}(B_{ji}) \ne \bot \implies \delta \le^{\gamma} (p_{ji} \cdot^{\gamma} \delta_{ji}) +^{\gamma} (p_{ji} \cdot^{\gamma} \delta)\end{aligned}}{\begin{aligned}& \Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \delta \\ & {\vdash}\ \mathsf{corec}_r\ (D_h.\{\bar s';\ \bar l';\ \bar p'\}\ \bar a) \\ & \qquad \mathsf{from}\ \bar t \\ & \qquad \mathsf{return}\ \bar\Theta \\ & \qquad \mathsf{with}\ \bar g \\ & \mathrel{▶} m\end{aligned}}\;(\mathsf{corec}_{▶})
+```
+
+A term may be given grades lower than its uses:
+
+```math
+\frac{\begin{aligned}& \Sigma;\ \gamma \vdash t \mathrel{▶} m \\[0.6em] & \delta \le^{\gamma} \gamma\end{aligned}}{\Sigma;\ \delta \vdash t \mathrel{▶} m}\;(\mathsf{sub}_{▶})
+```
+
+The types of a telescope use the variables of its scope as the types of the functions and of the pairs of [Abel, Danielsson and Eriksson](https://github.com/graded-type-theory/graded-type-theory/blob/1f720ee636cb16aec130cc1ddc1c32acea8809d0/Graded/Usage.agda#L363) do, entry by entry: the type of an entry counts its uses as many times as the grade $`p`$ of the entry says, checked in the mode $`{m \odot p}`$, and the types after it use the variable of the entry as $`{\ulcorner m \urcorner \cdot q}`$ allows, $`q`$ being its grade in these types; a telescope may be given grades lower than its uses, without which $`q`$ would have to be exactly the uses of the variable:
+
+```math
+\begin{gathered}
+\frac{}{\Sigma;\ {00}^{\gamma} \vdash \varepsilon \mathrel{▶} m}\;(\Theta_{\varepsilon▶}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \gamma \vdash A \mathrel{▶} m \odot p \\[0.6em] & \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot q) \vdash \Theta \mathrel{▶} m\end{aligned}}{\Sigma;\ (p \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash (x : A \mathrel{▶} p;\ q \mathrel{◀} r,\ \Theta) \mathrel{▶} m}\;(\Theta_{,▶}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \\[0.6em] & \delta \le^{\gamma} \gamma\end{aligned}}{\Sigma;\ \delta \vdash \Theta \mathrel{▶} m}\;(\mathsf{sub}_{\Theta▶})
+\end{gathered}
+```
+
+The constructors $`\bar c`$ of a data type, $`c_1 : \Theta_1 \mid \dots \mid c_n : \Theta_n`$, or $`\varepsilon`$ when there is none, use the variables as the telescopes of their fields do, the uses of all the constructors added, since the type mentions all of them:
+
+```math
+\begin{gathered}
+\frac{}{\Sigma;\ {00}^{\gamma} \vdash \varepsilon \mathrel{▶} m}\;(\bar c_{\varepsilon▶}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \\[0.6em] & \Sigma;\ \delta \vdash \bar c \mathrel{▶} m\end{aligned}}{\Sigma;\ \gamma +^{\gamma} \delta \vdash (c : \Theta \mid \bar c) \mathrel{▶} m}\;(\bar c_{|▶})
+\end{gathered}
+```
+
+The destructors $`\bar d`$ of a codata type, $`{d_1 : (\Theta_1 \vdash B_1 \mathrel{◀} \psi_1) \mathrel{▶} p_1;\ q_1 \mathrel{◀} \varsigma_1 \mid \dots \mid d_n : (\Theta_n \vdash B_n \mathrel{◀} \psi_n) \mathrel{▶} p_n;\ q_n \mathrel{◀} \varsigma_n}`$, or $`\varepsilon`$ when there is none, use the variables as the entries of a telescope do, each destructor as one entry: its arguments and its result count their uses as many times as its grade $`p`$ says, checked in the mode $`{m' = m \odot p}`$, its result using each argument $`x_i`$ of $`\Theta`$ as $`{\ulcorner m' \urcorner \cdot q_i}`$ allows, as the types after the entry of $`x_i`$ do, and the destructors after it use $`d`$ as $`{\ulcorner m \urcorner \cdot q}`$ allows; destructors may be given grades lower than their uses, as a telescope may:
+
+```math
+\begin{gathered}
+\frac{}{\Sigma;\ {00}^{\gamma} \vdash \varepsilon \mathrel{▶} m}\;(\bar d_{\varepsilon▶}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \odot p \\[0.6em] & \Theta = (x_1 : A_1 \mathrel{▶} p_1;\ q_1 \mathrel{◀} r_1,\ \dots,\ x_n : A_n \mathrel{▶} p_n;\ q_n \mathrel{◀} r_n) \\[0.6em] & \Sigma;\ \delta \bullet (\ulcorner m \odot p \urcorner \cdot q_1) \bullet \dots \bullet (\ulcorner m \odot p \urcorner \cdot q_n) \vdash B \mathrel{▶} m \odot p \\[0.6em] & \Sigma;\ \eta \bullet (\ulcorner m \urcorner \cdot q) \vdash \bar d \mathrel{▶} m\end{aligned}}{\Sigma;\ (p \cdot^{\gamma} (\gamma +^{\gamma} \delta)) +^{\gamma} \eta \vdash (d : (\Theta \vdash B \mathrel{◀} \psi) \mathrel{▶} p;\ q \mathrel{◀} \varsigma \mid \bar d) \mathrel{▶} m}\;(\bar d_{|▶}) \\[2em]
+\frac{\begin{aligned}& \Sigma;\ \gamma \vdash \bar d \mathrel{▶} m \\[0.6em] & \delta \le^{\gamma} \gamma\end{aligned}}{\Sigma;\ \delta \vdash \bar d \mathrel{▶} m}\;(\mathsf{sub}_{\bar d▶})
+\end{gathered}
+```
+
+The entries of a signature use the variables as their grades allow when, at each instance of its sort and grade variables, the body of each constant definition uses no variable, in the mode of the definition, and, at each instance that the constraint $`C`$ of a type declaration admits, the constructors $`\bar c_j`$ or the destructors $`\bar d_j`$ of each of its types $`D_j`$ use the parameters as the grades $`\zeta_j`$ of the type allow, the uses of all of them added, as their usage adds them.
+Each entry is checked in the signature before it, as its formation is, and the constructors or the destructors of a type declaration in the signature $`{\Sigma,\ \mathcal{D}}`$, which reads the grades of the types of the block.
+The [lifting](13-liftings.md#declaration) of a type of a block of the signature, with [its destructors](13-liftings.md#signatures), is an entry of its own, whose destructors the usage does not check, since it uses its parameters with the least grades, which state nothing:
+
+```math
+\begin{gathered}
+\frac{}{\vdash \varnothing \mathrel{▶}}\;(\mathsf{sig}_{\varnothing▶}) \\[2em]
+\frac{\begin{aligned}& \vdash \Sigma \mathrel{▶} \\[0.6em] & \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \Sigma;\ {00}^{\gamma} \vdash t[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} m\end{aligned}}{\vdash (\Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p \mathrel{≔} t) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{def}▶}) \\[2em]
+\frac{\vdash \Sigma \mathrel{▶}}{\vdash (\Sigma,\ f.\{\bar s;\ \bar l;\ \bar p\} : A \mathrel{▶} m \mathrel{◀} p) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{decl}▶}) \\[2em]
+\frac{\begin{aligned}& {=} \\ & \quad \mathcal{D} \\ & \quad \mathsf{data}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar c_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar c_k \\[0.6em] & \vdash \Sigma \mathrel{▶} \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar c_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned}\end{aligned}}{\vdash (\Sigma,\ \mathcal{D}) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{data}▶}) \\[2em]
+\frac{\begin{aligned}& {=} \\ & \quad \mathcal{D} \\ & \quad \mathsf{codata}.\{\bar s;\ \bar l;\ \bar p \mid C\}\ \Delta : \kappa \\ & \qquad \mathsf{where} \\ & \qquad \quad D_1 \mathrel{▶} \zeta_1 \oplus \Pi_1 \mathrel{≔} \bar d_1; \\ & \qquad \quad \dots; \\ & \qquad \quad D_k \mathrel{▶} \zeta_k \oplus \Pi_k \mathrel{≔} \bar d_k \\[0.6em] & \vdash \Sigma \mathrel{▶} \\[0.6em] & \begin{aligned}& \forall \bar s',\ \bar p' \text{ as many as } \bar s,\ \bar p.\ \forall j. \\ & \quad \text{⟹} \\ & \qquad C[\bar s' / \bar s,\ \bar p' / \bar p] \\ & \qquad \exists \gamma. \\ & \qquad \quad \text{and} \\ & \qquad \qquad \Sigma,\ \mathcal{D};\ \gamma \vdash \bar d_j[\bar s' / \bar s,\ \bar p' / \bar p] \mathrel{▶} {11}^{\mathsf{m}} \\ & \qquad \qquad \zeta_j[\bar s' / \bar s,\ \bar p' / \bar p] \le^{\gamma} \gamma\end{aligned}\end{aligned}}{\vdash (\Sigma,\ \mathcal{D}) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{codata}▶}) \\[2em]
+\frac{\begin{aligned}& \vdash \Sigma \mathrel{▶} \\[0.6em] & \mathcal{D} \in \Sigma \\[0.6em] & \Sigma;\ \mathcal{D} \vdash D \uparrow_\Pi \bar d'\end{aligned}}{\vdash (\Sigma,\ \mathsf{lifting}_\Pi(\mathcal{D},\ D,\ \bar d')) \mathrel{▶}}\;(\mathsf{sig}_{\mathsf{lift}▶})
+\end{gathered}
+```
+
+## Properties
+
+Usage is stable under the [renamings](09-substitution.md#renamings): renamed, a term uses the variables as the [vector renamed](10-grade-vectors.md) allows, and the arguments of an instance keep the grades of their parameters, which the renaming does not change:
+
+```math
+\begin{aligned}
+& \Sigma;\ \gamma \vdash t \mathrel{▶} m \implies \Sigma;\ \gamma[\alpha] \vdash t[\alpha] \mathrel{▶} m &&(\mathsf{ren}_{▶}.t) \\[1em]
+& \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \implies \Sigma;\ \gamma[\alpha] \vdash \bar t[\alpha] \mathrel{▶} \bar p;\ m &&(\mathsf{ren}_{▶}.\bar t) \\[1em]
+& \Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \implies \Sigma;\ \gamma[\alpha] \vdash \bar a[\alpha] \mathrel{▶} \zeta;\ m &&(\mathsf{ren}_{▶}.\bar a) \\[1em]
+& \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \implies \Sigma;\ \gamma[\alpha] \vdash \Theta[\alpha] \mathrel{▶} m &&(\mathsf{ren}_{▶}.\Theta)
+\end{aligned}
+```
+
+Usage holds in every signature that has the entries of its own, since it reads its signature only by the entries that it has, its constants and its declared types; the judgment $`{\vdash \Sigma \mathrel{▶}}`$ checks the body of a constant definition in the signature before it, which every later signature extends:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{ext}_{▶}.t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \gamma \vdash t \mathrel{▶} m \\
+& \quad \Sigma';\ \gamma \vdash t \mathrel{▶} m \\[1em]
+& \text{⟹} &&(\mathsf{ext}_{▶}.\bar t) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \\
+& \quad \Sigma';\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \\[1em]
+& \text{⟹} &&(\mathsf{ext}_{▶}.\bar a) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \\
+& \quad \Sigma';\ \gamma \vdash \bar a \mathrel{▶} \zeta;\ m \\[1em]
+& \text{⟹} &&(\mathsf{ext}_{▶}.\Theta) \\
+& \quad \text{and} \\
+& \qquad \forall e.\ e \in \Sigma \implies e \in \Sigma' \\
+& \qquad \Sigma;\ \gamma \vdash \Theta \mathrel{▶} m \\
+& \quad \Sigma';\ \gamma \vdash \Theta \mathrel{▶} m
+\end{aligned}
+```
+
+The constructors of each type of the [prelude](12-prelude.md#declarations) use the parameters as the grades of the type allow:
+
+```math
+\begin{aligned}
+& \vdash \mathsf{prelude} \mathrel{▶} &&(\mathsf{prelude}_{▶})
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [packing](12-prelude.md#packing) of arguments uses the variables as the arguments do, each pair using its first term with the grade of its entry and the rest once:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{pack}_{\bar t▶}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ \gamma \vdash \bar t \mathrel{▶} \bar p;\ m \text{ for the grades } \bar p \text{ of } \Theta \\
+& \quad \Sigma;\ \gamma \vdash \langle \bar t \rangle_{\Theta;\ \bar\kappa;\ l} \mathrel{▶} m
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [unpacking](12-prelude.md#unpacking) uses the variables of its term $`r`$ times and those of its term $`b`$, which uses the variable of each entry of the telescope $`{\ulcorner m \urcorner \cdot r}`$ times its grade, its motive using no variable, as a [recursor](#definitions) does:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{unpack}_{▶}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ {00}^{\gamma} \vdash C \mathrel{▶} {00}^{\mathsf{m}} \\
+& \qquad \Sigma;\ \gamma \vdash u \mathrel{▶} m \odot r \\
+& \qquad \Theta \text{ has the grades } p_1, \dots, p_n \\
+& \qquad \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot r \cdot p_1) \bullet \dots \bullet (\ulcorner m \urcorner \cdot r \cdot p_n) \vdash b \mathrel{▶} m \\
+& \quad \Sigma;\ (r \cdot^{\gamma} \gamma) +^{\gamma} \delta \vdash \mathsf{unpack}_r\ u : \langle \Theta \rangle_{\bar\kappa;\ l}\ \mathsf{return}\ C : \kappa\ \mathsf{with}\ b \mathrel{▶} m
+\end{aligned}
+```
+
+In a signature that holds the prelude, the [resumption](12-prelude.md#positions) of a position $`v`$ by a corecursor of the grade $`r`$ of the instance $`{T = D_j.\{\bar s;\ \bar l;\ \bar p\}\ \bar a}`$, of the sort $`\kappa`$ of the quality $`s`$, uses the variables of $`v`$ and those of the corecursor from the variables $`\bar y_j`$ of the state $`\Theta_j`$, which it uses $`{\ulcorner m \urcorner \cdot r}`$ times their grades, as a lower bound $`\eta`$ of the uses $`\delta`$ of the corecursor and of no use allows, in a mode that allows the grade $`q_s`$ of a term already built, since a position resumes the corecursor or gives a term already built, as a [recursor](#definitions) shares the uses of its branches:
+
+```math
+\begin{aligned}
+& \text{⟹} &&(\mathsf{resume}_{▶}) \\
+& \quad \text{and} \\
+& \qquad \Sigma \ni \mathsf{prelude} \\
+& \qquad \Sigma;\ {00}^{\gamma} \vdash T \mathrel{▶} {00}^{\mathsf{m}} \\
+& \qquad \Sigma;\ \gamma \vdash v \mathrel{▶} m \\
+& \qquad \Theta_j \text{ has the grades } q_1, \dots, q_n \\
+& \qquad \Sigma;\ \delta \bullet (\ulcorner m \urcorner \cdot r \cdot q_1) \bullet \dots \bullet (\ulcorner m \urcorner \cdot r \cdot q_n) \vdash \mathsf{corec}_r\ T\ \mathsf{from}\ \bar y_j\ \mathsf{return}\ \bar\Theta\ \mathsf{with}\ \bar g \mathrel{▶} m \\
+& \qquad m \cdot^{\mathsf{m}} \llcorner q_s \lrcorner = m \\
+& \qquad \eta \le^{\gamma} \delta \\
+& \qquad \eta \le^{\gamma} {00}^{\gamma} \\
+& \quad \Sigma;\ \gamma +^{\gamma} \eta \vdash \mathsf{resume}_{r;\ \chi}(v,\ T : \kappa,\ \bar\Theta,\ \bar g) \mathrel{▶} m
+\end{aligned}
+```
+
+This property shows what the rule of a corecursor requires of the branch of a recursive destructor, whose observation resumes its position: the usage of the corecursor bounds its uses by those of the branch plus its own, as the uses of the corecursor resumed.
